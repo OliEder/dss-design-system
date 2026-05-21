@@ -1,0 +1,1792 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DSS Design System — Tables v0.1</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+<style>
+  /* ── DSS Tokens (v0.3 sync · Amber 83° / Sky 244° aus User-Tweaks) ── */
+  :root {
+    --h-ink: 60;
+    --h-amber: 83;
+    --h-sky: 244;
+
+    --ink-0:    oklch(1.000 0     0);
+    --ink-50:   oklch(0.985 0.003 var(--h-ink));
+    --ink-100:  oklch(0.965 0.005 var(--h-ink));
+    --ink-200:  oklch(0.925 0.007 var(--h-ink));
+    --ink-300:  oklch(0.850 0.009 var(--h-ink));
+    --ink-400:  oklch(0.700 0.011 var(--h-ink));
+    --ink-500:  oklch(0.560 0.012 var(--h-ink));
+    --ink-600:  oklch(0.420 0.013 var(--h-ink));
+    --ink-700:  oklch(0.300 0.012 var(--h-ink));
+    --ink-800:  oklch(0.200 0.010 var(--h-ink));
+    --ink-900:  oklch(0.130 0.008 var(--h-ink));
+    --ink-950:  oklch(0.080 0.006 var(--h-ink));
+    --ink-1000: oklch(0.020 0.004 var(--h-ink));
+
+    --amber-50:   oklch(0.975 0.025 var(--h-amber));
+    --amber-100:  oklch(0.940 0.060 var(--h-amber));
+    --amber-200:  oklch(0.880 0.110 var(--h-amber));
+    --amber-300:  oklch(0.830 0.145 var(--h-amber));
+    --amber-400:  oklch(0.800 0.165 var(--h-amber));
+    --amber-500:  oklch(0.760 0.165 var(--h-amber));
+    --amber-600:  oklch(0.660 0.150 calc(var(--h-amber) - 5));
+    --amber-700:  oklch(0.540 0.130 calc(var(--h-amber) - 10));
+    --amber-800:  oklch(0.420 0.110 calc(var(--h-amber) - 20));
+    --amber-900:  oklch(0.290 0.080 calc(var(--h-amber) - 25));
+
+    --sky-50:   oklch(0.975 0.018 var(--h-sky));
+    --sky-100:  oklch(0.940 0.045 var(--h-sky));
+    --sky-200:  oklch(0.880 0.080 var(--h-sky));
+    --sky-300:  oklch(0.820 0.110 var(--h-sky));
+    --sky-400:  oklch(0.760 0.125 var(--h-sky));
+    --sky-500:  oklch(0.680 0.140 calc(var(--h-sky) + 2));
+    --sky-600:  oklch(0.560 0.140 calc(var(--h-sky) + 5));
+    --sky-700:  oklch(0.450 0.135 calc(var(--h-sky) + 8));
+    --sky-800:  oklch(0.345 0.120 calc(var(--h-sky) + 12));
+    --sky-900:  oklch(0.230 0.080 calc(var(--h-sky) + 15));
+
+    --n-0:    oklch(1.000 0     0);
+    --n-50:   oklch(0.985 0.003 250);
+    --n-100:  oklch(0.965 0.005 250);
+    --n-200:  oklch(0.925 0.006 250);
+    --n-300:  oklch(0.860 0.008 250);
+    --n-400:  oklch(0.700 0.010 250);
+    --n-500:  oklch(0.520 0.011 250);
+    --n-600:  oklch(0.420 0.011 250);
+    --n-700:  oklch(0.320 0.010 250);
+    --n-800:  oklch(0.215 0.009 250);
+    --n-900:  oklch(0.145 0.008 250);
+    --n-950:  oklch(0.085 0.006 250);
+    --n-1000: oklch(0.025 0.004 250);
+
+    --ok-fill:    oklch(0.640 0.150 150);
+    --ok-text:    oklch(0.400 0.130 150);
+    --ok-soft:    oklch(0.960 0.040 150);
+    --warn-fill:  oklch(0.770 0.165 75);
+    --warn-text:  oklch(0.420 0.120 60);
+    --warn-soft:  oklch(0.970 0.055 80);
+    --err-fill:   oklch(0.580 0.220 27);
+    --err-button: oklch(0.400 0.190 27);
+    --err-text:   oklch(0.420 0.180 27);
+    --err-soft:   oklch(0.955 0.045 27);
+    --info-fill:  oklch(0.620 0.140 245);
+    --info-text:  oklch(0.380 0.130 245);
+    --info-soft:  oklch(0.955 0.035 245);
+
+    --team-heim: var(--sky-700);
+    --team-gast: oklch(0.520 0.180 25);
+
+    --font-display: 'Sora', system-ui, sans-serif;
+    --font-body:    'Manrope', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+    --page-bg:   var(--n-50);
+    --page-fg:   var(--ink-900);
+    --page-mute: var(--n-600);
+    --page-line: var(--n-200);
+
+    /* Table density tokens — driven by Tweaks */
+    --row-h-touch:   60px;
+    --row-h-default: 44px;
+    --row-h-compact: 36px;
+    --row-h-dense:   30px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page-bg);
+    color: var(--page-fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ── Page shell ─────────────────────────────────────────────── */
+  .page { max-width: 1320px; margin: 0 auto; padding: 56px 56px 120px; }
+
+  .topstrip {
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--page-mute);
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .topstrip .left { display: flex; gap: 14px; align-items: center; }
+  .topstrip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber-500); display: inline-block; }
+  .topstrip .monogram {
+    width: 22px; height: 22px; border-radius: 5px;
+    background: var(--ink-800); color: var(--n-0);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 11px;
+    letter-spacing: -0.02em;
+  }
+  .topstrip a {
+    color: inherit; text-decoration: none;
+    padding: 4px 8px; border-radius: 5px;
+    background: var(--ink-100);
+    transition: background 0.12s;
+  }
+  .topstrip a:hover { background: var(--ink-200); }
+
+  /* ── Hero ───────────────────────────────────────────────────── */
+  .hero { padding: 48px 0 56px; border-bottom: 1px solid var(--page-line); }
+  .hero .eyebrow {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--amber-800);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(40px, 5.5vw, 76px);
+    letter-spacing: -0.035em; line-height: 0.98;
+    margin: 0 0 20px;
+    color: var(--ink-900);
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(180deg, var(--amber-700), var(--amber-800));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .lead {
+    max-width: 720px; font-size: 17px; line-height: 1.55;
+    color: var(--n-700); text-wrap: pretty;
+  }
+
+  /* ── Sections ───────────────────────────────────────────────── */
+  section.s {
+    padding: 72px 0;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .s-head {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 32px; align-items: baseline;
+    margin-bottom: 36px;
+  }
+  .s-num {
+    font-family: var(--font-mono);
+    font-size: 12px; letter-spacing: 0.06em;
+    color: var(--amber-800);
+    padding-top: 8px;
+  }
+  .s-title h2 {
+    font-family: var(--font-display);
+    font-weight: 700; font-size: 34px;
+    letter-spacing: -0.02em; line-height: 1.08;
+    margin: 0 0 10px;
+    color: var(--ink-900);
+  }
+  .s-title p {
+    margin: 0; color: var(--n-700);
+    font-size: 15.5px; max-width: 720px;
+    text-wrap: pretty;
+  }
+  .s-body { display: flex; flex-direction: column; gap: 40px; }
+
+  .sub {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--page-mute);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sub::after { content: ''; flex: 1; height: 1px; background: var(--page-line); }
+  .sub .pill {
+    background: var(--ink-100); color: var(--ink-700);
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 9.5px; letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .sub .pill.dark { background: var(--ink-900); color: var(--n-50); }
+  .sub .pill.amber { background: var(--amber-100); color: var(--amber-800); }
+
+  /* ── Card wrap for tables ───────────────────────────────────── */
+  .frame {
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    background: var(--n-0);
+    overflow: hidden;
+  }
+  .frame.dark {
+    background: var(--n-1000);
+    border-color: var(--n-800);
+    color: var(--n-100);
+  }
+  .frame-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--page-line);
+    background: var(--n-50);
+  }
+  .frame.dark .frame-head {
+    background: var(--n-950);
+    border-color: var(--n-800);
+  }
+  .frame-head h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600; font-size: 16px;
+    color: inherit;
+    letter-spacing: -0.005em;
+  }
+  .frame-head .meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    display: flex; gap: 14px; align-items: center;
+  }
+  .frame.dark .frame-head .meta { color: var(--n-400); }
+  .frame-head .crumb {
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .frame-head .crumb-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ok-fill);
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     TABLE — base styles (shared by all variants)
+     ════════════════════════════════════════════════════════════ */
+  table.tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: inherit;
+  }
+  table.tbl th, table.tbl td {
+    text-align: left;
+    padding: 0 14px;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
+  table.tbl th {
+    font-family: var(--font-mono);
+    font-size: 10.5px; font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--n-700);
+    background: var(--n-50);
+    height: 38px;
+    border-bottom: 1px solid var(--page-line);
+    position: sticky; top: 0; z-index: 1;
+  }
+  .frame.dark table.tbl th {
+    color: var(--n-400);
+    background: var(--n-950);
+    border-bottom-color: var(--n-800);
+  }
+  table.tbl td {
+    height: var(--row-h-default);
+    border-bottom: 1px solid var(--page-line);
+    color: var(--ink-700);
+  }
+  .frame.dark table.tbl td {
+    border-bottom-color: var(--n-800);
+    color: var(--n-200);
+  }
+  table.tbl tbody tr:last-child td { border-bottom: 0; }
+  table.tbl tbody tr:hover td { background: var(--ink-50); }
+  .frame.dark table.tbl tbody tr:hover td { background: var(--n-900); }
+
+  /* Right-align numeric columns */
+  table.tbl th.num, table.tbl td.num {
+    text-align: right;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+  }
+  table.tbl td.num.lead { color: var(--ink-900); font-weight: 700; }
+  .frame.dark table.tbl td.num.lead { color: var(--n-50); }
+  table.tbl td.num.dim { color: var(--n-500); }
+
+  /* Center align */
+  table.tbl th.center, table.tbl td.center { text-align: center; }
+
+  /* Sort indicators */
+  table.tbl th.sortable { cursor: pointer; user-select: none; }
+  table.tbl th.sortable::after {
+    content: ''; display: inline-block;
+    width: 0; height: 0;
+    border: 4px solid transparent;
+    border-top-color: var(--n-400);
+    margin-left: 6px;
+    vertical-align: -2px;
+    opacity: 0.5;
+  }
+  table.tbl th.sort-asc::after { border-top: 0; border-bottom-color: var(--ink-700); opacity: 1; vertical-align: 1px; }
+  table.tbl th.sort-desc::after { border-top-color: var(--ink-700); opacity: 1; }
+  .frame.dark table.tbl th.sort-asc::after { border-bottom-color: var(--n-50); }
+  .frame.dark table.tbl th.sort-desc::after { border-top-color: var(--n-50); }
+
+  /* Density modifiers */
+  table.tbl.density-touch td   { height: var(--row-h-touch); font-size: 15px; }
+  table.tbl.density-default td { height: var(--row-h-default); }
+  table.tbl.density-compact td { height: var(--row-h-compact); font-size: 13.5px; padding: 0 12px; }
+  table.tbl.density-compact th { padding: 0 12px; }
+  table.tbl.density-dense   td { height: var(--row-h-dense); font-size: 13px; padding: 0 10px; }
+  table.tbl.density-dense   th { padding: 0 10px; height: 32px; }
+
+  /* Striping (optional) */
+  table.tbl.striped tbody tr:nth-child(even) td { background: var(--n-50); }
+  .frame.dark table.tbl.striped tbody tr:nth-child(even) td { background: var(--n-900); }
+  table.tbl.striped tbody tr:hover td { background: var(--ink-50); }
+  .frame.dark table.tbl.striped tbody tr:hover td { background: var(--n-800); }
+
+  /* Footer (totals) row */
+  table.tbl tfoot td {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    color: var(--ink-900);
+    background: var(--n-100);
+    border-top: 1px solid var(--n-300);
+    border-bottom: 0;
+    height: 42px;
+  }
+  .frame.dark table.tbl tfoot td {
+    background: var(--n-900);
+    color: var(--n-50);
+    border-top-color: var(--n-700);
+  }
+
+  /* ── Trikot number cell (large display number) ──────────────── */
+  .tn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 10px;
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 18px; letter-spacing: -0.02em;
+    background: var(--n-100); color: var(--ink-900);
+    font-variant-numeric: tabular-nums;
+  }
+  .frame.dark .tn { background: var(--n-800); color: var(--n-50); }
+  .tn.heim { background: var(--team-heim); color: white; }
+  .tn.gast { background: var(--team-gast); color: white; }
+  .tn.captain { box-shadow: 0 0 0 2px var(--amber-500); }
+  .tn.small { width: 32px; height: 32px; font-size: 13.5px; border-radius: 7px; }
+
+  /* Player cell */
+  .player {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .player-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .player-name {
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 14px;
+    color: var(--ink-900);
+    letter-spacing: -0.005em;
+    line-height: 1.2;
+  }
+  .frame.dark .player-name { color: var(--n-50); }
+  .player-meta {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--n-600);
+    letter-spacing: 0.04em; text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .frame.dark .player-meta { color: var(--n-400); }
+  .player.bench .player-name { color: var(--ink-600); font-weight: 500; }
+  .frame.dark .player.bench .player-name { color: var(--n-300); }
+  .player.dnp .player-name { color: var(--n-500); text-decoration: line-through; font-weight: 400; }
+
+  /* Position tag */
+  .pos {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; border-radius: 5px;
+    font-family: var(--font-mono); font-weight: 700; font-size: 10px;
+    background: var(--ink-100); color: var(--ink-700);
+  }
+  .pos.pg { background: var(--sky-100);   color: var(--sky-800); }
+  .pos.sg { background: var(--info-soft); color: var(--info-text); }
+  .pos.sf { background: var(--amber-100); color: var(--amber-800); }
+  .pos.pf { background: var(--warn-soft); color: var(--warn-text); }
+  .pos.c  { background: var(--err-soft);  color: var(--err-text); }
+  .frame.dark .pos { background: var(--n-800); color: var(--n-200); }
+  .frame.dark .pos.pg { background: oklch(0.25 0.10 244); color: oklch(0.86 0.10 244); }
+  .frame.dark .pos.sg { background: oklch(0.25 0.10 245); color: oklch(0.88 0.13 245); }
+  .frame.dark .pos.sf { background: oklch(0.25 0.10 83);  color: oklch(0.88 0.13 83);  }
+  .frame.dark .pos.pf { background: oklch(0.25 0.09 75);  color: oklch(0.88 0.14 75);  }
+  .frame.dark .pos.c  { background: oklch(0.24 0.13 27);  color: oklch(0.88 0.16 27);  }
+
+  /* Mini chip (live, status, etc) */
+  .pill-s {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+    padding: 3px 7px; border-radius: 4px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    background: var(--n-100); color: var(--n-700);
+  }
+  .frame.dark .pill-s { background: var(--n-800); color: var(--n-300); }
+  .pill-s.on { background: var(--ok-soft); color: var(--ok-text); }
+  .frame.dark .pill-s.on { background: oklch(0.22 0.08 150); color: oklch(0.88 0.13 150); }
+  .pill-s.bench { background: var(--n-100); color: var(--n-600); }
+  .pill-s.dnp   { background: var(--err-soft); color: var(--err-text); }
+  .pill-s.cap   { background: var(--amber-100); color: var(--amber-800); }
+  .frame.dark .pill-s.cap   { background: oklch(0.25 0.10 83);  color: oklch(0.88 0.13 83);  }
+  .frame.dark .pill-s.dnp   { background: oklch(0.24 0.13 27);  color: oklch(0.88 0.16 27); }
+
+  /* Checkbox */
+  .ck {
+    appearance: none;
+    width: 22px; height: 22px;
+    border: 1.5px solid var(--n-400);
+    border-radius: 6px;
+    background: var(--n-0);
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .frame.dark .ck { background: var(--n-900); border-color: var(--n-600); }
+  .ck:checked {
+    background: var(--ink-900); border-color: var(--ink-900);
+  }
+  .frame.dark .ck:checked { background: var(--n-50); border-color: var(--n-50); }
+  .ck:checked::after {
+    content: ''; position: absolute;
+    left: 5px; top: 2px;
+    width: 6px; height: 11px;
+    border: solid var(--n-50);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .frame.dark .ck:checked::after { border-color: var(--ink-1000); }
+  .ck.lg { width: 26px; height: 26px; }
+  .ck.lg:checked::after { left: 7px; top: 3px; width: 7px; height: 13px; }
+
+  /* Row state: selected */
+  table.tbl tbody tr.selected td {
+    background: var(--sky-100);
+    box-shadow: inset 3px 0 0 var(--sky-700);
+  }
+  table.tbl tbody tr.selected:hover td { background: var(--sky-100); }
+  .frame.dark table.tbl tbody tr.selected td {
+    background: oklch(0.22 0.09 244);
+    box-shadow: inset 3px 0 0 var(--sky-400);
+  }
+  .frame.dark table.tbl tbody tr.selected:hover td { background: oklch(0.22 0.09 244); }
+
+  /* Row state: on-court (active player) */
+  table.tbl tbody tr.on-court td:first-child {
+    box-shadow: inset 3px 0 0 var(--ok-fill);
+  }
+
+  /* ── Density anatomy diagram ────────────────────────────────── */
+  .density-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+  }
+  .density-card {
+    border: 1px solid var(--page-line);
+    border-radius: 12px;
+    background: var(--n-0);
+    overflow: hidden;
+  }
+  .density-card .label {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--page-line);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .density-card .label .name {
+    font-family: var(--font-display); font-weight: 600; font-size: 14px;
+    color: var(--ink-900);
+  }
+  .density-card .label .v {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+  }
+  .density-card .demo { padding: 10px 0 12px; }
+  .density-row {
+    display: grid; grid-template-columns: 32px 1fr 50px;
+    align-items: center; gap: 10px;
+    padding: 0 14px;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .density-card .demo .density-row:last-child { border-bottom: 0; }
+  .density-row .tn-mini {
+    width: 20px; height: 20px; border-radius: 4px;
+    background: var(--ink-200);
+  }
+  .density-row .nm {
+    height: 8px; border-radius: 3px;
+    background: var(--ink-200);
+  }
+  .density-row .vl {
+    height: 8px; border-radius: 3px;
+    background: var(--amber-200);
+  }
+  .density-card.touch .density-row { height: 60px; }
+  .density-card.default .density-row { height: 44px; }
+  .density-card.compact .density-row { height: 36px; }
+  .density-card.dense .density-row { height: 30px; }
+
+  /* ── Play-by-play styles ────────────────────────────────────── */
+  .pbp-event {
+    display: flex; align-items: center; gap: 14px;
+    padding: 12px 22px;
+    border-bottom: 1px solid var(--page-line);
+    transition: background 0.12s;
+  }
+  .frame.dark .pbp-event { border-bottom-color: var(--n-800); }
+  .pbp-event:last-child { border-bottom: 0; }
+  .pbp-event:hover { background: var(--ink-50); }
+  .frame.dark .pbp-event:hover { background: var(--n-900); }
+  .pbp-time {
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 13px; color: var(--ink-700);
+    width: 70px; flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .frame.dark .pbp-time { color: var(--n-200); }
+  .pbp-time .q { font-size: 10px; color: var(--n-500); display: block; letter-spacing: 0.06em; text-transform: uppercase; }
+  .frame.dark .pbp-time .q { color: var(--n-400); }
+  .pbp-team-strip {
+    width: 4px; height: 36px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .pbp-team-strip.heim { background: var(--team-heim); }
+  .pbp-team-strip.gast { background: var(--team-gast); }
+  .pbp-team-strip.none { background: var(--n-300); }
+  .frame.dark .pbp-team-strip.none { background: var(--n-700); }
+  .pbp-body {
+    flex: 1; min-width: 0;
+    display: flex; flex-direction: column; gap: 2px;
+  }
+  .pbp-action {
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 14px;
+    color: var(--ink-900);
+    line-height: 1.25;
+  }
+  .frame.dark .pbp-action { color: var(--n-50); }
+  .pbp-action b { font-weight: 700; }
+  .pbp-detail {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--n-600);
+    letter-spacing: 0.02em;
+  }
+  .frame.dark .pbp-detail { color: var(--n-400); }
+  .pbp-score {
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 16px;
+    color: var(--ink-900);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+    min-width: 80px;
+    text-align: right;
+  }
+  .frame.dark .pbp-score { color: var(--n-50); }
+  .pbp-score .sep { color: var(--n-400); margin: 0 4px; font-weight: 500; }
+
+  .pbp-event.foul .pbp-action { color: var(--err-text); }
+  .frame.dark .pbp-event.foul .pbp-action { color: oklch(0.88 0.16 27); }
+  .pbp-event.timeout .pbp-action { color: var(--info-text); }
+  .frame.dark .pbp-event.timeout .pbp-action { color: oklch(0.88 0.13 245); }
+  .pbp-event.score-3p .pbp-action b { color: var(--amber-800); }
+  .frame.dark .pbp-event.score-3p .pbp-action b { color: var(--amber-400); }
+
+  /* ── Heim/Gast Comparison ───────────────────────────────────── */
+  .cmp {
+    display: grid;
+    grid-template-columns: 1fr 96px 1fr;
+    gap: 0;
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .cmp-banner {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 96px 1fr;
+    background: var(--n-50);
+    border-bottom: 1px solid var(--page-line);
+  }
+  .cmp-banner .h-side {
+    padding: 18px 24px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .cmp-banner .h-side.gast { justify-content: flex-end; text-align: right; }
+  .cmp-banner .h-info { display: flex; flex-direction: column; gap: 2px; }
+  .cmp-banner .h-info .nm { font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--ink-900); letter-spacing: -0.01em; }
+  .cmp-banner .h-info .city { font-family: var(--font-mono); font-size: 10.5px; color: var(--page-mute); text-transform: uppercase; letter-spacing: 0.06em; }
+  .cmp-banner .h-center {
+    border-left: 1px solid var(--page-line);
+    border-right: 1px solid var(--page-line);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+    color: var(--page-mute);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--n-100);
+  }
+  .cmp-banner .team-strip {
+    width: 32px; height: 32px; border-radius: 8px;
+    flex-shrink: 0;
+  }
+  .cmp-banner .team-strip.heim { background: var(--team-heim); }
+  .cmp-banner .team-strip.gast { background: var(--team-gast); }
+
+  .cmp-row {
+    display: contents;
+  }
+  .cmp-row > div {
+    display: flex; align-items: center;
+    padding: 0 24px;
+    height: 44px;
+    border-bottom: 1px solid var(--page-line);
+    font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+    font-weight: 600; font-size: 16px;
+    color: var(--ink-800);
+  }
+  .cmp-row .l { justify-content: flex-end; }
+  .cmp-row .r { justify-content: flex-start; }
+  .cmp-row .c {
+    border-left: 1px solid var(--page-line);
+    border-right: 1px solid var(--page-line);
+    background: var(--n-50);
+    justify-content: center;
+    font-family: var(--font-mono); font-weight: 600; font-size: 10px;
+    color: var(--page-mute);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 0 8px;
+  }
+  .cmp-row.last > div { border-bottom: 0; }
+  .cmp-row .winner { color: var(--ok-text); }
+  .cmp-row.total > div {
+    font-size: 22px;
+    background: var(--ink-50);
+    color: var(--ink-900);
+    height: 52px;
+    font-weight: 800;
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+  }
+  .cmp-row.total .c { background: var(--ink-100); }
+  .cmp-row .bar-wrap {
+    flex: 1; height: 4px;
+    border-radius: 999px;
+    background: var(--n-200);
+    margin-left: 14px;
+    overflow: hidden; position: relative;
+  }
+  .cmp-row .l .bar-wrap { margin-left: 0; margin-right: 14px; }
+  .cmp-row .bar {
+    position: absolute; top: 0; bottom: 0;
+    background: var(--team-heim);
+    border-radius: 999px;
+  }
+  .cmp-row .r .bar-wrap .bar { left: 0; background: var(--team-gast); }
+  .cmp-row .l .bar-wrap .bar { right: 0; background: var(--team-heim); }
+  .cmp-row .v-num {
+    flex-shrink: 0;
+    font-family: var(--font-mono); font-variant-numeric: tabular-nums;
+    font-weight: 700; font-size: 17px;
+  }
+
+  /* ── Tisch-Crew table (admin) ───────────────────────────────── */
+  .role-pill {
+    display: inline-flex; align-items: center;
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 600;
+    padding: 4px 9px; border-radius: 5px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    background: var(--ink-100); color: var(--ink-800);
+  }
+  .role-pill.head { background: var(--amber-100); color: var(--amber-800); }
+  .role-pill.fed  { background: var(--info-soft); color: var(--info-text); }
+
+  /* Avatar (initials) */
+  .avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--ink-100);
+    color: var(--ink-800);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 12.5px;
+    flex-shrink: 0;
+  }
+  .frame.dark .avatar { background: var(--n-800); color: var(--n-100); }
+  .avatar.sm { width: 28px; height: 28px; font-size: 10.5px; }
+
+  /* ── Footnote ───────────────────────────────────────────────── */
+  .foot {
+    margin-top: 56px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .foot .iter { color: var(--amber-800); }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    background: var(--ink-100);
+    color: var(--ink-800);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .density-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 780px) {
+    .page { padding: 32px 20px 80px; }
+    .s-head { grid-template-columns: 1fr; gap: 6px; }
+    .density-grid { grid-template-columns: 1fr; }
+    .cmp, .cmp-banner { grid-template-columns: 1fr 64px 1fr; }
+    .frame-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+    table.tbl th, table.tbl td { padding: 0 10px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- TOP STRIP -->
+  <div class="topstrip">
+    <div class="left">
+      <span class="monogram">D</span>
+      <span>DSS Design System</span>
+      <span>·</span>
+      <span>Tables v0.1</span>
+    </div>
+    <div>
+      <a href="DSS Design System - Identity Overview v0.3.html">← Identity Overview</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero" data-screen-label="00 Hero">
+    <div class="eyebrow">Component Library · Tables · v0.1</div>
+    <h1>Tabellen für die <em>Halle, den Tisch und das Büro.</em></h1>
+    <p class="lead">
+      Vier Tabellen-Patterns für die verschiedenen Surfaces des DSS-Ökosystems —
+      jedes mit klar definierter Dichte, Touch-Tauglichkeit und Anwendungskontext.
+      Alle nutzen dieselbe Token-Basis (Ink · Amber · Sky) und bleiben AAA-konform.
+    </p>
+  </header>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 01 — DENSITY & ANATOMY
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="01 Density">
+    <div class="s-head">
+      <div class="s-num">01 — Density</div>
+      <div class="s-title">
+        <h2>Vier Stufen, ein Vokabular.</h2>
+        <p>
+          Tabellen müssen je nach Surface unterschiedlich dicht sein:
+          das Kampfgericht braucht große Touch-Reihen, die Statistik-Ansicht des Trainers
+          möchte möglichst viel auf einen Blick. Die <code>density</code>-Modifier ändern
+          ausschließlich Höhe und Padding — Typographie und Token-System bleiben gleich.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div>
+        <div class="sub">Row Heights <span class="pill">via <code>.density-{touch · default · compact · dense}</code></span></div>
+        <div class="density-grid">
+
+          <div class="density-card touch">
+            <div class="label"><span class="name">Touch</span><span class="v">60 px · iPad</span></div>
+            <div class="demo">
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+            </div>
+          </div>
+
+          <div class="density-card default">
+            <div class="label"><span class="name">Default</span><span class="v">44 px · Web</span></div>
+            <div class="demo">
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+            </div>
+          </div>
+
+          <div class="density-card compact">
+            <div class="label"><span class="name">Compact</span><span class="v">36 px · Dashboard</span></div>
+            <div class="demo">
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+            </div>
+          </div>
+
+          <div class="density-card dense">
+            <div class="label"><span class="name">Dense</span><span class="v">30 px · Statistik</span></div>
+            <div class="demo">
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+              <div class="density-row"><div class="tn-mini"></div><div class="nm"></div><div class="vl"></div></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 02 — TEAM ROSTER (Touch / iPad Kampfgericht)
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="02 Roster">
+    <div class="s-head">
+      <div class="s-num">02 — Team Roster</div>
+      <div class="s-title">
+        <h2>Mannschaft aufstellen am Kampfgerichts-Tisch.</h2>
+        <p>
+          Touch-First Pattern für den Spielbericht: 60 px hohe Reihen, große Trikotnummern
+          als visueller Anker, Start-5-Checkbox direkt in der Tabelle, Captain-Badge als
+          Trikot-Outline. Selected-Row hat den Sky-Akzent links.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div>
+        <div class="sub">Team Setup · Heim <span class="pill amber">Touch · 60px</span></div>
+        <div class="frame">
+          <div class="frame-head">
+            <h3>TSV Tröster Breitengüßbach <span style="font-family:var(--font-mono); font-size:11px; color:var(--page-mute); margin-left:8px; letter-spacing:0.06em; text-transform:uppercase;">12 Spieler · 5 in Start</span></h3>
+            <div class="meta">
+              <span class="crumb"><span class="crumb-dot"></span> Validiert</span>
+              <span>Coach · J. Bauermann</span>
+            </div>
+          </div>
+          <table class="tbl density-touch">
+            <thead>
+              <tr>
+                <th class="center" style="width: 70px;">#</th>
+                <th>Spieler</th>
+                <th class="center" style="width: 60px;">Pos.</th>
+                <th class="center" style="width: 110px;">Rolle</th>
+                <th class="center" style="width: 100px;">Start 5</th>
+                <th class="center" style="width: 100px;">Aktiv</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="on-court selected">
+                <td class="center"><span class="tn heim captain">4</span></td>
+                <td>
+                  <div class="player">
+                    <div class="player-info">
+                      <span class="player-name">Andreas Seiferth</span>
+                      <span class="player-meta">geb. 1991 · 2.04 m</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="center"><span class="pos c">C</span></td>
+                <td class="center"><span class="pill-s cap">Captain</span></td>
+                <td class="center"><input type="checkbox" class="ck lg" checked /></td>
+                <td class="center"><span class="pill-s on">Auf Feld</span></td>
+              </tr>
+              <tr class="on-court">
+                <td class="center"><span class="tn heim">7</span></td>
+                <td>
+                  <div class="player">
+                    <div class="player-info">
+                      <span class="player-name">Niklas Wimberg</span>
+                      <span class="player-meta">geb. 1999 · 2.00 m</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="center"><span class="pos sf">SF</span></td>
+                <td class="center"></td>
+                <td class="center"><input type="checkbox" class="ck lg" checked /></td>
+                <td class="center"><span class="pill-s on">Auf Feld</span></td>
+              </tr>
+              <tr class="on-court">
+                <td class="center"><span class="tn heim">11</span></td>
+                <td>
+                  <div class="player">
+                    <div class="player-info">
+                      <span class="player-name">Yannick Anzuluni</span>
+                      <span class="player-meta">geb. 1995 · 1.92 m</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="center"><span class="pos sg">SG</span></td>
+                <td class="center"></td>
+                <td class="center"><input type="checkbox" class="ck lg" checked /></td>
+                <td class="center"><span class="pill-s on">Auf Feld</span></td>
+              </tr>
+              <tr class="on-court">
+                <td class="center"><span class="tn heim">13</span></td>
+                <td>
+                  <div class="player">
+                    <div class="player-info">
+                      <span class="player-name">Thomas Reuter</span>
+                      <span class="player-meta">geb. 1997 · 1.88 m</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="center"><span class="pos pg">PG</span></td>
+                <td class="center"></td>
+                <td class="center"><input type="checkbox" class="ck lg" checked /></td>
+                <td class="center"><span class="pill-s on">Auf Feld</span></td>
+              </tr>
+              <tr class="on-court">
+                <td class="center"><span class="tn heim">21</span></td>
+                <td>
+                  <div class="player">
+                    <div class="player-info">
+                      <span class="player-name">Robin Christen</span>
+                      <span class="player-meta">geb. 1996 · 2.01 m</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="center"><span class="pos pf">PF</span></td>
+                <td class="center"></td>
+                <td class="center"><input type="checkbox" class="ck lg" checked /></td>
+                <td class="center"><span class="pill-s on">Auf Feld</span></td>
+              </tr>
+              <tr>
+                <td class="center"><span class="tn heim">5</span></td>
+                <td>
+                  <div class="player bench">
+                    <div class="player-info">
+                      <span class="player-name">Lennart Boner</span>
+                      <span class="player-meta">geb. 2001 · 1.85 m</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="center"><span class="pos pg">PG</span></td>
+                <td class="center"></td>
+                <td class="center"><input type="checkbox" class="ck lg" /></td>
+                <td class="center"><span class="pill-s bench">Bank</span></td>
+              </tr>
+              <tr>
+                <td class="center"><span class="tn heim">9</span></td>
+                <td>
+                  <div class="player bench">
+                    <div class="player-info">
+                      <span class="player-name">Mateo Seric</span>
+                      <span class="player-meta">geb. 2002 · 1.98 m</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="center"><span class="pos sg">SG</span></td>
+                <td class="center"></td>
+                <td class="center"><input type="checkbox" class="ck lg" /></td>
+                <td class="center"><span class="pill-s bench">Bank</span></td>
+              </tr>
+              <tr>
+                <td class="center"><span class="tn heim">15</span></td>
+                <td>
+                  <div class="player bench">
+                    <div class="player-info">
+                      <span class="player-name">Henri Drell</span>
+                      <span class="player-meta">geb. 1999 · 2.06 m</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="center"><span class="pos sf">SF</span></td>
+                <td class="center"></td>
+                <td class="center"><input type="checkbox" class="ck lg" /></td>
+                <td class="center"><span class="pill-s bench">Bank</span></td>
+              </tr>
+              <tr>
+                <td class="center"><span class="tn heim">18</span></td>
+                <td>
+                  <div class="player dnp">
+                    <div class="player-info">
+                      <span class="player-name">Felix Hoffmann</span>
+                      <span class="player-meta">geb. 2000 · 2.03 m</span>
+                    </div>
+                  </div>
+                </td>
+                <td class="center"><span class="pos pf">PF</span></td>
+                <td class="center"></td>
+                <td class="center"><input type="checkbox" class="ck lg" disabled /></td>
+                <td class="center"><span class="pill-s dnp">Verletzt</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 03 — BOXSCORE (Data-Dense)
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="03 Boxscore">
+    <div class="s-head">
+      <div class="s-num">03 — Boxscore</div>
+      <div class="s-title">
+        <h2>Statistiken auf einen Blick.</h2>
+        <p>
+          Compact-Density mit allen relevanten Wurfstatistiken, sortierbar nach jeder
+          numerischen Spalte. Trainer-Dashboard nutzt das Light-Theme; das Kampfgerichts-Tablet
+          während des Spiels das Dark-Theme. Total-Row ist gepinnt am Tabellenende.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <!-- LIGHT -->
+      <div>
+        <div class="sub">Boxscore · Heim <span class="pill">Light · Compact</span></div>
+        <div class="frame">
+          <div class="frame-head">
+            <h3>Spieler-Statistiken Q1 – Q4</h3>
+            <div class="meta">
+              <span>Stand · 4. Viertel · 02:14</span>
+              <span class="crumb"><span class="crumb-dot"></span> Live</span>
+            </div>
+          </div>
+          <table class="tbl density-compact striped" id="boxscore-light">
+            <thead>
+              <tr>
+                <th style="width: 36px;">#</th>
+                <th>Spieler</th>
+                <th class="center" style="width: 36px;">Pos</th>
+                <th class="num sortable" style="width: 56px;">MIN</th>
+                <th class="num sortable sort-desc" style="width: 56px;">PTS</th>
+                <th class="num sortable" style="width: 70px;">2P</th>
+                <th class="num sortable" style="width: 70px;">3P</th>
+                <th class="num sortable" style="width: 70px;">FT</th>
+                <th class="num sortable" style="width: 56px;">REB</th>
+                <th class="num sortable" style="width: 56px;">AST</th>
+                <th class="num sortable" style="width: 56px;">STL</th>
+                <th class="num sortable" style="width: 56px;">TO</th>
+                <th class="num sortable" style="width: 50px;">F</th>
+                <th class="num sortable" style="width: 60px;">+/−</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="tn heim small">4</span></td>
+                <td>
+                  <div class="player">
+                    <div class="player-info">
+                      <span class="player-name">A. Seiferth <span class="pill-s cap" style="margin-left: 6px;">C</span></span>
+                    </div>
+                  </div>
+                </td>
+                <td class="center"><span class="pos c">C</span></td>
+                <td class="num">32:14</td>
+                <td class="num lead">24</td>
+                <td class="num">8/12</td>
+                <td class="num">1/3</td>
+                <td class="num">5/6</td>
+                <td class="num">11</td>
+                <td class="num">3</td>
+                <td class="num">2</td>
+                <td class="num">1</td>
+                <td class="num">3</td>
+                <td class="num" style="color: var(--ok-text)">+14</td>
+              </tr>
+              <tr>
+                <td><span class="tn heim small">7</span></td>
+                <td><div class="player"><div class="player-info"><span class="player-name">N. Wimberg</span></div></div></td>
+                <td class="center"><span class="pos sf">SF</span></td>
+                <td class="num">28:42</td>
+                <td class="num lead">19</td>
+                <td class="num">3/5</td>
+                <td class="num">3/7</td>
+                <td class="num">4/4</td>
+                <td class="num">6</td>
+                <td class="num">5</td>
+                <td class="num">2</td>
+                <td class="num">2</td>
+                <td class="num">2</td>
+                <td class="num" style="color: var(--ok-text)">+9</td>
+              </tr>
+              <tr>
+                <td><span class="tn heim small">11</span></td>
+                <td><div class="player"><div class="player-info"><span class="player-name">Y. Anzuluni</span></div></div></td>
+                <td class="center"><span class="pos sg">SG</span></td>
+                <td class="num">26:08</td>
+                <td class="num lead">15</td>
+                <td class="num">4/7</td>
+                <td class="num">2/5</td>
+                <td class="num">1/2</td>
+                <td class="num">3</td>
+                <td class="num">4</td>
+                <td class="num">1</td>
+                <td class="num">3</td>
+                <td class="num">1</td>
+                <td class="num" style="color: var(--ok-text)">+5</td>
+              </tr>
+              <tr>
+                <td><span class="tn heim small">13</span></td>
+                <td><div class="player"><div class="player-info"><span class="player-name">T. Reuter</span></div></div></td>
+                <td class="center"><span class="pos pg">PG</span></td>
+                <td class="num">30:55</td>
+                <td class="num lead">12</td>
+                <td class="num">3/8</td>
+                <td class="num">1/4</td>
+                <td class="num">3/3</td>
+                <td class="num">4</td>
+                <td class="num lead">11</td>
+                <td class="num">3</td>
+                <td class="num">4</td>
+                <td class="num">2</td>
+                <td class="num" style="color: var(--ok-text)">+11</td>
+              </tr>
+              <tr>
+                <td><span class="tn heim small">21</span></td>
+                <td><div class="player"><div class="player-info"><span class="player-name">R. Christen</span></div></div></td>
+                <td class="center"><span class="pos pf">PF</span></td>
+                <td class="num">24:30</td>
+                <td class="num lead">11</td>
+                <td class="num">5/9</td>
+                <td class="num">0/1</td>
+                <td class="num">1/2</td>
+                <td class="num">7</td>
+                <td class="num">1</td>
+                <td class="num">0</td>
+                <td class="num">2</td>
+                <td class="num" style="color: var(--warn-text)">4</td>
+                <td class="num" style="color: var(--ok-text)">+3</td>
+              </tr>
+              <tr>
+                <td><span class="tn heim small">5</span></td>
+                <td><div class="player bench"><div class="player-info"><span class="player-name">L. Boner</span></div></div></td>
+                <td class="center"><span class="pos pg">PG</span></td>
+                <td class="num">10:18</td>
+                <td class="num">4</td>
+                <td class="num">1/3</td>
+                <td class="num">0/2</td>
+                <td class="num">2/2</td>
+                <td class="num">1</td>
+                <td class="num">2</td>
+                <td class="num">0</td>
+                <td class="num">1</td>
+                <td class="num">1</td>
+                <td class="num dim">−2</td>
+              </tr>
+              <tr>
+                <td><span class="tn heim small">9</span></td>
+                <td><div class="player bench"><div class="player-info"><span class="player-name">M. Seric</span></div></div></td>
+                <td class="center"><span class="pos sg">SG</span></td>
+                <td class="num">08:42</td>
+                <td class="num">2</td>
+                <td class="num">1/4</td>
+                <td class="num">0/0</td>
+                <td class="num">0/0</td>
+                <td class="num">2</td>
+                <td class="num">0</td>
+                <td class="num">1</td>
+                <td class="num">0</td>
+                <td class="num">2</td>
+                <td class="num dim">−1</td>
+              </tr>
+              <tr>
+                <td><span class="tn heim small">15</span></td>
+                <td><div class="player bench"><div class="player-info"><span class="player-name">H. Drell</span></div></div></td>
+                <td class="center"><span class="pos sf">SF</span></td>
+                <td class="num">06:11</td>
+                <td class="num">0</td>
+                <td class="num">0/2</td>
+                <td class="num">0/1</td>
+                <td class="num">0/0</td>
+                <td class="num">1</td>
+                <td class="num">1</td>
+                <td class="num">0</td>
+                <td class="num">2</td>
+                <td class="num">1</td>
+                <td class="num dim">−4</td>
+              </tr>
+              <tr>
+                <td><span class="tn heim small" style="opacity: 0.4;">18</span></td>
+                <td><div class="player dnp"><div class="player-info"><span class="player-name">F. Hoffmann</span></div></div></td>
+                <td class="center"><span class="pos pf">PF</span></td>
+                <td class="num dim" colspan="11" style="text-align: left; padding-left: 14px;">DNP · Verletzt</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3" style="text-align: left; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-700);">Team Total</td>
+                <td class="num">—</td>
+                <td class="num" style="font-size: 15px;">87</td>
+                <td class="num">25/50</td>
+                <td class="num">7/23</td>
+                <td class="num">16/19</td>
+                <td class="num">35</td>
+                <td class="num">27</td>
+                <td class="num">9</td>
+                <td class="num">15</td>
+                <td class="num">16</td>
+                <td class="num" style="color: var(--ok-text)">+23</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <!-- DARK -->
+      <div>
+        <div class="sub">Boxscore · Gast <span class="pill dark">Dark · Compact · Kampfgericht</span></div>
+        <div class="frame dark">
+          <div class="frame-head">
+            <h3>USC Heidelberg · Live Statistik</h3>
+            <div class="meta">
+              <span>Q4 · 02:14</span>
+              <span class="crumb"><span class="crumb-dot"></span> Live</span>
+            </div>
+          </div>
+          <table class="tbl density-compact" id="boxscore-dark">
+            <thead>
+              <tr>
+                <th style="width: 36px;">#</th>
+                <th>Spieler</th>
+                <th class="center" style="width: 36px;">Pos</th>
+                <th class="num sortable" style="width: 56px;">MIN</th>
+                <th class="num sortable sort-desc" style="width: 56px;">PTS</th>
+                <th class="num sortable" style="width: 70px;">2P</th>
+                <th class="num sortable" style="width: 70px;">3P</th>
+                <th class="num sortable" style="width: 70px;">FT</th>
+                <th class="num sortable" style="width: 56px;">REB</th>
+                <th class="num sortable" style="width: 56px;">AST</th>
+                <th class="num sortable" style="width: 56px;">F</th>
+                <th class="num sortable" style="width: 60px;">+/−</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="tn gast small">3</span></td>
+                <td><div class="player"><div class="player-info"><span class="player-name">D. Mathis</span></div></div></td>
+                <td class="center"><span class="pos pg">PG</span></td>
+                <td class="num">31:08</td>
+                <td class="num lead">18</td>
+                <td class="num">4/9</td>
+                <td class="num">2/6</td>
+                <td class="num">4/4</td>
+                <td class="num">5</td>
+                <td class="num">7</td>
+                <td class="num">2</td>
+                <td class="num" style="color: var(--err-text)">−12</td>
+              </tr>
+              <tr>
+                <td><span class="tn gast small">8</span></td>
+                <td><div class="player"><div class="player-info"><span class="player-name">M. Vogt</span></div></div></td>
+                <td class="center"><span class="pos sg">SG</span></td>
+                <td class="num">27:42</td>
+                <td class="num lead">14</td>
+                <td class="num">3/7</td>
+                <td class="num">2/5</td>
+                <td class="num">2/2</td>
+                <td class="num">3</td>
+                <td class="num">4</td>
+                <td class="num">3</td>
+                <td class="num" style="color: var(--err-text)">−7</td>
+              </tr>
+              <tr>
+                <td><span class="tn gast small">12</span></td>
+                <td><div class="player"><div class="player-info"><span class="player-name">B. Skerlec</span></div></div></td>
+                <td class="center"><span class="pos sf">SF</span></td>
+                <td class="num">26:18</td>
+                <td class="num lead">11</td>
+                <td class="num">5/12</td>
+                <td class="num">0/3</td>
+                <td class="num">1/2</td>
+                <td class="num">4</td>
+                <td class="num">2</td>
+                <td class="num">2</td>
+                <td class="num" style="color: var(--err-text)">−9</td>
+              </tr>
+              <tr>
+                <td><span class="tn gast small">17</span></td>
+                <td><div class="player"><div class="player-info"><span class="player-name">N. Plitzko</span></div></div></td>
+                <td class="center"><span class="pos pf">PF</span></td>
+                <td class="num">24:05</td>
+                <td class="num lead">10</td>
+                <td class="num">4/8</td>
+                <td class="num">0/1</td>
+                <td class="num">2/4</td>
+                <td class="num">8</td>
+                <td class="num">1</td>
+                <td class="num" style="color: var(--warn-text)">4</td>
+                <td class="num" style="color: var(--err-text)">−4</td>
+              </tr>
+              <tr>
+                <td><span class="tn gast small">23</span></td>
+                <td><div class="player"><div class="player-info"><span class="player-name">M. Wagner</span></div></div></td>
+                <td class="center"><span class="pos c">C</span></td>
+                <td class="num">22:50</td>
+                <td class="num lead">8</td>
+                <td class="num">3/6</td>
+                <td class="num">0/0</td>
+                <td class="num">2/4</td>
+                <td class="num">9</td>
+                <td class="num">0</td>
+                <td class="num" style="color: var(--err-text)">5 (FO)</td>
+                <td class="num" style="color: var(--err-text)">−11</td>
+              </tr>
+              <tr>
+                <td><span class="tn gast small">6</span></td>
+                <td><div class="player bench"><div class="player-info"><span class="player-name">L. Schmidt</span></div></div></td>
+                <td class="center"><span class="pos sg">SG</span></td>
+                <td class="num">12:34</td>
+                <td class="num">3</td>
+                <td class="num">1/4</td>
+                <td class="num">0/1</td>
+                <td class="num">1/2</td>
+                <td class="num">2</td>
+                <td class="num">2</td>
+                <td class="num">1</td>
+                <td class="num" style="color: var(--err-text)">−5</td>
+              </tr>
+              <tr>
+                <td><span class="tn gast small">14</span></td>
+                <td><div class="player bench"><div class="player-info"><span class="player-name">P. Heckmann</span></div></div></td>
+                <td class="center"><span class="pos sf">SF</span></td>
+                <td class="num">04:21</td>
+                <td class="num">0</td>
+                <td class="num">0/1</td>
+                <td class="num">0/1</td>
+                <td class="num">0/0</td>
+                <td class="num">1</td>
+                <td class="num">0</td>
+                <td class="num">0</td>
+                <td class="num dim">−2</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="3" style="text-align: left; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--n-300);">Team Total</td>
+                <td class="num">—</td>
+                <td class="num" style="font-size: 15px;">64</td>
+                <td class="num">20/47</td>
+                <td class="num">4/17</td>
+                <td class="num">12/18</td>
+                <td class="num">32</td>
+                <td class="num">16</td>
+                <td class="num">12</td>
+                <td class="num" style="color: oklch(0.88 0.16 27);">−23</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 04 — PLAY-BY-PLAY
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="04 Play-by-Play">
+    <div class="s-head">
+      <div class="s-num">04 — Play-by-Play</div>
+      <div class="s-title">
+        <h2>Was gerade auf dem Feld passiert.</h2>
+        <p>
+          Chronologischer Event-Stream. Jede Reihe hat einen 4-Pixel-Balken in der Teamfarbe,
+          die Zeitachse links als Mono-Spalte und den Spielstand rechts. Fouls (rot) und
+          Auszeiten (blau) heben sich farblich ab, 3-Punkt-Würfe bekommen den Amber-Hervorhebung.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div>
+        <div class="sub">Spielverlauf · Q4 · Letzte 8 Minuten</div>
+        <div class="frame">
+          <div class="frame-head">
+            <h3>Play-by-Play · neueste oben</h3>
+            <div class="meta">
+              <span>14 Events</span>
+              <span class="crumb"><span class="crumb-dot"></span> Live</span>
+            </div>
+          </div>
+
+          <div class="pbp-event score-3p">
+            <div class="pbp-time">02:14<span class="q">Q4</span></div>
+            <div class="pbp-team-strip heim"></div>
+            <div class="pbp-body">
+              <div class="pbp-action"><b>Drei-Punkte-Wurf</b> · N. Wimberg #7</div>
+              <div class="pbp-detail">Assist · T. Reuter #13 · 3/7 von Downtown</div>
+            </div>
+            <div class="pbp-score">87<span class="sep">:</span>64</div>
+          </div>
+
+          <div class="pbp-event">
+            <div class="pbp-time">02:38<span class="q">Q4</span></div>
+            <div class="pbp-team-strip gast"></div>
+            <div class="pbp-body">
+              <div class="pbp-action">Defensiv-Rebound · M. Wagner #23</div>
+              <div class="pbp-detail">9 Rebounds gesamt</div>
+            </div>
+            <div class="pbp-score">84<span class="sep">:</span>64</div>
+          </div>
+
+          <div class="pbp-event">
+            <div class="pbp-time">02:42<span class="q">Q4</span></div>
+            <div class="pbp-team-strip heim"></div>
+            <div class="pbp-body">
+              <div class="pbp-action">2-Punkte-Wurf · A. Seiferth #4</div>
+              <div class="pbp-detail">aus der Zone · 8/12 FG</div>
+            </div>
+            <div class="pbp-score">84<span class="sep">:</span>64</div>
+          </div>
+
+          <div class="pbp-event foul">
+            <div class="pbp-time">03:05<span class="q">Q4</span></div>
+            <div class="pbp-team-strip gast"></div>
+            <div class="pbp-body">
+              <div class="pbp-action">5. Foul · M. Wagner #23 <span class="pill-s dnp" style="margin-left:6px;">Fouled Out</span></div>
+              <div class="pbp-detail">offensiv · gegen R. Christen #21</div>
+            </div>
+            <div class="pbp-score">82<span class="sep">:</span>64</div>
+          </div>
+
+          <div class="pbp-event timeout">
+            <div class="pbp-time">03:21<span class="q">Q4</span></div>
+            <div class="pbp-team-strip gast"></div>
+            <div class="pbp-body">
+              <div class="pbp-action">Auszeit · USC Heidelberg</div>
+              <div class="pbp-detail">2. von 3 Auszeiten · 75 Sekunden</div>
+            </div>
+            <div class="pbp-score">82<span class="sep">:</span>64</div>
+          </div>
+
+          <div class="pbp-event">
+            <div class="pbp-time">03:48<span class="q">Q4</span></div>
+            <div class="pbp-team-strip heim"></div>
+            <div class="pbp-body">
+              <div class="pbp-action">Freiwurf · A. Seiferth #4 · 2/2</div>
+              <div class="pbp-detail">nach Foul · 5/6 FT</div>
+            </div>
+            <div class="pbp-score">82<span class="sep">:</span>64</div>
+          </div>
+
+          <div class="pbp-event score-3p">
+            <div class="pbp-time">04:12<span class="q">Q4</span></div>
+            <div class="pbp-team-strip gast"></div>
+            <div class="pbp-body">
+              <div class="pbp-action"><b>Drei-Punkte-Wurf</b> · D. Mathis #3</div>
+              <div class="pbp-detail">unassisted · von links Flügel</div>
+            </div>
+            <div class="pbp-score">80<span class="sep">:</span>64</div>
+          </div>
+
+          <div class="pbp-event">
+            <div class="pbp-time">04:45<span class="q">Q4</span></div>
+            <div class="pbp-team-strip none"></div>
+            <div class="pbp-body">
+              <div class="pbp-action">Auswechslung · TSV Tröster</div>
+              <div class="pbp-detail">L. Boner #5 für T. Reuter #13</div>
+            </div>
+            <div class="pbp-score">80<span class="sep">:</span>61</div>
+          </div>
+
+          <div class="pbp-event">
+            <div class="pbp-time">05:08<span class="q">Q4</span></div>
+            <div class="pbp-team-strip heim"></div>
+            <div class="pbp-body">
+              <div class="pbp-action">Steal · Y. Anzuluni #11</div>
+              <div class="pbp-detail">Ballverlust · M. Vogt #8</div>
+            </div>
+            <div class="pbp-score">80<span class="sep">:</span>61</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 05 — HEIM / GAST COMPARISON
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="05 Comparison">
+    <div class="s-head">
+      <div class="s-num">05 — Team-Vergleich</div>
+      <div class="s-title">
+        <h2>Heim gegen Gast — auf einen Blick.</h2>
+        <p>
+          Endbericht-Tabelle mit Mittelachse. Jede Zeile spiegelt die Statistik beider Teams,
+          die Bar visualisiert das Verhältnis. Final-Reihe nimmt das Display-Font und die
+          größte Schriftgröße — der eigentliche Spielstand.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div>
+        <div class="sub">Team Stats · Endstand</div>
+        <div class="cmp">
+
+          <div class="cmp-banner">
+            <div class="h-side heim">
+              <div class="team-strip heim"></div>
+              <div class="h-info">
+                <div class="nm">TSV Tröster</div>
+                <div class="city">Breitengüßbach · Heim</div>
+              </div>
+            </div>
+            <div class="h-center">vs</div>
+            <div class="h-side gast">
+              <div class="h-info">
+                <div class="nm">USC Heidelberg</div>
+                <div class="city">Heidelberg · Gast</div>
+              </div>
+              <div class="team-strip gast"></div>
+            </div>
+          </div>
+
+          <div class="cmp-row total">
+            <div class="l"><span style="margin-right:auto; font-family:var(--font-mono); font-size:10.5px; color:var(--page-mute); letter-spacing:0.08em; text-transform:uppercase;">Final</span>87</div>
+            <div class="c">Score</div>
+            <div class="r">64<span style="margin-left:auto; font-family:var(--font-mono); font-size:10.5px; color:var(--page-mute); letter-spacing:0.08em; text-transform:uppercase;">Final</span></div>
+          </div>
+
+          <div class="cmp-row">
+            <div class="l winner"><div class="bar-wrap"><div class="bar" style="width: 78%;"></div></div><span class="v-num">25/50</span></div>
+            <div class="c">2P</div>
+            <div class="r"><span class="v-num">20/47</span><div class="bar-wrap"><div class="bar" style="width: 70%;"></div></div></div>
+          </div>
+
+          <div class="cmp-row">
+            <div class="l winner"><div class="bar-wrap"><div class="bar" style="width: 52%;"></div></div><span class="v-num">7/23</span></div>
+            <div class="c">3P</div>
+            <div class="r"><span class="v-num">4/17</span><div class="bar-wrap"><div class="bar" style="width: 38%;"></div></div></div>
+          </div>
+
+          <div class="cmp-row">
+            <div class="l winner"><div class="bar-wrap"><div class="bar" style="width: 92%;"></div></div><span class="v-num">16/19</span></div>
+            <div class="c">FT</div>
+            <div class="r"><span class="v-num">12/18</span><div class="bar-wrap"><div class="bar" style="width: 70%;"></div></div></div>
+          </div>
+
+          <div class="cmp-row">
+            <div class="l winner"><div class="bar-wrap"><div class="bar" style="width: 65%;"></div></div><span class="v-num">35</span></div>
+            <div class="c">Reb</div>
+            <div class="r"><span class="v-num">32</span><div class="bar-wrap"><div class="bar" style="width: 60%;"></div></div></div>
+          </div>
+
+          <div class="cmp-row">
+            <div class="l winner"><div class="bar-wrap"><div class="bar" style="width: 80%;"></div></div><span class="v-num">27</span></div>
+            <div class="c">Ast</div>
+            <div class="r"><span class="v-num">16</span><div class="bar-wrap"><div class="bar" style="width: 48%;"></div></div></div>
+          </div>
+
+          <div class="cmp-row">
+            <div class="l"><div class="bar-wrap"><div class="bar" style="width: 60%;"></div></div><span class="v-num">15</span></div>
+            <div class="c">TO</div>
+            <div class="r winner"><span class="v-num">12</span><div class="bar-wrap"><div class="bar" style="width: 48%;"></div></div></div>
+          </div>
+
+          <div class="cmp-row last">
+            <div class="l"><div class="bar-wrap"><div class="bar" style="width: 67%;"></div></div><span class="v-num">16</span></div>
+            <div class="c">Fouls</div>
+            <div class="r winner"><span class="v-num">12</span><div class="bar-wrap"><div class="bar" style="width: 50%;"></div></div></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 06 — TISCH-CREW (admin)
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="06 Crew" style="border-bottom: 0;">
+    <div class="s-head">
+      <div class="s-num">06 — Tisch-Crew</div>
+      <div class="s-title">
+        <h2>Schiedsrichter und Kampfgericht.</h2>
+        <p>
+          Kompakte Admin-Tabelle für die Verwaltungsoberfläche und das Spielberichts-Setup.
+          Default-Dichte, Initials-Avatar, Rolle als farbiges Pill.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div>
+        <div class="sub">Offizielle · Spielbericht-Setup</div>
+        <div class="frame">
+          <div class="frame-head">
+            <h3>Kampfgericht &amp; Schiedsrichter</h3>
+            <div class="meta">
+              <span>5 Personen</span>
+            </div>
+          </div>
+          <table class="tbl density-default">
+            <thead>
+              <tr>
+                <th style="width: 56px;"></th>
+                <th>Name</th>
+                <th style="width: 140px;">Rolle</th>
+                <th style="width: 120px;">Lizenz-Nr.</th>
+                <th class="center" style="width: 110px;">Verband</th>
+                <th class="center" style="width: 100px;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="avatar">DK</span></td>
+                <td><div class="player"><div class="player-info"><span class="player-name">Dr. Karlheinz Henning</span><span class="player-meta">Verband Bayern</span></div></div></td>
+                <td><span class="role-pill head">Hauptschiedsrichter</span></td>
+                <td style="font-family: var(--font-mono); font-size: 12.5px;">SR-2014-0892</td>
+                <td class="center"><span class="role-pill fed">DBB</span></td>
+                <td class="center"><span class="pill-s on">Bestätigt</span></td>
+              </tr>
+              <tr>
+                <td><span class="avatar">MS</span></td>
+                <td><div class="player"><div class="player-info"><span class="player-name">Markus Steinbach</span><span class="player-meta">Verband Bayern</span></div></div></td>
+                <td><span class="role-pill">2. Schiedsrichter</span></td>
+                <td style="font-family: var(--font-mono); font-size: 12.5px;">SR-2018-1247</td>
+                <td class="center"><span class="role-pill fed">DBB</span></td>
+                <td class="center"><span class="pill-s on">Bestätigt</span></td>
+              </tr>
+              <tr>
+                <td><span class="avatar">CB</span></td>
+                <td><div class="player"><div class="player-info"><span class="player-name">Christine Bauer</span><span class="player-meta">TSV Tröster Breitengüßbach</span></div></div></td>
+                <td><span class="role-pill">Anschreiber</span></td>
+                <td style="font-family: var(--font-mono); font-size: 12.5px;">KG-2022-0512</td>
+                <td class="center"><span class="role-pill">BBV</span></td>
+                <td class="center"><span class="pill-s on">Bestätigt</span></td>
+              </tr>
+              <tr>
+                <td><span class="avatar">PM</span></td>
+                <td><div class="player"><div class="player-info"><span class="player-name">Peter Müller</span><span class="player-meta">TSV Tröster Breitengüßbach</span></div></div></td>
+                <td><span class="role-pill">Zeitnehmer</span></td>
+                <td style="font-family: var(--font-mono); font-size: 12.5px;">KG-2019-0334</td>
+                <td class="center"><span class="role-pill">BBV</span></td>
+                <td class="center"><span class="pill-s on">Bestätigt</span></td>
+              </tr>
+              <tr>
+                <td><span class="avatar">JK</span></td>
+                <td><div class="player"><div class="player-info"><span class="player-name">Julia Krause</span><span class="player-meta">TSV Tröster Breitengüßbach</span></div></div></td>
+                <td><span class="role-pill">24-Sekunden</span></td>
+                <td style="font-family: var(--font-mono); font-size: 12.5px;">—</td>
+                <td class="center"><span class="role-pill">BBV</span></td>
+                <td class="center"><span class="pill-s">Lizenz prüfen</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span class="iter">Tables v0.1</span> &nbsp;·&nbsp;
+    Vier Density-Stufen · Touch-Roster · Boxscore · Play-by-Play · Vergleich · Crew
+  </div>
+
+</div>
+
+<!-- TWEAKS ISLAND -->
+<div id="tweaks-root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+const TABLES_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "boxscoreDensity": "compact",
+  "rosterDensity": "touch",
+  "striped": true,
+  "showPositions": true,
+  "amberHue": 83,
+  "skyHue": 244
+}/*EDITMODE-END*/;
+
+const DENSITIES = ["touch", "default", "compact", "dense"];
+
+function TablesTweaks() {
+  const [t, setTweak] = useTweaks(TABLES_TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    const r = document.documentElement;
+    r.style.setProperty('--h-amber', t.amberHue);
+    r.style.setProperty('--h-sky',   t.skyHue);
+
+    // Boxscore density swap (light + dark)
+    ['boxscore-light', 'boxscore-dark'].forEach((id) => {
+      const tbl = document.getElementById(id);
+      if (!tbl) return;
+      DENSITIES.forEach((d) => tbl.classList.remove(`density-${d}`));
+      tbl.classList.add(`density-${t.boxscoreDensity}`);
+      tbl.classList.toggle('striped', !!t.striped);
+    });
+
+    // Roster density (first .tbl in roster section)
+    const roster = document.querySelector('[data-screen-label="02 Roster"] .tbl');
+    if (roster) {
+      DENSITIES.forEach((d) => roster.classList.remove(`density-${d}`));
+      roster.classList.add(`density-${t.rosterDensity}`);
+    }
+
+    // Position-pill visibility — hide .pos cells if disabled
+    document.documentElement.style.setProperty(
+      '--pos-display', t.showPositions ? 'inline-flex' : 'none'
+    );
+  }, [t]);
+
+  return (
+    <TweaksPanel title="Tables Tweaks">
+      <TweakSection label="Density">
+        <TweakRadio label="Roster" value={t.rosterDensity}
+          options={[{value: "touch", label: "Touch"}, {value: "default", label: "Default"}, {value: "compact", label: "Compact"}]}
+          onChange={(v) => setTweak('rosterDensity', v)} />
+        <TweakRadio label="Boxscore" value={t.boxscoreDensity}
+          options={[{value: "default", label: "Default"}, {value: "compact", label: "Compact"}, {value: "dense", label: "Dense"}]}
+          onChange={(v) => setTweak('boxscoreDensity', v)} />
+      </TweakSection>
+      <TweakSection label="Style">
+        <TweakToggle label="Striping (Zebra)" value={t.striped}
+          onChange={(v) => setTweak('striped', v)} />
+        <TweakToggle label="Positions zeigen" value={t.showPositions}
+          onChange={(v) => setTweak('showPositions', v)} />
+      </TweakSection>
+      <TweakSection label="Hue (sync mit Identity)">
+        <TweakSlider label="Amber" value={t.amberHue} min={30} max={100} step={1} unit="°"
+          onChange={(v) => setTweak('amberHue', v)} />
+        <TweakSlider label="Sky" value={t.skyHue} min={200} max={260} step={1} unit="°"
+          onChange={(v) => setTweak('skyHue', v)} />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+// Toggle for "Positions zeigen"
+const __posStyle = document.createElement('style');
+__posStyle.textContent = `.pos { display: var(--pos-display, inline-flex); } .pos:empty { display: none; }`;
+document.head.appendChild(__posStyle);
+
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<TablesTweaks />);
+</script>
+
+</body>
+</html>

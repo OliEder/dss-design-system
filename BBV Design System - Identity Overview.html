@@ -1,0 +1,1370 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DSS Design System — Visual Identity v0.2</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    /* — Hue tokens (driven by Tweaks) — */
+    --h-primary: 264;     /* DBB Dunkelblau hue, anchored at #003580 */
+    --h-accent:  51;      /* DBB Orange hue, anchored at #F58220 */
+    --c-primary: 0.16;
+    --c-accent:  0.18;
+
+    /* — Brand scale (Primary / DBB Blue) anchored at 600 ≈ #003580 — */
+    --primary-50:  oklch(0.97 0.020 var(--h-primary));
+    --primary-100: oklch(0.93 0.040 var(--h-primary));
+    --primary-200: oklch(0.85 0.075 var(--h-primary));
+    --primary-300: oklch(0.74 0.110 var(--h-primary));
+    --primary-400: oklch(0.55 0.145 var(--h-primary));
+    --primary-500: oklch(0.45 0.160 var(--h-primary));
+    --primary-600: oklch(0.35 var(--c-primary) var(--h-primary));  /* ≈ #003580 */
+    --primary-700: oklch(0.27 0.135 var(--h-primary));
+    --primary-800: oklch(0.20 0.095 var(--h-primary));
+    --primary-900: oklch(0.13 0.055 var(--h-primary));
+
+    /* — Accent scale (Orange) anchored at 500 ≈ #F58220 — */
+    --accent-50:  oklch(0.97 0.025 var(--h-accent));
+    --accent-100: oklch(0.93 0.050 var(--h-accent));
+    --accent-200: oklch(0.86 0.090 var(--h-accent));
+    --accent-300: oklch(0.80 0.130 var(--h-accent));
+    --accent-400: oklch(0.76 0.160 var(--h-accent));
+    --accent-500: oklch(0.72 var(--c-accent) var(--h-accent));    /* ≈ #F58220 */
+    --accent-600: oklch(0.63 0.175 var(--h-accent));
+    --accent-700: oklch(0.52 0.145 var(--h-accent));
+    --accent-800: oklch(0.40 0.110 var(--h-accent));
+    --accent-900: oklch(0.27 0.075 var(--h-accent));
+
+    /* — Neutral (warm-cool blend, slight blue cast) — */
+    --neutral-0:    oklch(1     0     0);
+    --neutral-50:   oklch(0.985 0.003 250);
+    --neutral-100:  oklch(0.965 0.005 250);
+    --neutral-200:  oklch(0.925 0.007 250);
+    --neutral-300:  oklch(0.860 0.010 250);
+    --neutral-400:  oklch(0.700 0.012 250);
+    --neutral-500:  oklch(0.560 0.012 250);
+    --neutral-600:  oklch(0.440 0.012 250);
+    --neutral-700:  oklch(0.330 0.013 250);
+    --neutral-800:  oklch(0.220 0.013 250);
+    --neutral-900:  oklch(0.150 0.014 250);
+    --neutral-950:  oklch(0.090 0.014 250);
+    --neutral-1000: oklch(0.030 0.010 250);
+
+    /* — Semantic — */
+    --success: oklch(0.62 0.16 145);
+    --warning: oklch(0.78 0.16 75);
+    --error:   oklch(0.58 0.22 27);
+    --info:    oklch(0.58 0.13 240);
+    --success-soft: oklch(0.95 0.05 145);
+    --warning-soft: oklch(0.96 0.06 80);
+    --error-soft:   oklch(0.95 0.05 27);
+    --info-soft:    oklch(0.95 0.04 240);
+
+    /* — Team colors — */
+    --team-heim: var(--primary-600);
+    --team-gast: oklch(0.55 0.20 25);
+
+    /* — Type — */
+    --font-display: 'Sora', system-ui, sans-serif;
+    --font-heading: 'Sora', system-ui, sans-serif;
+    --font-body:    'Manrope', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+    /* — Page chrome (light, since this is a doc page) — */
+    --page-bg: var(--neutral-50);
+    --page-fg: var(--neutral-900);
+    --page-mute: var(--neutral-500);
+    --page-line: oklch(0.88 0.008 250);
+    --page-soft: var(--neutral-100);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page-bg);
+    color: var(--page-fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* — Page shell — */
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 56px 56px 120px;
+  }
+
+  /* — Top strip — */
+  .topstrip {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--page-mute);
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .topstrip .left { display: flex; gap: 14px; align-items: center; }
+  .topstrip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-500); display: inline-block; }
+  .topstrip .monogram {
+    width: 22px; height: 22px; border-radius: 5px;
+    background: var(--primary-700);
+    color: var(--neutral-0);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 11px;
+    letter-spacing: -0.02em;
+  }
+
+  /* — Hero — */
+  .hero { padding: 56px 0 64px; border-bottom: 1px solid var(--page-line); }
+  .hero .eyebrow {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent-700);
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(48px, 7vw, 92px);
+    letter-spacing: -0.035em;
+    line-height: 0.96;
+    margin: 0 0 24px;
+    color: var(--page-fg);
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--primary-600);
+    background: linear-gradient(180deg, var(--primary-600), var(--primary-700));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .lead {
+    max-width: 680px;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--neutral-700);
+    text-wrap: pretty;
+  }
+  .hero .meta {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    margin-top: 48px;
+    background: var(--page-line);
+    border: 1px solid var(--page-line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .hero .meta > div {
+    background: var(--page-bg);
+    padding: 18px 20px;
+  }
+  .hero .meta .k {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--page-mute);
+    margin-bottom: 6px;
+  }
+  .hero .meta .v {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 17px;
+    color: var(--page-fg);
+    letter-spacing: -0.01em;
+  }
+
+  /* — Section frame — */
+  section.s {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .s-head {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 32px;
+    align-items: baseline;
+    margin-bottom: 44px;
+  }
+  .s-num {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--accent-700);
+    padding-top: 8px;
+  }
+  .s-title h2 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 40px;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    margin: 0 0 10px;
+    color: var(--page-fg);
+  }
+  .s-title p {
+    margin: 0;
+    color: var(--neutral-600);
+    font-size: 16px;
+    max-width: 640px;
+    text-wrap: pretty;
+  }
+
+  .s-body { display: flex; flex-direction: column; gap: 56px; }
+
+  /* — Sub-section labels — */
+  .sub {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--page-mute);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sub::after { content: ''; flex: 1; height: 1px; background: var(--page-line); }
+
+  /* — Color: scale rows — */
+  .scale {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 24px;
+    align-items: stretch;
+  }
+  .scale .meta-col h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 17px;
+    margin: 0 0 6px;
+    letter-spacing: -0.01em;
+  }
+  .scale .meta-col p {
+    margin: 0;
+    color: var(--neutral-600);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+  .scale .meta-col .ref {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--page-mute);
+    margin-top: 10px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    gap: 4px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .sw {
+    aspect-ratio: 1 / 1.15;
+    display: flex; flex-direction: column;
+    padding: 10px 10px 8px;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    border-radius: 6px;
+  }
+  .sw .top { display: flex; justify-content: space-between; opacity: 0.85; }
+  .sw .num { font-weight: 700; }
+  .sw .hex { font-size: 9px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0; }
+  .sw.dark { color: rgba(255,255,255,0.95); }
+  .sw.light { color: rgba(0,0,0,0.78); }
+
+  /* — Semantic / team — */
+  .semantic-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .sem {
+    border: 1px solid var(--page-line);
+    border-radius: 12px;
+    padding: 18px;
+    background: var(--neutral-0);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .sem .swatch-pair {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+    height: 64px; border-radius: 8px; overflow: hidden;
+  }
+  .sem .swatch-pair > div {
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .sem .name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+  }
+  .sem .desc { font-size: 12.5px; color: var(--neutral-600); line-height: 1.45; }
+  .sem .uses {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--page-mute); text-transform: uppercase; letter-spacing: 0.06em;
+  }
+
+  .team-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .team {
+    border-radius: 14px;
+    padding: 24px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    color: white;
+    position: relative; overflow: hidden;
+  }
+  .team::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(0,0,0,0.12));
+    pointer-events: none;
+  }
+  .team.heim { background: var(--team-heim); }
+  .team.gast { background: var(--team-gast); }
+  .team .label {
+    font-family: var(--font-mono); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    opacity: 0.85; margin-bottom: 6px;
+  }
+  .team .name {
+    font-family: var(--font-display); font-weight: 700; font-size: 26px;
+    letter-spacing: -0.02em;
+  }
+  .team .tok {
+    font-family: var(--font-mono); font-size: 11px;
+    background: rgba(255,255,255,0.15);
+    padding: 5px 10px; border-radius: 6px;
+  }
+
+  /* — Theme comparison — */
+  .theme-pair {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  .theme-card {
+    border-radius: 16px;
+    padding: 28px;
+    border: 1px solid var(--page-line);
+    overflow: hidden;
+    position: relative;
+  }
+  .theme-card.light { background: var(--neutral-50); color: var(--neutral-900); }
+  .theme-card.dark  { background: var(--neutral-950); color: var(--neutral-100); border-color: var(--neutral-800); }
+  .theme-card .badge {
+    position: absolute; top: 16px; right: 16px;
+    font-family: var(--font-mono); font-size: 10px;
+    padding: 4px 8px; border-radius: 5px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .theme-card.light .badge { background: var(--neutral-200); color: var(--neutral-700); }
+  .theme-card.dark .badge { background: var(--neutral-800); color: var(--neutral-300); }
+  .theme-card h5 {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 14px; margin: 0 0 18px;
+    letter-spacing: 0.02em; text-transform: uppercase;
+    opacity: 0.75;
+  }
+  .theme-tokens {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;
+  }
+  .theme-tokens .t {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 8px;
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.04em;
+  }
+
+  /* — Typography — */
+  .type-stack {
+    display: flex; flex-direction: column; gap: 0;
+    border-top: 1px solid var(--page-line);
+  }
+  .type-row {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 32px;
+    padding: 28px 0;
+    align-items: baseline;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .type-row .info { color: var(--neutral-600); }
+  .type-row .info .name {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--neutral-900); margin-bottom: 4px;
+  }
+  .type-row .info .spec {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+  }
+  .type-row .info .role { font-size: 12.5px; margin-top: 8px; line-height: 1.45; }
+  .type-row .sample { color: var(--page-fg); }
+
+  .ts-display { font-family: var(--font-display); font-weight: 800; font-size: 88px; letter-spacing: -0.04em; line-height: 0.9; font-variant-numeric: tabular-nums; }
+  .ts-h1 { font-family: var(--font-display); font-weight: 700; font-size: 44px; letter-spacing: -0.025em; line-height: 1.05; }
+  .ts-h2 { font-family: var(--font-display); font-weight: 600; font-size: 28px; letter-spacing: -0.015em; line-height: 1.15; }
+  .ts-h3 { font-family: var(--font-display); font-weight: 600; font-size: 20px; letter-spacing: -0.01em; line-height: 1.25; }
+  .ts-body-lg { font-family: var(--font-body); font-size: 18px; line-height: 1.55; }
+  .ts-body { font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+  .ts-small { font-family: var(--font-body); font-size: 13px; line-height: 1.5; color: var(--neutral-600); }
+  .ts-label { font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .ts-mono { font-family: var(--font-mono); font-size: 64px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
+  /* — Component preview — */
+  .preview-pair {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+  }
+  .preview-pair > article {
+    border-radius: 18px;
+    padding: 28px;
+    border: 1px solid var(--page-line);
+    overflow: hidden;
+  }
+  article.light { background: var(--neutral-50); color: var(--neutral-900); }
+  article.dark { background: var(--neutral-950); color: var(--neutral-100); border-color: var(--neutral-800); }
+
+  .preview-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 22px;
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .preview-header .ctx { display: flex; gap: 8px; align-items: center; }
+  .preview-header .ctx-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-500); }
+
+  /* Scoreboard card */
+  .scoreboard {
+    border-radius: 14px;
+    padding: 22px;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px;
+    align-items: center;
+    background: var(--neutral-0);
+    border: 1px solid var(--page-line);
+  }
+  article.dark .scoreboard {
+    background: var(--neutral-900);
+    border-color: var(--neutral-800);
+  }
+  .scoreboard .team-side { display: flex; flex-direction: column; gap: 10px; }
+  .scoreboard .team-side.gast { text-align: right; align-items: flex-end; }
+  .scoreboard .team-name {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 18px; letter-spacing: -0.01em;
+  }
+  .scoreboard .team-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7;
+  }
+  .scoreboard .heim-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--team-heim); }
+  .scoreboard .gast-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--team-gast); }
+  .scoreboard .score-row {
+    display: flex; align-items: baseline; gap: 14px;
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 56px; letter-spacing: -0.04em; line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .scoreboard .gast .score-row { justify-content: flex-end; }
+  .scoreboard .score-row .score { color: inherit; }
+  .scoreboard .score-row .delta {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--success); background: var(--success-soft);
+    padding: 3px 6px; border-radius: 4px;
+  }
+  article.dark .scoreboard .delta { background: color-mix(in oklch, var(--success), black 60%); color: oklch(0.85 0.18 145); }
+
+  .scoreboard .center {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 0 6px;
+    border-left: 1px solid var(--page-line);
+    border-right: 1px solid var(--page-line);
+    height: 100%;
+  }
+  article.dark .scoreboard .center { border-color: var(--neutral-800); }
+  .scoreboard .quarter {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.65;
+  }
+  .scoreboard .clock {
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 30px; letter-spacing: -0.02em;
+    color: var(--accent-700);
+    font-variant-numeric: tabular-nums;
+  }
+  article.dark .scoreboard .clock { color: var(--accent-400); }
+  .scoreboard .shot {
+    font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+    padding: 3px 8px; border-radius: 4px;
+    background: var(--accent-100);
+    color: var(--accent-800);
+  }
+  article.dark .scoreboard .shot { background: color-mix(in oklch, var(--accent-700), black 30%); color: var(--accent-200); }
+
+  /* Foul / event row */
+  .fouls {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin-top: 14px;
+  }
+  .fouls .foul-card {
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--neutral-100);
+    border: 1px solid var(--page-line);
+  }
+  article.dark .fouls .foul-card {
+    background: var(--neutral-900); border-color: var(--neutral-800);
+  }
+  .fouls .label {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.65;
+  }
+  .fouls .dots { display: flex; gap: 4px; }
+  .fouls .dot {
+    width: 14px; height: 14px; border-radius: 4px;
+    background: var(--neutral-300);
+  }
+  article.dark .fouls .dot { background: var(--neutral-700); }
+  .fouls .dot.on { background: var(--accent-500); }
+  .fouls .dot.warn { background: var(--warning); }
+  .fouls .dot.error { background: var(--error); }
+
+  /* Action buttons */
+  .actions {
+    display: flex; gap: 10px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    appearance: none; border: 0;
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 14px; letter-spacing: 0;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform 0.08s, background 0.12s;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn.primary { background: var(--primary-600); color: white; }
+  .btn.primary:hover { background: var(--primary-700); }
+  .btn.secondary { background: var(--neutral-200); color: var(--neutral-900); }
+  article.dark .btn.secondary { background: var(--neutral-800); color: var(--neutral-100); }
+  .btn.danger { background: var(--error); color: white; }
+  .btn.ghost { background: transparent; color: inherit; box-shadow: inset 0 0 0 1px currentColor; opacity: 0.85; }
+
+  /* Badges */
+  .badge-strip {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-top: 16px;
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+    padding: 5px 9px; border-radius: 6px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .chip.s-ok { background: var(--success-soft); color: oklch(0.32 0.12 145); }
+  .chip.s-warn { background: var(--warning-soft); color: oklch(0.36 0.13 75); }
+  .chip.s-err { background: var(--error-soft); color: oklch(0.36 0.18 27); }
+  .chip.s-info { background: var(--info-soft); color: oklch(0.34 0.12 240); }
+  .chip.s-trikot {
+    background: var(--team-heim); color: white;
+    width: 32px; height: 32px; justify-content: center; padding: 0;
+    border-radius: 8px; font-size: 14px;
+  }
+  .chip.s-trikot.gast { background: var(--team-gast); }
+  article.dark .chip.s-ok { background: color-mix(in oklch, var(--success), black 60%); color: oklch(0.85 0.18 145); }
+  article.dark .chip.s-warn { background: color-mix(in oklch, var(--warning), black 60%); color: oklch(0.88 0.15 80); }
+  article.dark .chip.s-err { background: color-mix(in oklch, var(--error), black 55%); color: oklch(0.82 0.16 27); }
+  article.dark .chip.s-info { background: color-mix(in oklch, var(--info), black 55%); color: oklch(0.82 0.14 240); }
+
+  /* Touch target reference */
+  .touch-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+  }
+  .touch {
+    border: 1px solid var(--page-line);
+    border-radius: 12px;
+    padding: 22px;
+    background: var(--neutral-0);
+    display: flex; flex-direction: column; gap: 14px; align-items: flex-start;
+  }
+  .touch .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--page-mute); }
+  .touch .specs { font-family: var(--font-mono); font-size: 11px; color: var(--neutral-700); }
+  .touch .desc { font-size: 13px; color: var(--neutral-600); line-height: 1.45; }
+  .touch .ring {
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 14px;
+    background: var(--neutral-100);
+    border: 1px dashed var(--neutral-400);
+    color: var(--primary-700);
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .touch .ring.s { width: 44px; height: 44px; border-radius: 10px; }
+  .touch .ring.m { width: 56px; height: 56px; border-radius: 12px; }
+  .touch .ring.l { width: 64px; height: 64px; border-radius: 14px; }
+
+  /* Spacing scale */
+  .space-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 8px;
+  }
+  .space-cell {
+    border: 1px solid var(--page-line);
+    border-radius: 10px;
+    padding: 14px;
+    background: var(--neutral-0);
+    display: flex; flex-direction: column; gap: 8px; justify-content: space-between;
+    min-height: 110px;
+  }
+  .space-cell .swatch {
+    background: var(--primary-100);
+    border-radius: 4px;
+    align-self: flex-start;
+  }
+  .space-cell .name {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  }
+  .space-cell .val {
+    font-family: var(--font-mono); font-size: 10px; color: var(--page-mute);
+  }
+
+  /* Radius scale */
+  .radius-grid {
+    display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px;
+  }
+  .radius-cell {
+    border: 1px solid var(--page-line);
+    padding: 16px;
+    background: var(--neutral-0);
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .radius-cell .demo {
+    aspect-ratio: 1;
+    background: var(--primary-100);
+    border: 1px solid var(--primary-300);
+  }
+  .radius-cell .name { font-family: var(--font-mono); font-size: 11px; font-weight: 700; }
+  .radius-cell .val { font-family: var(--font-mono); font-size: 10px; color: var(--page-mute); }
+
+  /* Footnote */
+  .foot {
+    margin-top: 56px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .foot .iter { color: var(--accent-700); }
+
+  /* Inline tabular nums helper */
+  .tnum { font-variant-numeric: tabular-nums; }
+
+  /* responsive nudge for narrower viewports */
+  @media (max-width: 980px) {
+    .page { padding: 32px 24px 80px; }
+    .scale { grid-template-columns: 1fr; gap: 16px; }
+    .swatches { grid-template-columns: repeat(5, 1fr); }
+    .semantic-grid, .team-grid, .theme-pair, .preview-pair { grid-template-columns: 1fr; }
+    .touch-grid { grid-template-columns: 1fr; }
+    .type-row { grid-template-columns: 1fr; gap: 12px; }
+    .space-grid { grid-template-columns: repeat(4, 1fr); }
+    .radius-grid { grid-template-columns: repeat(3, 1fr); }
+    .hero .meta { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- TOP STRIP -->
+  <div class="topstrip">
+    <div class="left">
+      <span class="monogram">D</span>
+      <span>DBB / DSS Design System</span>
+      <span>·</span>
+      <span>v0.2 · Identity Draft</span>
+    </div>
+    <div>
+      <span class="dot"></span>&nbsp;&nbsp;Deutscher Basketball Bund · Digitaler Spielbericht
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero" data-screen-label="00 Hero">
+    <div class="eyebrow">Visual Identity Overview · v0.2</div>
+    <h1>Ein Designsystem für<br/><em>fünf Basketball-Apps.</em></h1>
+    <p class="lead">
+      DBB-Blau, DBB-Orange, eine kühle Neutralpalette und eine Typographie die aus dem
+      Scoreboard genauso gut funktioniert wie im Vereinsregister. Die Markenfarben sind an den
+      offiziellen DBB-Werten verankert (#003580 / #F58220), aber als eigenständige Skala erweitert.
+    </p>
+
+    <div class="meta">
+      <div><div class="k">Codename</div><div class="v">DBB / DSS</div></div>
+      <div><div class="k">Themes</div><div class="v">Light + Dark</div></div>
+      <div><div class="k">Basis-Einheit</div><div class="v">4 px Grid</div></div>
+      <div><div class="k">Ziel-Apps</div><div class="v">5 Surfaces</div></div>
+    </div>
+  </header>
+
+  <!-- SECTION 01 — COLOR -->
+  <section class="s" data-screen-label="01 Color">
+    <div class="s-head">
+      <div class="s-num">01 — Color</div>
+      <div class="s-title">
+        <h2>Eine Palette, zwei Atmosphären.</h2>
+        <p>
+          DBB-Blau gibt den Apps eine ruhige, fokussierte Grundtonalität — DBB-Orange
+          markiert was zählt: die Uhr, den nächsten Spielzug, einen aktiven Status. Die Skalen sind
+          an den offiziellen Markenfarben (#003580 · #F58220) verankert und in oklch erweitert,
+          damit Mischungen und Hover-States konsistent bleiben.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <!-- Brand scales -->
+      <div>
+        <div class="sub">Brand · Primary &amp; Accent</div>
+
+        <div class="scale" style="margin-bottom: 28px;">
+          <div class="meta-col">
+            <h4>DBB-Blau</h4>
+            <p>Primary. Headers, primäre Aktionen, Heim-Team. Token <code>--primary-600</code> entspricht der offiziellen DBB-Marke <code>#003580</code>.</p>
+            <div class="ref">Anchor: <code>#003580</code> @ 600</div>
+          </div>
+          <div class="swatches">
+            <div class="sw light" style="background: var(--primary-50)"><div class="top"><span class="num">50</span></div><span class="hex">L97 C020</span></div>
+            <div class="sw light" style="background: var(--primary-100)"><div class="top"><span class="num">100</span></div><span class="hex">L93 C040</span></div>
+            <div class="sw light" style="background: var(--primary-200)"><div class="top"><span class="num">200</span></div><span class="hex">L85 C075</span></div>
+            <div class="sw light" style="background: var(--primary-300)"><div class="top"><span class="num">300</span></div><span class="hex">L74 C110</span></div>
+            <div class="sw dark" style="background: var(--primary-400)"><div class="top"><span class="num">400</span></div><span class="hex">L55 C145</span></div>
+            <div class="sw dark" style="background: var(--primary-500)"><div class="top"><span class="num">500</span></div><span class="hex">L45 C160</span></div>
+            <div class="sw dark" style="background: var(--primary-600)"><div class="top"><span class="num">600</span><span>★</span></div><span class="hex">#003580</span></div>
+            <div class="sw dark" style="background: var(--primary-700)"><div class="top"><span class="num">700</span></div><span class="hex">L27 C135</span></div>
+            <div class="sw dark" style="background: var(--primary-800)"><div class="top"><span class="num">800</span></div><span class="hex">L20 C095</span></div>
+            <div class="sw dark" style="background: var(--primary-900)"><div class="top"><span class="num">900</span></div><span class="hex">L13 C055</span></div>
+          </div>
+        </div>
+
+        <div class="scale">
+          <div class="meta-col">
+            <h4>DBB-Orange</h4>
+            <p>Accent. Spieluhr, Highlights, aktiver Zustand. Token <code>--accent-500</code> entspricht der offiziellen DBB-Akzentfarbe <code>#F58220</code>.</p>
+            <div class="ref">Anchor: <code>#F58220</code> @ 500</div>
+          </div>
+          <div class="swatches">
+            <div class="sw light" style="background: var(--accent-50)"><div class="top"><span class="num">50</span></div><span class="hex">L97 C025</span></div>
+            <div class="sw light" style="background: var(--accent-100)"><div class="top"><span class="num">100</span></div><span class="hex">L93 C050</span></div>
+            <div class="sw light" style="background: var(--accent-200)"><div class="top"><span class="num">200</span></div><span class="hex">L86 C090</span></div>
+            <div class="sw light" style="background: var(--accent-300)"><div class="top"><span class="num">300</span></div><span class="hex">L80 C130</span></div>
+            <div class="sw light" style="background: var(--accent-400)"><div class="top"><span class="num">400</span></div><span class="hex">L76 C160</span></div>
+            <div class="sw light" style="background: var(--accent-500)"><div class="top"><span class="num">500</span><span>★</span></div><span class="hex">#F58220</span></div>
+            <div class="sw light" style="background: var(--accent-600)"><div class="top"><span class="num">600</span></div><span class="hex">L63 C175</span></div>
+            <div class="sw dark" style="background: var(--accent-700)"><div class="top"><span class="num">700</span></div><span class="hex">L52 C145</span></div>
+            <div class="sw dark" style="background: var(--accent-800)"><div class="top"><span class="num">800</span></div><span class="hex">L40 C110</span></div>
+            <div class="sw dark" style="background: var(--accent-900)"><div class="top"><span class="num">900</span></div><span class="hex">L27 C075</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Neutrals -->
+      <div>
+        <div class="sub">Neutrals · 13 Steps</div>
+        <div class="scale">
+          <div class="meta-col">
+            <h4>Neutral</h4>
+            <p>Text, Hintergründe, Trennlinien. Leicht kühl getönt um mit DBB-Blau zu harmonieren — keine reinen Grauwerte.</p>
+            <div class="ref">Token: <code>--neutral-{0–1000}</code></div>
+          </div>
+          <div class="swatches" style="grid-template-columns: repeat(13, 1fr);">
+            <div class="sw light" style="background: var(--neutral-0); box-shadow: inset 0 0 0 1px var(--page-line);"><div class="top"><span class="num">0</span></div><span class="hex">100%</span></div>
+            <div class="sw light" style="background: var(--neutral-50)"><div class="top"><span class="num">50</span></div></div>
+            <div class="sw light" style="background: var(--neutral-100)"><div class="top"><span class="num">100</span></div></div>
+            <div class="sw light" style="background: var(--neutral-200)"><div class="top"><span class="num">200</span></div></div>
+            <div class="sw light" style="background: var(--neutral-300)"><div class="top"><span class="num">300</span></div></div>
+            <div class="sw light" style="background: var(--neutral-400)"><div class="top"><span class="num">400</span></div></div>
+            <div class="sw dark" style="background: var(--neutral-500)"><div class="top"><span class="num">500</span></div></div>
+            <div class="sw dark" style="background: var(--neutral-600)"><div class="top"><span class="num">600</span></div></div>
+            <div class="sw dark" style="background: var(--neutral-700)"><div class="top"><span class="num">700</span></div></div>
+            <div class="sw dark" style="background: var(--neutral-800)"><div class="top"><span class="num">800</span></div></div>
+            <div class="sw dark" style="background: var(--neutral-900)"><div class="top"><span class="num">900</span></div></div>
+            <div class="sw dark" style="background: var(--neutral-950)"><div class="top"><span class="num">950</span></div></div>
+            <div class="sw dark" style="background: var(--neutral-1000)"><div class="top"><span class="num">1000</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Semantic -->
+      <div>
+        <div class="sub">Semantic Colors</div>
+        <div class="semantic-grid">
+          <div class="sem">
+            <div class="swatch-pair">
+              <div style="background: var(--success); color: white;">500</div>
+              <div style="background: var(--success-soft); color: oklch(0.32 0.12 145);">50</div>
+            </div>
+            <div>
+              <div class="name">Success</div>
+              <div class="desc">Spiel gespeichert, Korb gezählt, Validierung OK.</div>
+            </div>
+            <div class="uses">L62 C16 H145</div>
+          </div>
+          <div class="sem">
+            <div class="swatch-pair">
+              <div style="background: var(--warning); color: oklch(0.25 0.08 70);">500</div>
+              <div style="background: var(--warning-soft); color: oklch(0.36 0.13 75);">50</div>
+            </div>
+            <div>
+              <div class="name">Warning</div>
+              <div class="desc">Bonus aktiv, 4. Teamfoul, ungespeicherte Änderungen.</div>
+            </div>
+            <div class="uses">L78 C16 H75</div>
+          </div>
+          <div class="sem">
+            <div class="swatch-pair">
+              <div style="background: var(--error); color: white;">500</div>
+              <div style="background: var(--error-soft); color: oklch(0.36 0.18 27);">50</div>
+            </div>
+            <div>
+              <div class="name">Error</div>
+              <div class="desc">5. Foul / Disqualifikation, Sync fehlgeschlagen.</div>
+            </div>
+            <div class="uses">L58 C22 H27</div>
+          </div>
+          <div class="sem">
+            <div class="swatch-pair">
+              <div style="background: var(--info); color: white;">500</div>
+              <div style="background: var(--info-soft); color: oklch(0.34 0.12 240);">50</div>
+            </div>
+            <div>
+              <div class="name">Info</div>
+              <div class="desc">Auszeit, Hinweis, neutrale Statusmeldung.</div>
+            </div>
+            <div class="uses">L58 C13 H240</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team colors -->
+      <div>
+        <div class="sub">Team Colors · Configurable</div>
+        <div class="team-grid">
+          <div class="team heim">
+            <div>
+              <div class="label">Heim</div>
+              <div class="name">FC Bayern München</div>
+            </div>
+            <div class="tok">--team-heim</div>
+          </div>
+          <div class="team gast">
+            <div>
+              <div class="label">Gast</div>
+              <div class="name">Brose Bamberg</div>
+            </div>
+            <div class="tok">--team-gast</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme comparison -->
+      <div>
+        <div class="sub">Theme · Light &amp; Dark Tokens</div>
+        <div class="theme-pair">
+          <div class="theme-card light">
+            <div class="badge">Light · Web</div>
+            <h5>Surface &amp; Foreground</h5>
+            <div class="theme-tokens">
+              <div class="t" style="background: var(--neutral-0); color: var(--neutral-700); box-shadow: inset 0 0 0 1px var(--page-line);">bg-0</div>
+              <div class="t" style="background: var(--neutral-50); color: var(--neutral-700);">bg-1</div>
+              <div class="t" style="background: var(--neutral-100); color: var(--neutral-700);">bg-2</div>
+              <div class="t" style="background: var(--neutral-200); color: var(--neutral-800);">bg-3</div>
+              <div class="t" style="background: var(--primary-50); color: var(--primary-700);">tint</div>
+              <div class="t" style="background: var(--primary-600); color: white;">brand</div>
+              <div class="t" style="background: var(--neutral-900); color: var(--neutral-100);">fg-900</div>
+              <div class="t" style="background: var(--neutral-700); color: var(--neutral-100);">fg-700</div>
+              <div class="t" style="background: var(--neutral-500); color: white;">fg-500</div>
+              <div class="t" style="background: var(--neutral-300); color: var(--neutral-800);">line</div>
+              <div class="t" style="background: var(--success); color: white;">ok</div>
+              <div class="t" style="background: var(--error); color: white;">err</div>
+            </div>
+          </div>
+          <div class="theme-card dark">
+            <div class="badge">Dark · Tisch / TV</div>
+            <h5>Surface &amp; Foreground</h5>
+            <div class="theme-tokens">
+              <div class="t" style="background: var(--neutral-1000); color: var(--neutral-300); box-shadow: inset 0 0 0 1px var(--neutral-800);">bg-0</div>
+              <div class="t" style="background: var(--neutral-950); color: var(--neutral-300);">bg-1</div>
+              <div class="t" style="background: var(--neutral-900); color: var(--neutral-300);">bg-2</div>
+              <div class="t" style="background: var(--neutral-800); color: var(--neutral-200);">bg-3</div>
+              <div class="t" style="background: oklch(0.25 0.08 var(--h-primary)); color: var(--primary-100);">tint</div>
+              <div class="t" style="background: var(--primary-400); color: white;">brand</div>
+              <div class="t" style="background: var(--neutral-50); color: var(--neutral-900);">fg-50</div>
+              <div class="t" style="background: var(--neutral-300); color: var(--neutral-900);">fg-300</div>
+              <div class="t" style="background: var(--neutral-500); color: white;">fg-500</div>
+              <div class="t" style="background: var(--neutral-700); color: var(--neutral-200);">line</div>
+              <div class="t" style="background: oklch(0.55 0.16 145); color: white;">ok</div>
+              <div class="t" style="background: oklch(0.6 0.22 27); color: white;">err</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 02 — TYPOGRAPHY -->
+  <section class="s" data-screen-label="02 Typography">
+    <div class="s-head">
+      <div class="s-num">02 — Typography</div>
+      <div class="s-title">
+        <h2>Tabular für Zahlen, ruhig für Text.</h2>
+        <p>
+          Sora trägt die großen Zahlen — Spielstand, Trikotnummern, Headlines. Manrope übernimmt UI
+          und Fließtext mit guter Lesbarkeit auf jedem Screen. JetBrains Mono ist allein für die Uhr
+          und tabellarische Daten reserviert. Alle drei sind Google Fonts und kostenlos.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <!-- Family overview -->
+      <div>
+        <div class="sub">Type Families</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+          <div style="border: 1px solid var(--page-line); border-radius: 14px; padding: 24px; background: var(--neutral-0);">
+            <div style="font-family: var(--font-display); font-weight: 700; font-size: 58px; letter-spacing: -0.04em; line-height: 0.95;">Sora</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--page-mute); margin-top: 8px;">DISPLAY · HEADING</div>
+            <div style="font-size: 13px; color: var(--neutral-600); margin-top: 14px; line-height: 1.45;">Geometrische Sans mit kräftigen Strichen. Eingesetzt für Scores, Headlines und Trikotnummern.</div>
+            <div style="font-family: var(--font-display); font-weight: 400; margin-top: 14px; color: var(--neutral-700);">300 / 400 / 600 / 700 / 800</div>
+          </div>
+          <div style="border: 1px solid var(--page-line); border-radius: 14px; padding: 24px; background: var(--neutral-0);">
+            <div style="font-family: var(--font-body); font-weight: 600; font-size: 58px; letter-spacing: -0.02em; line-height: 0.95;">Manrope</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--page-mute); margin-top: 8px;">BODY · UI</div>
+            <div style="font-size: 13px; color: var(--neutral-600); margin-top: 14px; line-height: 1.45;">Humanistische Sans, weich genug für lange Texte, präzise genug für Buttons und Labels.</div>
+            <div style="font-family: var(--font-body); font-weight: 400; margin-top: 14px; color: var(--neutral-700);">400 / 500 / 600 / 700</div>
+          </div>
+          <div style="border: 1px solid var(--page-line); border-radius: 14px; padding: 24px; background: var(--neutral-0);">
+            <div style="font-family: var(--font-mono); font-weight: 700; font-size: 50px; letter-spacing: -0.03em; line-height: 0.95; font-variant-numeric: tabular-nums;">10:00</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--page-mute); margin-top: 8px;">CLOCK · DATA</div>
+            <div style="font-size: 13px; color: var(--neutral-600); margin-top: 14px; line-height: 1.45;">JetBrains Mono. Strikt tabular, perfekt für Spieluhr, Shot Clock und Statistik-Tabellen.</div>
+            <div style="font-family: var(--font-mono); margin-top: 14px; color: var(--neutral-700);">500 / 700</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Type scale -->
+      <div>
+        <div class="sub">Scale</div>
+        <div class="type-stack">
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Display · XL</div>
+              <div class="spec">Sora 800 · 88/0.9 · -4%</div>
+              <div class="role">Scoreboard, Spielstand, TV-Anzeige</div>
+            </div>
+            <div class="sample"><span class="ts-display">87 : 64</span></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Clock · Mono</div>
+              <div class="spec">JetBrains Mono 700 · 64 · tnum</div>
+              <div class="role">Spieluhr &amp; Shot Clock</div>
+            </div>
+            <div class="sample"><span class="ts-mono">07:42<span style="color: var(--accent-600); margin-left: 24px;">·24</span></span></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Heading · H1</div>
+              <div class="spec">Sora 700 · 44/1.05 · -2.5%</div>
+              <div class="role">Seitentitel</div>
+            </div>
+            <div class="sample"><div class="ts-h1">Spielbericht erstellen</div></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Heading · H2</div>
+              <div class="spec">Sora 600 · 28/1.15 · -1.5%</div>
+              <div class="role">Sektionsüberschriften</div>
+            </div>
+            <div class="sample"><div class="ts-h2">Mannschaftsaufstellung</div></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Heading · H3</div>
+              <div class="spec">Sora 600 · 20/1.25 · -1%</div>
+              <div class="role">Karten-Header</div>
+            </div>
+            <div class="sample"><div class="ts-h3">Heim &mdash; Auswechslungen 2. Viertel</div></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Body · Large</div>
+              <div class="spec">Manrope 400 · 18/1.55</div>
+              <div class="role">Lead-Text, Lerninhalte</div>
+            </div>
+            <div class="sample"><div class="ts-body-lg">Im Falle eines unentschiedenen Spielstands wird eine Verlängerung von fünf Minuten gespielt. Weitere Verlängerungen folgen bis zur Entscheidung.</div></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Body · Default</div>
+              <div class="spec">Manrope 400 · 15/1.55</div>
+              <div class="role">Fließtext, Formulare</div>
+            </div>
+            <div class="sample"><div class="ts-body">Wähle die Schiedsrichter aus der Liste oder erfasse sie manuell. Die Daten werden mit dem Vereinsregister abgeglichen, sobald wieder eine Verbindung besteht.</div></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Body · Small</div>
+              <div class="spec">Manrope 400 · 13/1.5</div>
+              <div class="role">Hilfetexte, Fußnoten</div>
+            </div>
+            <div class="sample"><div class="ts-small">Offline gespeichert · letzte Synchronisation vor 4 Minuten.</div></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Label · UI</div>
+              <div class="spec">Manrope 600 · 12 · uppercase</div>
+              <div class="role">Buttons, Tabs, Badges</div>
+            </div>
+            <div class="sample"><div class="ts-label">Spiel starten · Auszeit · Foul erfassen</div></div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 03 — COMPONENTS -->
+  <section class="s" data-screen-label="03 Components">
+    <div class="s-head">
+      <div class="s-num">03 — Components</div>
+      <div class="s-title">
+        <h2>Eine Karte, zwei Welten.</h2>
+        <p>
+          Ein Beispiel-Modul aus dem Spielbericht — derselbe Aufbau, einmal hell für Web-Apps, einmal
+          dunkel für Kampfgericht und Scoreboard. Wir nehmen das später als Lackmus-Test für jedes
+          neue Komponenten-Token.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <!-- Spielberichts-Karte -->
+      <div>
+        <div class="sub">Scoreboard Card · Spielbericht</div>
+        <div class="preview-pair">
+
+          <!-- LIGHT -->
+          <article class="light">
+            <div class="preview-header">
+              <span>Spielbericht · Q3</span>
+              <span class="ctx"><span class="ctx-dot"></span> Live</span>
+            </div>
+
+            <div class="scoreboard">
+              <div class="team-side">
+                <div class="team-tag"><span class="heim-dot"></span> Heim</div>
+                <div class="team-name">FC Bayern München</div>
+                <div class="score-row tnum">
+                  <span class="score">87</span>
+                  <span class="delta">+5</span>
+                </div>
+              </div>
+              <div class="center">
+                <div class="quarter">Q3</div>
+                <div class="clock tnum">07:42</div>
+                <div class="shot tnum">24</div>
+              </div>
+              <div class="team-side gast">
+                <div class="team-tag">Gast <span class="gast-dot"></span></div>
+                <div class="team-name">Brose Bamberg</div>
+                <div class="score-row tnum">
+                  <span class="score">64</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="fouls">
+              <div class="foul-card">
+                <span class="label">Heim · Teamfouls</span>
+                <div class="dots">
+                  <span class="dot on"></span><span class="dot on"></span>
+                  <span class="dot on"></span><span class="dot warn"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+              <div class="foul-card">
+                <span class="label">Gast · Teamfouls</span>
+                <div class="dots">
+                  <span class="dot on"></span><span class="dot on"></span>
+                  <span class="dot"></span><span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="badge-strip">
+              <span class="chip s-ok">Gespeichert</span>
+              <span class="chip s-warn">Bonus aktiv</span>
+              <span class="chip s-info">Auszeit Gast</span>
+              <span class="chip s-trikot">14</span>
+              <span class="chip s-trikot gast">23</span>
+            </div>
+
+            <div class="actions">
+              <button class="btn primary">Korb erfassen</button>
+              <button class="btn secondary">Auswechslung</button>
+              <button class="btn danger">Foul · Disq.</button>
+              <button class="btn ghost">Auszeit</button>
+            </div>
+          </article>
+
+          <!-- DARK -->
+          <article class="dark">
+            <div class="preview-header">
+              <span>Spielbericht · Q3</span>
+              <span class="ctx"><span class="ctx-dot"></span> Live</span>
+            </div>
+
+            <div class="scoreboard">
+              <div class="team-side">
+                <div class="team-tag"><span class="heim-dot"></span> Heim</div>
+                <div class="team-name">FC Bayern München</div>
+                <div class="score-row tnum">
+                  <span class="score">87</span>
+                  <span class="delta">+5</span>
+                </div>
+              </div>
+              <div class="center">
+                <div class="quarter">Q3</div>
+                <div class="clock tnum">07:42</div>
+                <div class="shot tnum">24</div>
+              </div>
+              <div class="team-side gast">
+                <div class="team-tag">Gast <span class="gast-dot"></span></div>
+                <div class="team-name">Brose Bamberg</div>
+                <div class="score-row tnum">
+                  <span class="score">64</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="fouls">
+              <div class="foul-card">
+                <span class="label">Heim · Teamfouls</span>
+                <div class="dots">
+                  <span class="dot on"></span><span class="dot on"></span>
+                  <span class="dot on"></span><span class="dot warn"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+              <div class="foul-card">
+                <span class="label">Gast · Teamfouls</span>
+                <div class="dots">
+                  <span class="dot on"></span><span class="dot on"></span>
+                  <span class="dot"></span><span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="badge-strip">
+              <span class="chip s-ok">Gespeichert</span>
+              <span class="chip s-warn">Bonus aktiv</span>
+              <span class="chip s-info">Auszeit Gast</span>
+              <span class="chip s-trikot">14</span>
+              <span class="chip s-trikot gast">23</span>
+            </div>
+
+            <div class="actions">
+              <button class="btn primary">Korb erfassen</button>
+              <button class="btn secondary">Auswechslung</button>
+              <button class="btn danger">Foul · Disq.</button>
+              <button class="btn ghost">Auszeit</button>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- Touch targets -->
+      <div>
+        <div class="sub">Touch Targets · Sporthallen-Tauglich</div>
+        <div class="touch-grid">
+          <div class="touch">
+            <div class="ring s">44</div>
+            <div>
+              <div class="label">Minimum · sm</div>
+              <div class="specs">44 × 44 px</div>
+            </div>
+            <div class="desc">WCAG-Untergrenze. Nur für sekundäre Web-Kontrollen — niemals für Live-Aktionen am Kampfgericht.</div>
+          </div>
+          <div class="touch">
+            <div class="ring m">56</div>
+            <div>
+              <div class="label">Default · md</div>
+              <div class="specs">56 × 56 px</div>
+            </div>
+            <div class="desc">Standard für UI-Buttons in den Web-Apps und auf Trainer-Tablets.</div>
+          </div>
+          <div class="touch">
+            <div class="ring l">64</div>
+            <div>
+              <div class="label">Hallen-Touch · lg</div>
+              <div class="specs">64 × 64 px</div>
+            </div>
+            <div class="desc">Pflicht für Live-Aktionen im Kampfgericht-Modus. Schweiß, Handschuhe, hektische Spielphasen.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spacing -->
+      <div>
+        <div class="sub">Spacing Scale · 4 px Basis</div>
+        <div class="space-grid">
+          <div class="space-cell"><div class="swatch" style="width: 4px; height: 4px;"></div><div><div class="name">space-1</div><div class="val">4 px</div></div></div>
+          <div class="space-cell"><div class="swatch" style="width: 8px; height: 8px;"></div><div><div class="name">space-2</div><div class="val">8 px</div></div></div>
+          <div class="space-cell"><div class="swatch" style="width: 12px; height: 12px;"></div><div><div class="name">space-3</div><div class="val">12 px</div></div></div>
+          <div class="space-cell"><div class="swatch" style="width: 16px; height: 16px;"></div><div><div class="name">space-4</div><div class="val">16 px</div></div></div>
+          <div class="space-cell"><div class="swatch" style="width: 24px; height: 24px;"></div><div><div class="name">space-6</div><div class="val">24 px</div></div></div>
+          <div class="space-cell"><div class="swatch" style="width: 32px; height: 32px;"></div><div><div class="name">space-8</div><div class="val">32 px</div></div></div>
+          <div class="space-cell"><div class="swatch" style="width: 48px; height: 48px;"></div><div><div class="name">space-12</div><div class="val">48 px</div></div></div>
+          <div class="space-cell"><div class="swatch" style="width: 64px; height: 64px;"></div><div><div class="name">space-16</div><div class="val">64 px</div></div></div>
+        </div>
+      </div>
+
+      <!-- Radius -->
+      <div>
+        <div class="sub">Border Radius Scale</div>
+        <div class="radius-grid">
+          <div class="radius-cell"><div class="demo" style="border-radius: 0;"></div><div><div class="name">radius-none</div><div class="val">0 px</div></div></div>
+          <div class="radius-cell"><div class="demo" style="border-radius: 4px;"></div><div><div class="name">radius-sm</div><div class="val">4 px · chips</div></div></div>
+          <div class="radius-cell"><div class="demo" style="border-radius: 8px;"></div><div><div class="name">radius-md</div><div class="val">8 px · inputs</div></div></div>
+          <div class="radius-cell"><div class="demo" style="border-radius: 12px;"></div><div><div class="name">radius-lg</div><div class="val">12 px · cards</div></div></div>
+          <div class="radius-cell"><div class="demo" style="border-radius: 18px;"></div><div><div class="name">radius-xl</div><div class="val">18 px · panels</div></div></div>
+          <div class="radius-cell"><div class="demo" style="border-radius: 999px;"></div><div><div class="name">radius-full</div><div class="val">∞ · avatars</div></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="foot">
+    <span class="iter">v0.2 — DBB-Branding</span> &nbsp;·&nbsp;
+    Primär #003580 · Akzent #F58220 · Feedback erwünscht
+  </div>
+
+</div>
+
+<!-- TWEAKS ISLAND -->
+<div id="tweaks-root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+const DSS_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "primaryHue": 264,
+  "accentHue": 51,
+  "primaryChroma": 0.16,
+  "accentChroma": 0.18,
+  "typePairing": "sora-manrope",
+  "showTeamColors": true
+}/*EDITMODE-END*/;
+
+const FONT_PAIRINGS = {
+  "sora-manrope": { display: "'Sora'", body: "'Manrope'", label: "Sora + Manrope" },
+  "archivo-plex": { display: "'Archivo'", body: "'IBM Plex Sans'", label: "Archivo + IBM Plex" },
+  "space-manrope": { display: "'Space Grotesk'", body: "'Manrope'", label: "Space Grotesk + Manrope" },
+};
+
+function DSSTweaks() {
+  const [t, setTweak] = useTweaks(DSS_TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    const r = document.documentElement;
+    r.style.setProperty('--h-primary', t.primaryHue);
+    r.style.setProperty('--h-accent', t.accentHue);
+    r.style.setProperty('--c-primary', t.primaryChroma);
+    r.style.setProperty('--c-accent', t.accentChroma);
+    const pair = FONT_PAIRINGS[t.typePairing] || FONT_PAIRINGS["sora-manrope"];
+    r.style.setProperty('--font-display', pair.display + ", system-ui, sans-serif");
+    r.style.setProperty('--font-heading', pair.display + ", system-ui, sans-serif");
+    r.style.setProperty('--font-body', pair.body + ", system-ui, sans-serif");
+  }, [t]);
+
+  return (
+    <TweaksPanel title="DSS Identity Tweaks">
+      <TweakSection label="Brand Hue">
+        <TweakSlider label="Primary hue" value={t.primaryHue} min={230} max={300} step={1} unit="°"
+          onChange={(v) => setTweak('primaryHue', v)} />
+        <TweakSlider label="Primary chroma" value={t.primaryChroma} min={0.08} max={0.22} step={0.005}
+          onChange={(v) => setTweak('primaryChroma', v)} />
+        <TweakSlider label="Accent hue" value={t.accentHue} min={25} max={85} step={1} unit="°"
+          onChange={(v) => setTweak('accentHue', v)} />
+        <TweakSlider label="Accent chroma" value={t.accentChroma} min={0.10} max={0.22} step={0.005}
+          onChange={(v) => setTweak('accentChroma', v)} />
+      </TweakSection>
+      <TweakSection label="Typography">
+        <TweakSelect label="Pairing" value={t.typePairing}
+          options={Object.entries(FONT_PAIRINGS).map(([v, p]) => ({ value: v, label: p.label }))}
+          onChange={(v) => setTweak('typePairing', v)} />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<DSSTweaks />);
+</script>
+
+</body>
+</html>

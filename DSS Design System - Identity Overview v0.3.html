@@ -1,0 +1,1636 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DSS Design System — Visual Identity v0.3</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  /* ────────────────────────────────────────────────────────────────
+     DSS DESIGN TOKENS · v0.3
+     Identität: Ink (Anthrazit) + Amber (Signal) + Sky (Court)
+     Bridge zum DBB-Branding (Schwarz / Weiß / Gold / Hellblau)
+     via Tweaks → Brand Preset "DBB-Compat".
+
+     Accessibility: WCAG 2.1 AAA als Vorgabe.
+     – Body text auf Surface: ≥ 7:1
+     – Large text (≥ 18px / 14px bold): ≥ 4.5:1
+     – UI-Komponenten / Grafische Objekte: ≥ 3:1
+
+     Jede Skala hat klare Use-Case-Slots:
+        surface  · Flächen, Fills (kein Text)
+        fill     · Buttons, große Display-Elemente
+        text     · AAA-konformer Text auf Surface
+        deep     · sehr starker Text / aktive States
+     ──────────────────────────────────────────────────────────────── */
+
+  :root {
+    /* — Hue tokens (driven by Tweaks) — */
+    --h-ink:    60;    /* warm near-black (60° = leicht warm) */
+    --h-amber:  75;    /* signal amber, brückt zu DBB-Gold ~85° */
+    --h-sky:    235;   /* court sky, brückt zu DBB-Hellblau ~225° */
+
+    /* — Ink scale (Anthrazit, Primary, low chroma) — */
+    --ink-0:    oklch(1.000 0     0);
+    --ink-50:   oklch(0.985 0.003 var(--h-ink));
+    --ink-100:  oklch(0.965 0.005 var(--h-ink));
+    --ink-200:  oklch(0.925 0.007 var(--h-ink));
+    --ink-300:  oklch(0.850 0.009 var(--h-ink));
+    --ink-400:  oklch(0.700 0.011 var(--h-ink));
+    --ink-500:  oklch(0.560 0.012 var(--h-ink));
+    --ink-600:  oklch(0.420 0.013 var(--h-ink));    /* text · AAA ≈ 7.2:1 auf #fff */
+    --ink-700:  oklch(0.300 0.012 var(--h-ink));    /* deep text · ≈ 12:1 */
+    --ink-800:  oklch(0.200 0.010 var(--h-ink));    /* button fill · ≈ 17:1 */
+    --ink-900:  oklch(0.130 0.008 var(--h-ink));
+    --ink-950:  oklch(0.080 0.006 var(--h-ink));
+    --ink-1000: oklch(0.020 0.004 var(--h-ink));
+
+    /* — Amber scale (Signal, Accent A) — */
+    --amber-50:   oklch(0.975 0.025 var(--h-amber));
+    --amber-100:  oklch(0.940 0.060 var(--h-amber));
+    --amber-200:  oklch(0.880 0.110 var(--h-amber));
+    --amber-300:  oklch(0.830 0.145 var(--h-amber));
+    --amber-400:  oklch(0.800 0.165 var(--h-amber));   /* fill / large display */
+    --amber-500:  oklch(0.760 0.165 var(--h-amber));   /* fill */
+    --amber-600:  oklch(0.660 0.150 calc(var(--h-amber) - 5));
+    --amber-700:  oklch(0.540 0.130 calc(var(--h-amber) - 10));
+    --amber-800:  oklch(0.420 0.110 calc(var(--h-amber) - 20));  /* text · AAA ≈ 7.1:1 */
+    --amber-900:  oklch(0.290 0.080 calc(var(--h-amber) - 25));  /* deep text */
+
+    /* — Sky scale (Court, Accent B) — */
+    --sky-50:   oklch(0.975 0.018 var(--h-sky));
+    --sky-100:  oklch(0.940 0.045 var(--h-sky));
+    --sky-200:  oklch(0.880 0.080 var(--h-sky));
+    --sky-300:  oklch(0.820 0.110 var(--h-sky));
+    --sky-400:  oklch(0.760 0.125 var(--h-sky));    /* fill / large display */
+    --sky-500:  oklch(0.680 0.140 calc(var(--h-sky) + 2));
+    --sky-600:  oklch(0.560 0.140 calc(var(--h-sky) + 5));
+    --sky-700:  oklch(0.450 0.135 calc(var(--h-sky) + 8));
+    --sky-800:  oklch(0.345 0.120 calc(var(--h-sky) + 12)); /* text · AAA ≈ 7.0:1 */
+    --sky-900:  oklch(0.230 0.080 calc(var(--h-sky) + 15)); /* deep text */
+
+    /* — Neutral (cool grey, hue 250, sehr niedrige Chroma) — */
+    --n-0:    oklch(1.000 0     0);
+    --n-50:   oklch(0.985 0.003 250);
+    --n-100:  oklch(0.965 0.005 250);
+    --n-200:  oklch(0.925 0.006 250);
+    --n-300:  oklch(0.860 0.008 250);
+    --n-400:  oklch(0.700 0.010 250);
+    --n-500:  oklch(0.520 0.011 250);   /* text auf weiß: AAA borderline, NUR für non-essential */
+    --n-600:  oklch(0.420 0.011 250);   /* secondary text · AAA ≈ 7.2:1 */
+    --n-700:  oklch(0.320 0.010 250);
+    --n-800:  oklch(0.215 0.009 250);
+    --n-900:  oklch(0.145 0.008 250);
+    --n-950:  oklch(0.085 0.006 250);
+    --n-1000: oklch(0.025 0.004 250);
+
+    /* — Semantic — jede Familie hat -fill, -text, -soft (Surface) — */
+    --ok-fill:    oklch(0.640 0.150 150);
+    --ok-text:    oklch(0.400 0.130 150);   /* AAA auf weiß ≈ 7.4:1 */
+    --ok-soft:    oklch(0.960 0.040 150);
+
+    --warn-fill:  oklch(0.770 0.165 75);
+    --warn-text:  oklch(0.420 0.120 60);    /* AAA auf weiß ≈ 7.0:1 */
+    --warn-soft:  oklch(0.970 0.055 80);
+
+    --err-fill:   oklch(0.580 0.220 27);
+    --err-button: oklch(0.400 0.190 27);   /* white-on-fill AAA ≈ 7.2:1 */
+    --err-text:   oklch(0.420 0.180 27);    /* AAA auf weiß ≈ 7.0:1 */
+    --err-soft:   oklch(0.955 0.045 27);
+
+    --info-fill:  oklch(0.620 0.140 245);
+    --info-text:  oklch(0.380 0.130 245);   /* AAA auf weiß ≈ 7.1:1 */
+    --info-soft:  oklch(0.955 0.035 245);
+
+    /* — Team colors (configurable) — */
+    --team-heim: var(--sky-700);
+    --team-gast: oklch(0.520 0.180 25);
+
+    /* — Type — */
+    --font-display: 'Sora', system-ui, sans-serif;
+    --font-heading: 'Sora', system-ui, sans-serif;
+    --font-body:    'Manrope', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+    /* — Page chrome — */
+    --page-bg:   var(--n-50);
+    --page-fg:   var(--n-900);
+    --page-mute: var(--n-600);
+    --page-line: var(--n-200);
+    --page-soft: var(--n-100);
+
+    /* — Surface aliases — */
+    --surface-0: var(--n-0);
+    --surface-1: var(--n-50);
+    --surface-2: var(--n-100);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page-bg);
+    color: var(--page-fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ── Page shell ─────────────────────────────────────────────── */
+  .page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 56px 56px 120px;
+  }
+
+  /* ── Top strip ──────────────────────────────────────────────── */
+  .topstrip {
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--page-mute);
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .topstrip .left { display: flex; gap: 14px; align-items: center; }
+  .topstrip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber-500); display: inline-block; }
+  .topstrip .monogram {
+    width: 22px; height: 22px; border-radius: 5px;
+    background: var(--ink-800);
+    color: var(--n-0);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 11px;
+    letter-spacing: -0.02em;
+  }
+
+  /* ── Hero ───────────────────────────────────────────────────── */
+  .hero { padding: 56px 0 64px; border-bottom: 1px solid var(--page-line); }
+  .hero .eyebrow {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--amber-800);
+    margin-bottom: 18px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(48px, 7vw, 92px);
+    letter-spacing: -0.035em; line-height: 0.96;
+    margin: 0 0 24px;
+    color: var(--ink-900);
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(180deg, var(--amber-700), var(--amber-800));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .lead {
+    max-width: 720px;
+    font-size: 18px; line-height: 1.55;
+    color: var(--n-700);
+    text-wrap: pretty;
+  }
+  .hero .meta {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+    margin-top: 48px;
+    background: var(--page-line);
+    border: 1px solid var(--page-line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .hero .meta > div { background: var(--page-bg); padding: 18px 20px; }
+  .hero .meta .k {
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--page-mute);
+    margin-bottom: 6px;
+  }
+  .hero .meta .v {
+    font-family: var(--font-display);
+    font-weight: 600; font-size: 17px;
+    color: var(--ink-900);
+    letter-spacing: -0.01em;
+  }
+
+  /* ── Section frame ──────────────────────────────────────────── */
+  section.s {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .s-head {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 32px; align-items: baseline;
+    margin-bottom: 44px;
+  }
+  .s-num {
+    font-family: var(--font-mono);
+    font-size: 12px; letter-spacing: 0.06em;
+    color: var(--amber-800);
+    padding-top: 8px;
+  }
+  .s-title h2 {
+    font-family: var(--font-display);
+    font-weight: 700; font-size: 40px;
+    letter-spacing: -0.02em; line-height: 1.05;
+    margin: 0 0 10px;
+    color: var(--ink-900);
+  }
+  .s-title p {
+    margin: 0; color: var(--n-700);
+    font-size: 16px; max-width: 680px;
+    text-wrap: pretty;
+  }
+
+  .s-body { display: flex; flex-direction: column; gap: 56px; }
+
+  /* ── Sub-section labels ─────────────────────────────────────── */
+  .sub {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--page-mute);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sub::after { content: ''; flex: 1; height: 1px; background: var(--page-line); }
+  .sub .pill {
+    background: var(--ink-900); color: var(--n-0);
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 9px; letter-spacing: 0.08em;
+  }
+
+  /* ── Color scale rows ───────────────────────────────────────── */
+  .scale {
+    display: grid; grid-template-columns: 200px 1fr;
+    gap: 28px; align-items: stretch;
+  }
+  .scale .meta-col h4 {
+    font-family: var(--font-display);
+    font-weight: 600; font-size: 18px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+    color: var(--ink-900);
+  }
+  .scale .meta-col .tag {
+    display: inline-block;
+    font-family: var(--font-mono); font-size: 9px;
+    padding: 2px 7px; border-radius: 4px;
+    background: var(--amber-100); color: var(--amber-800);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: 12px;
+  }
+  .scale .meta-col p {
+    margin: 0; color: var(--n-700);
+    font-size: 13px; line-height: 1.45;
+  }
+  .scale .meta-col .ref {
+    font-family: var(--font-mono);
+    font-size: 10px; color: var(--page-mute);
+    margin-top: 10px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .swatches {
+    display: grid; grid-template-columns: repeat(13, 1fr);
+    gap: 4px;
+  }
+  .sw {
+    aspect-ratio: 1 / 1.25;
+    display: flex; flex-direction: column;
+    padding: 9px 9px 7px;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 0.02em;
+    border-radius: 6px;
+    position: relative;
+  }
+  .sw .top { display: flex; justify-content: space-between; }
+  .sw .num { font-weight: 700; }
+  .sw .role { font-size: 8.5px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.06em; }
+  .sw.dark { color: rgba(255,255,255,0.95); }
+  .sw.light { color: rgba(0,0,0,0.82); }
+  .sw .star {
+    position: absolute; top: 6px; right: 7px;
+    font-size: 9px;
+  }
+
+  /* ── AAA Audit table ────────────────────────────────────────── */
+  .audit {
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--n-0);
+  }
+  .audit-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 110px 90px 84px;
+    align-items: stretch;
+    border-bottom: 1px solid var(--page-line);
+    min-height: 64px;
+  }
+  .audit-row:last-child { border-bottom: 0; }
+  .audit-row.head {
+    background: var(--n-100);
+    font-family: var(--font-mono);
+    font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--page-mute);
+    min-height: 38px;
+  }
+  .audit-row > div {
+    padding: 12px 16px;
+    display: flex; align-items: center;
+    border-right: 1px solid var(--page-line);
+  }
+  .audit-row > div:last-child { border-right: 0; }
+  .audit-sample {
+    font-family: var(--font-body); font-weight: 500;
+    font-size: 14px;
+  }
+  .audit-sample.lg { font-size: 18px; font-weight: 500; }
+  .audit-spec {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--page-mute);
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 2px;
+  }
+  .audit-spec b { color: var(--ink-700); font-weight: 600; }
+  .audit-ratio {
+    font-family: var(--font-mono);
+    font-size: 18px; font-weight: 700;
+    color: var(--ink-900);
+    font-variant-numeric: tabular-nums;
+    justify-content: flex-end;
+  }
+  .audit-tier {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--page-mute);
+    justify-content: flex-end;
+  }
+  .audit-badge {
+    justify-content: center;
+  }
+  .audit-badge span {
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 11px;
+    padding: 4px 9px; border-radius: 5px;
+    letter-spacing: 0.06em;
+  }
+  .audit-badge .pass { background: var(--ok-soft); color: var(--ok-text); }
+  .audit-badge .pass-aa { background: var(--warn-soft); color: var(--warn-text); }
+  .audit-badge .fail { background: var(--err-soft); color: var(--err-text); }
+
+  /* ── Semantic grid ──────────────────────────────────────────── */
+  .semantic-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  }
+  .sem {
+    border: 1px solid var(--page-line);
+    border-radius: 12px;
+    padding: 18px;
+    background: var(--n-0);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .sem .swatch-row {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4px;
+    height: 56px; border-radius: 8px; overflow: hidden;
+  }
+  .sem .swatch-row > div {
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .sem .name {
+    font-family: var(--font-display);
+    font-weight: 600; font-size: 16px;
+    letter-spacing: -0.01em;
+    color: var(--ink-900);
+  }
+  .sem .desc { font-size: 12.5px; color: var(--n-700); line-height: 1.45; }
+  .sem .ratio {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--page-mute);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    display: flex; justify-content: space-between;
+  }
+  .sem .ratio b { color: var(--ok-text); font-weight: 600; }
+
+  /* ── Team colors ────────────────────────────────────────────── */
+  .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .team {
+    border-radius: 14px;
+    padding: 22px 26px;
+    display: flex; align-items: center; justify-content: space-between;
+    color: white;
+    position: relative; overflow: hidden;
+  }
+  .team.heim { background: var(--team-heim); }
+  .team.gast { background: var(--team-gast); }
+  .team .label {
+    font-family: var(--font-mono); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    opacity: 0.88; margin-bottom: 6px;
+  }
+  .team .name {
+    font-family: var(--font-display); font-weight: 700; font-size: 24px;
+    letter-spacing: -0.02em;
+  }
+  .team .tok {
+    font-family: var(--font-mono); font-size: 11px;
+    background: rgba(255,255,255,0.18);
+    padding: 5px 10px; border-radius: 6px;
+  }
+
+  /* ── Theme comparison ───────────────────────────────────────── */
+  .theme-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .theme-card {
+    border-radius: 16px;
+    padding: 26px;
+    border: 1px solid var(--page-line);
+    overflow: hidden;
+    position: relative;
+  }
+  .theme-card.light { background: var(--n-50); color: var(--n-900); }
+  .theme-card.dark  {
+    background: var(--n-1000);
+    color: var(--n-100);
+    border-color: var(--n-800);
+  }
+  .theme-card .badge {
+    position: absolute; top: 14px; right: 14px;
+    font-family: var(--font-mono); font-size: 10px;
+    padding: 4px 8px; border-radius: 5px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .theme-card.light .badge { background: var(--n-200); color: var(--n-700); }
+  .theme-card.dark .badge  { background: var(--n-800); color: var(--n-300); }
+  .theme-card h5 {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 13px; margin: 0 0 18px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+    opacity: 0.7;
+  }
+  .theme-tokens { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+  .theme-tokens .t {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 7px;
+    font-family: var(--font-mono); font-size: 9px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── Typography ─────────────────────────────────────────────── */
+  .type-stack { display: flex; flex-direction: column; border-top: 1px solid var(--page-line); }
+  .type-row {
+    display: grid; grid-template-columns: 220px 1fr;
+    gap: 32px; padding: 28px 0;
+    align-items: baseline;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .type-row .info { color: var(--n-700); }
+  .type-row .info .name {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--ink-900); margin-bottom: 4px;
+  }
+  .type-row .info .spec {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+  }
+  .type-row .info .role { font-size: 12.5px; margin-top: 8px; line-height: 1.45; }
+  .type-row .sample { color: var(--ink-900); }
+
+  .ts-display { font-family: var(--font-display); font-weight: 800; font-size: 88px; letter-spacing: -0.04em; line-height: 0.9; font-variant-numeric: tabular-nums; }
+  .ts-h1 { font-family: var(--font-display); font-weight: 700; font-size: 44px; letter-spacing: -0.025em; line-height: 1.05; }
+  .ts-h2 { font-family: var(--font-display); font-weight: 600; font-size: 28px; letter-spacing: -0.015em; line-height: 1.15; }
+  .ts-h3 { font-family: var(--font-display); font-weight: 600; font-size: 20px; letter-spacing: -0.01em; line-height: 1.25; }
+  .ts-body-lg { font-family: var(--font-body); font-size: 18px; line-height: 1.55; }
+  .ts-body { font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+  .ts-small { font-family: var(--font-body); font-size: 13px; line-height: 1.5; color: var(--n-700); }
+  .ts-label { font-family: var(--font-body); font-weight: 600; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .ts-mono { font-family: var(--font-mono); font-size: 64px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+
+  /* ── Component preview ──────────────────────────────────────── */
+  .preview-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .preview-pair > article {
+    border-radius: 18px;
+    padding: 26px;
+    border: 1px solid var(--page-line);
+    overflow: hidden;
+  }
+  article.light { background: var(--n-50); color: var(--ink-900); }
+  article.dark { background: var(--n-1000); color: var(--n-100); border-color: var(--n-800); }
+
+  .preview-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 22px;
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    opacity: 0.75;
+  }
+  .preview-header .ctx { display: flex; gap: 8px; align-items: center; }
+  .preview-header .ctx-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--err-fill); animation: pulse 1.6s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  .scoreboard {
+    border-radius: 14px;
+    padding: 22px;
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 24px; align-items: center;
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+  }
+  article.dark .scoreboard {
+    background: var(--n-900);
+    border-color: var(--n-800);
+  }
+  .scoreboard .team-side { display: flex; flex-direction: column; gap: 8px; }
+  .scoreboard .team-side.gast { text-align: right; align-items: flex-end; }
+  .scoreboard .team-name {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 16px; letter-spacing: -0.01em;
+  }
+  .scoreboard .team-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    opacity: 0.75;
+  }
+  .scoreboard .heim-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--team-heim); }
+  .scoreboard .gast-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--team-gast); }
+  .scoreboard .score-row {
+    display: flex; align-items: baseline; gap: 14px;
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 56px; letter-spacing: -0.04em; line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .scoreboard .gast .score-row { justify-content: flex-end; }
+  .scoreboard .score-row .delta {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.04em;
+    color: var(--ok-text); background: var(--ok-soft);
+    padding: 3px 6px; border-radius: 4px;
+  }
+  article.dark .scoreboard .delta { background: oklch(0.25 0.08 145); color: oklch(0.92 0.12 145); }
+
+  .scoreboard .center {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 0 8px;
+    border-left: 1px solid var(--page-line);
+    border-right: 1px solid var(--page-line);
+    height: 100%;
+  }
+  article.dark .scoreboard .center { border-color: var(--n-800); }
+  .scoreboard .quarter {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.7;
+  }
+  .scoreboard .clock {
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 32px; letter-spacing: -0.02em;
+    color: var(--amber-800);
+    font-variant-numeric: tabular-nums;
+  }
+  article.dark .scoreboard .clock { color: var(--amber-400); }
+  .scoreboard .shot {
+    font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+    padding: 3px 8px; border-radius: 4px;
+    background: var(--ink-900); color: var(--amber-300);
+  }
+  article.dark .scoreboard .shot { background: var(--amber-400); color: var(--ink-1000); }
+
+  .fouls {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin-top: 14px;
+  }
+  .fouls .foul-card {
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--n-100);
+    border: 1px solid var(--page-line);
+  }
+  article.dark .fouls .foul-card { background: var(--n-900); border-color: var(--n-800); }
+  .fouls .label {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.78;
+  }
+  .fouls .dots { display: flex; gap: 4px; }
+  .fouls .dot {
+    width: 14px; height: 14px; border-radius: 4px;
+    background: var(--n-300);
+  }
+  article.dark .fouls .dot { background: var(--n-700); }
+  .fouls .dot.on { background: var(--ink-700); }
+  article.dark .fouls .dot.on { background: var(--n-200); }
+  .fouls .dot.warn { background: var(--warn-fill); }
+  .fouls .dot.error { background: var(--err-fill); }
+
+  .actions {
+    display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap;
+  }
+  .btn {
+    appearance: none; border: 0;
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 14px;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform 0.08s, background 0.12s, box-shadow 0.12s;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn.primary { background: var(--ink-900); color: white; }
+  .btn.primary:hover { background: var(--ink-700); }
+  .btn.amber { background: var(--amber-400); color: var(--ink-1000); }
+  .btn.amber:hover { background: var(--amber-500); }
+  .btn.secondary { background: var(--n-200); color: var(--ink-900); }
+  article.dark .btn.secondary { background: var(--n-800); color: var(--n-50); }
+  article.dark .btn.primary { background: var(--n-50); color: var(--ink-1000); }
+  .btn.danger { background: var(--err-button); color: white; }
+  .btn.ghost { background: transparent; color: inherit; box-shadow: inset 0 0 0 1px currentColor; opacity: 0.88; }
+
+  .badge-strip {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;
+  }
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+    padding: 5px 9px; border-radius: 6px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .chip.s-ok   { background: var(--ok-soft);   color: var(--ok-text); }
+  .chip.s-warn { background: var(--warn-soft); color: var(--warn-text); }
+  .chip.s-err  { background: var(--err-soft);  color: var(--err-text); }
+  .chip.s-info { background: var(--info-soft); color: var(--info-text); }
+  article.dark .chip.s-ok   { background: oklch(0.22 0.08 150); color: oklch(0.88 0.13 150); }
+  article.dark .chip.s-warn { background: oklch(0.25 0.09 75);  color: oklch(0.90 0.15 80); }
+  article.dark .chip.s-err  { background: oklch(0.24 0.13 27);  color: oklch(0.88 0.16 27); }
+  article.dark .chip.s-info { background: oklch(0.22 0.10 245); color: oklch(0.88 0.13 245); }
+  .chip.s-trikot {
+    background: var(--team-heim); color: white;
+    width: 32px; height: 32px; justify-content: center; padding: 0;
+    border-radius: 8px; font-size: 14px;
+  }
+  .chip.s-trikot.gast { background: var(--team-gast); }
+
+  /* ── Touch targets ──────────────────────────────────────────── */
+  .touch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .touch {
+    border: 1px solid var(--page-line);
+    border-radius: 12px;
+    padding: 22px;
+    background: var(--n-0);
+    display: flex; flex-direction: column; gap: 14px; align-items: flex-start;
+  }
+  .touch .label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--page-mute); }
+  .touch .specs { font-family: var(--font-mono); font-size: 11px; color: var(--n-700); }
+  .touch .desc { font-size: 13px; color: var(--n-700); line-height: 1.45; }
+  .touch .ring {
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 14px;
+    background: var(--amber-50);
+    border: 1px dashed var(--amber-600);
+    color: var(--amber-800);
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .touch .ring.s { width: 44px; height: 44px; border-radius: 10px; }
+  .touch .ring.m { width: 56px; height: 56px; border-radius: 12px; }
+  .touch .ring.l { width: 64px; height: 64px; border-radius: 14px; }
+
+  /* ── Spacing & Radius ───────────────────────────────────────── */
+  .space-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
+  .space-cell {
+    border: 1px solid var(--page-line);
+    border-radius: 10px;
+    padding: 14px;
+    background: var(--n-0);
+    display: flex; flex-direction: column; gap: 8px; justify-content: space-between;
+    min-height: 110px;
+  }
+  .space-cell .swatch { background: var(--ink-800); border-radius: 3px; align-self: flex-start; }
+  .space-cell .name { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--ink-900); }
+  .space-cell .val { font-family: var(--font-mono); font-size: 10px; color: var(--page-mute); }
+
+  .radius-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+  .radius-cell {
+    border: 1px solid var(--page-line);
+    padding: 16px;
+    background: var(--n-0);
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .radius-cell .demo {
+    aspect-ratio: 1;
+    background: var(--ink-100);
+    border: 1px solid var(--ink-300);
+  }
+  .radius-cell .name { font-family: var(--font-mono); font-size: 11px; font-weight: 700; color: var(--ink-900); }
+  .radius-cell .val { font-family: var(--font-mono); font-size: 10px; color: var(--page-mute); }
+
+  /* ── Footnote ───────────────────────────────────────────────── */
+  .foot {
+    margin-top: 56px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .foot .iter { color: var(--amber-800); }
+
+  .tnum { font-variant-numeric: tabular-nums; }
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    background: var(--ink-100);
+    color: var(--ink-800);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  /* ── Responsive ─────────────────────────────────────────────── */
+  @media (max-width: 980px) {
+    .page { padding: 32px 24px 80px; }
+    .scale { grid-template-columns: 1fr; gap: 16px; }
+    .swatches { grid-template-columns: repeat(5, 1fr); }
+    .semantic-grid, .team-grid, .theme-pair, .preview-pair { grid-template-columns: 1fr; }
+    .touch-grid { grid-template-columns: 1fr; }
+    .type-row { grid-template-columns: 1fr; gap: 12px; }
+    .space-grid { grid-template-columns: repeat(4, 1fr); }
+    .radius-grid { grid-template-columns: repeat(3, 1fr); }
+    .hero .meta { grid-template-columns: 1fr 1fr; }
+    .audit-row { grid-template-columns: 1fr 1fr 88px 70px; }
+    .audit-row .audit-tier { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- TOP STRIP -->
+  <div class="topstrip">
+    <div class="left">
+      <span class="monogram">D</span>
+      <span>DSS Design System</span>
+      <span>·</span>
+      <span>v0.3 · Standalone Identity · AAA</span>
+    </div>
+    <div>
+      <span class="dot"></span>&nbsp;&nbsp;Digitaler Spielbericht &amp; Schwestern-Apps
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero" data-screen-label="00 Hero">
+    <div class="eyebrow">Visual Identity Overview · v0.3 · WCAG 2.1 AAA</div>
+    <h1>Eine Identität.<br/>Fünf Apps.<br/><em>Lesbar bis hinten in der Halle.</em></h1>
+    <p class="lead">
+      Eigenständige Identität aus drei Farbachsen: <strong>Ink</strong> als ruhige Basis,
+      <strong>Amber</strong> für Signale, <strong>Sky</strong> für kühle Akzente. Jede Token-Stufe ist
+      einem Use-Case zugeordnet (surface / fill / text / deep), und alle Text-Kombinationen sind
+      gegen <strong>WCAG 2.1 AAA</strong> validiert. Sollte ein offizieller Vertrag mit dem DBB entstehen,
+      schaltet ein einziges Preset die Marke auf das DBB-Branding (Schwarz · Weiß · Gold · Hellblau) um —
+      Strukturen und Kontraste bleiben unberührt.
+    </p>
+
+    <div class="meta">
+      <div><div class="k">Codename</div><div class="v">DSS · Ink/Amber/Sky</div></div>
+      <div><div class="k">Themes</div><div class="v">Light + Dark</div></div>
+      <div><div class="k">Accessibility</div><div class="v">WCAG 2.1 AAA</div></div>
+      <div><div class="k">Ziel-Apps</div><div class="v">5 Surfaces</div></div>
+    </div>
+  </header>
+
+  <!-- SECTION 01 — COLOR -->
+  <section class="s" data-screen-label="01 Color">
+    <div class="s-head">
+      <div class="s-num">01 — Color</div>
+      <div class="s-title">
+        <h2>Drei Achsen, klare Rollen.</h2>
+        <p>
+          Statt einer Primary+Accent-Achse arbeiten wir mit drei. <strong>Ink</strong> trägt fast die
+          gesamte UI (Text, Buttons, Surfaces). <strong>Amber</strong> ist Signal — Uhr, Highlights,
+          Live-Indikatoren. <strong>Sky</strong> ist Atmosphäre — Heim-Team, Info, kühle Akzente.
+          Jeder Token-Slot ist mit einem Use-Case beschriftet damit Farbverwendung nie raten muss.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <!-- Brand scales -->
+      <div>
+        <div class="sub">Brand Scales · 3-Axis Identity <span class="pill">★ Anchor</span></div>
+
+        <!-- INK -->
+        <div class="scale" style="margin-bottom: 28px;">
+          <div class="meta-col">
+            <h4>Ink</h4>
+            <span class="tag">Primary · 13 Steps</span>
+            <p>Ruhiges, warm-getöntes Anthrazit (Hue 60°). Trägt Text, Buttons, Headlines.
+              Token <code>ink-600</code> ist AAA-konformer Body-Text auf weiß; <code>ink-800</code> ist Button-Fill.</p>
+            <div class="ref">Anchor: ★ <code>ink-800</code></div>
+          </div>
+          <div class="swatches">
+            <div class="sw light" style="background: var(--ink-0); box-shadow: inset 0 0 0 1px var(--page-line)"><div class="top"><span class="num">0</span></div><span class="role">surface</span></div>
+            <div class="sw light" style="background: var(--ink-50)"><div class="top"><span class="num">50</span></div><span class="role">surface</span></div>
+            <div class="sw light" style="background: var(--ink-100)"><div class="top"><span class="num">100</span></div><span class="role">surface</span></div>
+            <div class="sw light" style="background: var(--ink-200)"><div class="top"><span class="num">200</span></div><span class="role">line</span></div>
+            <div class="sw light" style="background: var(--ink-300)"><div class="top"><span class="num">300</span></div><span class="role">line</span></div>
+            <div class="sw light" style="background: var(--ink-400)"><div class="top"><span class="num">400</span></div><span class="role">deco</span></div>
+            <div class="sw dark" style="background: var(--ink-500)"><div class="top"><span class="num">500</span></div><span class="role">subtle</span></div>
+            <div class="sw dark" style="background: var(--ink-600)"><div class="top"><span class="num">600</span></div><span class="role">text · aaa</span></div>
+            <div class="sw dark" style="background: var(--ink-700)"><div class="top"><span class="num">700</span></div><span class="role">deep text</span></div>
+            <div class="sw dark" style="background: var(--ink-800)"><div class="top"><span class="num">800</span><span class="star">★</span></div><span class="role">fill</span></div>
+            <div class="sw dark" style="background: var(--ink-900)"><div class="top"><span class="num">900</span></div><span class="role">fill · dark</span></div>
+            <div class="sw dark" style="background: var(--ink-950)"><div class="top"><span class="num">950</span></div><span class="role">dark surf</span></div>
+            <div class="sw dark" style="background: var(--ink-1000)"><div class="top"><span class="num">1000</span></div><span class="role">dark surf</span></div>
+          </div>
+        </div>
+
+        <!-- AMBER -->
+        <div class="scale" style="margin-bottom: 28px;">
+          <div class="meta-col">
+            <h4>Amber</h4>
+            <span class="tag" style="background: var(--amber-100); color: var(--amber-800)">Accent A · 10 Steps</span>
+            <p>Warmes Signal-Honig (Hue 75°). Spieluhr, Live-Highlight, aktive Toggles.
+              Helle Stufen sind <em>nur</em> für Flächen/Buttons; für Text auf weiß muss
+              <code>amber-800</code> verwendet werden.</p>
+            <div class="ref">Anchor: ★ <code>amber-400</code> · Bridge: DBB-Gold</div>
+          </div>
+          <div class="swatches" style="grid-template-columns: repeat(10, 1fr);">
+            <div class="sw light" style="background: var(--amber-50)"><div class="top"><span class="num">50</span></div><span class="role">surface</span></div>
+            <div class="sw light" style="background: var(--amber-100)"><div class="top"><span class="num">100</span></div><span class="role">soft bg</span></div>
+            <div class="sw light" style="background: var(--amber-200)"><div class="top"><span class="num">200</span></div><span class="role">tint</span></div>
+            <div class="sw light" style="background: var(--amber-300)"><div class="top"><span class="num">300</span></div><span class="role">deco</span></div>
+            <div class="sw light" style="background: var(--amber-400)"><div class="top"><span class="num">400</span><span class="star">★</span></div><span class="role">fill</span></div>
+            <div class="sw light" style="background: var(--amber-500)"><div class="top"><span class="num">500</span></div><span class="role">fill</span></div>
+            <div class="sw light" style="background: var(--amber-600)"><div class="top"><span class="num">600</span></div><span class="role">non-text</span></div>
+            <div class="sw dark" style="background: var(--amber-700)"><div class="top"><span class="num">700</span></div><span class="role">large text</span></div>
+            <div class="sw dark" style="background: var(--amber-800)"><div class="top"><span class="num">800</span></div><span class="role">text · aaa</span></div>
+            <div class="sw dark" style="background: var(--amber-900)"><div class="top"><span class="num">900</span></div><span class="role">deep text</span></div>
+          </div>
+        </div>
+
+        <!-- SKY -->
+        <div class="scale">
+          <div class="meta-col">
+            <h4>Sky</h4>
+            <span class="tag" style="background: var(--sky-100); color: var(--sky-800)">Accent B · 10 Steps</span>
+            <p>Kühles Court-Blau (Hue 235°). Heim-Team-Default, Info-Zustände, kühle
+              Akzent-Flächen. Wie Amber: helle Stufen sind Flächen-Tokens, dunkle Stufen Text-Tokens.</p>
+            <div class="ref">Anchor: ★ <code>sky-400</code> · Bridge: DBB-Hellblau</div>
+          </div>
+          <div class="swatches" style="grid-template-columns: repeat(10, 1fr);">
+            <div class="sw light" style="background: var(--sky-50)"><div class="top"><span class="num">50</span></div><span class="role">surface</span></div>
+            <div class="sw light" style="background: var(--sky-100)"><div class="top"><span class="num">100</span></div><span class="role">soft bg</span></div>
+            <div class="sw light" style="background: var(--sky-200)"><div class="top"><span class="num">200</span></div><span class="role">tint</span></div>
+            <div class="sw light" style="background: var(--sky-300)"><div class="top"><span class="num">300</span></div><span class="role">deco</span></div>
+            <div class="sw light" style="background: var(--sky-400)"><div class="top"><span class="num">400</span><span class="star">★</span></div><span class="role">fill</span></div>
+            <div class="sw light" style="background: var(--sky-500)"><div class="top"><span class="num">500</span></div><span class="role">fill</span></div>
+            <div class="sw dark" style="background: var(--sky-600)"><div class="top"><span class="num">600</span></div><span class="role">non-text</span></div>
+            <div class="sw dark" style="background: var(--sky-700)"><div class="top"><span class="num">700</span></div><span class="role">large text</span></div>
+            <div class="sw dark" style="background: var(--sky-800)"><div class="top"><span class="num">800</span></div><span class="role">text · aaa</span></div>
+            <div class="sw dark" style="background: var(--sky-900)"><div class="top"><span class="num">900</span></div><span class="role">deep text</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Neutrals -->
+      <div>
+        <div class="sub">Neutrals · 13 Steps · kühl</div>
+        <div class="scale">
+          <div class="meta-col">
+            <h4>Neutral</h4>
+            <span class="tag" style="background: var(--n-100); color: var(--n-700)">Surface · Linien</span>
+            <p>Leicht kühl getönt (Hue 250°). Karten, Inputs, Trennlinien.
+              <code>n-600</code> dient als AAA-Tone für sekundären Text.</p>
+            <div class="ref">Token: <code>--n-{0…1000}</code></div>
+          </div>
+          <div class="swatches">
+            <div class="sw light" style="background: var(--n-0); box-shadow: inset 0 0 0 1px var(--page-line)"><div class="top"><span class="num">0</span></div><span class="role">white</span></div>
+            <div class="sw light" style="background: var(--n-50)"><div class="top"><span class="num">50</span></div><span class="role">surf-1</span></div>
+            <div class="sw light" style="background: var(--n-100)"><div class="top"><span class="num">100</span></div><span class="role">surf-2</span></div>
+            <div class="sw light" style="background: var(--n-200)"><div class="top"><span class="num">200</span></div><span class="role">line</span></div>
+            <div class="sw light" style="background: var(--n-300)"><div class="top"><span class="num">300</span></div><span class="role">line</span></div>
+            <div class="sw light" style="background: var(--n-400)"><div class="top"><span class="num">400</span></div><span class="role">deco</span></div>
+            <div class="sw dark" style="background: var(--n-500)"><div class="top"><span class="num">500</span></div><span class="role">subtle</span></div>
+            <div class="sw dark" style="background: var(--n-600)"><div class="top"><span class="num">600</span></div><span class="role">text · aaa</span></div>
+            <div class="sw dark" style="background: var(--n-700)"><div class="top"><span class="num">700</span></div><span class="role">text</span></div>
+            <div class="sw dark" style="background: var(--n-800)"><div class="top"><span class="num">800</span></div><span class="role">dark fill</span></div>
+            <div class="sw dark" style="background: var(--n-900)"><div class="top"><span class="num">900</span></div><span class="role">dark surf</span></div>
+            <div class="sw dark" style="background: var(--n-950)"><div class="top"><span class="num">950</span></div><span class="role">dark surf</span></div>
+            <div class="sw dark" style="background: var(--n-1000)"><div class="top"><span class="num">1000</span></div><span class="role">scoreboard</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AAA AUDIT -->
+      <div>
+        <div class="sub">Accessibility Audit · WCAG 2.1 AAA <span class="pill">live</span></div>
+        <p style="font-size: 13.5px; color: var(--n-700); max-width: 720px; margin: -4px 0 16px; line-height: 1.5;">
+          Echte Kontrast-Ratios, berechnet aus den gerenderten oklch-Werten dieser Seite.
+          AAA verlangt <strong>7.0:1</strong> für Body Text, <strong>4.5:1</strong> für Large Text
+          (≥ 18 px regular oder ≥ 14 px bold) und <strong>3.0:1</strong> für grafische
+          Komponenten. Wenn du die Hue-Tweaks änderst, rechnet die Tabelle automatisch neu.
+        </p>
+        <div id="audit" class="audit">
+          <div class="audit-row head">
+            <div>Token-Paar</div>
+            <div>Vorschau</div>
+            <div style="justify-content: flex-end">Ratio</div>
+            <div class="audit-tier" style="justify-content: flex-end">Anforderung</div>
+            <div style="justify-content: center">Status</div>
+          </div>
+          <!-- rows injected by JS -->
+        </div>
+      </div>
+
+      <!-- Semantic -->
+      <div>
+        <div class="sub">Semantic Colors · jeweils fill / text / surface</div>
+        <div class="semantic-grid">
+          <div class="sem">
+            <div class="swatch-row">
+              <div style="background: var(--ok-fill); color: white;">fill</div>
+              <div style="background: var(--ok-soft); color: var(--ok-text);">soft</div>
+              <div style="background: var(--n-0); color: var(--ok-text); box-shadow: inset 0 0 0 1px var(--page-line);">text</div>
+            </div>
+            <div>
+              <div class="name">Success</div>
+              <div class="desc">Spiel gespeichert, Korb gezählt, Validierung OK.</div>
+            </div>
+            <div class="ratio"><span>ok-text</span><b id="r-ok">…</b></div>
+          </div>
+          <div class="sem">
+            <div class="swatch-row">
+              <div style="background: var(--warn-fill); color: var(--ink-1000);">fill</div>
+              <div style="background: var(--warn-soft); color: var(--warn-text);">soft</div>
+              <div style="background: var(--n-0); color: var(--warn-text); box-shadow: inset 0 0 0 1px var(--page-line);">text</div>
+            </div>
+            <div>
+              <div class="name">Warning</div>
+              <div class="desc">Bonus aktiv, 4. Teamfoul, ungespeicherte Änderungen.</div>
+            </div>
+            <div class="ratio"><span>warn-text</span><b id="r-warn">…</b></div>
+          </div>
+          <div class="sem">
+            <div class="swatch-row">
+              <div style="background: var(--err-fill); color: white;">fill</div>
+              <div style="background: var(--err-soft); color: var(--err-text);">soft</div>
+              <div style="background: var(--n-0); color: var(--err-text); box-shadow: inset 0 0 0 1px var(--page-line);">text</div>
+            </div>
+            <div>
+              <div class="name">Error</div>
+              <div class="desc">5. Foul / Disqualifikation, Sync fehlgeschlagen.</div>
+            </div>
+            <div class="ratio"><span>err-text</span><b id="r-err">…</b></div>
+          </div>
+          <div class="sem">
+            <div class="swatch-row">
+              <div style="background: var(--info-fill); color: white;">fill</div>
+              <div style="background: var(--info-soft); color: var(--info-text);">soft</div>
+              <div style="background: var(--n-0); color: var(--info-text); box-shadow: inset 0 0 0 1px var(--page-line);">text</div>
+            </div>
+            <div>
+              <div class="name">Info</div>
+              <div class="desc">Auszeit, Hinweis, neutrale Statusmeldung.</div>
+            </div>
+            <div class="ratio"><span>info-text</span><b id="r-info">…</b></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Team colors -->
+      <div>
+        <div class="sub">Team Colors · Configurable</div>
+        <div class="team-grid">
+          <div class="team heim">
+            <div>
+              <div class="label">Heim · Default</div>
+              <div class="name">Sky-700 / konfigurierbar</div>
+            </div>
+            <div class="tok">--team-heim</div>
+          </div>
+          <div class="team gast">
+            <div>
+              <div class="label">Gast · Default</div>
+              <div class="name">Court-Red / konfigurierbar</div>
+            </div>
+            <div class="tok">--team-gast</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme comparison -->
+      <div>
+        <div class="sub">Theme Tokens · Light &amp; Dark</div>
+        <div class="theme-pair">
+          <div class="theme-card light">
+            <div class="badge">Light · Web</div>
+            <h5>Surface · Foreground · Brand</h5>
+            <div class="theme-tokens">
+              <div class="t" style="background: var(--n-0); color: var(--n-700); box-shadow: inset 0 0 0 1px var(--page-line);">surf-0</div>
+              <div class="t" style="background: var(--n-50); color: var(--n-700);">surf-1</div>
+              <div class="t" style="background: var(--n-100); color: var(--n-700);">surf-2</div>
+              <div class="t" style="background: var(--ink-900); color: var(--n-100);">fg-strong</div>
+              <div class="t" style="background: var(--ink-600); color: var(--n-100);">fg-body</div>
+              <div class="t" style="background: var(--n-600); color: var(--n-50);">fg-mute</div>
+              <div class="t" style="background: var(--ink-800); color: var(--n-50);">btn-pri</div>
+              <div class="t" style="background: var(--amber-400); color: var(--ink-1000);">amber</div>
+              <div class="t" style="background: var(--sky-400); color: var(--ink-1000);">sky</div>
+              <div class="t" style="background: var(--ok-fill); color: white;">ok</div>
+              <div class="t" style="background: var(--warn-fill); color: var(--ink-1000);">warn</div>
+              <div class="t" style="background: var(--err-fill); color: white;">err</div>
+            </div>
+          </div>
+          <div class="theme-card dark">
+            <div class="badge">Dark · Tisch / TV</div>
+            <h5>Surface · Foreground · Brand</h5>
+            <div class="theme-tokens">
+              <div class="t" style="background: var(--n-1000); color: var(--n-300); box-shadow: inset 0 0 0 1px var(--n-800);">surf-0</div>
+              <div class="t" style="background: var(--n-950); color: var(--n-300);">surf-1</div>
+              <div class="t" style="background: var(--n-900); color: var(--n-300);">surf-2</div>
+              <div class="t" style="background: var(--n-50); color: var(--n-900);">fg-strong</div>
+              <div class="t" style="background: var(--n-200); color: var(--n-900);">fg-body</div>
+              <div class="t" style="background: var(--n-400); color: var(--n-1000);">fg-mute</div>
+              <div class="t" style="background: var(--n-50); color: var(--ink-1000);">btn-pri</div>
+              <div class="t" style="background: var(--amber-400); color: var(--ink-1000);">amber</div>
+              <div class="t" style="background: var(--sky-400); color: var(--ink-1000);">sky</div>
+              <div class="t" style="background: oklch(0.65 0.15 150); color: var(--ink-1000);">ok</div>
+              <div class="t" style="background: oklch(0.78 0.17 75);  color: var(--ink-1000);">warn</div>
+              <div class="t" style="background: oklch(0.65 0.22 27);  color: var(--ink-1000);">err</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 02 — TYPOGRAPHY -->
+  <section class="s" data-screen-label="02 Typography">
+    <div class="s-head">
+      <div class="s-num">02 — Typography</div>
+      <div class="s-title">
+        <h2>Tabular für Zahlen, ruhig für Text.</h2>
+        <p>
+          Sora trägt die großen Zahlen — Spielstand, Trikotnummern, Headlines. Manrope übernimmt
+          UI und Fließtext mit guter Lesbarkeit auf jedem Screen. JetBrains Mono ist allein für die
+          Spieluhr und tabellarische Daten reserviert. Alle drei sind Google Fonts und kostenlos.
+          Mindestgrößen: Body 15 px, Touch-Labels 14 px, Display 24 px+.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <!-- Family overview -->
+      <div>
+        <div class="sub">Type Families</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+          <div style="border: 1px solid var(--page-line); border-radius: 14px; padding: 24px; background: var(--n-0);">
+            <div style="font-family: var(--font-display); font-weight: 700; font-size: 58px; letter-spacing: -0.04em; line-height: 0.95; color: var(--ink-900);">Sora</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--page-mute); margin-top: 8px; letter-spacing: 0.06em; text-transform: uppercase;">Display · Heading</div>
+            <div style="font-size: 13px; color: var(--n-700); margin-top: 14px; line-height: 1.45;">Geometrische Sans mit kräftigen Strichen. Eingesetzt für Scores, Headlines und Trikotnummern.</div>
+            <div style="font-family: var(--font-display); font-weight: 400; margin-top: 14px; color: var(--n-700);">300 / 400 / 600 / 700 / 800</div>
+          </div>
+          <div style="border: 1px solid var(--page-line); border-radius: 14px; padding: 24px; background: var(--n-0);">
+            <div style="font-family: var(--font-body); font-weight: 600; font-size: 58px; letter-spacing: -0.02em; line-height: 0.95; color: var(--ink-900);">Manrope</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--page-mute); margin-top: 8px; letter-spacing: 0.06em; text-transform: uppercase;">Body · UI</div>
+            <div style="font-size: 13px; color: var(--n-700); margin-top: 14px; line-height: 1.45;">Humanistische Sans, weich genug für lange Texte, präzise genug für Buttons und Labels.</div>
+            <div style="font-family: var(--font-body); font-weight: 400; margin-top: 14px; color: var(--n-700);">400 / 500 / 600 / 700</div>
+          </div>
+          <div style="border: 1px solid var(--page-line); border-radius: 14px; padding: 24px; background: var(--n-0);">
+            <div style="font-family: var(--font-mono); font-weight: 700; font-size: 50px; letter-spacing: -0.03em; line-height: 0.95; font-variant-numeric: tabular-nums; color: var(--ink-900);">10:00</div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: var(--page-mute); margin-top: 8px; letter-spacing: 0.06em; text-transform: uppercase;">Clock · Data</div>
+            <div style="font-size: 13px; color: var(--n-700); margin-top: 14px; line-height: 1.45;">JetBrains Mono. Strikt tabular, perfekt für Spieluhr, Shot Clock und Statistik-Tabellen.</div>
+            <div style="font-family: var(--font-mono); margin-top: 14px; color: var(--n-700);">500 / 700</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Type scale -->
+      <div>
+        <div class="sub">Scale</div>
+        <div class="type-stack">
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Display · XL</div>
+              <div class="spec">Sora 800 · 88/0.9 · -4%</div>
+              <div class="role">Scoreboard, Spielstand, TV-Anzeige</div>
+            </div>
+            <div class="sample"><span class="ts-display">87 : 64</span></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Clock · Mono</div>
+              <div class="spec">JetBrains Mono 700 · 64 · tnum</div>
+              <div class="role">Spieluhr &amp; Shot Clock</div>
+            </div>
+            <div class="sample"><span class="ts-mono" style="color: var(--amber-800)">07:42<span style="color: var(--ink-700); margin-left: 24px;">·24</span></span></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Heading · H1</div>
+              <div class="spec">Sora 700 · 44/1.05 · -2.5%</div>
+              <div class="role">Seitentitel</div>
+            </div>
+            <div class="sample"><div class="ts-h1">Spielbericht erstellen</div></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Heading · H2</div>
+              <div class="spec">Sora 600 · 28/1.15 · -1.5%</div>
+              <div class="role">Sektionsüberschriften</div>
+            </div>
+            <div class="sample"><div class="ts-h2">Mannschaftsaufstellung</div></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Heading · H3</div>
+              <div class="spec">Sora 600 · 20/1.25 · -1%</div>
+              <div class="role">Karten-Header</div>
+            </div>
+            <div class="sample"><div class="ts-h3">Heim &mdash; Auswechslungen 2. Viertel</div></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Body · Large</div>
+              <div class="spec">Manrope 400 · 18/1.55 · AAA ≥ 4.5:1</div>
+              <div class="role">Lead-Text, Lerninhalte</div>
+            </div>
+            <div class="sample"><div class="ts-body-lg">Im Falle eines unentschiedenen Spielstands wird eine Verlängerung von fünf Minuten gespielt. Weitere Verlängerungen folgen bis zur Entscheidung.</div></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Body · Default</div>
+              <div class="spec">Manrope 400 · 15/1.55 · AAA ≥ 7:1</div>
+              <div class="role">Fließtext, Formulare</div>
+            </div>
+            <div class="sample"><div class="ts-body">Wähle die Schiedsrichter aus der Liste oder erfasse sie manuell. Die Daten werden mit dem Vereinsregister abgeglichen, sobald wieder eine Verbindung besteht.</div></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Body · Small</div>
+              <div class="spec">Manrope 400 · 13/1.5 · AAA ≥ 7:1</div>
+              <div class="role">Hilfetexte, Fußnoten</div>
+            </div>
+            <div class="sample"><div class="ts-small" style="color: var(--n-600)">Offline gespeichert · letzte Synchronisation vor 4 Minuten.</div></div>
+          </div>
+
+          <div class="type-row">
+            <div class="info">
+              <div class="name">Label · UI</div>
+              <div class="spec">Manrope 600 · 12 · uppercase · AAA ≥ 7:1</div>
+              <div class="role">Buttons, Tabs, Badges</div>
+            </div>
+            <div class="sample"><div class="ts-label">Spiel starten · Auszeit · Foul erfassen</div></div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 03 — COMPONENTS -->
+  <section class="s" data-screen-label="03 Components">
+    <div class="s-head">
+      <div class="s-num">03 — Components</div>
+      <div class="s-title">
+        <h2>Eine Karte, zwei Welten.</h2>
+        <p>
+          Ein Beispiel-Modul aus dem Spielbericht — derselbe Aufbau, einmal hell für Web-Apps,
+          einmal dunkel für Kampfgericht und Scoreboard. Buttons folgen einer klaren Hierarchie:
+          <strong>Primary</strong> ist immer Ink (höchster Kontrast),
+          <strong>Amber</strong> ist Signal-CTA (z. B. „Korb erfassen"), <strong>Danger</strong>
+          ist Error-Red.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <div>
+        <div class="sub">Scoreboard Card · Spielbericht</div>
+        <div class="preview-pair">
+
+          <!-- LIGHT -->
+          <article class="light">
+            <div class="preview-header">
+              <span>Spielbericht · Q3</span>
+              <span class="ctx"><span class="ctx-dot"></span> Live</span>
+            </div>
+
+            <div class="scoreboard">
+              <div class="team-side">
+                <div class="team-tag"><span class="heim-dot"></span> Heim</div>
+                <div class="team-name">TSV Tröster Breitengüßbach</div>
+                <div class="score-row tnum">
+                  <span class="score">87</span>
+                  <span class="delta">+5</span>
+                </div>
+              </div>
+              <div class="center">
+                <div class="quarter">Q3</div>
+                <div class="clock tnum">07:42</div>
+                <div class="shot tnum">24</div>
+              </div>
+              <div class="team-side gast">
+                <div class="team-tag">Gast <span class="gast-dot"></span></div>
+                <div class="team-name">USC Heidelberg</div>
+                <div class="score-row tnum">
+                  <span class="score">64</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="fouls">
+              <div class="foul-card">
+                <span class="label">Heim · Teamfouls</span>
+                <div class="dots">
+                  <span class="dot on"></span><span class="dot on"></span>
+                  <span class="dot on"></span><span class="dot warn"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+              <div class="foul-card">
+                <span class="label">Gast · Teamfouls</span>
+                <div class="dots">
+                  <span class="dot on"></span><span class="dot on"></span>
+                  <span class="dot"></span><span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="badge-strip">
+              <span class="chip s-ok">Gespeichert</span>
+              <span class="chip s-warn">Bonus aktiv</span>
+              <span class="chip s-info">Auszeit Gast</span>
+              <span class="chip s-trikot">14</span>
+              <span class="chip s-trikot gast">23</span>
+            </div>
+
+            <div class="actions">
+              <button class="btn amber">Korb erfassen</button>
+              <button class="btn primary">Auswechslung</button>
+              <button class="btn secondary">Auszeit</button>
+              <button class="btn danger">Disqualifikation</button>
+            </div>
+          </article>
+
+          <!-- DARK -->
+          <article class="dark">
+            <div class="preview-header">
+              <span>Spielbericht · Q3</span>
+              <span class="ctx"><span class="ctx-dot"></span> Live</span>
+            </div>
+
+            <div class="scoreboard">
+              <div class="team-side">
+                <div class="team-tag"><span class="heim-dot"></span> Heim</div>
+                <div class="team-name">TSV Tröster Breitengüßbach</div>
+                <div class="score-row tnum">
+                  <span class="score">87</span>
+                  <span class="delta">+5</span>
+                </div>
+              </div>
+              <div class="center">
+                <div class="quarter">Q3</div>
+                <div class="clock tnum">07:42</div>
+                <div class="shot tnum">24</div>
+              </div>
+              <div class="team-side gast">
+                <div class="team-tag">Gast <span class="gast-dot"></span></div>
+                <div class="team-name">USC Heidelberg</div>
+                <div class="score-row tnum">
+                  <span class="score">64</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="fouls">
+              <div class="foul-card">
+                <span class="label">Heim · Teamfouls</span>
+                <div class="dots">
+                  <span class="dot on"></span><span class="dot on"></span>
+                  <span class="dot on"></span><span class="dot warn"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+              <div class="foul-card">
+                <span class="label">Gast · Teamfouls</span>
+                <div class="dots">
+                  <span class="dot on"></span><span class="dot on"></span>
+                  <span class="dot"></span><span class="dot"></span>
+                  <span class="dot"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="badge-strip">
+              <span class="chip s-ok">Gespeichert</span>
+              <span class="chip s-warn">Bonus aktiv</span>
+              <span class="chip s-info">Auszeit Gast</span>
+              <span class="chip s-trikot">14</span>
+              <span class="chip s-trikot gast">23</span>
+            </div>
+
+            <div class="actions">
+              <button class="btn amber">Korb erfassen</button>
+              <button class="btn primary">Auswechslung</button>
+              <button class="btn secondary">Auszeit</button>
+              <button class="btn danger">Disqualifikation</button>
+            </div>
+          </article>
+
+        </div>
+      </div>
+
+      <!-- Touch targets -->
+      <div>
+        <div class="sub">Touch Targets · Sporthallen-Tauglich</div>
+        <div class="touch-grid">
+          <div class="touch">
+            <div class="ring s">44</div>
+            <div>
+              <div class="label">Minimum · sm</div>
+              <div class="specs">44 × 44 px</div>
+            </div>
+            <div class="desc">WCAG-Untergrenze. Nur für sekundäre Web-Kontrollen — niemals für Live-Aktionen am Kampfgericht.</div>
+          </div>
+          <div class="touch">
+            <div class="ring m">56</div>
+            <div>
+              <div class="label">Default · md</div>
+              <div class="specs">56 × 56 px</div>
+            </div>
+            <div class="desc">Standard für UI-Buttons in den Web-Apps und auf Trainer-Tablets.</div>
+          </div>
+          <div class="touch">
+            <div class="ring l">64</div>
+            <div>
+              <div class="label">Hallen-Touch · lg</div>
+              <div class="specs">64 × 64 px</div>
+            </div>
+            <div class="desc">Pflicht für Live-Aktionen im Kampfgericht-Modus. Schweiß, Handschuhe, hektische Spielphasen.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Spacing -->
+      <div>
+        <div class="sub">Spacing Scale · 4 px Basis</div>
+        <div class="space-grid">
+          <div class="space-cell"><div class="swatch" style="width: 4px; height: 4px;"></div><div><div class="name">space-1</div><div class="val">4 px</div></div></div>
+          <div class="space-cell"><div class="swatch" style="width: 8px; height: 8px;"></div><div><div class="name">space-2</div><div class="val">8 px</div></div></div>
+          <div class="space-cell"><div class="swatch" style="width: 12px; height: 12px;"></div><div><div class="name">space-3</div><div class="val">12 px</div></div></div>
+          <div class="space-cell"><div class="swatch" style="width: 16px; height: 16px;"></div><div><div class="name">space-4</div><div class="val">16 px</div></div></div>
+          <div class="space-cell"><div class="swatch" style="width: 24px; height: 24px;"></div><div><div class="name">space-6</div><div class="val">24 px</div></div></div>
+          <div class="space-cell"><div class="swatch" style="width: 32px; height: 32px;"></div><div><div class="name">space-8</div><div class="val">32 px</div></div></div>
+          <div class="space-cell"><div class="swatch" style="width: 48px; height: 48px;"></div><div><div class="name">space-12</div><div class="val">48 px</div></div></div>
+          <div class="space-cell"><div class="swatch" style="width: 64px; height: 64px;"></div><div><div class="name">space-16</div><div class="val">64 px</div></div></div>
+        </div>
+      </div>
+
+      <!-- Radius -->
+      <div>
+        <div class="sub">Border Radius Scale</div>
+        <div class="radius-grid">
+          <div class="radius-cell"><div class="demo" style="border-radius: 0;"></div><div><div class="name">radius-none</div><div class="val">0 px</div></div></div>
+          <div class="radius-cell"><div class="demo" style="border-radius: 4px;"></div><div><div class="name">radius-sm</div><div class="val">4 px · chips</div></div></div>
+          <div class="radius-cell"><div class="demo" style="border-radius: 8px;"></div><div><div class="name">radius-md</div><div class="val">8 px · inputs</div></div></div>
+          <div class="radius-cell"><div class="demo" style="border-radius: 12px;"></div><div><div class="name">radius-lg</div><div class="val">12 px · cards</div></div></div>
+          <div class="radius-cell"><div class="demo" style="border-radius: 18px;"></div><div><div class="name">radius-xl</div><div class="val">18 px · panels</div></div></div>
+          <div class="radius-cell"><div class="demo" style="border-radius: 999px;"></div><div><div class="name">radius-full</div><div class="val">∞ · avatars</div></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="foot">
+    <span class="iter">v0.3 — Standalone Identity · WCAG 2.1 AAA</span> &nbsp;·&nbsp;
+    Ink · Amber · Sky &nbsp;·&nbsp; DBB-Compat ein Preset entfernt
+  </div>
+
+</div>
+
+<!-- ──────────────────────────────────────────────────────────────
+     AAA CONTRAST AUDIT — computed at runtime against the real
+     painted colors so any Tweak-driven hue/chroma change re-runs.
+     ────────────────────────────────────────────────────────────── -->
+<script>
+(() => {
+  // sRGB → relative luminance per WCAG 2.x
+  const lum = ([r, g, b]) => {
+    const s = (c) => {
+      const v = c / 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    };
+    return 0.2126 * s(r) + 0.7152 * s(g) + 0.0722 * s(b);
+  };
+  const ratio = (a, b) => {
+    const la = lum(a), lb = lum(b);
+    return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+  };
+
+  // Resolve any CSS color string to its painted sRGB triple via canvas.
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = 1;
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
+  const resolve = (color) => {
+    ctx.clearRect(0, 0, 1, 1);
+    ctx.fillStyle = '#000';
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, 1, 1);
+    return Array.from(ctx.getImageData(0, 0, 1, 1).data.slice(0, 3));
+  };
+  const tok = (name) => {
+    const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    return resolve(v || '#000');
+  };
+
+  // Audit table data — token-pair, semantic role, requirement
+  const PAIRS = [
+    { fg: '--ink-600',  bg: '--n-0',     label: 'Body Text',    sample: 'Spielbericht speichern',   tier: 'body',  req: 7.0 },
+    { fg: '--ink-700',  bg: '--n-0',     label: 'Strong Text',  sample: 'Spielstand 87 : 64',       tier: 'body',  req: 7.0 },
+    { fg: '--n-600',    bg: '--n-0',     label: 'Muted Text',   sample: 'Vor 4 Minuten synchronisiert', tier: 'body', req: 7.0 },
+    { fg: '--amber-800',bg: '--n-0',     label: 'Amber Text',   sample: 'Live · Q3 · 07:42',        tier: 'body',  req: 7.0 },
+    { fg: '--sky-800',  bg: '--n-0',     label: 'Sky Text',     sample: 'Heim · TSV Tröster',       tier: 'body',  req: 7.0 },
+    { fg: '--ok-text',  bg: '--ok-soft', label: 'Success Chip', sample: 'Gespeichert',              tier: 'body',  req: 7.0 },
+    { fg: '--warn-text',bg: '--warn-soft',label:'Warning Chip', sample: 'Bonus aktiv',              tier: 'body',  req: 7.0 },
+    { fg: '--err-text', bg: '--err-soft',label: 'Error Chip',   sample: 'Sync fehlgeschlagen',      tier: 'body',  req: 7.0 },
+    { fg: '#ffffff',    bg: '--ink-800', label: 'Primary Button',sample: 'Auswechslung',            tier: 'body',  req: 7.0 },
+    { fg: '--ink-1000', bg: '--amber-400',label:'Amber CTA',    sample: 'Korb erfassen',            tier: 'body',  req: 7.0 },
+    { fg: '#ffffff',    bg: '--err-button',label:'Danger Button',sample: 'Disqualifikation',         tier: 'body',  req: 7.0 },
+    { fg: '--amber-400',bg: '--n-1000',  label: 'Clock · Dark', sample: '07 : 42',                  tier: 'large', req: 4.5 },
+    { fg: '--n-100',    bg: '--n-1000',  label: 'Dark Body',    sample: 'Spielbericht · Q3',        tier: 'body',  req: 7.0 },
+    { fg: '--sky-400',  bg: '--n-1000',  label: 'Heim Dot Dark',sample: 'UI element',               tier: 'ui',    req: 3.0 },
+  ];
+
+  const tierLabel = (t) => ({ body: 'AAA · 7.0:1', large: 'AAA-large · 4.5:1', ui: 'UI · 3.0:1' }[t]);
+  const verdict = (r, req) => {
+    if (r >= req) return { cls: 'pass',    txt: 'AAA' };
+    if (r >= req * 0.65) return { cls: 'pass-aa', txt: 'AA' };
+    return { cls: 'fail', txt: 'Fail' };
+  };
+
+  const render = () => {
+    const root = document.getElementById('audit');
+    if (!root) return;
+    // wipe rows except header
+    [...root.querySelectorAll('.audit-row:not(.head)')].forEach((e) => e.remove());
+
+    PAIRS.forEach((p) => {
+      const fg = p.fg.startsWith('--') ? tok(p.fg) : resolve(p.fg);
+      const bg = p.bg.startsWith('--') ? tok(p.bg) : resolve(p.bg);
+      const r = ratio(fg, bg);
+      const v = verdict(r, p.req);
+      const fgCss = p.fg.startsWith('--') ? `var(${p.fg})` : p.fg;
+      const bgCss = p.bg.startsWith('--') ? `var(${p.bg})` : p.bg;
+      const row = document.createElement('div');
+      row.className = 'audit-row';
+      row.innerHTML = `
+        <div class="audit-spec">
+          <span><b>${p.label}</b></span>
+          <span>${p.fg} on ${p.bg}</span>
+        </div>
+        <div class="audit-sample ${p.tier === 'large' ? 'lg' : ''}"
+             style="background: ${bgCss}; color: ${fgCss}; border-radius: 6px; padding: 8px 12px; margin: 8px 0;">
+          ${p.sample}
+        </div>
+        <div class="audit-ratio">${r.toFixed(2)} : 1</div>
+        <div class="audit-tier">${tierLabel(p.tier)}</div>
+        <div class="audit-badge"><span class="${v.cls}">${v.txt}</span></div>`;
+      root.appendChild(row);
+    });
+
+    // Semantic chip ratios
+    const sem = [
+      { id: 'r-ok',   fg: '--ok-text',   bg: '--ok-soft' },
+      { id: 'r-warn', fg: '--warn-text', bg: '--warn-soft' },
+      { id: 'r-err',  fg: '--err-text',  bg: '--err-soft' },
+      { id: 'r-info', fg: '--info-text', bg: '--info-soft' },
+    ];
+    sem.forEach((s) => {
+      const r = ratio(tok(s.fg), tok(s.bg));
+      const el = document.getElementById(s.id);
+      if (el) el.textContent = r.toFixed(2) + ':1';
+    });
+  };
+
+  // Recompute on first paint and whenever hues change.
+  const run = () => requestAnimationFrame(render);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', run);
+  } else {
+    run();
+  }
+  window.addEventListener('tweakchange', run);
+})();
+</script>
+
+<!-- TWEAKS ISLAND -->
+<div id="tweaks-root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+const DSS_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "brandPreset": "standalone",
+  "inkHue": 60,
+  "amberHue": 83,
+  "skyHue": 244,
+  "typePairing": "sora-manrope"
+}/*EDITMODE-END*/;
+
+const FONT_PAIRINGS = {
+  "sora-manrope":   { display: "'Sora'",          body: "'Manrope'",       label: "Sora + Manrope" },
+  "archivo-plex":   { display: "'Archivo'",       body: "'IBM Plex Sans'", label: "Archivo + IBM Plex" },
+  "space-manrope":  { display: "'Space Grotesk'", body: "'Manrope'",       label: "Space Grotesk + Manrope" },
+};
+
+const PRESETS = {
+  standalone: { inkHue: 60, amberHue: 75, skyHue: 235, label: "Standalone" },
+  "dbb-compat": { inkHue: 0,  amberHue: 90, skyHue: 225, label: "DBB-Compat (S/W/Gold/Hellblau)" },
+};
+
+function DSSTweaks() {
+  const [t, setTweak] = useTweaks(DSS_TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    const r = document.documentElement;
+    r.style.setProperty('--h-ink',   t.inkHue);
+    r.style.setProperty('--h-amber', t.amberHue);
+    r.style.setProperty('--h-sky',   t.skyHue);
+    const pair = FONT_PAIRINGS[t.typePairing] || FONT_PAIRINGS["sora-manrope"];
+    r.style.setProperty('--font-display', pair.display + ", system-ui, sans-serif");
+    r.style.setProperty('--font-heading', pair.display + ", system-ui, sans-serif");
+    r.style.setProperty('--font-body',    pair.body    + ", system-ui, sans-serif");
+  }, [t]);
+
+  const applyPreset = (p) => {
+    const preset = PRESETS[p];
+    setTweak({
+      brandPreset: p,
+      inkHue:   preset.inkHue,
+      amberHue: preset.amberHue,
+      skyHue:   preset.skyHue,
+    });
+  };
+
+  return (
+    <TweaksPanel title="DSS Identity Tweaks">
+      <TweakSection label="Brand Preset">
+        <TweakSelect label="Identität" value={t.brandPreset}
+          options={Object.entries(PRESETS).map(([v, p]) => ({ value: v, label: p.label }))}
+          onChange={applyPreset} />
+      </TweakSection>
+      <TweakSection label="Hue · Fine Tune">
+        <TweakSlider label="Ink hue" value={t.inkHue} min={0} max={120} step={1} unit="°"
+          onChange={(v) => setTweak('inkHue', v)} />
+        <TweakSlider label="Amber hue" value={t.amberHue} min={30} max={100} step={1} unit="°"
+          onChange={(v) => setTweak('amberHue', v)} />
+        <TweakSlider label="Sky hue" value={t.skyHue} min={200} max={260} step={1} unit="°"
+          onChange={(v) => setTweak('skyHue', v)} />
+      </TweakSection>
+      <TweakSection label="Typography">
+        <TweakSelect label="Pairing" value={t.typePairing}
+          options={Object.entries(FONT_PAIRINGS).map(([v, p]) => ({ value: v, label: p.label }))}
+          onChange={(v) => setTweak('typePairing', v)} />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<DSSTweaks />);
+</script>
+
+</body>
+</html>

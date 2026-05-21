@@ -1,0 +1,3211 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DSS Design System — Forms v0.1</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+<style>
+  /* ── DSS Tokens (synced v0.3 · Amber 83° / Sky 244°) ────────── */
+  :root {
+    --h-ink: 60;
+    --h-amber: 83;
+    --h-sky: 244;
+
+    --ink-0:    oklch(1.000 0     0);
+    --ink-50:   oklch(0.985 0.003 var(--h-ink));
+    --ink-100:  oklch(0.965 0.005 var(--h-ink));
+    --ink-200:  oklch(0.925 0.007 var(--h-ink));
+    --ink-300:  oklch(0.850 0.009 var(--h-ink));
+    --ink-400:  oklch(0.700 0.011 var(--h-ink));
+    --ink-500:  oklch(0.560 0.012 var(--h-ink));
+    --ink-600:  oklch(0.420 0.013 var(--h-ink));
+    --ink-700:  oklch(0.300 0.012 var(--h-ink));
+    --ink-800:  oklch(0.200 0.010 var(--h-ink));
+    --ink-900:  oklch(0.130 0.008 var(--h-ink));
+    --ink-1000: oklch(0.020 0.004 var(--h-ink));
+
+    --amber-50:   oklch(0.975 0.025 var(--h-amber));
+    --amber-100:  oklch(0.940 0.060 var(--h-amber));
+    --amber-200:  oklch(0.880 0.110 var(--h-amber));
+    --amber-300:  oklch(0.830 0.145 var(--h-amber));
+    --amber-400:  oklch(0.800 0.165 var(--h-amber));
+    --amber-500:  oklch(0.760 0.165 var(--h-amber));
+    --amber-600:  oklch(0.660 0.150 calc(var(--h-amber) - 5));
+    --amber-700:  oklch(0.540 0.130 calc(var(--h-amber) - 10));
+    --amber-800:  oklch(0.420 0.110 calc(var(--h-amber) - 20));
+    --amber-900:  oklch(0.290 0.080 calc(var(--h-amber) - 25));
+
+    --sky-50:   oklch(0.975 0.018 var(--h-sky));
+    --sky-100:  oklch(0.940 0.045 var(--h-sky));
+    --sky-200:  oklch(0.880 0.080 var(--h-sky));
+    --sky-300:  oklch(0.820 0.110 var(--h-sky));
+    --sky-400:  oklch(0.760 0.125 var(--h-sky));
+    --sky-500:  oklch(0.680 0.140 calc(var(--h-sky) + 2));
+    --sky-700:  oklch(0.450 0.135 calc(var(--h-sky) + 8));
+    --sky-800:  oklch(0.345 0.120 calc(var(--h-sky) + 12));
+
+    --n-0:    oklch(1.000 0     0);
+    --n-50:   oklch(0.985 0.003 250);
+    --n-100:  oklch(0.965 0.005 250);
+    --n-200:  oklch(0.925 0.006 250);
+    --n-300:  oklch(0.860 0.008 250);
+    --n-400:  oklch(0.700 0.010 250);
+    --n-500:  oklch(0.520 0.011 250);
+    --n-600:  oklch(0.420 0.011 250);
+    --n-700:  oklch(0.320 0.010 250);
+    --n-800:  oklch(0.215 0.009 250);
+    --n-900:  oklch(0.145 0.008 250);
+    --n-950:  oklch(0.085 0.006 250);
+    --n-1000: oklch(0.025 0.004 250);
+
+    --ok-fill: oklch(0.640 0.150 150);
+    --ok-text: oklch(0.400 0.130 150);
+    --ok-soft: oklch(0.960 0.040 150);
+    --warn-fill: oklch(0.770 0.165 75);
+    --warn-text: oklch(0.420 0.120 60);
+    --warn-soft: oklch(0.970 0.055 80);
+    --err-fill: oklch(0.580 0.220 27);
+    --err-button: oklch(0.400 0.190 27);
+    --err-text: oklch(0.420 0.180 27);
+    --err-soft: oklch(0.955 0.045 27);
+    --info-fill: oklch(0.620 0.140 245);
+    --info-text: oklch(0.380 0.130 245);
+    --info-soft: oklch(0.955 0.035 245);
+
+    --team-heim: var(--sky-700);
+    --team-gast: oklch(0.520 0.180 25);
+
+    --font-display: 'Sora', system-ui, sans-serif;
+    --font-body:    'Manrope', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+    --page-bg:   var(--n-50);
+    --page-fg:   var(--ink-900);
+    --page-mute: var(--n-600);
+    --page-line: var(--n-200);
+
+    /* Field tokens — density-driven */
+    --fld-h-touch:   56px;
+    --fld-h-default: 44px;
+    --fld-h-compact: 36px;
+
+    --fld-h: var(--fld-h-default);
+    --fld-px: 14px;
+    --fld-radius: 8px;
+    --fld-border: 1px;
+
+    --fld-bg: var(--n-0);
+    --fld-border-color: var(--n-300);
+    --fld-fg: var(--ink-900);
+    --fld-placeholder: var(--n-500);
+    --fld-label: var(--ink-800);
+    --fld-help: var(--n-600);
+
+    --ring-w: 3px;
+    --ring-color: oklch(0.82 0.10 var(--h-sky));
+    --focus-border: var(--ink-800);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page-bg);
+    color: var(--page-fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ── Page shell ─────────────────────────────────────────────── */
+  .page { max-width: 1280px; margin: 0 auto; padding: 56px 56px 120px; }
+
+  .topstrip {
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--page-mute);
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .topstrip .left { display: flex; gap: 14px; align-items: center; }
+  .topstrip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber-500); display: inline-block; }
+  .topstrip .monogram {
+    width: 22px; height: 22px; border-radius: 5px;
+    background: var(--ink-800); color: var(--n-0);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 11px;
+    letter-spacing: -0.02em;
+  }
+  .topstrip a {
+    color: inherit; text-decoration: none;
+    padding: 4px 8px; border-radius: 5px;
+    background: var(--ink-100);
+    transition: background 0.12s;
+  }
+  .topstrip a:hover { background: var(--ink-200); }
+  .topstrip .links { display: flex; gap: 8px; }
+
+  /* ── Hero ───────────────────────────────────────────────────── */
+  .hero { padding: 48px 0 56px; border-bottom: 1px solid var(--page-line); }
+  .hero .eyebrow {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--amber-800);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(40px, 5.5vw, 76px);
+    letter-spacing: -0.035em; line-height: 0.98;
+    margin: 0 0 20px;
+    color: var(--ink-900);
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(180deg, var(--amber-700), var(--amber-800));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .lead {
+    max-width: 720px; font-size: 17px; line-height: 1.55;
+    color: var(--n-700); text-wrap: pretty;
+  }
+
+  /* ── Sections ───────────────────────────────────────────────── */
+  section.s { padding: 72px 0; border-bottom: 1px solid var(--page-line); }
+  .s-head {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 32px; align-items: baseline;
+    margin-bottom: 36px;
+  }
+  .s-num {
+    font-family: var(--font-mono);
+    font-size: 12px; letter-spacing: 0.06em;
+    color: var(--amber-800);
+    padding-top: 8px;
+  }
+  .s-title h2 {
+    font-family: var(--font-display);
+    font-weight: 700; font-size: 34px;
+    letter-spacing: -0.02em; line-height: 1.08;
+    margin: 0 0 10px;
+    color: var(--ink-900);
+  }
+  .s-title p {
+    margin: 0; color: var(--n-700);
+    font-size: 15.5px; max-width: 720px;
+    text-wrap: pretty;
+  }
+  .s-body { display: flex; flex-direction: column; gap: 40px; }
+
+  .sub {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--page-mute);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sub::after { content: ''; flex: 1; height: 1px; background: var(--page-line); }
+  .sub .pill {
+    background: var(--ink-100); color: var(--ink-700);
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 9.5px; letter-spacing: 0.08em;
+    text-transform: uppercase; font-weight: 600;
+    white-space: nowrap;
+  }
+  .sub .pill.amber { background: var(--amber-100); color: var(--amber-800); }
+  .sub .pill.sky { background: var(--sky-100); color: var(--sky-800); }
+
+  /* ── Frame card ─────────────────────────────────────────────── */
+  .frame {
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    background: var(--n-0);
+    overflow: hidden;
+  }
+  .frame.pop { overflow: visible; }
+  .frame-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--page-line);
+    background: var(--n-50);
+  }
+  .frame-head h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600; font-size: 16px;
+    color: var(--ink-900);
+    letter-spacing: -0.005em;
+  }
+  .frame-head .meta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    display: flex; gap: 14px; align-items: center;
+  }
+  .frame-body { padding: 28px 32px; }
+
+  /* ════════════════════════════════════════════════════════════
+     FIELD PRIMITIVES
+     ════════════════════════════════════════════════════════════ */
+
+  /* Field group: label · input · help/error */
+  .field {
+    display: flex; flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+  }
+  .field-label {
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 12.5px;
+    color: var(--fld-label);
+    letter-spacing: 0.02em;
+    display: flex; align-items: baseline; gap: 6px;
+  }
+  .field-label .req {
+    color: var(--err-text);
+    font-weight: 700;
+  }
+  .field-label .opt {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--n-500);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-left: auto;
+  }
+  .field-help {
+    font-size: 12px;
+    color: var(--fld-help);
+    line-height: 1.4;
+    display: flex; align-items: flex-start; gap: 6px;
+  }
+  .field-help.err   { color: var(--err-text); font-weight: 500; }
+  .field-help.ok    { color: var(--ok-text); font-weight: 500; }
+  .field-help.warn  { color: var(--warn-text); font-weight: 500; }
+  .field-help svg { flex-shrink: 0; margin-top: 1px; }
+
+  /* Input base */
+  .input {
+    appearance: none; -webkit-appearance: none;
+    width: 100%;
+    height: var(--fld-h);
+    padding: 0 var(--fld-px);
+    background: var(--fld-bg);
+    color: var(--fld-fg);
+    border: var(--fld-border) solid var(--fld-border-color);
+    border-radius: var(--fld-radius);
+    font-family: var(--font-body); font-size: 15px;
+    line-height: 1;
+    outline: 0;
+    transition: border-color 0.14s, box-shadow 0.14s, background 0.14s;
+  }
+  .input::placeholder { color: var(--fld-placeholder); }
+  .input:hover { border-color: var(--n-400); }
+  .input:focus,
+  .input:focus-visible {
+    border-color: var(--focus-border);
+    box-shadow: 0 0 0 var(--ring-w) var(--ring-color);
+  }
+  .input:disabled {
+    background: var(--n-100);
+    color: var(--n-500);
+    cursor: not-allowed;
+    border-color: var(--n-200);
+  }
+  .input[readonly] {
+    background: var(--n-50);
+    color: var(--ink-700);
+    cursor: default;
+  }
+
+  /* State variants */
+  .field.is-error .input {
+    border-color: var(--err-fill);
+    box-shadow: 0 0 0 1px var(--err-fill);
+  }
+  .field.is-error .input:focus {
+    box-shadow: 0 0 0 var(--ring-w) oklch(0.85 0.10 27);
+  }
+  .field.is-ok .input {
+    border-color: var(--ok-fill);
+  }
+  .field.is-ok .input:focus {
+    box-shadow: 0 0 0 var(--ring-w) oklch(0.86 0.10 150);
+  }
+  .field.is-warn .input {
+    border-color: var(--warn-fill);
+  }
+
+  /* Textarea */
+  .textarea {
+    height: auto; min-height: calc(var(--fld-h) * 2);
+    padding: 12px var(--fld-px);
+    resize: vertical;
+    line-height: 1.5;
+    font-family: var(--font-body);
+  }
+
+  /* Input with prefix/suffix decoration (icon, currency, unit) */
+  .input-wrap {
+    position: relative;
+    display: flex; align-items: stretch;
+  }
+  .input-wrap .input { width: 100%; }
+  .input-wrap.has-leading .input { padding-left: 44px; }
+  .input-wrap.has-trailing .input { padding-right: 44px; }
+  .input-wrap .lead, .input-wrap .trail {
+    position: absolute; top: 0; bottom: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--n-600);
+    width: 40px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    pointer-events: none;
+  }
+  .input-wrap .lead { left: 4px; }
+  .input-wrap .trail { right: 4px; }
+  .input-wrap.has-leading .lead { color: var(--ink-700); }
+  .input-wrap .clear {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    width: 26px; height: 26px;
+    border: 0; background: var(--n-100); color: var(--n-700);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .input-wrap .clear:hover { background: var(--n-200); }
+
+  /* Prefix block (e.g. "+49" phone prefix, "#" trikot) */
+  .input-group {
+    display: flex; align-items: stretch;
+    border: var(--fld-border) solid var(--fld-border-color);
+    border-radius: var(--fld-radius);
+    background: var(--fld-bg);
+    overflow: hidden;
+    transition: border-color 0.14s, box-shadow 0.14s;
+  }
+  .input-group:focus-within {
+    border-color: var(--focus-border);
+    box-shadow: 0 0 0 var(--ring-w) var(--ring-color);
+  }
+  .input-group .input {
+    border: 0; border-radius: 0; box-shadow: none;
+    flex: 1; min-width: 0;
+  }
+  .input-group .input:focus { box-shadow: none; border: 0; }
+  .input-group .addon {
+    display: inline-flex; align-items: center;
+    padding: 0 14px;
+    background: var(--n-100);
+    color: var(--ink-700);
+    font-family: var(--font-mono); font-size: 13px; font-weight: 600;
+    border-right: 1px solid var(--page-line);
+    letter-spacing: 0.02em;
+  }
+  .input-group .addon.right {
+    border-right: 0; border-left: 1px solid var(--page-line);
+  }
+
+  /* Number stepper */
+  .stepper {
+    display: inline-flex; align-items: stretch;
+    border: var(--fld-border) solid var(--fld-border-color);
+    border-radius: var(--fld-radius);
+    background: var(--fld-bg);
+    overflow: hidden;
+  }
+  .stepper:focus-within {
+    border-color: var(--focus-border);
+    box-shadow: 0 0 0 var(--ring-w) var(--ring-color);
+  }
+  .stepper button {
+    appearance: none; border: 0;
+    background: var(--n-50);
+    color: var(--ink-800);
+    width: 44px; height: var(--fld-h);
+    cursor: pointer;
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 18px; line-height: 1;
+    transition: background 0.12s;
+  }
+  .stepper button:hover { background: var(--n-100); }
+  .stepper button:active { background: var(--n-200); }
+  .stepper button.minus { border-right: 1px solid var(--page-line); }
+  .stepper button.plus { border-left: 1px solid var(--page-line); }
+  .stepper input {
+    width: 60px; height: var(--fld-h);
+    border: 0; outline: 0;
+    background: transparent;
+    text-align: center;
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 18px;
+    color: var(--ink-900);
+    font-variant-numeric: tabular-nums;
+    -moz-appearance: textfield;
+  }
+  .stepper input::-webkit-inner-spin-button,
+  .stepper input::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+  .stepper.wide input { width: 80px; }
+
+  /* Select (custom-styled native) */
+  .select-wrap {
+    position: relative;
+    display: flex;
+  }
+  .select-wrap select.input {
+    padding-right: 38px;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='none' stroke='%23364152' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round' d='M1 1.5l5 5 5-5'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 12px 8px;
+    cursor: pointer;
+  }
+
+  /* Combobox (mock with dropdown list) */
+  .combobox {
+    position: relative;
+  }
+  .combobox-list {
+    position: absolute; top: calc(100% + 6px); left: 0; right: 0;
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+    border-radius: var(--fld-radius);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.10), 0 2px 6px rgba(0,0,0,0.05);
+    overflow: hidden;
+    z-index: 5;
+    max-height: 280px; overflow-y: auto;
+  }
+  .combobox-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px;
+    cursor: pointer;
+    transition: background 0.1s;
+  }
+  .combobox-item:hover, .combobox-item.highlight {
+    background: var(--sky-50);
+  }
+  .combobox-item.selected {
+    background: var(--sky-100);
+  }
+  .combobox-item .ci-main {
+    font-weight: 600; font-size: 14px;
+    color: var(--ink-900);
+    flex: 1; min-width: 0;
+  }
+  .combobox-item .ci-meta {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--n-600);
+    letter-spacing: 0.04em;
+  }
+  .combobox-item .ci-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--ink-100); color: var(--ink-800);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 600; font-size: 11px;
+    flex-shrink: 0;
+  }
+  .combobox-item.heim .ci-avatar { background: var(--team-heim); color: white; }
+  .combobox-item.gast .ci-avatar { background: var(--team-gast); color: white; }
+
+  /* Checkbox */
+  .check {
+    display: inline-flex; align-items: center; gap: 10px;
+    cursor: pointer; user-select: none;
+  }
+  .check input[type="checkbox"] {
+    appearance: none;
+    width: 22px; height: 22px;
+    border: 1.5px solid var(--n-400);
+    border-radius: 6px;
+    background: var(--n-0);
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: background 0.12s, border-color 0.12s, box-shadow 0.12s;
+  }
+  .check input[type="checkbox"]:hover { border-color: var(--n-500); }
+  .check input[type="checkbox"]:focus-visible {
+    box-shadow: 0 0 0 var(--ring-w) var(--ring-color);
+    border-color: var(--focus-border);
+  }
+  .check input[type="checkbox"]:checked {
+    background: var(--ink-900);
+    border-color: var(--ink-900);
+  }
+  .check input[type="checkbox"]:checked::after {
+    content: ''; position: absolute;
+    left: 5px; top: 2px;
+    width: 6px; height: 11px;
+    border: solid var(--n-50);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+  }
+  .check.lg input[type="checkbox"] { width: 26px; height: 26px; }
+  .check.lg input[type="checkbox"]:checked::after { left: 7px; top: 3px; width: 7px; height: 13px; }
+  .check .lbl {
+    font-size: 14px;
+    color: var(--ink-800);
+  }
+  .check .lbl .meta {
+    display: block;
+    font-size: 12px;
+    color: var(--n-600);
+    margin-top: 2px;
+  }
+
+  /* Radio (same style as checkbox but round) */
+  .radio {
+    display: inline-flex; align-items: center; gap: 10px;
+    cursor: pointer; user-select: none;
+  }
+  .radio input[type="radio"] {
+    appearance: none;
+    width: 22px; height: 22px;
+    border: 1.5px solid var(--n-400);
+    border-radius: 50%;
+    background: var(--n-0);
+    cursor: pointer; flex-shrink: 0;
+    position: relative;
+    transition: border-color 0.12s, box-shadow 0.12s;
+  }
+  .radio input[type="radio"]:hover { border-color: var(--n-500); }
+  .radio input[type="radio"]:focus-visible {
+    box-shadow: 0 0 0 var(--ring-w) var(--ring-color);
+    border-color: var(--focus-border);
+  }
+  .radio input[type="radio"]:checked {
+    border-color: var(--ink-900);
+    border-width: 2px;
+  }
+  .radio input[type="radio"]:checked::after {
+    content: ''; position: absolute;
+    inset: 3.5px;
+    border-radius: 50%;
+    background: var(--ink-900);
+  }
+  .radio .lbl { font-size: 14px; color: var(--ink-800); }
+
+  .radio-group {
+    display: flex; flex-direction: column;
+    gap: 10px;
+    padding-top: 4px;
+  }
+  .radio-group.row { flex-direction: row; flex-wrap: wrap; gap: 18px; }
+
+  /* Toggle */
+  .toggle {
+    display: inline-flex; align-items: center; gap: 10px;
+    cursor: pointer; user-select: none;
+  }
+  .toggle input { display: none; }
+  .toggle .tk {
+    width: 40px; height: 24px;
+    background: var(--n-300);
+    border-radius: 999px;
+    position: relative;
+    transition: background 0.16s;
+    flex-shrink: 0;
+  }
+  .toggle .tk::after {
+    content: ''; position: absolute;
+    top: 2px; left: 2px;
+    width: 20px; height: 20px;
+    background: var(--n-0);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transition: transform 0.16s;
+  }
+  .toggle input:checked + .tk { background: var(--ok-fill); }
+  .toggle input:checked + .tk::after { transform: translateX(16px); }
+  .toggle input:focus-visible + .tk { box-shadow: 0 0 0 var(--ring-w) var(--ring-color); }
+  .toggle .lbl { font-size: 14px; color: var(--ink-800); }
+
+  /* Segmented control */
+  .seg {
+    display: inline-flex;
+    padding: 3px;
+    background: var(--n-100);
+    border-radius: 9px;
+    user-select: none;
+  }
+  .seg button {
+    appearance: none; border: 0;
+    background: transparent;
+    padding: 0 14px;
+    height: 32px;
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 13px;
+    color: var(--ink-700);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.14s, color 0.14s, box-shadow 0.14s;
+    min-width: 64px;
+  }
+  .seg button:hover:not([aria-pressed="true"]) { color: var(--ink-900); }
+  .seg button[aria-pressed="true"] {
+    background: var(--n-0);
+    color: var(--ink-900);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08), 0 0 0 0.5px rgba(0,0,0,0.06);
+  }
+  .seg.lg button { height: 42px; padding: 0 20px; font-size: 14px; min-width: 80px; }
+
+  /* File upload area */
+  .upload {
+    border: 1.5px dashed var(--n-300);
+    border-radius: 12px;
+    background: var(--n-50);
+    padding: 22px 24px;
+    display: flex; align-items: center; gap: 18px;
+    transition: border-color 0.14s, background 0.14s;
+    cursor: pointer;
+  }
+  .upload:hover { border-color: var(--ink-700); background: var(--ink-50); }
+  .upload-icon {
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .upload-body { flex: 1; min-width: 0; }
+  .upload-title {
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 14px;
+    color: var(--ink-900);
+    line-height: 1.3;
+  }
+  .upload-title b { color: var(--sky-800); text-decoration: underline; }
+  .upload-meta {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-top: 4px;
+  }
+
+  /* Avatar uploader */
+  .avatar-up {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .avatar-up .av {
+    width: 64px; height: 64px;
+    border-radius: 50%;
+    background: var(--ink-100);
+    color: var(--ink-800);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 22px;
+    flex-shrink: 0;
+  }
+  .avatar-up .av-actions { display: flex; flex-direction: column; gap: 4px; }
+  .avatar-up .av-actions .av-name {
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 14px; color: var(--ink-900);
+  }
+  .avatar-up .av-actions .av-link {
+    font-size: 12px;
+    color: var(--sky-800);
+    cursor: pointer;
+    font-weight: 500;
+  }
+  .avatar-up .av-actions .av-link:hover { text-decoration: underline; }
+
+  /* Buttons */
+  .btn {
+    appearance: none; border: 0;
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 14px;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform 0.08s, background 0.12s, box-shadow 0.12s;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn:focus-visible { box-shadow: 0 0 0 var(--ring-w) var(--ring-color); outline: 0; }
+  .btn.primary { background: var(--ink-900); color: white; }
+  .btn.primary:hover { background: var(--ink-700); }
+  .btn.amber { background: var(--amber-400); color: var(--ink-1000); }
+  .btn.amber:hover { background: var(--amber-500); }
+  .btn.secondary { background: var(--n-100); color: var(--ink-900); box-shadow: inset 0 0 0 1px var(--n-200); }
+  .btn.secondary:hover { background: var(--n-200); }
+  .btn.danger { background: var(--err-button); color: white; }
+  .btn.ghost { background: transparent; color: var(--ink-800); box-shadow: inset 0 0 0 1px var(--n-300); }
+  .btn.ghost:hover { background: var(--ink-50); }
+  .btn.lg { height: 56px; padding: 0 24px; font-size: 15px; border-radius: 12px; }
+
+  /* ── Anatomy diagram ────────────────────────────────────────── */
+  .anatomy {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    align-items: center;
+  }
+  .anatomy .field-demo { max-width: 360px; }
+  .anatomy .legend {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--n-700);
+    line-height: 1.55;
+  }
+  .anatomy .legend ol {
+    list-style: none; counter-reset: a; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .anatomy .legend ol li {
+    counter-increment: a;
+    display: grid; grid-template-columns: 28px 1fr;
+    gap: 14px; align-items: baseline;
+  }
+  .anatomy .legend ol li::before {
+    content: counter(a);
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--ink-900); color: var(--n-0);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 700; font-size: 11px;
+  }
+  .anatomy .legend ol li b {
+    color: var(--ink-900); font-weight: 600;
+    display: block;
+    font-size: 13.5px;
+    margin-bottom: 2px;
+  }
+
+  /* ── Showcase grid ──────────────────────────────────────────── */
+  .show-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .show-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+
+  /* ── States demo ────────────────────────────────────────────── */
+  .states-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+  }
+  .state-card {
+    display: flex; flex-direction: column; gap: 8px;
+    padding: 16px;
+    border: 1px solid var(--page-line);
+    border-radius: 12px;
+    background: var(--n-0);
+  }
+  .state-card .name {
+    font-family: var(--font-mono);
+    font-size: 10.5px; font-weight: 600;
+    color: var(--page-mute);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .state-card .name .ratio {
+    color: var(--ok-text);
+    font-weight: 700;
+  }
+  .state-card .demo {
+    pointer-events: none;
+  }
+  .state-card.is-focus .input {
+    border-color: var(--focus-border);
+    box-shadow: 0 0 0 var(--ring-w) var(--ring-color);
+  }
+
+  /* ── Spielbericht-Setup form ────────────────────────────────── */
+  .setup-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 0;
+    background: var(--n-0);
+  }
+  .setup-side {
+    background: var(--ink-1000);
+    color: var(--n-100);
+    padding: 32px 28px;
+    display: flex; flex-direction: column;
+    gap: 24px;
+    min-height: 600px;
+  }
+  .setup-side .brand {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--n-400);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .setup-side .brand .monogram {
+    width: 24px; height: 24px;
+    background: var(--amber-400);
+    color: var(--ink-1000);
+    border-radius: 6px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 12px;
+  }
+  .setup-side h2 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 28px; letter-spacing: -0.02em; line-height: 1.1;
+    margin: 12px 0 8px;
+    color: var(--n-0);
+  }
+  .setup-side p {
+    margin: 0;
+    color: var(--n-300);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .setup-side .progress { margin-top: 8px; }
+  .setup-side .progress-track {
+    height: 4px; background: var(--n-800); border-radius: 999px;
+    overflow: hidden;
+  }
+  .setup-side .progress-fill {
+    height: 100%; width: 60%; background: var(--amber-400);
+    border-radius: 999px;
+  }
+  .setup-side .progress-meta {
+    display: flex; justify-content: space-between;
+    margin-top: 8px;
+    font-family: var(--font-mono); font-size: 10.5px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--n-400);
+  }
+  .setup-side .steps {
+    margin-top: auto;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .setup-step {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: var(--n-300);
+    cursor: default;
+  }
+  .setup-step .num {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--n-800); color: var(--n-300);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 700; font-size: 11px;
+    flex-shrink: 0;
+  }
+  .setup-step.done .num { background: var(--ok-fill); color: var(--ink-1000); }
+  .setup-step.done .num::after {
+    content: '✓'; font-family: var(--font-display); font-size: 13px;
+  }
+  .setup-step.done .num { font-size: 0; }
+  .setup-step.current {
+    background: var(--ink-900);
+    color: var(--n-0);
+    font-weight: 600;
+  }
+  .setup-step.current .num { background: var(--amber-400); color: var(--ink-1000); }
+
+  .setup-main { padding: 32px 36px; min-height: 600px; }
+  .setup-main .step-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 28px;
+  }
+  .setup-main .step-head h3 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 24px; letter-spacing: -0.02em;
+    margin: 0;
+    color: var(--ink-900);
+  }
+  .setup-main .step-meta {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .setup-section {
+    margin-bottom: 28px;
+  }
+  .setup-section-head {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--ink-700);
+    text-transform: uppercase; letter-spacing: 0.1em;
+    font-weight: 600;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .setup-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-bottom: 14px;
+  }
+  .setup-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .setup-row.cols-1 { grid-template-columns: 1fr; }
+  .setup-row.wide { grid-template-columns: 2fr 1fr; }
+
+  .setup-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 22px; margin-top: 24px;
+    border-top: 1px solid var(--page-line);
+  }
+  .setup-footer .save-state {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--n-600);
+    display: flex; align-items: center; gap: 6px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .setup-footer .save-state::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ok-fill);
+  }
+  .setup-footer .actions { display: flex; gap: 10px; }
+
+  /* ── Inline patterns ────────────────────────────────────────── */
+  .inline-card {
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    background: var(--n-0);
+    padding: 22px 24px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .inline-card .il-head {
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .inline-card .il-head h4 {
+    margin: 0; font-family: var(--font-display); font-weight: 600;
+    font-size: 16px; color: var(--ink-900);
+    letter-spacing: -0.005em;
+  }
+  .inline-card .il-meta {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+
+  /* Tab subset for inline */
+  .tabs {
+    display: flex; gap: 4px;
+    border-bottom: 1px solid var(--page-line);
+    margin-bottom: 4px;
+  }
+  .tab {
+    appearance: none; border: 0; background: transparent;
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 13.5px;
+    color: var(--n-600);
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.12s, border-color 0.12s;
+    margin-bottom: -1px;
+  }
+  .tab:hover { color: var(--ink-800); }
+  .tab[aria-selected="true"] {
+    color: var(--ink-900);
+    border-color: var(--amber-500);
+  }
+
+  /* Field icons (simple glyphs we draw with css) */
+  .glyph {
+    width: 16px; height: 16px;
+    display: inline-block;
+    color: currentColor;
+    flex-shrink: 0;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     TEAM-CONFIG (Trikotfarbe + Logo · Spielbeginn)
+     ════════════════════════════════════════════════════════════ */
+  .team-cfg {
+    display: grid; grid-template-columns: 1fr 1fr;
+  }
+  .team-cfg-side {
+    padding: 28px 32px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+  .team-cfg-side + .team-cfg-side {
+    border-left: 1px solid var(--page-line);
+  }
+  .tc-head {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .tc-strip {
+    width: 8px; height: 32px; border-radius: 2px;
+    background: var(--team-heim);
+    flex-shrink: 0;
+  }
+  .team-cfg-side.gast .tc-strip { background: var(--team-gast); }
+  .tc-name {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 18px;
+    color: var(--ink-900);
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  .tc-role {
+    margin-left: auto;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--page-mute);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    background: var(--ink-100);
+    padding: 3px 8px; border-radius: 4px;
+    font-weight: 600;
+  }
+
+  .color-swatches {
+    display: grid; grid-template-columns: repeat(9, 1fr);
+    gap: 8px;
+  }
+  .color-sw {
+    appearance: none; border: 0;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    cursor: pointer;
+    position: relative;
+    outline: 0;
+    background-clip: padding-box;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.10);
+    transition: transform 0.1s ease-out, box-shadow 0.14s;
+  }
+  .color-sw:hover { transform: scale(1.06); }
+  .color-sw:focus-visible { box-shadow: 0 0 0 3px var(--ring-color), inset 0 0 0 1px rgba(0,0,0,0.10); }
+  .color-sw[aria-pressed="true"] {
+    box-shadow: 0 0 0 2.5px var(--ink-900);
+  }
+  .color-sw[aria-pressed="true"]::after {
+    content: ''; position: absolute; inset: 36%;
+    border-radius: 50%; background: white;
+    box-shadow: 0 0 0 1.5px rgba(0,0,0,0.18);
+  }
+  .color-sw.custom {
+    background: conic-gradient(from 45deg, #ef4444, #f59e0b, #84cc16, #06b6d4, #6366f1, #d946ef, #ef4444);
+  }
+  .color-sw.custom::before {
+    content: '+'; position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 20px; font-weight: 800;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .logo-up {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px;
+    border: 1px dashed var(--n-300);
+    border-radius: 10px;
+    background: var(--n-50);
+    cursor: pointer;
+    transition: border-color 0.12s, background 0.12s;
+  }
+  .logo-up:hover { border-color: var(--ink-700); background: var(--ink-50); }
+  .logo-up .lu-tile {
+    width: 56px; height: 56px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--team-heim);
+    color: white;
+    font-family: var(--font-display); font-weight: 800; font-size: 17px;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+  }
+  .team-cfg-side.gast .logo-up .lu-tile { background: var(--team-gast); }
+  .logo-up .lu-info { flex: 1; min-width: 0; }
+  .logo-up .lu-title {
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 13.5px; color: var(--ink-900);
+  }
+  .logo-up .lu-title b { color: var(--sky-800); text-decoration: underline; }
+  .logo-up .lu-meta {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    margin-top: 3px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+
+  .tc-preview {
+    background: var(--n-1000);
+    padding: 14px;
+    border-radius: 10px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .tc-preview .pv-label {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--n-400);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+  .tc-preview .pv-tiles {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     LIVE SCORING — Split-screen für Anschreiber (Dark Mode)
+     ════════════════════════════════════════════════════════════ */
+  .live-board {
+    display: grid;
+    grid-template-columns: 1fr 240px 1fr;
+    background: var(--n-1000);
+    color: var(--n-100);
+    border: 1px solid var(--n-800);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .live-side {
+    padding: 22px;
+    display: flex; flex-direction: column;
+    gap: 18px;
+  }
+  .live-center {
+    padding: 22px 16px;
+    background: var(--n-950);
+    border-left: 1px solid var(--n-800);
+    border-right: 1px solid var(--n-800);
+    display: flex; flex-direction: column;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .lv-team-head {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--n-800);
+  }
+  .live-side.gast .lv-team-head { flex-direction: row-reverse; text-align: right; }
+  .lv-team-logo {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--team-heim);
+    color: white;
+    font-family: var(--font-display); font-weight: 800; font-size: 16px;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+  }
+  .live-side.gast .lv-team-logo { background: var(--team-gast); }
+  .lv-team-info { flex: 1; min-width: 0; }
+  .lv-team-name {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 16px;
+    color: var(--n-50);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .lv-team-meta {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--n-400);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-top: 3px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .live-side.gast .lv-team-meta { justify-content: flex-end; }
+  .lv-team-meta .strip {
+    width: 10px; height: 8px; border-radius: 2px;
+    background: var(--team-heim);
+  }
+  .live-side.gast .lv-team-meta .strip { background: var(--team-gast); }
+  .lv-team-score {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 42px;
+    color: var(--n-50);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lv-section-label {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--n-400);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: -4px;
+  }
+  .lv-section-label .step {
+    background: var(--ink-800);
+    color: var(--n-300);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 9.5px; font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .lv-section-label .step.active {
+    background: var(--amber-400); color: var(--ink-1000);
+  }
+
+  .action-grid-scoring {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .action-grid-procedural {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .action-grid-tertiary {
+    display: grid; grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .action-btn {
+    appearance: none; border: 1px solid var(--n-800);
+    background: var(--n-900);
+    color: var(--n-50);
+    border-radius: 10px;
+    height: 72px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px;
+    cursor: pointer;
+    transition: transform 0.08s, background 0.14s, box-shadow 0.14s, border-color 0.14s, color 0.14s;
+    position: relative;
+    padding: 0 4px;
+  }
+  .action-grid-tertiary .action-btn {
+    height: 40px;
+    flex-direction: row; gap: 8px;
+    padding: 0 12px;
+    background: transparent;
+    border-color: var(--n-800);
+  }
+  .action-btn:hover {
+    background: var(--n-800);
+    border-color: var(--n-700);
+  }
+  .action-btn:active { transform: scale(0.97); }
+  .action-btn .ab-glyph {
+    font-family: var(--font-display);
+    font-size: 22px; font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+  .action-grid-tertiary .action-btn .ab-glyph { font-size: 13px; letter-spacing: 0.02em; }
+  .action-grid-tertiary .action-btn .ab-lbl { color: var(--n-500); }
+
+  /* Auszeit-Dots: zeigen verbleibende Auszeiten pro Team */
+  .to-dots {
+    position: absolute;
+    top: 6px; right: 8px;
+    display: flex; gap: 3px;
+    pointer-events: none;
+  }
+  .to-dots .d {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--n-500);
+    transition: background 0.14s;
+  }
+  .to-dots .d.on { background: var(--amber-400); box-shadow: 0 0 4px oklch(0.76 0.165 var(--h-amber) / 0.6); }
+  .action-btn.exhausted {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  .action-btn.exhausted .to-dots .d { background: var(--err-fill); }
+  .action-btn .ab-lbl {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--n-400);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 600;
+  }
+  .action-btn.selected {
+    background: var(--amber-400);
+    color: var(--ink-1000);
+    border-color: var(--amber-300);
+    box-shadow: 0 0 0 2px var(--amber-300), 0 6px 22px oklch(0.6 0.18 var(--h-amber) / 0.45);
+    transform: translateY(-1px);
+  }
+  .action-btn.selected .ab-lbl { color: var(--ink-800); }
+  .action-btn.foul {
+    background: oklch(0.28 0.10 27);
+    color: oklch(0.96 0.10 27);
+    border-color: oklch(0.36 0.13 27);
+  }
+  .action-btn.foul:hover { background: oklch(0.34 0.13 27); }
+  .action-btn.foul .ab-lbl { color: oklch(0.78 0.12 27); }
+  .action-btn.challenge {
+    background: oklch(0.26 0.10 290);
+    color: oklch(0.95 0.10 290);
+    border-color: oklch(0.34 0.13 290);
+  }
+  .action-btn.challenge:hover { background: oklch(0.32 0.12 290); }
+  .action-btn.challenge .ab-lbl { color: oklch(0.78 0.12 290); }
+
+  .player-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+  .player-tile {
+    appearance: none; border: 2px solid transparent;
+    aspect-ratio: 1 / 1.1;
+    border-radius: 9px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 6px 4px;
+    background: var(--team-heim);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.08s, box-shadow 0.14s;
+    position: relative;
+  }
+  .live-side.gast .player-tile { background: var(--team-gast); }
+  .player-tile:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.45);
+  }
+  .player-tile:active { transform: scale(0.96); }
+  .player-tile .pt-num {
+    font-family: var(--font-display);
+    font-weight: 800; font-size: 22px;
+    line-height: 1; letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+  }
+  .player-tile .pt-init {
+    font-family: var(--font-mono);
+    font-size: 9px; font-weight: 600;
+    opacity: 0.88;
+    margin-top: 4px;
+    letter-spacing: 0.06em;
+  }
+  .player-tile.captain::before {
+    content: 'C';
+    position: absolute;
+    top: 4px; right: 4px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--amber-400);
+    color: var(--ink-1000);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 9px;
+    font-weight: 800;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .player-tile.bench {
+    background: transparent;
+    color: var(--n-300);
+    border: 1.5px dashed var(--n-700);
+  }
+  .player-tile.foulout {
+    background: var(--n-800);
+    color: var(--n-500);
+    pointer-events: none;
+  }
+  .player-tile.foulout .pt-num { text-decoration: line-through; }
+  .player-tile.foulout::after {
+    content: 'F.O.';
+    position: absolute;
+    bottom: 4px; left: 50%; transform: translateX(-50%);
+    font-family: var(--font-mono); font-size: 8px;
+    font-weight: 700;
+    background: var(--err-fill); color: white;
+    padding: 1px 4px; border-radius: 3px;
+    letter-spacing: 0.06em;
+    line-height: 1;
+  }
+  .player-tile.target {
+    animation: tile-pulse 1.3s ease-in-out infinite;
+  }
+  @keyframes tile-pulse {
+    0%, 100% { box-shadow: 0 0 0 2px var(--amber-400), 0 0 22px oklch(0.78 0.165 var(--h-amber) / 0.4); }
+    50%      { box-shadow: 0 0 0 4px var(--amber-400), 0 0 38px oklch(0.78 0.165 var(--h-amber) / 0.75); }
+  }
+
+  /* Center column */
+  .lv-quarter {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--n-300);
+    text-transform: uppercase; letter-spacing: 0.12em;
+    font-weight: 600;
+  }
+  .lv-quarter::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--err-fill);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+  .lv-clock {
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 56px;
+    color: var(--amber-400);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .lv-shot {
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 24px;
+    background: var(--amber-400);
+    color: var(--ink-1000);
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+  }
+  .lv-clock-btn {
+    appearance: none; border: 0;
+    width: 100%;
+    height: 52px;
+    background: var(--amber-400);
+    color: var(--ink-1000);
+    border-radius: 10px;
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 14.5px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px;
+    transition: background 0.14s, transform 0.08s;
+    letter-spacing: -0.005em;
+  }
+  .lv-clock-btn.pause { background: var(--n-50); color: var(--ink-1000); }
+  .lv-clock-btn:hover { background: var(--amber-500); }
+  .lv-clock-btn.pause:hover { background: white; }
+  .lv-clock-btn:active { transform: scale(0.98); }
+  .lv-clock-btn .pl-glyph {
+    font-size: 14px;
+    font-family: var(--font-mono); font-weight: 700;
+  }
+  .lv-sec-btn {
+    appearance: none; border: 1px solid var(--n-800);
+    background: var(--n-900);
+    color: var(--n-200);
+    width: 100%; height: 42px;
+    border-radius: 8px;
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px;
+    transition: background 0.14s, border-color 0.14s;
+  }
+  .lv-sec-btn:hover { background: var(--n-800); border-color: var(--n-700); }
+  .lv-hint {
+    width: 100%;
+    background: oklch(0.30 0.10 var(--h-amber) / 0.35);
+    border: 1px solid oklch(0.55 0.16 var(--h-amber) / 0.55);
+    color: var(--amber-200);
+    font-family: var(--font-mono);
+    font-size: 10px; font-weight: 600;
+    text-align: center;
+    padding: 9px 10px;
+    border-radius: 7px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    line-height: 1.4;
+  }
+  .lv-divider {
+    width: 80%; height: 1px;
+    background: var(--n-800);
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     CHALLENGE OUTCOME + GUIDED CORRECTION
+     ════════════════════════════════════════════════════════════ */
+  .outcome-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .outcome-btn {
+    appearance: none; border: 1.5px solid var(--n-300);
+    background: var(--n-0);
+    color: var(--ink-700);
+    height: 52px;
+    border-radius: 10px;
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px;
+    transition: background 0.14s, border-color 0.14s, color 0.14s, box-shadow 0.14s;
+  }
+  .outcome-btn:hover { background: var(--n-50); border-color: var(--n-400); }
+  .outcome-btn:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 var(--ring-w) var(--ring-color);
+  }
+  .outcome-btn.success[aria-pressed="true"] {
+    background: var(--ok-soft);
+    border-color: var(--ok-fill);
+    color: var(--ok-text);
+    box-shadow: inset 0 0 0 1px var(--ok-fill);
+  }
+  .outcome-btn.rejected[aria-pressed="true"] {
+    background: var(--err-soft);
+    border-color: var(--err-fill);
+    color: var(--err-text);
+    box-shadow: inset 0 0 0 1px var(--err-fill);
+  }
+
+  .chl-summary {
+    background: oklch(0.96 0.04 290);
+    border-left: 3px solid oklch(0.45 0.14 290);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--ink-800);
+    line-height: 1.45;
+  }
+  .chl-summary .cs-head {
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 700;
+    color: oklch(0.42 0.14 290);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+  .chl-summary b { color: var(--ink-900); }
+
+  .guided-correction {
+    background: var(--ok-soft);
+    border: 1px solid oklch(0.78 0.08 150 / 0.45);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .guided-correction .gc-header {
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .guided-correction .gc-title {
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 700;
+    color: var(--ok-text);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .guided-correction .gc-sub {
+    font-family: var(--font-body); font-size: 12.5px;
+    color: var(--n-700);
+    line-height: 1.4;
+  }
+  .guided-correction .gc-list {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .guided-correction .gc-item {
+    appearance: none; border: 0;
+    background: var(--n-0);
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.12s, box-shadow 0.12s, transform 0.08s;
+    box-shadow: inset 0 0 0 1px var(--page-line);
+    width: 100%;
+    color: inherit;
+    font-family: var(--font-body);
+  }
+  .guided-correction .gc-item:hover {
+    background: var(--n-50);
+    box-shadow: inset 0 0 0 1px var(--ok-fill);
+  }
+  .guided-correction .gc-item:active { transform: scale(0.99); }
+  .guided-correction .gc-icon {
+    width: 28px; height: 28px;
+    background: oklch(0.92 0.08 150);
+    color: var(--ok-text);
+    border-radius: 7px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 800; font-size: 14px;
+    flex-shrink: 0;
+  }
+  .guided-correction .gc-main {
+    display: flex; flex-direction: column;
+    gap: 2px;
+    flex: 1; min-width: 0;
+  }
+  .guided-correction .gc-name {
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 13.5px;
+    color: var(--ink-900);
+  }
+  .guided-correction .gc-hint {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--n-600);
+    letter-spacing: 0.02em;
+  }
+  .guided-correction .gc-arrow {
+    color: var(--n-400);
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     BENCH-ROW (7 in eine Zeile) + SUB-PICK + CLOCK-CORRECTION
+     ════════════════════════════════════════════════════════════ */
+  .player-grid.bench-row {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+  }
+  .player-grid.bench-row .player-tile {
+    border-radius: 7px;
+    padding: 3px 2px;
+  }
+  .player-grid.bench-row .player-tile .pt-num {
+    font-size: 16px;
+    letter-spacing: -0.04em;
+  }
+  .player-grid.bench-row .player-tile .pt-init {
+    font-size: 8px;
+    margin-top: 2px;
+    letter-spacing: 0.04em;
+  }
+  .player-grid.bench-row .player-tile.captain::before {
+    width: 12px; height: 12px;
+    font-size: 8px;
+    top: 2px; right: 2px;
+  }
+
+  .player-tile.picked-out, .player-tile.picked-in {
+    outline: 3px solid var(--amber-400);
+    outline-offset: 2px;
+    z-index: 2;
+  }
+  .player-tile.picked-out::after,
+  .player-tile.picked-in::after {
+    position: absolute;
+    bottom: -8px; right: -8px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 14px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    z-index: 3;
+    color: white;
+    line-height: 1;
+  }
+  .player-tile.picked-out::after { content: '↓'; background: var(--err-button); }
+  .player-tile.picked-in::after  { content: '↑'; background: var(--ok-fill); }
+  .player-grid.bench-row .player-tile.picked-out::after,
+  .player-grid.bench-row .player-tile.picked-in::after {
+    width: 18px; height: 18px;
+    font-size: 11px;
+    bottom: -6px; right: -6px;
+  }
+
+  /* Player tiles inside an inline-card (light bg) — bench-Variante
+     mit Team-Color-Outline statt n-700 dashed (dark-mode tuned) */
+  .inline-card .player-tile.bench {
+    background: transparent;
+    border: 2px solid var(--team-heim);
+    color: var(--team-heim);
+  }
+  .inline-card .player-tile.bench:hover {
+    background: var(--sky-50);
+  }
+  .inline-card .player-grid {
+    overflow: visible;
+    padding: 4px;
+    margin: -4px;
+  }
+
+  /* Clock-Correction Block (Spieluhr + Wurfuhr, 100stel-Präzision) */
+  .tc-block {
+    background: var(--n-50);
+    border: 1px solid var(--page-line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    display: flex; flex-direction: column;
+    gap: 10px;
+  }
+  .tc-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+  }
+  .tc-label {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+    color: var(--ink-800);
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .tc-current {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+  }
+  .tc-inputs {
+    display: flex; align-items: center; gap: 4px;
+  }
+  .tc-input {
+    appearance: none;
+    width: 56px; height: 48px;
+    border: 1.5px solid var(--n-300);
+    border-radius: 8px;
+    background: var(--n-0);
+    text-align: center;
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 22px;
+    color: var(--ink-900);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.02em;
+    outline: 0;
+    transition: border-color 0.12s, box-shadow 0.12s;
+    padding: 0;
+  }
+  .tc-input.narrow { width: 38px; }
+  .tc-input:focus,
+  .tc-input:focus-visible {
+    border-color: var(--amber-500);
+    box-shadow: 0 0 0 3px oklch(0.86 0.10 var(--h-amber));
+  }
+  .tc-input.tc-input-cs {
+    color: var(--amber-800);
+    border-color: var(--amber-300);
+  }
+
+  /* Possession arrow (Spielrichtungsanzeige) in live-center */
+  .lv-possession {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%;
+    background: var(--n-900);
+    border: 1px solid var(--n-800);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--n-400);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    font-weight: 600;
+  }
+  .lv-possession .lv-pos-arrow {
+    width: 38px; height: 28px;
+    border-radius: 5px;
+    background: var(--err-fill);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 18px;
+    line-height: 1;
+    transition: transform 0.18s ease-out;
+  }
+  .lv-possession[data-dir="right"] .lv-pos-arrow { transform: scaleX(-1); }
+  .lv-possession .lv-pos-side {
+    flex: 1;
+    opacity: 0.4;
+    transition: opacity 0.18s, color 0.18s;
+  }
+  .lv-possession .lv-pos-side.right { text-align: right; }
+  .lv-possession[data-dir="left"] .lv-pos-side.left,
+  .lv-possession[data-dir="right"] .lv-pos-side.right {
+    opacity: 1;
+    color: var(--n-50);
+  }
+  .tc-sep {
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 22px;
+    color: var(--n-500);
+    padding: 0 2px;
+  }
+  .tc-unit {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--page-mute);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-left: 8px;
+    font-weight: 600;
+  }
+  .tc-quick {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+  .tc-quick button {
+    appearance: none; border: 1px solid var(--n-300);
+    background: var(--n-0);
+    color: var(--ink-800);
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font-mono); font-weight: 600;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    transition: background 0.12s, border-color 0.12s;
+  }
+  .tc-quick button:hover {
+    background: var(--ink-50);
+    border-color: var(--n-400);
+  }
+  .tc-quick button.precision {
+    background: var(--amber-50);
+    border-color: var(--amber-200);
+    color: var(--amber-800);
+  }
+  .tc-quick button.precision:hover { background: var(--amber-100); }
+  .tc-quick button.reset {
+    background: var(--ink-900);
+    border-color: var(--ink-900);
+    color: var(--n-50);
+  }
+  .tc-quick button.reset:hover { background: var(--ink-700); }
+  .tc-delta {
+    background: oklch(0.94 0.06 var(--h-amber));
+    border: 1px solid oklch(0.82 0.10 var(--h-amber));
+    border-radius: 7px;
+    padding: 9px 12px;
+    font-family: var(--font-mono); font-size: 12px;
+    color: var(--amber-900);
+    display: flex; align-items: center; gap: 8px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+  }
+  .tc-delta b { color: var(--ink-900); font-weight: 800; font-size: 13px; }
+
+  /* ── Foot ───────────────────────────────────────────────────── */
+  .foot {
+    margin-top: 56px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .foot .iter { color: var(--amber-800); }
+
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.92em;
+    background: var(--ink-100);
+    color: var(--ink-800);
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  /* Density-aware: density attr drives field height */
+  body[data-density="touch"]   { --fld-h: var(--fld-h-touch); --fld-px: 16px; }
+  body[data-density="default"] { --fld-h: var(--fld-h-default); --fld-px: 14px; }
+  body[data-density="compact"] { --fld-h: var(--fld-h-compact); --fld-px: 12px; }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .live-board { grid-template-columns: 1fr; }
+    .live-center { order: -1; border: 0; border-bottom: 1px solid var(--n-800); flex-direction: row; flex-wrap: wrap; justify-content: center; }
+    .team-cfg { grid-template-columns: 1fr; }
+    .team-cfg-side + .team-cfg-side { border-left: 0; border-top: 1px solid var(--page-line); }
+  }
+  @media (max-width: 980px) {
+    .page { padding: 32px 24px 80px; }
+    .s-head { grid-template-columns: 1fr; gap: 6px; }
+    .anatomy { grid-template-columns: 1fr; }
+    .states-grid { grid-template-columns: 1fr 1fr; }
+    .setup-grid { grid-template-columns: 1fr; }
+    .setup-side { min-height: 0; padding: 24px; }
+    .setup-row, .setup-row.cols-3, .setup-row.wide { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body data-density="default">
+
+<div class="page">
+
+  <!-- TOP STRIP -->
+  <div class="topstrip">
+    <div class="left">
+      <span class="monogram">D</span>
+      <span>DSS Design System</span>
+      <span>·</span>
+      <span>Forms v0.1</span>
+    </div>
+    <div class="links">
+      <a href="DSS Design System - Identity Overview v0.3.html">← Identity</a>
+      <a href="DSS Design System - Tables.html">Tables</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero" data-screen-label="00 Hero">
+    <div class="eyebrow">Component Library · Forms · v0.1</div>
+    <h1>Eingaben für <em>Kampfgericht und Verwaltung.</em></h1>
+    <p class="lead">
+      Form-Felder müssen am 60-px-Touch-Tablet genauso präzise sein wie an der 36-px-Compact-Maske
+      des Vereinsregisters. Eine Token-Basis, drei Dichten, alle States AAA-validiert.
+      Fokus-Ringe sind mit ≥ 3:1 Kontrast pflicht-sichtbar — auch bei Tastatur-Navigation.
+    </p>
+  </header>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 01 — ANATOMY
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="01 Anatomy">
+    <div class="s-head">
+      <div class="s-num">01 — Anatomy</div>
+      <div class="s-title">
+        <h2>Aufbau eines Feldes.</h2>
+        <p>
+          Jedes Form-Field folgt derselben Struktur: <strong>Label</strong> · <strong>Eingabe</strong> ·
+          <strong>Hilfetext</strong>. Optionale Inhalte stehen rechts im Label, Fehler ersetzen
+          den Hilfetext mit derselben Position. So lernt das Auge in der ersten Maske, wo es
+          überall hinschauen muss.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div class="frame">
+        <div class="frame-head">
+          <h3>Field Anatomy</h3>
+          <div class="meta"><span>~6 px Zeilen-Abstand · 8 px Radius</span></div>
+        </div>
+        <div class="frame-body">
+          <div class="anatomy">
+            <div class="field-demo">
+              <div class="field is-error" style="max-width: 360px;">
+                <label class="field-label">
+                  Trikotnummer <span class="req">*</span>
+                  <span class="opt">0 / 00 / 1–99 / 01–09</span>
+                </label>
+                <div class="input-group">
+                  <span class="addon">#</span>
+                  <input type="text" class="input" value="100" />
+                </div>
+                <div class="field-help err">
+                  <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><path d="M8 5v3.5M8 11.2v.05"/></svg>
+                  <span>Erlaubt: 0, 00, 1–99 oder führende Null (01–09). „100“ liegt außerhalb.</span>
+                </div>
+              </div>
+            </div>
+            <div class="legend">
+              <ol>
+                <li><span><b>Label</b>Kurz, ohne Doppelpunkt. Pflicht-Felder mit rotem Asterisk; optionale Hinweise rechts.</span></li>
+                <li><span><b>Eingabe</b>Padding 14 px · Radius 8 px · Border 1 px. Fokus-Ring 3 px in Sky-200, der Border wechselt auf Ink-800.</span></li>
+                <li><span><b>Status</b>Error/Success/Warning ändern Border-Farbe und ersetzen den Hilfetext mit einem Icon-Hinweis.</span></li>
+                <li><span><b>Hilfetext</b>12 px Manrope, Mute-Tonalität. Erscheint <em>immer</em> an derselben Stelle, damit Layout nicht springt.</span></li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 02 — INPUT TYPES
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="02 Inputs">
+    <div class="s-head">
+      <div class="s-num">02 — Input Types</div>
+      <div class="s-title">
+        <h2>Das volle Vokabular.</h2>
+        <p>
+          Zwölf Eingabe-Patterns die das DSS-Ökosystem abdecken: vom einfachen Text-Field über den
+          Trikotnummer-Stepper bis zur Spieler-Combobox mit Avatar-Liste.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <!-- TEXT INPUTS -->
+      <div>
+        <div class="sub">Text & Number <span class="pill">Pattern: <code>.input</code></span></div>
+        <div class="frame">
+          <div class="frame-body">
+            <div class="show-grid">
+
+              <div class="field">
+                <label class="field-label">Verein <span class="req">*</span></label>
+                <input type="text" class="input" placeholder="z. B. TSV Tröster Breitengüßbach" />
+                <div class="field-help">Aus dem Vereinsregister wählen oder neu anlegen.</div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Suche</label>
+                <div class="input-wrap has-leading">
+                  <span class="lead">
+                    <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><path d="M11 11l3 3"/></svg>
+                  </span>
+                  <input type="text" class="input" placeholder="Spieler, Verein, Liga..." value="Seiferth" />
+                  <button type="button" class="clear" aria-label="Leeren">
+                    <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+                  </button>
+                </div>
+                <div class="field-help">14 Treffer · Enter um zu öffnen.</div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Größe</label>
+                <div class="input-group">
+                  <input type="number" class="input" value="204" />
+                  <span class="addon right">cm</span>
+                </div>
+                <div class="field-help">Optional · in Zentimetern.</div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">
+                  Trikotnummer <span class="req">*</span>
+                  <span class="opt">0 / 00 / 1–99 / 01–09</span>
+                </label>
+                <div class="input-group">
+                  <span class="addon">#</span>
+                  <input type="text" class="input" value="07" inputmode="numeric" pattern="^(0|00|0?[1-9]|[1-9][0-9])$" maxlength="2" />
+                </div>
+                <div class="field-help">Erlaubt: 0, 00, einstellige (1–9) und zweistellige Zahlen (01–09, 10–99). „7“ und „07“ gelten als unterschiedliche Nummern. In der Mannschaft eindeutig.</div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Persönliche Fouls</label>
+                <div class="stepper wide">
+                  <button type="button" class="minus" aria-label="Weniger">−</button>
+                  <input type="number" value="4" min="0" max="5" />
+                  <button type="button" class="plus" aria-label="Mehr">+</button>
+                </div>
+                <div class="field-help">0–5 · bei 5 erfolgt automatisch die Foul-Out-Aufforderung.</div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Telefon (Notfall)</label>
+                <div class="input-group">
+                  <span class="addon">+49</span>
+                  <input type="tel" class="input" placeholder="151 12345678" />
+                </div>
+                <div class="field-help">Wird nur bei Verletzungen verwendet.</div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Notizen <span class="opt">optional</span></label>
+                <textarea class="input textarea" placeholder="Besonderheiten, Lizenzhinweise, Sperren..."></textarea>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SELECT / COMBOBOX -->
+      <div>
+        <div class="sub">Select &amp; Combobox <span class="pill">Pattern: <code>.select-wrap</code> / <code>.combobox</code></span></div>
+        <div class="frame pop">
+          <div class="frame-body">
+            <div class="show-grid">
+
+              <div class="field">
+                <label class="field-label">Liga <span class="req">*</span></label>
+                <div class="select-wrap">
+                  <select class="input">
+                    <option>1. Basketball-Bundesliga</option>
+                    <option>2. Basketball-Bundesliga ProA</option>
+                    <option selected>2. Basketball-Bundesliga ProB</option>
+                    <option>Regionalliga Südost</option>
+                    <option>Bayernliga Herren</option>
+                    <option>Landesliga Nord</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Spielort <span class="req">*</span></label>
+                <div class="select-wrap">
+                  <select class="input">
+                    <option>Mehrzweckhalle Breitengüßbach</option>
+                    <option>Aktivpark Mittelfranken</option>
+                    <option>Audi Sportpark Ingolstadt</option>
+                    <option>Brose Arena Bamberg</option>
+                  </select>
+                </div>
+                <div class="field-help">Aus 247 Hallen im Verband.</div>
+              </div>
+
+              <div class="field" style="grid-column: 1 / -1; max-width: 480px;">
+                <label class="field-label">Heim-Mannschaft <span class="req">*</span></label>
+                <div class="combobox">
+                  <div class="input-wrap has-leading has-trailing">
+                    <span class="lead">
+                      <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="7" cy="7" r="5"/><path d="M11 11l3 3"/></svg>
+                    </span>
+                    <input type="text" class="input" value="Tröster" placeholder="Mannschaft suchen..." />
+                    <span class="trail">
+                      <svg class="glyph" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1.5l5 5 5-5"/></svg>
+                    </span>
+                  </div>
+                  <div class="combobox-list" role="listbox">
+                    <div class="combobox-item selected heim" role="option" aria-selected="true">
+                      <div class="ci-avatar">TR</div>
+                      <div class="ci-main">TSV Tröster Breitengüßbach</div>
+                      <div class="ci-meta">Bezirk Oberfranken</div>
+                    </div>
+                    <div class="combobox-item" role="option">
+                      <div class="ci-avatar">TR</div>
+                      <div class="ci-main">TSV Tröster Breitengüßbach II</div>
+                      <div class="ci-meta">Bezirksoberliga</div>
+                    </div>
+                    <div class="combobox-item" role="option">
+                      <div class="ci-avatar">TG</div>
+                      <div class="ci-main">TG Würzburg</div>
+                      <div class="ci-meta">Bezirk Unterfranken</div>
+                    </div>
+                    <div class="combobox-item" role="option">
+                      <div class="ci-avatar">TS</div>
+                      <div class="ci-main">TSV 1860 Hanau</div>
+                      <div class="ci-meta">Bezirk Mitte</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DATE / TIME -->
+      <div>
+        <div class="sub">Datum &amp; Uhrzeit <span class="pill">Pattern: <code>input[type=date]</code></span></div>
+        <div class="frame">
+          <div class="frame-body">
+            <div class="show-grid">
+
+              <div class="field">
+                <label class="field-label">Spieldatum <span class="req">*</span></label>
+                <div class="input-wrap has-leading">
+                  <span class="lead">
+                    <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="3.5" width="12" height="11" rx="1.5"/><path d="M2 6.5h12M5 2v3M11 2v3"/></svg>
+                  </span>
+                  <input type="date" class="input" value="2026-05-23" />
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Tip-Off Zeit <span class="req">*</span></label>
+                <div class="input-wrap has-leading">
+                  <span class="lead">
+                    <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 4.5V8l2.5 1.5"/></svg>
+                  </span>
+                  <input type="time" class="input" value="19:30" />
+                </div>
+                <div class="field-help">Tisch öffnet 45 Minuten vorher.</div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Geburtstag</label>
+                <div class="input-wrap has-leading">
+                  <span class="lead">
+                    <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="2" y="3.5" width="12" height="11" rx="1.5"/><path d="M2 6.5h12M5 2v3M11 2v3"/></svg>
+                  </span>
+                  <input type="date" class="input" value="1991-04-12" />
+                </div>
+                <div class="field-help">Für Altersklassen-Validierung.</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHOICE -->
+      <div>
+        <div class="sub">Wahl-Komponenten <span class="pill">Checkbox · Radio · Toggle · Segmented</span></div>
+        <div class="frame">
+          <div class="frame-body">
+            <div class="show-grid">
+
+              <div class="field">
+                <label class="field-label">Position</label>
+                <div class="radio-group">
+                  <label class="radio"><input type="radio" name="pos" value="pg" checked /><span class="lbl">Point Guard (PG)</span></label>
+                  <label class="radio"><input type="radio" name="pos" value="sg" /><span class="lbl">Shooting Guard (SG)</span></label>
+                  <label class="radio"><input type="radio" name="pos" value="sf" /><span class="lbl">Small Forward (SF)</span></label>
+                  <label class="radio"><input type="radio" name="pos" value="pf" /><span class="lbl">Power Forward (PF)</span></label>
+                  <label class="radio"><input type="radio" name="pos" value="c" /><span class="lbl">Center (C)</span></label>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Rollen</label>
+                <div class="radio-group">
+                  <label class="check"><input type="checkbox" checked /><span class="lbl">Captain<span class="meta">Trikot bekommt Amber-Outline</span></span></label>
+                  <label class="check"><input type="checkbox" /><span class="lbl">Co-Captain</span></label>
+                  <label class="check"><input type="checkbox" checked /><span class="lbl">Auf Spielbericht eintragen</span></label>
+                  <label class="check"><input type="checkbox" /><span class="lbl">Trainer-Lizenz vorhanden</span></label>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Wettbewerb</label>
+                <div class="seg" role="tablist">
+                  <button type="button" aria-pressed="false">Vorbereitung</button>
+                  <button type="button" aria-pressed="true">Hauptrunde</button>
+                  <button type="button" aria-pressed="false">Playoffs</button>
+                </div>
+                <div class="field-help">Beeinflusst Spielbericht-Validierung.</div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Optionen</label>
+                <div style="display:flex; flex-direction:column; gap:14px; padding-top:4px;">
+                  <label class="toggle"><input type="checkbox" checked /><span class="tk"></span><span class="lbl">Auszeit-Verwaltung übernehmen</span></label>
+                  <label class="toggle"><input type="checkbox" /><span class="tk"></span><span class="lbl">Live-Statistik teilen</span></label>
+                  <label class="toggle"><input type="checkbox" checked /><span class="tk"></span><span class="lbl">Automatischer Druck nach Spielende</span></label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FILE / AVATAR -->
+      <div>
+        <div class="sub">Datei-Upload &amp; Avatar <span class="pill">Pattern: <code>.upload</code> · <code>.avatar-up</code></span></div>
+        <div class="frame">
+          <div class="frame-body">
+            <div class="show-grid cols-2">
+
+              <div class="field">
+                <label class="field-label">Spielausweis (PDF)</label>
+                <div class="upload">
+                  <div class="upload-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color: var(--ink-700);"><path d="M12 16V4M6 10l6-6 6 6M4 20h16"/></svg>
+                  </div>
+                  <div class="upload-body">
+                    <div class="upload-title">Datei hierher ziehen oder <b>auswählen</b></div>
+                    <div class="upload-meta">PDF · max 8 MB · ein Ausweis je Spieler</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Spielerfoto</label>
+                <div class="avatar-up">
+                  <div class="av">AS</div>
+                  <div class="av-actions">
+                    <div class="av-name">Andreas Seiferth</div>
+                    <div class="av-link">Foto hochladen</div>
+                    <div class="av-link" style="color: var(--err-text);">Entfernen</div>
+                  </div>
+                </div>
+                <div class="field-help">Quadratisch · mind. 400 × 400 px. Initialen werden sonst gerendert.</div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 03 — STATES
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="03 States">
+    <div class="s-head">
+      <div class="s-num">03 — States</div>
+      <div class="s-title">
+        <h2>Acht Zustände, klar unterscheidbar.</h2>
+        <p>
+          Jeder State nutzt zwei Signale: Farbe <em>und</em> Form (Border-Stärke, Ring,
+          Icon). Damit funktionieren die States auch bei Farbenblindheit. Fokus-Ringe
+          haben ≥ 3:1 Kontrast zur umliegenden Fläche.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div class="frame">
+        <div class="frame-body">
+          <div class="states-grid">
+
+            <div class="state-card">
+              <div class="name">Default</div>
+              <div class="demo">
+                <input type="text" class="input" placeholder="Trikotnummer" />
+              </div>
+            </div>
+
+            <div class="state-card">
+              <div class="name">Hover</div>
+              <div class="demo">
+                <input type="text" class="input" placeholder="Trikotnummer" style="border-color: var(--n-400);" />
+              </div>
+            </div>
+
+            <div class="state-card is-focus">
+              <div class="name">Focus <span class="ratio">3.4:1</span></div>
+              <div class="demo">
+                <input type="text" class="input" value="14" />
+              </div>
+            </div>
+
+            <div class="state-card">
+              <div class="name">Filled</div>
+              <div class="demo">
+                <input type="text" class="input" value="A. Seiferth" />
+              </div>
+            </div>
+
+            <div class="state-card">
+              <div class="name">Disabled</div>
+              <div class="demo">
+                <input type="text" class="input" value="Gesperrt 2 Spiele" disabled />
+              </div>
+            </div>
+
+            <div class="state-card">
+              <div class="name">Read-only</div>
+              <div class="demo">
+                <input type="text" class="input" value="SR-2014-0892" readonly />
+              </div>
+            </div>
+
+            <div class="state-card">
+              <div class="name">Error</div>
+              <div class="demo">
+                <div class="field is-error" style="gap: 4px;">
+                  <input type="text" class="input" value="100" />
+                </div>
+              </div>
+            </div>
+
+            <div class="state-card">
+              <div class="name">Success</div>
+              <div class="demo">
+                <div class="field is-ok" style="gap: 4px;">
+                  <input type="text" class="input" value="14" />
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 04 — SPIELBERICHT-SETUP (real form)
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="04 Setup">
+    <div class="s-head">
+      <div class="s-num">04 — Spielbericht-Setup</div>
+      <div class="s-title">
+        <h2>Die Hauptmaske, ungefiltert.</h2>
+        <p>
+          Wie der Spielbericht heute auf dem iPad startet: Schritt-Indikator links, Felder
+          gruppenweise rechts, Auto-Save unten, „Weiter" als Amber-CTA. Alle Patterns aus
+          den Sektionen 01–03 sind hier im Echteinsatz.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div class="frame" style="border-radius: 18px;">
+        <div class="setup-grid">
+
+          <aside class="setup-side">
+            <div class="brand">
+              <span class="monogram">D</span>
+              Digitaler Spielbericht
+            </div>
+            <div>
+              <h2>Spielbericht anlegen</h2>
+              <p>5 Schritte · ca. 4 Minuten · Daten werden automatisch lokal gespeichert.</p>
+            </div>
+            <div class="progress">
+              <div class="progress-track"><div class="progress-fill"></div></div>
+              <div class="progress-meta">
+                <span>Schritt 3 von 5</span>
+                <span>60 %</span>
+              </div>
+            </div>
+            <div class="steps">
+              <div class="setup-step done"><span class="num"></span> Spielinfo</div>
+              <div class="setup-step done"><span class="num"></span> Mannschaften</div>
+              <div class="setup-step current"><span class="num">3</span> Schiedsrichter &amp; Tisch</div>
+              <div class="setup-step"><span class="num">4</span> Aufstellung Heim</div>
+              <div class="setup-step"><span class="num">5</span> Aufstellung Gast</div>
+            </div>
+          </aside>
+
+          <div class="setup-main">
+            <div class="step-head">
+              <h3>Schiedsrichter &amp; Kampfgericht</h3>
+              <div class="step-meta">5 Felder · 3 Pflicht</div>
+            </div>
+
+            <div class="setup-section">
+              <div class="setup-section-head">Schiedsrichter</div>
+
+              <div class="setup-row">
+                <div class="field">
+                  <label class="field-label">1. Schiedsrichter <span class="req">*</span></label>
+                  <div class="input-wrap has-leading has-trailing">
+                    <span class="lead">
+                      <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="5" r="2.6"/><path d="M3.5 14c.6-2.5 2.4-4 4.5-4s3.9 1.5 4.5 4"/></svg>
+                    </span>
+                    <input type="text" class="input" value="Dr. Karlheinz Henning · SR-2014-0892" />
+                    <span class="trail">
+                      <svg class="glyph" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1.5l5 5 5-5"/></svg>
+                    </span>
+                  </div>
+                  <div class="field-help ok">
+                    <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.2l3.5 3.5L13 5"/></svg>
+                    <span>Lizenz gültig bis 30.06.2027 · verfügbar</span>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="field-label">2. Schiedsrichter <span class="req">*</span></label>
+                  <div class="input-wrap has-leading has-trailing">
+                    <span class="lead">
+                      <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="8" cy="5" r="2.6"/><path d="M3.5 14c.6-2.5 2.4-4 4.5-4s3.9 1.5 4.5 4"/></svg>
+                    </span>
+                    <input type="text" class="input" value="Markus Steinbach · SR-2018-1247" />
+                    <span class="trail">
+                      <svg class="glyph" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1.5l5 5 5-5"/></svg>
+                    </span>
+                  </div>
+                  <div class="field-help ok">
+                    <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.2l3.5 3.5L13 5"/></svg>
+                    <span>Lizenz gültig bis 31.12.2026 · verfügbar</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="setup-row cols-1">
+                <div class="field" style="max-width: 50%;">
+                  <label class="field-label">Kommissar <span class="opt">optional</span></label>
+                  <input type="text" class="input" placeholder="Nur ab Regionalliga..." />
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-section">
+              <div class="setup-section-head">Kampfgericht</div>
+
+              <div class="setup-row cols-3">
+                <div class="field">
+                  <label class="field-label">Anschreiber <span class="req">*</span></label>
+                  <div class="input-wrap has-trailing">
+                    <input type="text" class="input" value="Christine Bauer" />
+                    <span class="trail">
+                      <svg class="glyph" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1.5l5 5 5-5"/></svg>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <label class="field-label">Zeitnehmer <span class="req">*</span></label>
+                  <div class="input-wrap has-trailing">
+                    <input type="text" class="input" value="Peter Müller" />
+                    <span class="trail">
+                      <svg class="glyph" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1.5l5 5 5-5"/></svg>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="field is-warn">
+                  <label class="field-label">24-Sekunden</label>
+                  <div class="input-wrap has-trailing">
+                    <input type="text" class="input" value="Julia Krause" style="border-color: var(--warn-fill);" />
+                    <span class="trail">
+                      <svg class="glyph" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1 1.5l5 5 5-5"/></svg>
+                    </span>
+                  </div>
+                  <div class="field-help warn">
+                    <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.5L15 14H1z"/><path d="M8 6v3M8 11.5v.05"/></svg>
+                    <span>Lizenz läuft am 30.06.2026 ab.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="setup-section">
+              <div class="setup-section-head">Optionen</div>
+
+              <div style="display: flex; flex-direction: column; gap: 14px;">
+                <label class="toggle"><input type="checkbox" checked /><span class="tk"></span><span class="lbl">Auszeiten automatisch nachhalten</span></label>
+                <label class="toggle"><input type="checkbox" /><span class="tk"></span><span class="lbl">Live-Stream an Zuschauer-App weiterleiten</span></label>
+              </div>
+            </div>
+
+            <div class="setup-footer">
+              <div class="save-state">Auto-gespeichert · vor 4 Sekunden</div>
+              <div class="actions">
+                <button type="button" class="btn ghost">Zurück</button>
+                <button type="button" class="btn amber">Weiter → Aufstellung</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 05 — LIVE SCORING & KORREKTUREN
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="05 Live Scoring" style="border-bottom: 0;">
+    <div class="s-head">
+      <div class="s-num">05 — Live Scoring</div>
+      <div class="s-title">
+        <h2>Anschreiber-UI · zwei Hände, zwei Taps.</h2>
+        <p>
+          Basketball ist zu schnell für Dropdowns. Diese Split-Screen-UI gibt
+          jeder Mannschaftsseite eine eigene Hälfte. Erste Berührung = Aktion,
+          zweite Berührung = Spieler über Trikot-Kachel. In der Mitte stoppt die Uhr,
+          alle nicht-zeitkritischen Korrekturen liegen ein Tap entfernt.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <!-- ── 05.1 · Team-Config (Trikotfarbe + Logo) ─────────────── -->
+      <div>
+        <div class="sub">Team-Config · Trikotfarbe &amp; Logo <span class="pill amber">am Spielbeginn</span></div>
+        <p style="margin: -4px 0 14px; font-size: 13.5px; color: var(--n-700); max-width: 720px; line-height: 1.5;">
+          Wird einmal vor dem Tip-Off gesetzt. Steuert die Trikot-Kacheln auf der Live-Score-UI und die
+          Heim/Gast-Indikatoren in allen Tabellen. Logo erscheint im Spielbericht-Header und auf dem TV-Scoreboard.
+        </p>
+        <div class="frame">
+          <div class="team-cfg">
+
+            <div class="team-cfg-side">
+              <div class="tc-head">
+                <span class="tc-strip"></span>
+                <span class="tc-name">TSV Tröster Breitengüßbach</span>
+                <span class="tc-role">Heim</span>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Trikotfarbe</label>
+                <div class="color-swatches" role="radiogroup" aria-label="Heim-Trikotfarbe">
+                  <button type="button" class="color-sw" aria-pressed="true" aria-label="Blau"
+                          style="background: oklch(0.45 0.135 244)"></button>
+                  <button type="button" class="color-sw" aria-pressed="false" aria-label="Rot"
+                          style="background: oklch(0.52 0.18 25)"></button>
+                  <button type="button" class="color-sw" aria-pressed="false" aria-label="Navy"
+                          style="background: oklch(0.28 0.10 250)"></button>
+                  <button type="button" class="color-sw" aria-pressed="false" aria-label="Grün"
+                          style="background: oklch(0.48 0.14 145)"></button>
+                  <button type="button" class="color-sw" aria-pressed="false" aria-label="Gold"
+                          style="background: oklch(0.68 0.16 75)"></button>
+                  <button type="button" class="color-sw" aria-pressed="false" aria-label="Schwarz"
+                          style="background: oklch(0.20 0.010 60)"></button>
+                  <button type="button" class="color-sw" aria-pressed="false" aria-label="Weiß"
+                          style="background: oklch(0.97 0.005 60)"></button>
+                  <button type="button" class="color-sw" aria-pressed="false" aria-label="Violett"
+                          style="background: oklch(0.40 0.14 295)"></button>
+                  <button type="button" class="color-sw custom" aria-pressed="false" aria-label="Eigene Farbe"></button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Vereinslogo <span class="opt">optional · empfohlen</span></label>
+                <div class="logo-up">
+                  <div class="lu-tile">TR</div>
+                  <div class="lu-info">
+                    <div class="lu-title">Datei hierher ziehen oder <b>auswählen</b></div>
+                    <div class="lu-meta">PNG / SVG · quadratisch · ≥ 256 px</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tc-preview">
+                <span class="pv-label">Live-Vorschau · Trikot-Kacheln</span>
+                <div class="pv-tiles">
+                  <span class="player-tile captain"><span class="pt-num">4</span><span class="pt-init">A.S.</span></span>
+                  <span class="player-tile"><span class="pt-num">7</span><span class="pt-init">N.W.</span></span>
+                  <span class="player-tile"><span class="pt-num">11</span><span class="pt-init">Y.A.</span></span>
+                  <span class="player-tile"><span class="pt-num">13</span><span class="pt-init">T.R.</span></span>
+                  <span class="player-tile"><span class="pt-num">21</span><span class="pt-init">R.C.</span></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="team-cfg-side gast">
+              <div class="tc-head">
+                <span class="tc-strip"></span>
+                <span class="tc-name">USC Heidelberg</span>
+                <span class="tc-role">Gast</span>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Trikotfarbe</label>
+                <div class="color-swatches" role="radiogroup" aria-label="Gast-Trikotfarbe">
+                  <button type="button" class="color-sw" aria-pressed="false" aria-label="Blau"
+                          style="background: oklch(0.45 0.135 244)"></button>
+                  <button type="button" class="color-sw" aria-pressed="true" aria-label="Rot"
+                          style="background: oklch(0.52 0.18 25)"></button>
+                  <button type="button" class="color-sw" aria-pressed="false" aria-label="Navy"
+                          style="background: oklch(0.28 0.10 250)"></button>
+                  <button type="button" class="color-sw" aria-pressed="false" aria-label="Grün"
+                          style="background: oklch(0.48 0.14 145)"></button>
+                  <button type="button" class="color-sw" aria-pressed="false" aria-label="Gold"
+                          style="background: oklch(0.68 0.16 75)"></button>
+                  <button type="button" class="color-sw" aria-pressed="false" aria-label="Schwarz"
+                          style="background: oklch(0.20 0.010 60)"></button>
+                  <button type="button" class="color-sw" aria-pressed="false" aria-label="Weiß"
+                          style="background: oklch(0.97 0.005 60)"></button>
+                  <button type="button" class="color-sw" aria-pressed="false" aria-label="Violett"
+                          style="background: oklch(0.40 0.14 295)"></button>
+                  <button type="button" class="color-sw custom" aria-pressed="false" aria-label="Eigene Farbe"></button>
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="field-label">Vereinslogo <span class="opt">optional · empfohlen</span></label>
+                <div class="logo-up gast">
+                  <div class="lu-tile">UH</div>
+                  <div class="lu-info">
+                    <div class="lu-title">Datei hierher ziehen oder <b>auswählen</b></div>
+                    <div class="lu-meta">PNG / SVG · quadratisch · ≥ 256 px</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tc-preview">
+                <span class="pv-label">Live-Vorschau · Trikot-Kacheln</span>
+                <div class="pv-tiles">
+                  <span class="player-tile captain" style="background: var(--team-gast)"><span class="pt-num">3</span><span class="pt-init">D.M.</span></span>
+                  <span class="player-tile" style="background: var(--team-gast)"><span class="pt-num">8</span><span class="pt-init">M.V.</span></span>
+                  <span class="player-tile" style="background: var(--team-gast)"><span class="pt-num">12</span><span class="pt-init">B.S.</span></span>
+                  <span class="player-tile" style="background: var(--team-gast)"><span class="pt-num">17</span><span class="pt-init">N.P.</span></span>
+                  <span class="player-tile" style="background: var(--team-gast)"><span class="pt-num">23</span><span class="pt-init">M.W.</span></span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 05.2 · Live Scoring Board (split-screen) ─────────────── -->
+      <div>
+        <div class="sub">Live-Scoring · Split-Screen <span class="pill" style="background: var(--ink-900); color: var(--n-50);">Dark · Kampfgericht</span></div>
+        <p style="margin: -4px 0 14px; font-size: 13.5px; color: var(--n-700); max-width: 720px; line-height: 1.5;">
+          Beide Hälften symmetrisch. Aktionen pro Team: <strong>+3P · +2P · +1P</strong> (Scoring), darunter
+          <strong>FOUL · WECHSEL · AUSZEIT</strong> als gleichwertige Procedural-Reihe.
+          <strong>Challenge</strong> rutscht als kleiner Sonder-Button darunter — pro Spiel meist nur 1–2 mal benutzt. Zentrum: Uhr-Toggle und
+          Korrektur-Zugang. Tap-Tap-Flow: Aktion auswählen (leuchtet amber), dann Spieler antippen.
+          Bank-Grid wraps automatisch — ein Team darf bis zu 12 Spieler aufstellen (5 auf Feld + 7 Bank).
+          <strong>Wechsel-Ankündigung:</strong> Bank-Spieler antippen → ↑-Badge erscheint. Nochmal antippen →
+          zurückgezogen. Beim nächsten toten Ball wird der Ausführen-Dialog geöffnet.
+        </p>
+
+        <div class="live-board">
+
+          <!-- HEIM -->
+          <div class="live-side">
+            <div class="lv-team-head">
+              <div class="lv-team-logo">TR</div>
+              <div class="lv-team-info">
+                <div class="lv-team-name">TSV Tröster</div>
+                <div class="lv-team-meta"><span class="strip"></span> Heim · Blau · 12 Spieler</div>
+              </div>
+              <div class="lv-team-score">87</div>
+            </div>
+
+            <div class="lv-section-label">
+              <span>Aktion</span>
+              <span class="step active">1</span>
+            </div>
+            <div class="action-grid-scoring">
+              <button class="action-btn">
+                <span class="ab-glyph">+3P</span>
+                <span class="ab-lbl">Dreier</span>
+              </button>
+              <button class="action-btn selected">
+                <span class="ab-glyph">+2P</span>
+                <span class="ab-lbl">Zweier</span>
+              </button>
+              <button class="action-btn">
+                <span class="ab-glyph">+1P</span>
+                <span class="ab-lbl">Freiwurf</span>
+              </button>
+            </div>
+            <div class="action-grid-procedural">
+              <button class="action-btn foul"><span class="ab-glyph">FOUL</span><span class="ab-lbl">Persönlich</span></button>
+              <button class="action-btn"><span class="ab-glyph">WECHSEL</span><span class="ab-lbl">Substitution</span></button>
+              <button class="action-btn">
+                <span class="to-dots" aria-label="1 von 3 Auszeiten verbleibend"><span class="d on"></span><span class="d"></span><span class="d"></span></span>
+                <span class="ab-glyph">AUSZEIT</span>
+                <span class="ab-lbl">1 / 3 frei · H2</span>
+              </button>
+            </div>
+            <div class="action-grid-tertiary">
+              <button class="action-btn challenge"><span class="ab-glyph">CHALL.</span><span class="ab-lbl">Trainer-Challenge</span></button>
+            </div>
+
+            <div class="lv-section-label" style="margin-top: 4px;">
+              <span>Spieler · auf Feld</span>
+              <span class="step">2</span>
+            </div>
+            <div class="player-grid">
+              <button class="player-tile captain"><span class="pt-num">4</span><span class="pt-init">A.S.</span></button>
+              <button class="player-tile target"><span class="pt-num">7</span><span class="pt-init">N.W.</span></button>
+              <button class="player-tile"><span class="pt-num">11</span><span class="pt-init">Y.A.</span></button>
+              <button class="player-tile"><span class="pt-num">13</span><span class="pt-init">T.R.</span></button>
+              <button class="player-tile"><span class="pt-num">21</span><span class="pt-init">R.C.</span></button>
+            </div>
+
+            <div class="lv-section-label" style="margin-top: 0;">
+              <span>Bank · 7 Spieler</span>
+            </div>
+            <div class="player-grid bench-row">
+              <button class="player-tile bench picked-in"><span class="pt-num">5</span><span class="pt-init">L.B.</span></button>
+              <button class="player-tile bench"><span class="pt-num">9</span><span class="pt-init">M.S.</span></button>
+              <button class="player-tile bench"><span class="pt-num">15</span><span class="pt-init">H.D.</span></button>
+              <button class="player-tile bench"><span class="pt-num">6</span><span class="pt-init">J.K.</span></button>
+              <button class="player-tile bench"><span class="pt-num">12</span><span class="pt-init">T.H.</span></button>
+              <button class="player-tile bench"><span class="pt-num">25</span><span class="pt-init">D.W.</span></button>
+              <button class="player-tile bench" style="opacity: 0.35;"><span class="pt-num">18</span><span class="pt-init">F.H.</span></button>
+            </div>
+          </div>
+
+          <!-- CENTER -->
+          <div class="live-center">
+            <span class="lv-quarter">Q3 · Live</span>
+            <span class="lv-clock">07:42</span>
+            <span class="lv-shot">24"</span>
+
+            <button class="lv-clock-btn pause">
+              <span class="pl-glyph">▌▌</span> Uhr stoppen
+            </button>
+
+            <div class="lv-possession" data-dir="left" aria-label="Spielrichtungsanzeige: Heim hat Ballbesitz">
+              <span class="lv-pos-side left">Heim</span>
+              <span class="lv-pos-arrow" aria-hidden="true">←</span>
+              <span class="lv-pos-side right">Gast</span>
+            </div>
+
+            <div class="lv-divider"></div>
+
+            <button class="lv-sec-btn">Spielstand korrigieren</button>
+            <button class="lv-sec-btn">Letzte Aktion rückgängig</button>
+            <button class="lv-sec-btn">Spielbericht-Protokoll</button>
+
+            <div class="lv-hint">
+              ↓ Spieler antippen,<br/>der den Korb erzielte
+            </div>
+          </div>
+
+          <!-- GAST -->
+          <div class="live-side gast">
+            <div class="lv-team-head">
+              <div class="lv-team-logo">UH</div>
+              <div class="lv-team-info">
+                <div class="lv-team-name">USC Heidelberg</div>
+                <div class="lv-team-meta"><span class="strip"></span> Gast · Rot · 12 Spieler</div>
+              </div>
+              <div class="lv-team-score">64</div>
+            </div>
+
+            <div class="lv-section-label">
+              <span>Aktion</span>
+              <span class="step">1</span>
+            </div>
+            <div class="action-grid-scoring">
+              <button class="action-btn">
+                <span class="ab-glyph">+3P</span>
+                <span class="ab-lbl">Dreier</span>
+              </button>
+              <button class="action-btn">
+                <span class="ab-glyph">+2P</span>
+                <span class="ab-lbl">Zweier</span>
+              </button>
+              <button class="action-btn">
+                <span class="ab-glyph">+1P</span>
+                <span class="ab-lbl">Freiwurf</span>
+              </button>
+            </div>
+            <div class="action-grid-procedural">
+              <button class="action-btn foul"><span class="ab-glyph">FOUL</span><span class="ab-lbl">Persönlich</span></button>
+              <button class="action-btn"><span class="ab-glyph">WECHSEL</span><span class="ab-lbl">Substitution</span></button>
+              <button class="action-btn">
+                <span class="to-dots" aria-label="3 von 3 Auszeiten verbleibend"><span class="d on"></span><span class="d on"></span><span class="d on"></span></span>
+                <span class="ab-glyph">AUSZEIT</span>
+                <span class="ab-lbl">3 / 3 frei · H2</span>
+              </button>
+            </div>
+            <div class="action-grid-tertiary">
+              <button class="action-btn challenge"><span class="ab-glyph">CHALL.</span><span class="ab-lbl">Trainer-Challenge</span></button>
+            </div>
+
+            <div class="lv-section-label" style="margin-top: 4px;">
+              <span>Spieler · auf Feld</span>
+              <span class="step">2</span>
+            </div>
+            <div class="player-grid">
+              <button class="player-tile captain"><span class="pt-num">3</span><span class="pt-init">D.M.</span></button>
+              <button class="player-tile"><span class="pt-num">8</span><span class="pt-init">M.V.</span></button>
+              <button class="player-tile"><span class="pt-num">12</span><span class="pt-init">B.S.</span></button>
+              <button class="player-tile"><span class="pt-num">17</span><span class="pt-init">N.P.</span></button>
+              <button class="player-tile foulout"><span class="pt-num">23</span><span class="pt-init">M.W.</span></button>
+            </div>
+
+            <div class="lv-section-label" style="margin-top: 0;">
+              <span>Bank · 7 Spieler</span>
+            </div>
+            <div class="player-grid bench-row">
+              <button class="player-tile bench"><span class="pt-num">6</span><span class="pt-init">L.S.</span></button>
+              <button class="player-tile bench"><span class="pt-num">14</span><span class="pt-init">P.H.</span></button>
+              <button class="player-tile bench"><span class="pt-num">2</span><span class="pt-init">J.M.</span></button>
+              <button class="player-tile bench"><span class="pt-num">11</span><span class="pt-init">S.K.</span></button>
+              <button class="player-tile bench"><span class="pt-num">20</span><span class="pt-init">T.B.</span></button>
+              <button class="player-tile bench"><span class="pt-num">22</span><span class="pt-init">P.R.</span></button>
+              <button class="player-tile bench"><span class="pt-num">7</span><span class="pt-init">W.G.</span></button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── 05.3 · Follow-Up Dialogs ────────────────────────────── -->
+      <div>
+        <div class="sub">Follow-Up-Dialoge · Was nach der Aktion öffnet</div>
+        <p style="margin: -4px 0 14px; font-size: 13.5px; color: var(--n-700); max-width: 720px; line-height: 1.5;">
+          Aktionen die mehr als zwei Taps brauchen — Foul-Typ, Auszeit-Variante, Challenge —
+          öffnen ein fokussiertes Modal. „Spielstand korrigieren" wird über den Korrektur-Button
+          in der Mittel-Spalte erreicht.
+        </p>
+        <div class="show-grid cols-2">
+
+          <div class="inline-card">
+            <div class="il-head">
+              <h4>Wechsel ausführen · TSV Tröster</h4>
+              <span class="il-meta">Tot. Ball · Q3 · 07:08</span>
+            </div>
+
+            <div style="background: var(--amber-50); border: 1px solid var(--amber-200); border-radius: 8px; padding: 10px 14px; font-size: 12.5px; color: var(--amber-800); line-height: 1.45; display: flex; gap: 10px; align-items: flex-start;">
+              <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="margin-top: 1px; flex-shrink: 0;"><circle cx="8" cy="8" r="6.5"/><path d="M8 5v3.5M8 11.2v.05"/></svg>
+              <span><b>2 Spieler angekündigt</b> — #5 L. Boner, #9 M. Seric. Welche Spieler verlassen das Feld?</span>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Spieler raus · vom Feld <span class="req">*</span></label>
+              <div class="player-grid">
+                <button type="button" class="player-tile"><span class="pt-num">4</span><span class="pt-init">A.S.</span></button>
+                <button type="button" class="player-tile"><span class="pt-num">7</span><span class="pt-init">N.W.</span></button>
+                <button type="button" class="player-tile picked-out"><span class="pt-num">11</span><span class="pt-init">Y.A.</span></button>
+                <button type="button" class="player-tile picked-out"><span class="pt-num">13</span><span class="pt-init">T.R.</span></button>
+                <button type="button" class="player-tile"><span class="pt-num">21</span><span class="pt-init">R.C.</span></button>
+              </div>
+              <div class="field-help">Genauso viele wie angekündigt · 2 Spieler.</div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Ankündigung · rein · nur Kontrolle</label>
+              <div class="player-grid bench-row">
+                <button type="button" class="player-tile bench picked-in" disabled><span class="pt-num">5</span><span class="pt-init">L.B.</span></button>
+                <button type="button" class="player-tile bench picked-in" disabled><span class="pt-num">9</span><span class="pt-init">M.S.</span></button>
+                <button type="button" class="player-tile bench" disabled style="opacity:0.5"><span class="pt-num">15</span><span class="pt-init">H.D.</span></button>
+                <button type="button" class="player-tile bench" disabled style="opacity:0.5"><span class="pt-num">6</span><span class="pt-init">J.K.</span></button>
+                <button type="button" class="player-tile bench" disabled style="opacity:0.5"><span class="pt-num">12</span><span class="pt-init">T.H.</span></button>
+                <button type="button" class="player-tile bench" disabled style="opacity:0.5"><span class="pt-num">25</span><span class="pt-init">D.W.</span></button>
+                <button type="button" class="player-tile bench" disabled style="opacity:0.2"><span class="pt-num">18</span><span class="pt-init">F.H.</span></button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="check"><input type="checkbox" /><span class="lbl">Trotzdem ohne Ankündigung wechseln<span class="meta">Erzeugt Protokoll-Eintrag</span></span></label>
+            </div>
+
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+              <button type="button" class="btn ghost">Abbrechen</button>
+              <button type="button" class="btn primary">Wechsel bestätigen</button>
+            </div>
+          </div>
+
+          <div class="inline-card">
+            <div class="il-head">
+              <h4>Foul-Detail · #21 Christen</h4>
+              <span class="il-meta">4. persönliches Foul</span>
+            </div>
+            <div class="field">
+              <label class="field-label">Foul-Typ</label>
+              <div class="radio-group row">
+                <label class="radio"><input type="radio" name="foultype" checked /><span class="lbl">P (persönlich)</span></label>
+                <label class="radio"><input type="radio" name="foultype" /><span class="lbl">T (technisch)</span></label>
+                <label class="radio"><input type="radio" name="foultype" /><span class="lbl">U (unsportlich)</span></label>
+                <label class="radio"><input type="radio" name="foultype" /><span class="lbl">D (disq.)</span></label>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">Freiwürfe folgen?</label>
+              <div class="seg lg" role="tablist">
+                <button type="button" aria-pressed="true">Nein</button>
+                <button type="button" aria-pressed="false">1</button>
+                <button type="button" aria-pressed="false">2</button>
+                <button type="button" aria-pressed="false">3</button>
+              </div>
+            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+              <button type="button" class="btn ghost">Abbrechen</button>
+              <button type="button" class="btn danger">Foul speichern</button>
+            </div>
+          </div>
+
+          <div class="inline-card">
+            <div class="il-head">
+              <h4>Auszeit · TSV Tröster</h4>
+              <span class="il-meta">Q3 · 07:42</span>
+            </div>
+            <div style="display: flex; gap: 24px; align-items: center; padding-top: 4px;">
+              <div style="font-family: var(--font-display); font-weight: 800; font-size: 56px; color: var(--ink-900); letter-spacing: -0.04em; line-height: 1; font-variant-numeric: tabular-nums;">
+                2<span style="color: var(--n-400); font-size: 32px;">/3</span>
+              </div>
+              <div>
+                <div style="font-family:var(--font-mono); font-size: 11px; color: var(--page-mute); text-transform: uppercase; letter-spacing: 0.08em;">Verbraucht</div>
+                <div style="font-size: 13.5px; color: var(--n-700); margin-top: 4px; line-height: 1.4;">Q1 · 06:14<br/>Q3 · 02:48</div>
+              </div>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <button type="button" class="btn amber" style="flex: 1;">+ Volle Auszeit (60 s)</button>
+              <button type="button" class="btn secondary" style="flex: 1;">+ Kurze (30 s)</button>
+            </div>
+          </div>
+
+          <div class="inline-card">
+            <div class="il-head">
+              <h4>Trainer-Challenge · TSV Tröster</h4>
+              <span class="il-meta">Review abgeschlossen · 14 s</span>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Art der Challenge <span class="req">*</span></label>
+              <div class="radio-group row">
+                <label class="radio"><input type="radio" name="chl-type" /><span class="lbl">Act of Shooting</span></label>
+                <label class="radio"><input type="radio" name="chl-type" checked /><span class="lbl">Foul-Schwere</span></label>
+                <label class="radio"><input type="radio" name="chl-type" /><span class="lbl">Act of Violence</span></label>
+                <label class="radio"><input type="radio" name="chl-type" /><span class="lbl">Aus / Ballbesitz</span></label>
+                <label class="radio"><input type="radio" name="chl-type" /><span class="lbl">Spielzeit</span></label>
+              </div>
+            </div>
+
+            <div class="chl-summary">
+              <div class="cs-head">Anfrage · Q3 · 07:42</div>
+              <div>Foul-Entscheidung gegen <b>#21 Christen</b> · 4. persönliches Foul</div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Entscheidung des Schiedsrichters <span class="req">*</span></label>
+              <div class="outcome-row">
+                <button type="button" class="outcome-btn success" aria-pressed="true">
+                  <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.2l3.5 3.5L13 5"/></svg>
+                  Erfolgreich
+                </button>
+                <button type="button" class="outcome-btn rejected" aria-pressed="false">
+                  <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+                  Abgewiesen
+                </button>
+              </div>
+            </div>
+
+            <div class="guided-correction">
+              <div class="gc-header">
+                <span class="gc-title">
+                  <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8l3 3 9-9"/></svg>
+                  Geleitete Korrektur
+                </span>
+                <span class="gc-sub">Welche Auswirkung hat das erfolgreiche Review?</span>
+              </div>
+              <div class="gc-list">
+                <button type="button" class="gc-item">
+                  <span class="gc-icon">−</span>
+                  <span class="gc-main">
+                    <span class="gc-name">Foul-Entscheidung zurücknehmen</span>
+                    <span class="gc-hint">#21 Christen geht zurück auf 3 persönliche Fouls</span>
+                  </span>
+                  <span class="gc-arrow">›</span>
+                </button>
+                <button type="button" class="gc-item">
+                  <span class="gc-icon">±</span>
+                  <span class="gc-main">
+                    <span class="gc-name">Korbwertung korrigieren</span>
+                    <span class="gc-hint">Punkte hinzufügen, abziehen oder annullieren</span>
+                  </span>
+                  <span class="gc-arrow">›</span>
+                </button>
+                <button type="button" class="gc-item">
+                  <span class="gc-icon">⧗</span>
+                  <span class="gc-main">
+                    <span class="gc-name">Spielzeit zurücksetzen</span>
+                    <span class="gc-hint">Game Clock auf den Moment der Aktion zurückspulen</span>
+                  </span>
+                  <span class="gc-arrow">›</span>
+                </button>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+              <button type="button" class="btn ghost">Abbrechen</button>
+              <button type="button" class="btn primary">Entscheidung speichern</button>
+            </div>
+          </div>
+
+          <div class="inline-card">
+            <div class="il-head">
+              <h4>Clock-Korrektur · Spieluhr &amp; Wurfuhr</h4>
+              <span class="il-meta">Zehntel-genau · SR-Bestätigung</span>
+            </div>
+
+            <div class="tc-block">
+              <div class="tc-header">
+                <span class="tc-label">Spieluhr · Q3</span>
+                <span class="tc-current">Aktuell: 07:42.0</span>
+              </div>
+              <div class="tc-inputs">
+                <input class="tc-input" type="text" value="07" maxlength="2" aria-label="Minuten" />
+                <span class="tc-sep">:</span>
+                <input class="tc-input" type="text" value="43" maxlength="2" aria-label="Sekunden" />
+                <span class="tc-sep">.</span>
+                <input class="tc-input tc-input-cs narrow" type="text" value="9" maxlength="1" aria-label="Zehntel-Sekunden" />
+                <span class="tc-unit">Zehntel</span>
+              </div>
+              <div class="tc-quick">
+                <button type="button">−1.0 s</button>
+                <button type="button" class="precision">−0.1 s</button>
+                <button type="button" class="precision">+0.1 s</button>
+                <button type="button">+1.0 s</button>
+              </div>
+              <div class="tc-delta">
+                <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                <span>Spieluhr +1.9 s · 07:42.0 → <b>07:43.9</b></span>
+              </div>
+            </div>
+
+            <div class="tc-block">
+              <div class="tc-header">
+                <span class="tc-label">Wurfuhr</span>
+                <span class="tc-current">Aktuell: 24.0</span>
+              </div>
+              <div class="tc-inputs">
+                <input class="tc-input" type="text" value="14" maxlength="2" aria-label="Sekunden" />
+                <span class="tc-sep">.</span>
+                <input class="tc-input tc-input-cs narrow" type="text" value="0" maxlength="1" aria-label="Zehntel-Sekunden" />
+                <span class="tc-unit">Zehntel</span>
+              </div>
+              <div class="tc-quick">
+                <button type="button" class="reset">Reset 24</button>
+                <button type="button" class="reset">Reset 14</button>
+                <button type="button">−1.0 s</button>
+                <button type="button" class="precision">−0.1 s</button>
+                <button type="button" class="precision">+0.1 s</button>
+                <button type="button">+1.0 s</button>
+              </div>
+              <div class="tc-delta">
+                <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+                <span>Wurfuhr-Reset auf <b>14.0</b> (Offensiv-Rebound)</span>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="field-label">Begründung <span class="req">*</span></label>
+              <textarea class="input textarea" placeholder="z. B. Schussglocke ausgelöst während Wurf-Aktion..."></textarea>
+            </div>
+
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+              <button type="button" class="btn ghost">Abbrechen</button>
+              <button type="button" class="btn primary">Clocks anpassen</button>
+            </div>
+          </div>
+
+          <div class="inline-card">
+            <div class="il-head">
+              <h4>Spielstand korrigieren</h4>
+              <span class="il-meta">Schiedsrichter-Bestätigung</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: end;">
+              <div class="field">
+                <label class="field-label" style="font-size: 11px; color: var(--page-mute);">Heim</label>
+                <div class="stepper">
+                  <button type="button" class="minus">−</button>
+                  <input type="number" value="87" />
+                  <button type="button" class="plus">+</button>
+                </div>
+              </div>
+              <div style="font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--n-400); padding-bottom: 10px;">:</div>
+              <div class="field">
+                <label class="field-label" style="font-size: 11px; color: var(--page-mute);">Gast</label>
+                <div class="stepper">
+                  <button type="button" class="minus">−</button>
+                  <input type="number" value="64" />
+                  <button type="button" class="plus">+</button>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <label class="field-label">Begründung <span class="req">*</span></label>
+              <textarea class="input textarea" placeholder="z. B. Wurf-Auswertung Q2 korrigiert..."></textarea>
+            </div>
+            <div style="display:flex; gap:10px; justify-content:flex-end;">
+              <button type="button" class="btn ghost">Verwerfen</button>
+              <button type="button" class="btn primary">Korrektur speichern</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="foot">
+    <span class="iter">Forms v0.2</span> &nbsp;·&nbsp;
+    Input-Types · States · Spielbericht-Setup · Team-Config · Live Scoring · Follow-Up-Dialoge
+  </div>
+
+</div>
+
+<!-- TWEAKS ISLAND -->
+<div id="tweaks-root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+const FORMS_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "density": "touch",
+  "ringWidth": 3,
+  "showFocusOnAll": false,
+  "amberHue": 83,
+  "skyHue": 244
+}/*EDITMODE-END*/;
+
+function FormsTweaks() {
+  const [t, setTweak] = useTweaks(FORMS_TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    const r = document.documentElement;
+    r.style.setProperty('--h-amber', t.amberHue);
+    r.style.setProperty('--h-sky', t.skyHue);
+    r.style.setProperty('--ring-w', t.ringWidth + 'px');
+    document.body.setAttribute('data-density', t.density);
+
+    // Apply pseudo-focus to all inputs for state demo
+    let styleEl = document.getElementById('__forms-tweak-styles');
+    if (!styleEl) {
+      styleEl = document.createElement('style');
+      styleEl.id = '__forms-tweak-styles';
+      document.head.appendChild(styleEl);
+    }
+    styleEl.textContent = t.showFocusOnAll
+      ? `.input { border-color: var(--focus-border) !important; box-shadow: 0 0 0 ${t.ringWidth}px var(--ring-color) !important; }`
+      : '';
+  }, [t]);
+
+  return (
+    <TweaksPanel title="Forms Tweaks">
+      <TweakSection label="Density">
+        <TweakRadio label="Field-Höhe" value={t.density}
+          options={[{value: "touch", label: "Touch 56"}, {value: "default", label: "Def 44"}, {value: "compact", label: "Cmp 36"}]}
+          onChange={(v) => setTweak('density', v)} />
+      </TweakSection>
+      <TweakSection label="Focus">
+        <TweakSlider label="Ring-Breite" value={t.ringWidth} min={1} max={5} step={1} unit="px"
+          onChange={(v) => setTweak('ringWidth', v)} />
+        <TweakToggle label="Focus auf allen Feldern" value={t.showFocusOnAll}
+          onChange={(v) => setTweak('showFocusOnAll', v)} />
+      </TweakSection>
+      <TweakSection label="Hue (sync mit Identity)">
+        <TweakSlider label="Amber" value={t.amberHue} min={30} max={100} step={1} unit="°"
+          onChange={(v) => setTweak('amberHue', v)} />
+        <TweakSlider label="Sky" value={t.skyHue} min={200} max={260} step={1} unit="°"
+          onChange={(v) => setTweak('skyHue', v)} />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<FormsTweaks />);
+</script>
+
+</body>
+</html>

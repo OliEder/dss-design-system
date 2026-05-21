@@ -1,0 +1,1740 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DSS Design System — Modals &amp; Overlays v0.1</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --h-ink: 60;  --h-amber: 83;  --h-sky: 244;
+
+    --ink-0:    oklch(1.000 0     0);
+    --ink-50:   oklch(0.985 0.003 var(--h-ink));
+    --ink-100:  oklch(0.965 0.005 var(--h-ink));
+    --ink-200:  oklch(0.925 0.007 var(--h-ink));
+    --ink-300:  oklch(0.850 0.009 var(--h-ink));
+    --ink-400:  oklch(0.700 0.011 var(--h-ink));
+    --ink-500:  oklch(0.560 0.012 var(--h-ink));
+    --ink-600:  oklch(0.420 0.013 var(--h-ink));
+    --ink-700:  oklch(0.300 0.012 var(--h-ink));
+    --ink-800:  oklch(0.200 0.010 var(--h-ink));
+    --ink-900:  oklch(0.130 0.008 var(--h-ink));
+    --ink-1000: oklch(0.020 0.004 var(--h-ink));
+
+    --amber-50:   oklch(0.975 0.025 var(--h-amber));
+    --amber-100:  oklch(0.940 0.060 var(--h-amber));
+    --amber-200:  oklch(0.880 0.110 var(--h-amber));
+    --amber-300:  oklch(0.830 0.145 var(--h-amber));
+    --amber-400:  oklch(0.800 0.165 var(--h-amber));
+    --amber-500:  oklch(0.760 0.165 var(--h-amber));
+    --amber-700:  oklch(0.540 0.130 calc(var(--h-amber) - 10));
+    --amber-800:  oklch(0.420 0.110 calc(var(--h-amber) - 20));
+
+    --sky-50:   oklch(0.975 0.018 var(--h-sky));
+    --sky-100:  oklch(0.940 0.045 var(--h-sky));
+    --sky-200:  oklch(0.880 0.080 var(--h-sky));
+    --sky-700:  oklch(0.450 0.135 calc(var(--h-sky) + 8));
+    --sky-800:  oklch(0.345 0.120 calc(var(--h-sky) + 12));
+
+    --n-0:    oklch(1.000 0     0);
+    --n-50:   oklch(0.985 0.003 250);
+    --n-100:  oklch(0.965 0.005 250);
+    --n-200:  oklch(0.925 0.006 250);
+    --n-300:  oklch(0.860 0.008 250);
+    --n-400:  oklch(0.700 0.010 250);
+    --n-500:  oklch(0.520 0.011 250);
+    --n-600:  oklch(0.420 0.011 250);
+    --n-700:  oklch(0.320 0.010 250);
+    --n-800:  oklch(0.215 0.009 250);
+    --n-900:  oklch(0.145 0.008 250);
+    --n-950:  oklch(0.085 0.006 250);
+    --n-1000: oklch(0.025 0.004 250);
+
+    --ok-fill: oklch(0.640 0.150 150);  --ok-text: oklch(0.400 0.130 150);  --ok-soft: oklch(0.960 0.040 150);
+    --warn-fill: oklch(0.770 0.165 75); --warn-text: oklch(0.420 0.120 60); --warn-soft: oklch(0.970 0.055 80);
+    --err-fill: oklch(0.580 0.220 27);  --err-button: oklch(0.400 0.190 27);  --err-text: oklch(0.420 0.180 27);  --err-soft: oklch(0.955 0.045 27);
+    --info-fill: oklch(0.620 0.140 245); --info-text: oklch(0.380 0.130 245); --info-soft: oklch(0.955 0.035 245);
+
+    --team-heim: var(--sky-700);
+    --team-gast: oklch(0.520 0.180 25);
+
+    --font-display: 'Sora', system-ui, sans-serif;
+    --font-body:    'Manrope', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+    --page-bg:   var(--n-50);
+    --page-fg:   var(--ink-900);
+    --page-mute: var(--n-600);
+    --page-line: var(--n-200);
+
+    --backdrop: oklch(0.13 0.02 250 / 0.55);
+    --backdrop-heavy: oklch(0.10 0.02 250 / 0.72);
+    --modal-radius: 14px;
+    --modal-shadow: 0 30px 80px -10px rgba(15, 20, 38, 0.30), 0 12px 30px -8px rgba(15, 20, 38, 0.18);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page-bg);
+    color: var(--page-fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  .page { max-width: 1320px; margin: 0 auto; padding: 56px 56px 120px; }
+
+  /* ── Top strip ──────────────────────────────────────────────── */
+  .topstrip {
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--page-mute);
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .topstrip .left { display: flex; gap: 14px; align-items: center; }
+  .topstrip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber-500); display: inline-block; }
+  .topstrip .monogram {
+    width: 22px; height: 22px; border-radius: 5px;
+    background: var(--ink-800); color: var(--n-0);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 11px;
+    letter-spacing: -0.02em;
+  }
+  .topstrip a {
+    color: inherit; text-decoration: none;
+    padding: 4px 8px; border-radius: 5px;
+    background: var(--ink-100);
+    transition: background 0.12s;
+  }
+  .topstrip a:hover { background: var(--ink-200); }
+  .topstrip .links { display: flex; gap: 8px; }
+
+  /* ── Hero ───────────────────────────────────────────────────── */
+  .hero { padding: 48px 0 56px; border-bottom: 1px solid var(--page-line); }
+  .hero .eyebrow {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--amber-800);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(40px, 5.5vw, 72px);
+    letter-spacing: -0.035em; line-height: 0.98;
+    margin: 0 0 20px;
+    color: var(--ink-900);
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(180deg, var(--amber-700), var(--amber-800));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .lead { max-width: 740px; font-size: 17px; line-height: 1.55; color: var(--n-700); text-wrap: pretty; }
+
+  /* ── Sections ───────────────────────────────────────────────── */
+  section.s { padding: 72px 0; border-bottom: 1px solid var(--page-line); }
+  .s-head {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 32px; align-items: baseline;
+    margin-bottom: 36px;
+  }
+  .s-num {
+    font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em;
+    color: var(--amber-800); padding-top: 8px;
+  }
+  .s-title h2 {
+    font-family: var(--font-display); font-weight: 700; font-size: 34px;
+    letter-spacing: -0.02em; line-height: 1.08;
+    margin: 0 0 10px; color: var(--ink-900);
+  }
+  .s-title p {
+    margin: 0; color: var(--n-700); font-size: 15.5px; max-width: 720px; text-wrap: pretty;
+  }
+  .s-body { display: flex; flex-direction: column; gap: 40px; }
+
+  .sub {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--page-mute);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sub::after { content: ''; flex: 1; height: 1px; background: var(--page-line); }
+  .sub .pill {
+    background: var(--ink-100); color: var(--ink-700);
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 9.5px; letter-spacing: 0.08em;
+    text-transform: uppercase; font-weight: 600; white-space: nowrap;
+  }
+  .sub .pill.amber { background: var(--amber-100); color: var(--amber-800); }
+  .sub .pill.err   { background: var(--err-soft);  color: var(--err-text); }
+  .sub .pill.dark  { background: var(--ink-900); color: var(--n-50); }
+
+  /* ── Stage (fake viewport for overlays) ─────────────────────── */
+  .stage {
+    position: relative;
+    border-radius: 18px;
+    border: 1px solid var(--page-line);
+    overflow: hidden;
+    background: var(--n-50);
+    min-height: 460px;
+    isolation: isolate;
+  }
+  .stage.dark { background: var(--n-1000); border-color: var(--n-800); }
+  .stage.tall  { min-height: 580px; }
+  .stage.short { min-height: 360px; }
+  .stage-label {
+    position: absolute; top: 14px; left: 16px; z-index: 3;
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--page-mute);
+    background: var(--n-0);
+    padding: 4px 8px; border-radius: 5px;
+    box-shadow: 0 0 0 1px var(--page-line);
+  }
+  .stage.dark .stage-label {
+    background: var(--n-900); color: var(--n-400);
+    box-shadow: 0 0 0 1px var(--n-800);
+  }
+
+  .stage-back {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    padding: 56px 24px 24px;
+    gap: 12px; opacity: 0.5;
+    z-index: 0;
+  }
+  .stage-back .row { height: 14px; border-radius: 4px; background: var(--n-200); }
+  .stage-back .row.short { width: 60%; }
+  .stage-back .row.mid   { width: 78%; }
+  .stage-back .row.wide  { width: 95%; }
+  .stage-back .row.title { height: 28px; width: 50%; background: var(--ink-200); margin-bottom: 8px; }
+  .stage.dark .stage-back .row { background: var(--n-800); }
+  .stage.dark .stage-back .row.title { background: var(--n-700); }
+
+  .backdrop {
+    position: absolute; inset: 0;
+    background: var(--backdrop);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1;
+  }
+  .backdrop.heavy { background: var(--backdrop-heavy); }
+
+  /* ── Modal surface ──────────────────────────────────────────── */
+  .modal-wrap {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+    z-index: 2;
+  }
+  .modal-wrap.bottom { align-items: flex-end; padding: 0; }
+  .modal-wrap.right { justify-content: flex-end; padding: 0; }
+
+  .modal {
+    background: var(--n-0);
+    border-radius: var(--modal-radius);
+    box-shadow: var(--modal-shadow);
+    display: flex; flex-direction: column;
+    max-height: calc(100% - 16px);
+    overflow: hidden;
+    width: 480px;
+    max-width: 100%;
+  }
+  .modal.sm    { width: 380px; }
+  .modal.wide  { width: 560px; }
+  .modal.xwide { width: 720px; }
+  .modal.dark { background: var(--n-1000); color: var(--n-100); }
+
+  .m-head {
+    display: flex; align-items: flex-start; gap: 16px;
+    padding: 22px 24px 12px;
+  }
+  .m-head-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--ink-100); color: var(--ink-800);
+  }
+  .m-head-icon.danger { background: var(--err-soft); color: var(--err-text); }
+  .m-head-icon.warn   { background: var(--warn-soft); color: var(--warn-text); }
+  .m-head-icon.ok     { background: var(--ok-soft); color: var(--ok-text); }
+  .m-head-icon.info   { background: var(--info-soft); color: var(--info-text); }
+  .modal.dark .m-head-icon { background: var(--n-800); color: var(--n-100); }
+  .modal.dark .m-head-icon.danger { background: oklch(0.24 0.13 27); color: oklch(0.88 0.16 27); }
+  .modal.dark .m-head-icon.warn   { background: oklch(0.25 0.09 75); color: oklch(0.90 0.15 80); }
+  .modal.dark .m-head-icon.ok     { background: oklch(0.22 0.08 150); color: oklch(0.88 0.13 150); }
+  .modal.dark .m-head-icon.info   { background: oklch(0.22 0.10 245); color: oklch(0.88 0.13 245); }
+
+  .m-head-text { flex: 1; min-width: 0; }
+  .m-title {
+    margin: 0;
+    font-family: var(--font-display); font-weight: 700; font-size: 20px;
+    letter-spacing: -0.012em; color: var(--ink-900);
+    line-height: 1.25;
+  }
+  .modal.dark .m-title { color: var(--n-50); }
+  .m-subtitle {
+    margin: 4px 0 0;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    font-weight: 600;
+  }
+  .modal.dark .m-subtitle { color: var(--n-400); }
+
+  .m-close {
+    appearance: none; border: 0;
+    background: var(--n-100); color: var(--ink-700);
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.12s;
+  }
+  .m-close:hover { background: var(--n-200); }
+  .modal.dark .m-close { background: var(--n-800); color: var(--n-200); }
+  .modal.dark .m-close:hover { background: var(--n-700); }
+
+  .m-body {
+    padding: 4px 24px 20px;
+    overflow-y: auto;
+    flex: 1; min-height: 0;
+    color: var(--ink-700);
+    font-size: 14.5px;
+    line-height: 1.55;
+  }
+  .modal.dark .m-body { color: var(--n-300); }
+  .m-body p { margin: 0 0 10px; }
+  .m-body p:last-child { margin-bottom: 0; }
+  .m-body b { color: var(--ink-900); font-weight: 600; }
+  .modal.dark .m-body b { color: var(--n-50); }
+
+  .m-footer {
+    display: flex; align-items: center; justify-content: flex-end;
+    gap: 8px;
+    padding: 16px 24px 20px;
+    border-top: 1px solid var(--page-line);
+    background: var(--n-50);
+  }
+  .modal.dark .m-footer { border-top-color: var(--n-800); background: var(--n-950); }
+  .m-footer.spread { justify-content: space-between; }
+  .m-footer .left {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .modal.dark .m-footer .left { color: var(--n-400); }
+
+  /* ── Buttons ────────────────────────────────────────────────── */
+  .btn {
+    appearance: none; border: 0;
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 14px;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 9px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform 0.08s, background 0.12s;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn.primary { background: var(--ink-900); color: white; }
+  .btn.primary:hover { background: var(--ink-700); }
+  .btn.amber { background: var(--amber-400); color: var(--ink-1000); }
+  .btn.amber:hover { background: var(--amber-500); }
+  .btn.secondary { background: var(--n-100); color: var(--ink-900); box-shadow: inset 0 0 0 1px var(--n-200); }
+  .btn.secondary:hover { background: var(--n-200); }
+  .btn.danger { background: var(--err-button); color: white; }
+  .btn.ghost { background: transparent; color: var(--ink-800); box-shadow: inset 0 0 0 1px var(--n-300); }
+  .btn.ghost:hover { background: var(--ink-50); }
+  .btn.lg { height: 48px; padding: 0 22px; font-size: 15px; border-radius: 10px; }
+  .modal.dark .btn.secondary { background: var(--n-800); color: var(--n-50); box-shadow: inset 0 0 0 1px var(--n-700); }
+  .modal.dark .btn.secondary:hover { background: var(--n-700); }
+  .modal.dark .btn.ghost { color: var(--n-200); box-shadow: inset 0 0 0 1px var(--n-700); }
+  .modal.dark .btn.ghost:hover { background: var(--n-900); }
+  .modal.dark .btn.primary { background: var(--n-50); color: var(--ink-1000); }
+  .modal.dark .btn.primary:hover { background: white; }
+
+  /* ── Anatomy diagram ────────────────────────────────────────── */
+  .anatomy {
+    display: grid; grid-template-columns: 1fr 380px;
+    gap: 32px; align-items: stretch;
+  }
+  .anatomy-stage {
+    position: relative;
+    background: var(--n-100);
+    border-radius: 18px;
+    overflow: hidden;
+    min-height: 460px;
+    border: 1px solid var(--page-line);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .anatomy-stage .backdrop { position: absolute; inset: 0; }
+  .anatomy-modal {
+    position: relative;
+    width: 360px;
+    z-index: 2;
+  }
+  .a-tag {
+    position: absolute;
+    background: var(--ink-900); color: var(--n-50);
+    font-family: var(--font-mono); font-size: 10px;
+    font-weight: 700;
+    padding: 4px 9px;
+    border-radius: 5px;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    z-index: 5;
+  }
+  .a-tag.l1 { top: -8px; right: -54px; }
+  .a-tag.l2 { top: 70px; right: -64px; }
+  .a-tag.l3 { top: 130px; right: -52px; }
+  .a-tag.l4 { bottom: 70px; right: -58px; }
+  .a-tag.l5 { bottom: -8px; right: -46px; }
+  .a-tag::before {
+    content: ''; position: absolute;
+    top: 50%; right: 100%; width: 24px; height: 1px;
+    background: var(--ink-900);
+    margin-top: -0.5px;
+  }
+
+  .legend {
+    display: flex; flex-direction: column;
+    gap: 12px;
+  }
+  .legend ol {
+    list-style: none; counter-reset: a;
+    padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .legend ol li {
+    counter-increment: a;
+    display: grid; grid-template-columns: 26px 1fr;
+    gap: 14px; align-items: baseline;
+    color: var(--n-700); font-size: 13.5px; line-height: 1.45;
+  }
+  .legend ol li::before {
+    content: counter(a);
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--ink-900); color: var(--n-0);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 700; font-size: 11px;
+  }
+  .legend ol li b {
+    color: var(--ink-900); font-weight: 600;
+    display: block;
+    font-size: 13.5px;
+    margin-bottom: 2px;
+  }
+  .legend code {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--ink-100);
+    color: var(--ink-800);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  /* ── Bottom Sheet ───────────────────────────────────────────── */
+  .sheet {
+    width: 100%;
+    background: var(--n-0);
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -16px 48px rgba(15, 20, 38, 0.20);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    max-height: 92%;
+  }
+  .sheet.dark { background: var(--n-1000); color: var(--n-100); }
+  .sheet-handle {
+    height: 18px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: grab;
+    flex-shrink: 0;
+  }
+  .sheet-handle::after {
+    content: '';
+    width: 40px; height: 4px;
+    border-radius: 999px;
+    background: var(--n-300);
+  }
+  .sheet.dark .sheet-handle::after { background: var(--n-700); }
+  .sheet-head {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px 16px;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .sheet.dark .sheet-head { border-bottom-color: var(--n-800); }
+  .sheet-head h3 {
+    margin: 0;
+    font-family: var(--font-display); font-weight: 700; font-size: 18px;
+    color: var(--ink-900);
+    letter-spacing: -0.005em;
+  }
+  .sheet.dark .sheet-head h3 { color: var(--n-50); }
+  .sheet-head .meta {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .sheet-body {
+    padding: 20px 24px 24px;
+    overflow-y: auto;
+    flex: 1;
+  }
+
+  /* ── Drawer ─────────────────────────────────────────────────── */
+  .drawer {
+    width: 380px;
+    height: 100%;
+    background: var(--n-0);
+    box-shadow: -16px 0 48px rgba(15, 20, 38, 0.20);
+    display: flex; flex-direction: column;
+  }
+  .drawer-head {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--page-line);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .drawer-head h3 {
+    margin: 0;
+    font-family: var(--font-display); font-weight: 700; font-size: 18px;
+    color: var(--ink-900);
+    letter-spacing: -0.005em;
+  }
+  .drawer-body {
+    padding: 18px 24px;
+    overflow-y: auto;
+    flex: 1;
+    display: flex; flex-direction: column;
+    gap: 16px;
+  }
+  .drawer-footer {
+    padding: 14px 24px;
+    border-top: 1px solid var(--page-line);
+    background: var(--n-50);
+    display: flex; gap: 8px; justify-content: flex-end;
+  }
+
+  /* ── Toast / Snackbar ───────────────────────────────────────── */
+  .toast-stack {
+    position: absolute; bottom: 20px; left: 20px;
+    display: flex; flex-direction: column;
+    gap: 8px;
+    z-index: 10;
+    max-width: 380px;
+  }
+  .toast-stack.right { left: auto; right: 20px; }
+  .toast-stack.top   { top: 20px; bottom: auto; }
+  .toast {
+    background: var(--ink-1000); color: var(--n-50);
+    padding: 12px 14px;
+    border-radius: 10px;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.20);
+    border: 1px solid var(--n-800);
+    min-width: 280px;
+    font-size: 13.5px; line-height: 1.4;
+  }
+  .toast .t-icon {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    background: var(--ok-fill); color: var(--ink-1000);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .toast.error  .t-icon { background: var(--err-fill); color: white; }
+  .toast.warn   .t-icon { background: var(--warn-fill); color: var(--ink-1000); }
+  .toast.info   .t-icon { background: var(--info-fill); color: white; }
+  .toast .t-body { flex: 1; min-width: 0; }
+  .toast .t-title { color: var(--n-50); font-weight: 600; }
+  .toast .t-meta {
+    color: var(--n-400);
+    font-family: var(--font-mono); font-size: 11px;
+    margin-top: 2px;
+  }
+  .toast .t-action {
+    appearance: none; border: 0; background: transparent;
+    color: var(--amber-400);
+    font-family: var(--font-body); font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 5px;
+    flex-shrink: 0;
+  }
+  .toast .t-action:hover { background: var(--n-900); }
+  .toast .t-close {
+    appearance: none; border: 0; background: transparent;
+    color: var(--n-400);
+    width: 24px; height: 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .toast .t-close:hover { background: var(--n-900); color: var(--n-100); }
+
+  /* ── Banner (inline alert) ──────────────────────────────────── */
+  .banner {
+    display: flex; align-items: flex-start; gap: 14px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: var(--info-soft);
+    border-left: 4px solid var(--info-fill);
+  }
+  .banner .b-icon {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    background: var(--info-fill); color: white;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .banner .b-body { flex: 1; min-width: 0; }
+  .banner .b-title {
+    font-weight: 600; color: var(--ink-900);
+    margin-bottom: 2px;
+    font-size: 14px;
+  }
+  .banner .b-text { color: var(--ink-700); font-size: 13.5px; line-height: 1.5; }
+  .banner .b-actions { display: flex; gap: 6px; margin-top: 8px; }
+  .banner .b-link {
+    appearance: none; border: 0;
+    background: transparent;
+    color: var(--info-text);
+    font-family: var(--font-body); font-weight: 600; font-size: 13px;
+    cursor: pointer;
+    padding: 4px 0;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .banner.warn  { background: var(--warn-soft); border-left-color: var(--warn-fill); }
+  .banner.warn  .b-icon { background: var(--warn-fill); color: var(--ink-1000); }
+  .banner.warn  .b-link { color: var(--warn-text); }
+  .banner.error { background: var(--err-soft); border-left-color: var(--err-fill); }
+  .banner.error .b-icon { background: var(--err-fill); color: white; }
+  .banner.error .b-link { color: var(--err-text); }
+  .banner.ok    { background: var(--ok-soft); border-left-color: var(--ok-fill); }
+  .banner.ok    .b-icon { background: var(--ok-fill); color: white; }
+  .banner.ok    .b-link { color: var(--ok-text); }
+
+  /* ── Popover / Tooltip ──────────────────────────────────────── */
+  .pop-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    padding: 60px 24px;
+    justify-items: center;
+  }
+  .pop-wrap { position: relative; display: inline-block; }
+  .popover {
+    position: absolute;
+    background: var(--ink-1000);
+    color: var(--n-100);
+    border-radius: 9px;
+    padding: 12px 14px;
+    font-size: 12.5px;
+    line-height: 1.45;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    width: 240px;
+    border: 1px solid var(--n-800);
+    z-index: 5;
+  }
+  .popover.top    { bottom: calc(100% + 10px); left: 50%; transform: translateX(-50%); }
+  .popover.bottom { top: calc(100% + 10px); left: 50%; transform: translateX(-50%); }
+  .popover.right  { left: calc(100% + 10px); top: 50%; transform: translateY(-50%); }
+  .popover::before {
+    content: '';
+    position: absolute;
+    width: 10px; height: 10px;
+    background: var(--ink-1000);
+    border-right: 1px solid var(--n-800);
+    border-bottom: 1px solid var(--n-800);
+  }
+  .popover.top::before    { bottom: -6px; left: 50%; margin-left: -5px; transform: rotate(45deg); }
+  .popover.bottom::before { top: -6px; left: 50%; margin-left: -5px; transform: rotate(225deg); }
+  .popover.right::before  { left: -6px; top: 50%; margin-top: -5px; transform: rotate(135deg); }
+
+  .popover.light {
+    background: var(--n-0); color: var(--ink-800); border-color: var(--page-line);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+  }
+  .popover.light::before {
+    background: var(--n-0);
+    border-color: var(--page-line);
+  }
+  .popover-title {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--n-400);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .popover.light .popover-title { color: var(--page-mute); }
+  .popover-title.amber { color: var(--amber-400); }
+  .popover-body b { color: var(--n-50); font-weight: 600; }
+  .popover.light .popover-body b { color: var(--ink-900); }
+
+  .anchor {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 14px;
+    background: var(--n-100);
+    border: 1px solid var(--page-line);
+    border-radius: 8px;
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 13.5px;
+    color: var(--ink-800);
+    cursor: pointer;
+  }
+  .anchor .help-dot {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--ink-700); color: var(--n-50);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 800;
+    font-size: 11px;
+  }
+
+  /* ── Endbericht modal ───────────────────────────────────────── */
+  .end-modal {
+    width: 720px;
+    background: var(--n-0);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: var(--modal-shadow);
+    display: flex; flex-direction: column;
+    max-height: 92%;
+  }
+  .end-banner {
+    padding: 18px 26px;
+    background: linear-gradient(135deg, var(--ink-900) 0%, var(--ink-1000) 100%);
+    color: var(--n-50);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .end-banner .label {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--n-400);
+    letter-spacing: 0.1em; text-transform: uppercase;
+    font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .end-banner .label::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--ok-fill);
+  }
+  .end-banner .title {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 18px; letter-spacing: -0.012em;
+    margin-top: 4px;
+    color: var(--n-50);
+  }
+  .end-banner .duration {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--n-300);
+    text-align: right;
+  }
+  .end-banner .duration b {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--n-50);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    display: block;
+    margin-top: 2px;
+  }
+  .end-score {
+    display: grid;
+    grid-template-columns: 1fr 100px 1fr;
+    align-items: center;
+    padding: 28px 26px 24px;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .end-score .side {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .end-score .side.gast { flex-direction: row-reverse; text-align: right; }
+  .end-score .tile {
+    width: 56px; height: 56px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--team-heim); color: white;
+    font-family: var(--font-display); font-weight: 800; font-size: 18px;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+  }
+  .end-score .side.gast .tile { background: var(--team-gast); }
+  .end-score .info { display: flex; flex-direction: column; gap: 4px; }
+  .end-score .nm {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 17px;
+    color: var(--ink-900); line-height: 1.2;
+    letter-spacing: -0.005em;
+  }
+  .end-score .city {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .end-score .score {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 58px; letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--n-500);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+    grid-column: 2;
+  }
+  .end-score .score.winner {
+    color: var(--ok-text);
+  }
+  .end-quarters {
+    display: grid;
+    grid-template-columns: 1fr repeat(4, 62px) 80px;
+    align-items: center;
+    padding: 14px 26px;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .end-quarters .h {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--page-mute);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    text-align: center;
+    font-weight: 600;
+  }
+  .end-quarters .h.first { text-align: left; }
+  .end-quarters .h.last  { text-align: right; }
+  .end-quarters .nm {
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 13.5px;
+    color: var(--ink-900);
+  }
+  .end-quarters .v {
+    text-align: center;
+    font-family: var(--font-mono); font-weight: 600;
+    font-size: 14px;
+    color: var(--ink-800);
+    font-variant-numeric: tabular-nums;
+  }
+  .end-quarters .v.t {
+    text-align: right;
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 16px;
+    color: var(--ink-900);
+    letter-spacing: -0.01em;
+  }
+  .end-actions {
+    display: flex; gap: 10px;
+    padding: 18px 26px;
+    background: var(--n-50);
+    align-items: center;
+  }
+  .end-actions .left {
+    flex: 1;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .end-actions .left::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--ok-fill);
+  }
+
+  /* ── Drawer-Content blocks ──────────────────────────────────── */
+  .drawer-section-label {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--page-mute);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .drawer-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 12px;
+    background: var(--n-50);
+    border: 1px solid var(--page-line);
+    border-radius: 9px;
+    font-size: 13.5px;
+  }
+  .drawer-row + .drawer-row { margin-top: 6px; }
+  .drawer-row .k { color: var(--n-700); }
+  .drawer-row .v {
+    font-family: var(--font-mono); font-weight: 600;
+    color: var(--ink-900);
+    font-variant-numeric: tabular-nums;
+  }
+  .drawer-list {
+    display: flex; flex-direction: column;
+    gap: 6px;
+  }
+  .drawer-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--n-50);
+    border: 1px solid var(--page-line);
+    font-size: 13.5px;
+  }
+  .drawer-item .tn {
+    width: 32px; height: 32px;
+    border-radius: 7px;
+    background: var(--team-heim); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 13.5px;
+    flex-shrink: 0;
+  }
+  .drawer-item.gast .tn { background: var(--team-gast); }
+  .drawer-item .nm { flex: 1; min-width: 0; font-weight: 500; color: var(--ink-800); }
+  .drawer-item .role {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+
+  /* ── Bottom-Sheet specific patterns ─────────────────────────── */
+  .sheet-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .sheet-action {
+    appearance: none; border: 0;
+    background: var(--n-100);
+    color: var(--ink-800);
+    border-radius: 10px;
+    padding: 14px 10px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    cursor: pointer;
+    font-family: var(--font-body); font-weight: 600; font-size: 13px;
+    transition: background 0.12s, transform 0.08s;
+  }
+  .sheet.dark .sheet-action {
+    background: var(--n-800); color: var(--n-100);
+  }
+  .sheet-action:hover { background: var(--n-200); }
+  .sheet.dark .sheet-action:hover { background: var(--n-700); }
+  .sheet-action:active { transform: scale(0.98); }
+  .sheet-action .ico {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: var(--ink-200); color: var(--ink-800);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sheet.dark .sheet-action .ico {
+    background: var(--n-700); color: var(--n-100);
+  }
+  .sheet-action.danger .ico { background: var(--err-soft); color: var(--err-text); }
+  .sheet-action.amber  .ico { background: var(--amber-100); color: var(--amber-800); }
+  .sheet-action.ok     .ico { background: var(--ok-soft); color: var(--ok-text); }
+  .sheet.dark .sheet-action.danger .ico { background: oklch(0.28 0.13 27); color: oklch(0.88 0.16 27); }
+  .sheet.dark .sheet-action.amber  .ico { background: oklch(0.25 0.10 83); color: oklch(0.88 0.13 83); }
+  .sheet.dark .sheet-action.ok     .ico { background: oklch(0.22 0.08 150); color: oklch(0.88 0.13 150); }
+
+  /* ── Foot ───────────────────────────────────────────────────── */
+  .foot {
+    margin-top: 56px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+  }
+  .foot .iter { color: var(--amber-800); }
+
+  /* Utility */
+  .glyph {
+    width: 16px; height: 16px;
+    display: inline-block;
+    color: currentColor;
+    flex-shrink: 0;
+  }
+
+  /* Responsive */
+  @media (max-width: 980px) {
+    .page { padding: 32px 20px 80px; }
+    .s-head { grid-template-columns: 1fr; gap: 6px; }
+    .anatomy { grid-template-columns: 1fr; gap: 64px; }
+    .a-tag { right: auto; left: -56px; }
+    .a-tag::before { right: auto; left: 100%; }
+    .pop-grid { grid-template-columns: 1fr; gap: 80px; }
+    .end-score { grid-template-columns: 1fr; gap: 16px; }
+    .end-score .side.gast { flex-direction: row; text-align: left; }
+    .end-score .score { grid-column: auto; }
+    .end-quarters { grid-template-columns: 1fr repeat(4, 1fr) 80px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- TOP STRIP -->
+  <div class="topstrip">
+    <div class="left">
+      <span class="monogram">D</span>
+      <span>DSS Design System</span>
+      <span>·</span>
+      <span>Modals &amp; Overlays v0.1</span>
+    </div>
+    <div class="links">
+      <a href="DSS Design System - Identity Overview v0.3.html">← Identity</a>
+      <a href="DSS Design System - Tables.html">Tables</a>
+      <a href="DSS Design System - Forms.html">Forms</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero" data-screen-label="00 Hero">
+    <div class="eyebrow">Component Library · Modals &amp; Overlays · v0.1</div>
+    <h1>Wenn das Spiel <em>kurz innehalten</em> muss.</h1>
+    <p class="lead">
+      Dialoge, Bottom-Sheets, Toasts und Banner — alle Mittel einen Anwender zu unterbrechen
+      und zu führen. Vom „Spiel beenden?"-Confirm beim Schlusspfiff bis zum
+      „Auto-gespeichert"-Snackbar nach jeder Aktion. Jedes Pattern hat Hell- und Dunkel-Variante
+      und passt in den Tap-Tap-Flow am Kampfgerichts-Tisch.
+    </p>
+  </header>
+
+  <!-- ════════════════════════════════════════════════════════════
+       01 — ANATOMY
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="01 Anatomy">
+    <div class="s-head">
+      <div class="s-num">01 — Anatomy</div>
+      <div class="s-title">
+        <h2>Was ein Dialog ausmacht.</h2>
+        <p>
+          Backdrop, Surface, Header (mit Icon), Body, Footer. Jeder Modal-Pattern in dieser Library
+          folgt diesem Aufbau — verändert wird nur Größe, Backdrop-Tiefe, Icon-Tonalität und die
+          Anordnung der Footer-Buttons.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div class="anatomy">
+        <div class="anatomy-stage">
+          <div class="backdrop"></div>
+          <div class="anatomy-modal">
+            <div class="modal" style="width: 360px;">
+              <div class="m-head">
+                <div class="m-head-icon warn">
+                  <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.5L15 14H1z"/><path d="M8 6v3M8 11.5v.05"/></svg>
+                </div>
+                <div class="m-head-text">
+                  <h4 class="m-title">Spielbericht beenden?</h4>
+                  <div class="m-subtitle">Schiedsrichter-Unterschrift</div>
+                </div>
+              </div>
+              <div class="m-body">
+                <p>Nach dem Senden kann der Spielbericht <b>nicht mehr bearbeitet</b> werden. Beide
+                  Schiedsrichter müssen unterschreiben.</p>
+              </div>
+              <div class="m-footer">
+                <button class="btn ghost">Abbrechen</button>
+                <button class="btn primary">Senden</button>
+              </div>
+              <span class="a-tag l1">Surface</span>
+              <span class="a-tag l2">Header + Icon</span>
+              <span class="a-tag l3">Title + Subtitle</span>
+              <span class="a-tag l4">Body</span>
+              <span class="a-tag l5">Footer</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="legend">
+          <ol>
+            <li><span><b>Backdrop</b>Halbtransparenter Layer mit 4 px Blur. Token <code>--backdrop</code>.</span></li>
+            <li><span><b>Surface</b>14 px Radius, weiches XL-Schatten-Token. Maximal 92 % der Stage-Höhe.</span></li>
+            <li><span><b>Icon-Slot</b>Optional. Token-getönt nach Severity (warn / danger / ok / info).</span></li>
+            <li><span><b>Title + Subtitle</b>Sora 700 / 20 px. Subtitle als Mono-Caption in Mute-Tonalität.</span></li>
+            <li><span><b>Body</b>Manrope 14.5 px. Scroll bei Bedarf — Footer und Header bleiben gepinnt.</span></li>
+            <li><span><b>Footer</b>Rechts-aligned, primary-CTA rechts außen. Bei Lösch-Modals: Danger-Button.</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       02 — CONFIRM DIALOGS
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="02 Confirm">
+    <div class="s-head">
+      <div class="s-num">02 — Confirm Dialogs</div>
+      <div class="s-title">
+        <h2>Unterbrechen, wenn etwas wichtig ist.</h2>
+        <p>
+          Fünf Pattern: Spielende, Disqualifikation, ungespeicherte Änderungen, Verbindungsverlust,
+          Schiedsrichter-Override. Tonalität, Icon und Footer-Button passen sich der Schwere an.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <!-- Spielende (Light) -->
+      <div>
+        <div class="sub">Spielende · Senden-Confirm <span class="pill amber">Pflicht-Stop am Schlusspfiff</span></div>
+        <div class="stage short">
+          <span class="stage-label">Spielbericht · Q4 · 00:00</span>
+          <div class="stage-back">
+            <div class="row title"></div>
+            <div class="row wide"></div>
+            <div class="row mid"></div>
+            <div class="row short"></div>
+            <div class="row mid"></div>
+          </div>
+          <div class="backdrop"></div>
+          <div class="modal-wrap">
+            <div class="modal sm">
+              <div class="m-head">
+                <div class="m-head-icon warn">
+                  <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.5L15 14H1z"/><path d="M8 6v3M8 11.5v.05"/></svg>
+                </div>
+                <div class="m-head-text">
+                  <h4 class="m-title">Spielbericht senden?</h4>
+                  <div class="m-subtitle">Letzter Schritt · Schlusspfiff</div>
+                </div>
+              </div>
+              <div class="m-body">
+                <p>Endstand: <b>TSV Tröster 87 — 64 USC Heidelberg</b>. Nach dem Senden ist der Bericht <b>final</b> und kann nur durch den Spielleiter geöffnet werden.</p>
+              </div>
+              <div class="m-footer">
+                <button class="btn ghost">Noch prüfen</button>
+                <button class="btn amber">Senden &amp; Signieren</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Disqualifikation (Danger) -->
+      <div>
+        <div class="sub">Disqualifikation · Danger <span class="pill err">unwiderruflich</span></div>
+        <div class="stage short">
+          <span class="stage-label">Foul-Detail · #21 Christen</span>
+          <div class="stage-back">
+            <div class="row title"></div>
+            <div class="row wide"></div>
+            <div class="row mid"></div>
+            <div class="row short"></div>
+          </div>
+          <div class="backdrop heavy"></div>
+          <div class="modal-wrap">
+            <div class="modal sm">
+              <div class="m-head">
+                <div class="m-head-icon danger">
+                  <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><path d="M5.2 10.8l5.6-5.6"/></svg>
+                </div>
+                <div class="m-head-text">
+                  <h4 class="m-title">Disqualifikation eintragen?</h4>
+                  <div class="m-subtitle">Spieler verlässt das Spiel</div>
+                </div>
+              </div>
+              <div class="m-body">
+                <p><b>#21 R. Christen</b> wird disqualifiziert und für den Rest des Spiels gesperrt. Coach muss einen Ersatz benennen.</p>
+              </div>
+              <div class="m-footer">
+                <button class="btn ghost">Abbrechen</button>
+                <button class="btn danger">Disqualifikation eintragen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verbindungsverlust (Info / Dark) -->
+      <div>
+        <div class="sub">Verbindungsverlust · Info (Dark) <span class="pill dark">Kampfgericht-Modus</span></div>
+        <div class="stage short dark">
+          <span class="stage-label">Live Scoring · Offline</span>
+          <div class="stage-back">
+            <div class="row title"></div>
+            <div class="row wide"></div>
+            <div class="row mid"></div>
+            <div class="row short"></div>
+          </div>
+          <div class="backdrop"></div>
+          <div class="modal-wrap">
+            <div class="modal dark">
+              <div class="m-head">
+                <div class="m-head-icon info">
+                  <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7c4-4 8-4 12 0M5 10c2-2 4-2 6 0M8 13v0"/></svg>
+                </div>
+                <div class="m-head-text">
+                  <h4 class="m-title">Offline — aber alles wird gespeichert.</h4>
+                  <div class="m-subtitle">Sync pausiert · keine Datenverluste</div>
+                </div>
+              </div>
+              <div class="m-body">
+                <p>Die Verbindung zum Verbands-Server ist unterbrochen. Alle Aktionen werden lokal gespeichert und automatisch hochgeladen sobald die Verbindung wieder steht.</p>
+                <p>Aktuelle Warteschlange: <b>14 Ereignisse</b>.</p>
+              </div>
+              <div class="m-footer spread">
+                <span class="left">Letzter Sync · vor 4 min</span>
+                <button class="btn primary">Verstanden</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ungespeicherte Änderungen -->
+      <div>
+        <div class="sub">Ungespeicherte Änderungen · 3-Wege-Auswahl</div>
+        <div class="stage short">
+          <span class="stage-label">Spielbericht bearbeiten</span>
+          <div class="stage-back">
+            <div class="row title"></div>
+            <div class="row wide"></div>
+            <div class="row mid"></div>
+            <div class="row short"></div>
+          </div>
+          <div class="backdrop"></div>
+          <div class="modal-wrap">
+            <div class="modal sm">
+              <div class="m-head">
+                <div class="m-head-icon">
+                  <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13l3-1 7-7-2-2-7 7-1 3z"/></svg>
+                </div>
+                <div class="m-head-text">
+                  <h4 class="m-title">Änderungen verwerfen?</h4>
+                  <div class="m-subtitle">3 nicht gespeicherte Bearbeitungen</div>
+                </div>
+              </div>
+              <div class="m-body">
+                <p>Du hast Foul-Korrekturen, Trikotnummern und einen Schiedsrichter geändert. Speichern bevor du zurückgehst?</p>
+              </div>
+              <div class="m-footer spread">
+                <button class="btn ghost">Verwerfen</button>
+                <div style="display:flex; gap:8px;">
+                  <button class="btn secondary">Abbrechen</button>
+                  <button class="btn primary">Speichern</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       03 — BOTTOM SHEET
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="03 Bottom Sheet">
+    <div class="s-head">
+      <div class="s-num">03 — Bottom Sheet</div>
+      <div class="s-title">
+        <h2>Schnelle Auswahl von unten.</h2>
+        <p>
+          Touch-First für iPads. Daumenzonen-freundlich, weil die Aktionen unten landen wo der
+          Anschreiber sowieso die Hände hat. Pattern: Drag-Handle, Titel, Action-Grid oder Liste.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <!-- Aktion-Sheet · Spieler-Optionen -->
+      <div>
+        <div class="sub">Spieler-Optionen · 6 Quick-Actions <span class="pill amber">Touch-First</span></div>
+        <div class="stage tall">
+          <span class="stage-label">Aufstellung · Heim</span>
+          <div class="stage-back">
+            <div class="row title"></div>
+            <div class="row wide"></div>
+            <div class="row mid"></div>
+            <div class="row short"></div>
+            <div class="row wide"></div>
+            <div class="row mid"></div>
+            <div class="row short"></div>
+          </div>
+          <div class="backdrop"></div>
+          <div class="modal-wrap bottom">
+            <div class="sheet">
+              <div class="sheet-handle"></div>
+              <div class="sheet-head">
+                <h3>#4 A. Seiferth · Captain</h3>
+                <div class="meta">24 Pts · 11 Reb · 3 Fouls</div>
+              </div>
+              <div class="sheet-body">
+                <div class="sheet-grid">
+                  <button class="sheet-action amber">
+                    <div class="ico">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M8 4.5v3.5l2.5 1.5"/></svg>
+                    </div>
+                    Auswechseln
+                  </button>
+                  <button class="sheet-action danger">
+                    <div class="ico">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3l10 10M13 3L3 13"/></svg>
+                    </div>
+                    Foul +
+                  </button>
+                  <button class="sheet-action ok">
+                    <div class="ico">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.2l3.5 3.5L13 5"/></svg>
+                    </div>
+                    Spielprotokoll
+                  </button>
+                  <button class="sheet-action">
+                    <div class="ico">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="5" r="2.6"/><path d="M3.5 14c.6-2.5 2.4-4 4.5-4s3.9 1.5 4.5 4"/></svg>
+                    </div>
+                    Spieler-Profil
+                  </button>
+                  <button class="sheet-action">
+                    <div class="ico">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12l4-4 3 3 5-5"/></svg>
+                    </div>
+                    Statistik
+                  </button>
+                  <button class="sheet-action danger">
+                    <div class="ico">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h10M5 5l1-2h4l1 2M5 5v8h6V5"/></svg>
+                    </div>
+                    Verletzung
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aktion-Sheet · Wahl-Liste (dark) -->
+      <div>
+        <div class="sub">Auszeiten-Sheet · Dark <span class="pill dark">Kampfgericht-Tablet</span></div>
+        <div class="stage tall dark">
+          <span class="stage-label">Live Scoring · Q3</span>
+          <div class="stage-back">
+            <div class="row title"></div>
+            <div class="row wide"></div>
+            <div class="row mid"></div>
+            <div class="row short"></div>
+            <div class="row wide"></div>
+            <div class="row mid"></div>
+          </div>
+          <div class="backdrop"></div>
+          <div class="modal-wrap bottom">
+            <div class="sheet dark">
+              <div class="sheet-handle"></div>
+              <div class="sheet-head">
+                <h3>Auszeit · TSV Tröster</h3>
+                <div class="meta">2 verbleibend · Halbzeit 2</div>
+              </div>
+              <div class="sheet-body">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                  <button class="sheet-action amber"  style="padding: 18px 12px;">
+                    <div class="ico" style="width: 40px; height: 40px;">
+                      <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="2" width="3" height="12"/><rect x="10" y="2" width="3" height="12"/></svg>
+                    </div>
+                    <span style="font-size: 14px;">Volle Auszeit · 60 s</span>
+                  </button>
+                  <button class="sheet-action" style="padding: 18px 12px;">
+                    <div class="ico" style="width: 40px; height: 40px;">
+                      <svg width="20" height="20" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="8" cy="8" r="6"/><path d="M8 5v3.5h3"/></svg>
+                    </div>
+                    <span style="font-size: 14px;">Kurze Auszeit · 30 s</span>
+                  </button>
+                </div>
+                <div style="margin-top: 14px; padding: 12px 14px; background: oklch(0.25 0.10 83); border: 1px solid oklch(0.42 0.12 83); border-radius: 8px; color: oklch(0.92 0.13 83); font-size: 12.5px; display: flex; align-items: center; gap: 10px;">
+                  <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><path d="M8 5v3.5M8 11.2v.05"/></svg>
+                  <span>Verbraucht: Q1 06:14 · Q3 02:48</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       04 — DRAWER
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="04 Drawer">
+    <div class="s-head">
+      <div class="s-num">04 — Drawer</div>
+      <div class="s-title">
+        <h2>Detail-Panel von der Seite.</h2>
+        <p>
+          Drawer öffnet von rechts und beansprucht 380 px breite. Ideal für Spieler-Details
+          während des Spiels oder für Filter im Trainer-Dashboard — Hauptansicht bleibt sichtbar.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div>
+        <div class="sub">Spieler-Profil · Inline-Drawer</div>
+        <div class="stage tall">
+          <span class="stage-label">Boxscore · Heim</span>
+          <div class="stage-back">
+            <div class="row title"></div>
+            <div class="row wide"></div>
+            <div class="row mid"></div>
+            <div class="row short"></div>
+            <div class="row wide"></div>
+            <div class="row mid"></div>
+            <div class="row short"></div>
+          </div>
+          <div class="backdrop"></div>
+          <div class="modal-wrap right">
+            <div class="drawer">
+              <div class="drawer-head">
+                <h3>#4 A. Seiferth</h3>
+                <button class="m-close" aria-label="Schließen">
+                  <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+                </button>
+              </div>
+              <div class="drawer-body">
+                <div style="display: flex; align-items: center; gap: 14px;">
+                  <div style="width: 56px; height: 56px; border-radius: 12px; background: var(--team-heim); color: white; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -0.02em; box-shadow: 0 0 0 2px var(--amber-500);">4</div>
+                  <div>
+                    <div style="font-family: var(--font-display); font-weight: 700; font-size: 17px; color: var(--ink-900); letter-spacing: -0.01em;">Andreas Seiferth</div>
+                    <div style="font-family: var(--font-mono); font-size: 10.5px; color: var(--page-mute); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px;">Center · Captain · 2.04 m</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="drawer-section-label">Heute</div>
+                  <div class="drawer-row"><span class="k">Punkte</span><span class="v">24</span></div>
+                  <div class="drawer-row"><span class="k">Rebounds</span><span class="v">11</span></div>
+                  <div class="drawer-row"><span class="k">Assists</span><span class="v">3</span></div>
+                  <div class="drawer-row"><span class="k">Fouls</span><span class="v" style="color: var(--warn-text)">3 / 5</span></div>
+                  <div class="drawer-row"><span class="k">Spielzeit</span><span class="v">32:14</span></div>
+                </div>
+                <div>
+                  <div class="drawer-section-label">Letzte Aktionen</div>
+                  <div class="drawer-list">
+                    <div class="drawer-item">
+                      <span class="tn">+2</span>
+                      <span class="nm">Korb · Zone</span>
+                      <span class="role">Q3 · 07:42</span>
+                    </div>
+                    <div class="drawer-item">
+                      <span class="tn" style="background: var(--warn-fill); color: var(--ink-1000)">F</span>
+                      <span class="nm">Persönliches Foul</span>
+                      <span class="role">Q3 · 05:18</span>
+                    </div>
+                    <div class="drawer-item">
+                      <span class="tn">+1</span>
+                      <span class="nm">Freiwurf 2 / 2</span>
+                      <span class="role">Q3 · 04:55</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="drawer-footer">
+                <button class="btn ghost" style="flex: 1;">Auswechseln</button>
+                <button class="btn primary" style="flex: 1;">Volles Profil</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       05 — TOAST / BANNER / POPOVER
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="05 Notifications">
+    <div class="s-head">
+      <div class="s-num">05 — Notifications</div>
+      <div class="s-title">
+        <h2>Toast, Banner, Popover.</h2>
+        <p>
+          Drei Stufen Unterbrechung: Toast für flüchtige Bestätigungen, Banner für persistente
+          Hinweise, Popover für kontextuelle Hilfe. Toast bleibt 4 s sichtbar (Standard) oder
+          dauerhaft bei Fehlern mit Action-Link.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <!-- Toast Stack -->
+      <div>
+        <div class="sub">Toast · Snackbar Stack</div>
+        <div class="stage">
+          <span class="stage-label">Spielbericht · Letzte Aktion</span>
+          <div class="stage-back">
+            <div class="row title"></div>
+            <div class="row wide"></div>
+            <div class="row mid"></div>
+            <div class="row short"></div>
+            <div class="row wide"></div>
+          </div>
+          <div class="toast-stack">
+            <div class="toast">
+              <div class="t-icon">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.2l3.5 3.5L13 5"/></svg>
+              </div>
+              <div class="t-body">
+                <div class="t-title">Spielbericht gespeichert</div>
+                <div class="t-meta">vor 2 Sekunden · 14 Events synchronisiert</div>
+              </div>
+              <button class="t-close">
+                <svg class="glyph" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+              </button>
+            </div>
+            <div class="toast warn">
+              <div class="t-icon">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.5L15 14H1z"/><path d="M8 6v3"/></svg>
+              </div>
+              <div class="t-body">
+                <div class="t-title">Bonus aktiv · Gast</div>
+                <div class="t-meta">5. Teamfoul · Freiwürfe ab nächstem Foul</div>
+              </div>
+            </div>
+            <div class="toast error">
+              <div class="t-icon">
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><path d="M8 5v3.5M8 11.2v.05"/></svg>
+              </div>
+              <div class="t-body">
+                <div class="t-title">Sync fehlgeschlagen</div>
+                <div class="t-meta">Verbands-Server nicht erreichbar</div>
+              </div>
+              <button class="t-action">Neu versuchen</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Banner -->
+      <div>
+        <div class="sub">Banner · Inline-Alert <span class="pill">persistent</span></div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="banner ok">
+            <div class="b-icon">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.2l3.5 3.5L13 5"/></svg>
+            </div>
+            <div class="b-body">
+              <div class="b-title">Aufstellung bestätigt</div>
+              <div class="b-text">5 Start-Spieler, 7 Bank-Spieler. Spiel kann beginnen.</div>
+            </div>
+          </div>
+
+          <div class="banner warn">
+            <div class="b-icon">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 1.5L15 14H1z"/><path d="M8 6v3"/></svg>
+            </div>
+            <div class="b-body">
+              <div class="b-title">Lizenz läuft ab</div>
+              <div class="b-text">Julia Krause · 24-Sekunden · gültig bis 30.06.2026.</div>
+              <div class="b-actions">
+                <button class="b-link">Erinnerung setzen</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="banner error">
+            <div class="b-icon">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><path d="M8 5v3.5M8 11.2v.05"/></svg>
+            </div>
+            <div class="b-body">
+              <div class="b-title">Trikotnummer doppelt vergeben</div>
+              <div class="b-text">#7 ist sowohl bei N. Wimberg als auch H. Drell hinterlegt. Bitte korrigieren.</div>
+              <div class="b-actions">
+                <button class="b-link">Zur Aufstellung →</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="banner">
+            <div class="b-icon">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6.5"/><path d="M8 4.5v4M8 11.2v.05"/></svg>
+            </div>
+            <div class="b-body">
+              <div class="b-title">Auf Synchronisation wird gewartet</div>
+              <div class="b-text">14 Aktionen werden hochgeladen sobald die Verbindung wieder steht.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Popover -->
+      <div>
+        <div class="sub">Popover · Tooltip &amp; Help</div>
+        <div class="stage short" style="min-height: 320px;">
+          <span class="stage-label">Spielbericht-Setup · Hilfetexte</span>
+          <div class="pop-grid">
+
+            <div class="pop-wrap">
+              <span class="anchor">
+                Trikotnummer
+                <span class="help-dot">?</span>
+              </span>
+              <div class="popover top">
+                <div class="popover-title">FIBA-Regel</div>
+                <div class="popover-body">
+                  Erlaubt sind <b>0, 00 und 1–99</b>. „0" und „00" gelten als unterschiedliche Nummern.
+                </div>
+              </div>
+            </div>
+
+            <div class="pop-wrap">
+              <span class="anchor" style="background: var(--amber-100); color: var(--amber-800);">
+                Trainer-Challenge
+              </span>
+              <div class="popover bottom light">
+                <div class="popover-title">Pro Spiel · 1 Challenge</div>
+                <div class="popover-body">
+                  Wird die Challenge <b>erfolgreich</b> entschieden, bleibt sie erhalten — sonst nicht.
+                </div>
+              </div>
+            </div>
+
+            <div class="pop-wrap">
+              <span class="anchor" style="background: var(--err-soft); color: var(--err-text);">
+                Disqualifikation
+              </span>
+              <div class="popover right">
+                <div class="popover-title amber">Achtung</div>
+                <div class="popover-body">
+                  Disqualifizierte Spieler dürfen nicht mehr eingewechselt werden — auch nicht in der Verlängerung.
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       06 — ENDBERICHT (zusammengesetzte Komposition)
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="06 Endbericht" style="border-bottom: 0;">
+    <div class="s-head">
+      <div class="s-num">06 — Endbericht</div>
+      <div class="s-title">
+        <h2>Wenn der Schlusspfiff fällt.</h2>
+        <p>
+          Komplexer Modal-Pattern als Showcase. Banner-Header, große Score-Anzeige mit Sieger-Tinting,
+          Viertel-Tabelle, dann Aktionen zum Senden, Druckvorschau und Spiel-Wiederholung.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div>
+        <div class="sub">Endbericht · Showcase <span class="pill amber">Komposition aus 5 Patterns</span></div>
+        <div class="stage tall">
+          <span class="stage-label">Spielende · Schlusspfiff</span>
+          <div class="stage-back">
+            <div class="row title"></div>
+            <div class="row wide"></div>
+            <div class="row mid"></div>
+            <div class="row short"></div>
+            <div class="row wide"></div>
+            <div class="row mid"></div>
+          </div>
+          <div class="backdrop heavy"></div>
+          <div class="modal-wrap">
+            <div class="end-modal">
+              <div class="end-banner">
+                <div>
+                  <div class="label">Schlusspfiff · Endstand bestätigt</div>
+                  <div class="title">2. Basketball-Bundesliga ProB · Spieltag 21</div>
+                </div>
+                <div class="duration">
+                  Spieldauer
+                  <b>02:14:38</b>
+                </div>
+              </div>
+              <div class="end-score">
+                <div class="side">
+                  <div class="tile">TR</div>
+                  <div class="info">
+                    <div class="nm">TSV Tröster</div>
+                    <div class="city">Breitengüßbach · Heim</div>
+                  </div>
+                </div>
+                <div class="score winner">87</div>
+                <div class="side gast">
+                  <div class="tile">UH</div>
+                  <div class="info">
+                    <div class="nm">USC Heidelberg</div>
+                    <div class="city">Heidelberg · Gast</div>
+                  </div>
+                </div>
+              </div>
+              <div class="end-score" style="grid-template-columns: 1fr; padding: 0 26px 18px; border-bottom: 1px solid var(--page-line);">
+                <div style="font-family: var(--font-display); font-weight: 800; font-size: 58px; letter-spacing: -0.04em; color: var(--ink-900); text-align: center; font-variant-numeric: tabular-nums;">
+                  64
+                </div>
+              </div>
+              <div class="end-quarters" style="grid-template-columns: 1fr repeat(4, 62px) 80px;">
+                <div class="h first">Team</div>
+                <div class="h">Q1</div>
+                <div class="h">Q2</div>
+                <div class="h">Q3</div>
+                <div class="h">Q4</div>
+                <div class="h last">Final</div>
+              </div>
+              <div class="end-quarters">
+                <div class="nm">TSV Tröster</div>
+                <div class="v">22</div>
+                <div class="v">19</div>
+                <div class="v">23</div>
+                <div class="v">23</div>
+                <div class="v t" style="color: var(--ok-text)">87</div>
+              </div>
+              <div class="end-quarters">
+                <div class="nm">USC Heidelberg</div>
+                <div class="v">14</div>
+                <div class="v">18</div>
+                <div class="v">16</div>
+                <div class="v">16</div>
+                <div class="v t">64</div>
+              </div>
+              <div class="end-actions">
+                <div class="left">Auto-gespeichert · 14 Events synchronisiert</div>
+                <button class="btn ghost">Druckvorschau</button>
+                <button class="btn secondary">Spielwiederholung</button>
+                <button class="btn amber">Senden &amp; Signieren →</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <span class="iter">Modals v0.1</span> &nbsp;·&nbsp;
+    Anatomy · 4 Confirms · 2 Sheets · Drawer · 3 Toasts · 4 Banner · 3 Popover · Endbericht
+  </div>
+
+</div>
+
+</body>
+</html>
