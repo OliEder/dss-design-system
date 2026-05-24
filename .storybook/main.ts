@@ -3,7 +3,10 @@ import { mergeConfig } from 'vite';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 
 const config: StorybookConfig = {
-  stories: ['../stories/**/*.stories.@(js|ts|svelte)'],
+  stories: [
+    '../stories/**/*.stories.@(js|ts|svelte)',
+    '../stories/**/*.spec.stories.ts',
+  ],
   addons: [
     '@storybook/addon-a11y',
     '@storybook/addon-themes',

@@ -23,8 +23,9 @@ const preview: Preview = {
       storySort: {
         order: [
           'Introduction',
+          'Docs', ['Button', 'Forms', 'Cards & Lists', 'Navigation', 'Tables & Live-Scoring'],
           'Foundation', ['Colors', 'Typography', 'Spacing', 'Shadows'],
-          'Components', ['Button', 'TextInput', 'Modal', 'Card', 'Tabs', 'Icon'],
+          'Components', ['Button', 'TextInput', 'Modal', 'Card', 'Card Library', 'Tabs', 'Navigation', 'Table', 'PlayByPlay', 'Icon'],
         ],
       },
     },
