@@ -1,0 +1,17 @@
+/* Storybook-only stage styling. Real component styles live in tokens.css + the .svelte files. */
+.sb-show-main {
+  font-family: var(--font-body);
+  background: var(--page-bg);
+  color: var(--page-fg);
+}
+
+/* Give every story a comfortable padded canvas */
+.sb-story {
+  padding: 32px;
+}
+
+/* Section helpers used inside stories for grouping examples */
+.sb-row    { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; }
+.sb-stack  { display: flex; flex-direction: column; gap: 16px; }
+.sb-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(220px, 1fr)); gap: 16px; }
+.sb-label  { font-family: var(--font-mono); font-size: 11px; color: var(--page-mute); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }

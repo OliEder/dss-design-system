@@ -9,6 +9,7 @@ build/
 .svelte-kit/
 .next/
 .nuxt/
+storybook-static/
 
 # OS / IDE
 .DS_Store

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
   // Static welcome card. No props.
 </script>
 
