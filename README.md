@@ -1,7 +1,7 @@
 # DSS Design System
 
 **Digitaler Spielbericht · Komponenten-Library für Basketball-Apps**
-Version 0.5 · WCAG 2.1 AAA · Framework-agnostisch · *Pre-release*
+Version 0.6 · WCAG 2.1 AAA · Framework-agnostisch · *Pre-release*
 
 ---
 
@@ -16,11 +16,19 @@ svelte/
   Button.svelte         ← Reference component
   TextInput.svelte      ← Reference component
   Modal.svelte          ← Reference component
+  Card.svelte           ← v0.6
+  Tabs.svelte           ← v0.6
+  Icon.svelte           ← v0.6 (54 Glyphen)
+.storybook/             ← v0.6 · Storybook config
+stories/                ← v0.6 · Stories für alle Komponenten + Foundation
 docs/
   DSS Design System - Identity Overview v0.3.html
   DSS Design System - Tables.html
   DSS Design System - Forms.html
   DSS Design System - Modals.html
+  DSS Design System - Navigation.html       ← v0.6
+  DSS Design System - Cards & Lists.html    ← v0.6
+  DSS Design System - Icons.html            ← v0.6
 ```
 
 ---
@@ -131,8 +139,32 @@ Tokens unterstützen Light und Dark out-of-the-box:
 | **Tables** | Roster · Boxscore · Play-by-Play · Comparison · Crew |
 | **Forms** | Inputs · States · Setup · Live Scoring · Team-Config |
 | **Modals** | Confirm · Sheet · Drawer · Toast · Banner · Popover |
+| **Navigation** *(v0.6)* | App-Shell · Top-Bar · Sidebar · Tabs · Breadcrumbs · Bottom-Nav · Stepper · Sub-Nav |
+| **Cards & Lists** *(v0.6)* | Match-Cards · Player-Cards · Standings · Crew · Empty / Loading / Error |
+| **Icons** *(v0.6)* | 54 Glyphen: Aktionen · Court · Rollen · Status · System · UI-Core |
 
 Jede HTML-Datei ist ein eigenständiges, scrollbares Dokument zum Live-Anschauen.
+
+---
+
+## Storybook
+
+Alle Svelte-Komponenten + die Foundation-Tokens sind in Storybook live anschaubar
+und durchklickbar — inkl. Light/Dark-Toggle und A11y-Checks.
+
+```bash
+npm install
+npm run storybook       # dev server auf http://localhost:6006
+npm run build-storybook # statische Site nach storybook-static/
+```
+
+Was drin ist:
+
+- **Introduction** — Pack-Übersicht
+- **Foundation/Colors** — alle Hue-Ramps (Ink · Amber · Sky · Neutral) + Semantic
+- **Components** — Button · TextInput · Modal · Card · Tabs · Icon
+
+Stories liegen unter `stories/`, geschrieben in [Svelte CSF](https://github.com/storybookjs/addon-svelte-csf).
 
 ---
 
@@ -226,7 +258,6 @@ Die HTML-Dokumente werden automatisch öffentlich anschaubar:
 ## Nächste Schritte (optional)
 
 - **Visual Regression Tests** mit Playwright + Percy
-- **Storybook** für die Svelte-Komponenten
 - **Figma Tokens** Export via Tokens Studio Plugin (tokens.json kompatibel)
 - **Icon-Library** als eigenes Sub-Package
 
@@ -238,4 +269,4 @@ MIT · Frei für Vereins-, Verbands- und kommerzielle Nutzung im Basketball-Kont
 
 ---
 
-*Maintained for the Basketball-Apps ecosystem · v0.5 (Pre-release) · Mai 2026*
+*Maintained for the Basketball-Apps ecosystem · v0.6 (Pre-release) · Mai 2026*

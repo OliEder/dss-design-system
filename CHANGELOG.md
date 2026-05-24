@@ -3,6 +3,53 @@
 Alle nennenswerten Änderungen an diesem Design System werden hier dokumentiert.
 Versionierung folgt [Semantic Versioning](https://semver.org/).
 
+## [0.6.0] — 2026-05 · App-Shell-Pack
+
+Drei Komponenten-Specs, die das Foundation-Set zu einem produktionstauglichen App-Shell-Pack
+ausbauen. Ergänzt bestehende Tokens, ohne Breaking Changes.
+
+### Neue Svelte-Komponenten
+- **Card** (`svelte/Card.svelte`) — Default · Elevated · Flat · Hoverable, mit Header/Footer-Slots.
+- **Tabs** (`svelte/Tabs.svelte`) — alle 4 Varianten der Navigation-Spec (Underline · Segmented ·
+  Pills mit Multi-Select · Vertical), Tastatur-Navigation, optionale Icons & Counts.
+- **Icon** (`svelte/Icon.svelte`) — zentraler Sprite-Renderer für die 54 Glyphen, lazy-injizierter
+  Sprite, currentColor, `IconName`-Typ für Autocomplete.
+
+### Storybook
+- Erstes lauffähiges Storybook-Setup (`.storybook/` + `stories/`).
+- Light/Dark-Toggle via `addon-themes` (schreibt `data-theme` auf `<html>`).
+- A11y-Addon aktiv (Kontrast-Checks gegen WCAG AAA).
+- Stories für alle 6 Komponenten + Foundation/Colors mit allen Hue-Ramps.
+- Scripts `npm run storybook` / `npm run build-storybook`.
+
+### Neue Spec-Dokumente
+- **Navigation** (`DSS Design System - Navigation.html`)
+  App-Shell, Top-Bar (3 Varianten: Web · Live-Scoring · Admin), Sidebar (collapsed + expanded),
+  Tabs (Underline · Segmented · Pills · Vertical), Breadcrumbs (Standard · Tagged · Invert),
+  Bottom-Nav (5-Item · mit zentralem FAB), Stepper (Horizontal · Vertical · Dots),
+  Sub-Nav / Filter-Strip.
+- **Cards & Lists** (`DSS Design System - Cards & Lists.html`)
+  Card-Anatomie (Default · Elevated · Flat · Hoverable), Match-Cards (Scheduled · Live · Finished
+  + Compact List-Row), Player-Cards (Compact · Standard · Hero), Standings mit Form-Sequenz und
+  Movement-Pfeil, Crew &amp; Team-People, Empty / Skeleton / Error-States.
+- **Icons** (`DSS Design System - Icons.html`)
+  Basketball-Icon-Set in 7 Familien: 13 Spielaktionen (2P · 3P · Freiwurf · Foul P/T/U/D ·
+  Rebound · Assist · Steal · Block · Turnover · Wechsel), 6 Court-Elemente, 5 Rollen
+  (Schiri · Anschreiber · Coach · Captain · DNP), 6 Status-Marker, 7 System-Glyphen plus
+  30 UI-Core-Icons. Alle 24×24, Stroke 1.75, `currentColor`. Live-Suche &amp; Click-to-Copy
+  im Dokument.
+
+### Tokens / Foundation
+- Keine Änderungen — Pack baut konsequent auf v0.5 Tokens auf.
+- Token-Sync-Slider in jedem Tweaks-Panel (Ink · Amber · Sky Hue).
+
+### Cross-File-Konsistenz
+- Topstrip, Hero, Section-Header und Frame-Anatomie sind 1:1 mit Tables / Forms / Modals.
+- Light + Dark in jedem relevanten Pattern.
+- Touch-Targets respektieren weiterhin die 44 / 56 / 64-Stufung.
+
+---
+
 ## [0.5.0] — 2026-05 · Pre-release
 
 Foundation steht. Wird im Feldeinsatz mit den ersten Apps gehärtet, bevor v1.0 deklariert wird.
@@ -46,10 +93,10 @@ Foundation steht. Wird im Feldeinsatz mit den ersten Apps gehärtet, bevor v1.0 
 
 ### v1.0 (Produktiv-Freigabe)
 - Stabil im Feldeinsatz validiert
-- Navigation-Komponenten (Top-Bar · Tabs · Bottom-Nav)
-- Cards & Lists
-- Icon-Library
-- Storybook
+- ~~Navigation-Komponenten (Top-Bar · Tabs · Bottom-Nav)~~ ✅ v0.6
+- ~~Cards & Lists~~ ✅ v0.6
+- ~~Icon-Library~~ ✅ v0.6 (54 Glyphen, basketball-spezifisch)
+- ~~Storybook~~ ✅ v0.6
 
 ### v1.x (Content-Komponenten)
 Damit das System auch für Verbands-Website, Vereins-Portale und News-Bereiche taugt:

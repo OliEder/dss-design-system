@@ -1,0 +1,2112 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DSS Design System — Cards &amp; Lists v0.1</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+<style>
+  /* ── DSS Tokens (sync v0.3) ─────────────────────────────────── */
+  :root {
+    --h-ink: 60;
+    --h-amber: 83;
+    --h-sky: 244;
+
+    --ink-0:    oklch(1.000 0     0);
+    --ink-50:   oklch(0.985 0.003 var(--h-ink));
+    --ink-100:  oklch(0.965 0.005 var(--h-ink));
+    --ink-200:  oklch(0.925 0.007 var(--h-ink));
+    --ink-300:  oklch(0.850 0.009 var(--h-ink));
+    --ink-400:  oklch(0.700 0.011 var(--h-ink));
+    --ink-500:  oklch(0.560 0.012 var(--h-ink));
+    --ink-600:  oklch(0.420 0.013 var(--h-ink));
+    --ink-700:  oklch(0.300 0.012 var(--h-ink));
+    --ink-800:  oklch(0.200 0.010 var(--h-ink));
+    --ink-900:  oklch(0.130 0.008 var(--h-ink));
+    --ink-950:  oklch(0.080 0.006 var(--h-ink));
+    --ink-1000: oklch(0.020 0.004 var(--h-ink));
+
+    --amber-50:  oklch(0.975 0.025 var(--h-amber));
+    --amber-100: oklch(0.940 0.060 var(--h-amber));
+    --amber-200: oklch(0.880 0.110 var(--h-amber));
+    --amber-300: oklch(0.830 0.145 var(--h-amber));
+    --amber-400: oklch(0.800 0.165 var(--h-amber));
+    --amber-500: oklch(0.760 0.165 var(--h-amber));
+    --amber-600: oklch(0.660 0.150 calc(var(--h-amber) - 5));
+    --amber-700: oklch(0.540 0.130 calc(var(--h-amber) - 10));
+    --amber-800: oklch(0.420 0.110 calc(var(--h-amber) - 20));
+    --amber-900: oklch(0.290 0.080 calc(var(--h-amber) - 25));
+
+    --sky-50:  oklch(0.975 0.018 var(--h-sky));
+    --sky-100: oklch(0.940 0.045 var(--h-sky));
+    --sky-200: oklch(0.880 0.080 var(--h-sky));
+    --sky-300: oklch(0.820 0.110 var(--h-sky));
+    --sky-400: oklch(0.760 0.125 var(--h-sky));
+    --sky-500: oklch(0.680 0.140 calc(var(--h-sky) + 2));
+    --sky-600: oklch(0.560 0.140 calc(var(--h-sky) + 5));
+    --sky-700: oklch(0.450 0.135 calc(var(--h-sky) + 8));
+    --sky-800: oklch(0.345 0.120 calc(var(--h-sky) + 12));
+    --sky-900: oklch(0.230 0.080 calc(var(--h-sky) + 15));
+
+    --n-0:    oklch(1.000 0     0);
+    --n-50:   oklch(0.985 0.003 250);
+    --n-100:  oklch(0.965 0.005 250);
+    --n-200:  oklch(0.925 0.006 250);
+    --n-300:  oklch(0.860 0.008 250);
+    --n-400:  oklch(0.700 0.010 250);
+    --n-500:  oklch(0.520 0.011 250);
+    --n-600:  oklch(0.420 0.011 250);
+    --n-700:  oklch(0.320 0.010 250);
+    --n-800:  oklch(0.215 0.009 250);
+    --n-900:  oklch(0.145 0.008 250);
+    --n-950:  oklch(0.085 0.006 250);
+    --n-1000: oklch(0.025 0.004 250);
+
+    --ok-fill: oklch(0.640 0.150 150);
+    --ok-text: oklch(0.400 0.130 150);
+    --ok-soft: oklch(0.960 0.040 150);
+    --warn-fill: oklch(0.770 0.165 75);
+    --warn-text: oklch(0.420 0.120 60);
+    --warn-soft: oklch(0.970 0.055 80);
+    --err-fill:  oklch(0.580 0.220 27);
+    --err-button: oklch(0.400 0.190 27);
+    --err-text:  oklch(0.420 0.180 27);
+    --err-soft:  oklch(0.955 0.045 27);
+    --info-fill: oklch(0.620 0.140 245);
+    --info-text: oklch(0.380 0.130 245);
+    --info-soft: oklch(0.955 0.035 245);
+
+    --team-heim: var(--sky-700);
+    --team-gast: oklch(0.520 0.180 25);
+
+    --font-display: 'Sora', system-ui, sans-serif;
+    --font-body:    'Manrope', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+    --page-bg:   var(--n-50);
+    --page-fg:   var(--ink-900);
+    --page-mute: var(--n-600);
+    --page-line: var(--n-200);
+
+    --ring-color: oklch(0.82 0.10 var(--h-sky));
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page-bg);
+    color: var(--page-fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ── Page shell (same as Tables/Modals) ─────────────────────── */
+  .page { max-width: 1320px; margin: 0 auto; padding: 56px 56px 120px; }
+
+  .topstrip {
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--page-mute);
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .topstrip .left { display: flex; gap: 14px; align-items: center; }
+  .topstrip .monogram {
+    width: 22px; height: 22px; border-radius: 5px;
+    background: var(--ink-800); color: var(--n-0);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 11px;
+    letter-spacing: -0.02em;
+  }
+  .topstrip a {
+    color: inherit; text-decoration: none;
+    padding: 4px 8px; border-radius: 5px;
+    background: var(--ink-100);
+    transition: background 0.12s;
+  }
+  .topstrip a:hover { background: var(--ink-200); }
+  .topstrip .nav-l { display: flex; gap: 8px; }
+
+  .hero { padding: 48px 0 56px; border-bottom: 1px solid var(--page-line); }
+  .hero .eyebrow {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--amber-800);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(40px, 5.5vw, 76px);
+    letter-spacing: -0.035em; line-height: 0.98;
+    margin: 0 0 20px;
+    color: var(--ink-900);
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(180deg, var(--amber-700), var(--amber-800));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .lead {
+    max-width: 720px; font-size: 17px; line-height: 1.55;
+    color: var(--n-700); text-wrap: pretty;
+  }
+
+  section.s { padding: 72px 0; border-bottom: 1px solid var(--page-line); }
+  .s-head { display: grid; grid-template-columns: 80px 1fr; gap: 32px; align-items: baseline; margin-bottom: 36px; }
+  .s-num { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--amber-800); padding-top: 8px; }
+  .s-title h2 { font-family: var(--font-display); font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.08; margin: 0 0 10px; color: var(--ink-900); }
+  .s-title p { margin: 0; color: var(--n-700); font-size: 15.5px; max-width: 720px; text-wrap: pretty; }
+  .s-body { display: flex; flex-direction: column; gap: 40px; }
+
+  .sub {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--page-mute);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sub::after { content: ''; flex: 1; height: 1px; background: var(--page-line); }
+  .sub .pill { background: var(--ink-100); color: var(--ink-700); padding: 2px 8px; border-radius: 4px; font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .sub .pill.dark { background: var(--ink-900); color: var(--n-50); }
+  .sub .pill.amber { background: var(--amber-100); color: var(--amber-800); }
+  .sub .pill.ok    { background: var(--ok-soft);   color: var(--ok-text); }
+  .sub .pill.err   { background: var(--err-soft);  color: var(--err-text); }
+
+  /* ── Frame ──────────────────────────────────────────────────── */
+  .frame { border: 1px solid var(--page-line); border-radius: 14px; background: var(--n-0); overflow: hidden; }
+  .frame.dark { background: var(--n-1000); border-color: var(--n-800); color: var(--n-100); }
+  .frame-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 22px; border-bottom: 1px solid var(--page-line); background: var(--n-50); }
+  .frame.dark .frame-head { background: var(--n-950); border-color: var(--n-800); }
+  .frame-head h3 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 15px; color: inherit; letter-spacing: -0.005em; }
+  .frame-head .meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--page-mute); letter-spacing: 0.06em; text-transform: uppercase; display: flex; gap: 14px; align-items: center; }
+  .frame.dark .frame-head .meta { color: var(--n-400); }
+  .frame-body { padding: 28px; }
+  .frame-body.tight { padding: 0; }
+  .frame-body.canvas {
+    background:
+      linear-gradient(0deg,   var(--page-line) 1px, transparent 1px) 0 0/24px 24px,
+      linear-gradient(90deg,  var(--page-line) 1px, transparent 1px) 0 0/24px 24px;
+    padding: 32px;
+  }
+  .frame.dark .frame-body.canvas {
+    background:
+      linear-gradient(0deg,   var(--n-800) 1px, transparent 1px) 0 0/24px 24px,
+      linear-gradient(90deg,  var(--n-800) 1px, transparent 1px) 0 0/24px 24px;
+  }
+
+  .ic { width: 1em; height: 1em; display: inline-block; vertical-align: -2px; flex-shrink: 0; }
+
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .stack { display: flex; flex-direction: column; gap: 18px; }
+  .hstack { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+
+  .caption {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-top: 14px;
+  }
+  .caption b { color: var(--ink-900); font-weight: 700; }
+
+  /* ════════════════════════════════════════════════════════════
+     01 — CARD ANATOMY (base + density variants)
+     ════════════════════════════════════════════════════════════ */
+  .card {
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.12s, box-shadow 0.12s, transform 0.12s;
+    display: flex; flex-direction: column;
+  }
+  .frame.dark .card { background: var(--n-900); border-color: var(--n-800); color: var(--n-100); }
+  .card.hoverable { cursor: pointer; }
+  .card.hoverable:hover {
+    border-color: var(--ink-300);
+    box-shadow: 0 8px 24px rgba(15,20,38,0.06);
+    transform: translateY(-1px);
+  }
+  .card.elevated { box-shadow: 0 4px 12px rgba(15,20,38,0.08), 0 1px 3px rgba(15,20,38,0.04); border-color: transparent; }
+  .card.flat { border-color: transparent; background: var(--n-100); }
+  .frame.dark .card.flat { background: var(--n-900); }
+  .card.dense .card-body { padding: 14px 16px; }
+  .card-body { padding: 20px 22px; flex: 1; display: flex; flex-direction: column; gap: 12px; }
+  .card-body.tight { padding: 16px 18px; }
+  .card-foot {
+    padding: 14px 22px;
+    border-top: 1px solid var(--page-line);
+    background: var(--n-50);
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .frame.dark .card-foot { background: var(--n-950); border-color: var(--n-800); color: var(--n-400); }
+
+  .card-h {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 17px; letter-spacing: -0.01em;
+    color: var(--ink-900); margin: 0;
+  }
+  .frame.dark .card-h { color: var(--n-50); }
+
+  .meta-row {
+    display: flex; gap: 12px; align-items: center;
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .meta-row .sep { opacity: 0.5; }
+
+  /* ── Status chips (re-used) ─────────────────────────────────── */
+  .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 700;
+    padding: 4px 9px; border-radius: 6px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .chip.live { color: white; background: var(--err-fill); }
+  .chip.live::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: currentColor;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+  .chip.scheduled { color: var(--ink-700); background: var(--n-100); }
+  .frame.dark .chip.scheduled { color: var(--n-200); background: var(--n-800); }
+  .chip.finished  { color: var(--ok-text); background: var(--ok-soft); }
+  .chip.amber     { color: var(--amber-900); background: var(--amber-100); }
+  .chip.info      { color: var(--info-text); background: var(--info-soft); }
+  .chip.warn      { color: var(--warn-text); background: var(--warn-soft); }
+
+  /* ════════════════════════════════════════════════════════════
+     02 — MATCH CARDS
+     ════════════════════════════════════════════════════════════ */
+  .match {
+    --team-a: var(--team-heim);
+    --team-b: var(--team-gast);
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  .frame.dark .match { background: var(--n-900); border-color: var(--n-800); color: var(--n-100); }
+  .match-head {
+    padding: 14px 18px;
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1px solid var(--page-line);
+    background: var(--n-50);
+    font-family: var(--font-mono); font-size: 10.5px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--page-mute);
+  }
+  .frame.dark .match-head { background: var(--n-950); border-color: var(--n-800); color: var(--n-400); }
+  .match-head .league {
+    color: var(--ink-700); font-weight: 700;
+  }
+  .frame.dark .match-head .league { color: var(--n-200); }
+
+  .match-body { padding: 22px 24px; display: flex; flex-direction: column; gap: 14px; }
+  .match-body .team-row {
+    display: grid;
+    grid-template-columns: 38px 1fr auto;
+    gap: 16px; align-items: center;
+    padding: 6px 0;
+  }
+  .match-body .team-row .crest {
+    width: 38px; height: 38px; border-radius: 9px;
+    background: var(--team-a);
+    color: white;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 14px;
+    letter-spacing: -0.02em;
+  }
+  .match-body .team-row.gast .crest { background: var(--team-b); }
+  .match-body .team-row .name {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 17px; letter-spacing: -0.01em;
+    color: var(--ink-900);
+    line-height: 1.2;
+  }
+  .frame.dark .match-body .team-row .name { color: var(--n-50); }
+  .match-body .team-row .meta {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+    margin-top: 2px;
+  }
+  .match-body .team-row .score {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 28px;
+    color: var(--ink-900);
+    letter-spacing: -0.025em;
+    font-variant-numeric: tabular-nums;
+  }
+  .frame.dark .match-body .team-row .score { color: var(--n-50); }
+  .match-body .team-row.winner .score { color: var(--ink-900); }
+  .match-body .team-row.loser  .score { color: var(--n-500); font-weight: 700; }
+  .frame.dark .match-body .team-row.loser .score { color: var(--n-500); }
+
+  .match-body .team-row.winner::after {
+    content: ''; width: 4px; height: 22px; border-radius: 2px;
+    background: var(--amber-500);
+    grid-column: 3; justify-self: flex-end;
+    align-self: center;
+    position: absolute;
+    right: 24px;
+    margin-top: 0;
+  }
+
+  .match-body .vs-rule {
+    height: 1px; background: var(--page-line);
+    margin: 0;
+  }
+  .frame.dark .match-body .vs-rule { background: var(--n-800); }
+
+  .match-foot {
+    padding: 12px 18px;
+    border-top: 1px solid var(--page-line);
+    background: var(--n-50);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+  }
+  .frame.dark .match-foot { background: var(--n-950); border-color: var(--n-800); color: var(--n-400); }
+  .match-foot a {
+    color: var(--ink-900);
+    text-decoration: none; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .frame.dark .match-foot a { color: var(--n-50); }
+
+  /* Live indicator slot (replaces clock display) */
+  .match-live {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 0 4px;
+  }
+  .match-live .lside { display: flex; flex-direction: column; gap: 6px; }
+  .match-live .lside.r { align-items: flex-end; text-align: right; }
+  .match-live .lside .crest {
+    width: 44px; height: 44px; border-radius: 10px;
+    color: white;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 15px;
+    letter-spacing: -0.02em;
+  }
+  .match-live .lside .crest.heim { background: var(--team-heim); }
+  .match-live .lside .crest.gast { background: var(--team-gast); }
+  .match-live .lside .nm {
+    font-family: var(--font-display); font-weight: 600; font-size: 15.5px;
+    color: var(--ink-900); letter-spacing: -0.005em;
+  }
+  .frame.dark .match-live .lside .nm { color: var(--n-50); }
+  .match-live .lside .sc {
+    font-family: var(--font-display); font-weight: 800; font-size: 44px;
+    color: var(--ink-900); letter-spacing: -0.03em;
+    line-height: 1; font-variant-numeric: tabular-nums;
+  }
+  .frame.dark .match-live .lside .sc { color: var(--n-50); }
+  .match-live .center {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 0 4px;
+  }
+  .match-live .center .q {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--page-mute);
+  }
+  .match-live .center .clk {
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 22px; letter-spacing: -0.02em;
+    color: var(--amber-800);
+    font-variant-numeric: tabular-nums;
+  }
+  .frame.dark .match-live .center .clk { color: var(--amber-400); }
+
+  /* Compact match list-row */
+  .matchlist {
+    display: flex; flex-direction: column;
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--n-0);
+  }
+  .frame.dark .matchlist { background: var(--n-900); border-color: var(--n-800); }
+  .matchlist .row {
+    display: grid;
+    grid-template-columns: 80px 1fr auto auto;
+    gap: 16px; align-items: center;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--page-line);
+    transition: background 0.12s;
+    cursor: pointer;
+  }
+  .frame.dark .matchlist .row { border-bottom-color: var(--n-800); }
+  .matchlist .row:last-child { border-bottom: 0; }
+  .matchlist .row:hover { background: var(--n-50); }
+  .frame.dark .matchlist .row:hover { background: var(--n-950); }
+  .matchlist .when {
+    display: flex; flex-direction: column;
+    gap: 2px;
+  }
+  .matchlist .when .d {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 18px; letter-spacing: -0.01em; line-height: 1;
+    color: var(--ink-900); font-variant-numeric: tabular-nums;
+  }
+  .frame.dark .matchlist .when .d { color: var(--n-50); }
+  .matchlist .when .t {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .matchlist .teams { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .matchlist .teams .t {
+    display: grid; grid-template-columns: 20px 1fr auto;
+    gap: 12px; align-items: center;
+  }
+  .matchlist .teams .dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--team-heim);
+  }
+  .matchlist .teams .t.gast .dot { background: var(--team-gast); }
+  .matchlist .teams .nm {
+    font-family: var(--font-display); font-weight: 600; font-size: 14.5px;
+    color: var(--ink-900); letter-spacing: -0.005em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .frame.dark .matchlist .teams .nm { color: var(--n-50); }
+  .matchlist .teams .sc {
+    font-family: var(--font-mono); font-weight: 700; font-size: 16px;
+    color: var(--ink-900); font-variant-numeric: tabular-nums;
+  }
+  .frame.dark .matchlist .teams .sc { color: var(--n-50); }
+  .matchlist .teams .t.loser .nm { color: var(--n-600); font-weight: 500; }
+  .matchlist .teams .t.loser .sc { color: var(--n-500); }
+  .frame.dark .matchlist .teams .t.loser .nm { color: var(--n-500); }
+  .matchlist .where {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+    max-width: 180px; text-align: right;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     03 — PLAYER CARDS
+     ════════════════════════════════════════════════════════════ */
+  /* Trikot number (synced w/ Tables) */
+  .tn {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 10px;
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 18px; letter-spacing: -0.02em;
+    background: var(--n-100); color: var(--ink-900);
+    font-variant-numeric: tabular-nums; flex-shrink: 0;
+  }
+  .frame.dark .tn { background: var(--n-800); color: var(--n-50); }
+  .tn.heim { background: var(--team-heim); color: white; }
+  .tn.gast { background: var(--team-gast); color: white; }
+  .tn.captain { box-shadow: 0 0 0 2px var(--amber-500); }
+  .tn.small  { width: 32px; height: 32px; font-size: 13.5px; border-radius: 7px; }
+  .tn.large  { width: 64px; height: 64px; font-size: 26px; border-radius: 14px; }
+  .tn.hero   { width: 110px; height: 110px; font-size: 48px; border-radius: 22px; }
+
+  .pos {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 26px; height: 22px; padding: 0 6px;
+    border-radius: 5px;
+    background: var(--n-100); color: var(--ink-700);
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+  .frame.dark .pos { background: var(--n-800); color: var(--n-200); }
+  .pos.pg { background: var(--sky-100); color: var(--sky-800); }
+  .pos.sg { background: var(--info-soft); color: var(--info-text); }
+  .pos.sf { background: var(--ok-soft); color: var(--ok-text); }
+  .pos.pf { background: var(--warn-soft); color: var(--warn-text); }
+  .pos.c  { background: var(--err-soft); color: var(--err-text); }
+
+  /* Player list row */
+  .player-row {
+    display: grid;
+    grid-template-columns: 44px 1fr auto auto;
+    gap: 14px; align-items: center;
+    padding: 12px 16px;
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+    border-radius: 12px;
+  }
+  .frame.dark .player-row { background: var(--n-900); border-color: var(--n-800); }
+  .player-row .who { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .player-row .name {
+    font-family: var(--font-body); font-weight: 600; font-size: 14.5px;
+    color: var(--ink-900); letter-spacing: -0.005em; line-height: 1.2;
+  }
+  .frame.dark .player-row .name { color: var(--n-50); }
+  .player-row .meta {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .player-row .stat {
+    text-align: right;
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 14px; color: var(--ink-900);
+    font-variant-numeric: tabular-nums;
+  }
+  .frame.dark .player-row .stat { color: var(--n-50); }
+  .player-row .stat .l {
+    display: block;
+    font-family: var(--font-mono); font-weight: 500; font-size: 10px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+
+  /* Standard player card */
+  .player-card {
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+  }
+  .frame.dark .player-card { background: var(--n-900); border-color: var(--n-800); }
+  .player-card .head {
+    padding: 22px;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: 16px; align-items: center;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .frame.dark .player-card .head { border-color: var(--n-800); }
+  .player-card .head .who { display: flex; flex-direction: column; gap: 4px; }
+  .player-card .head .nm {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 19px; letter-spacing: -0.01em;
+    color: var(--ink-900);
+  }
+  .frame.dark .player-card .head .nm { color: var(--n-50); }
+  .player-card .head .role {
+    display: flex; gap: 8px; align-items: center;
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .player-card .stats {
+    padding: 18px 22px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+  }
+  .player-card .stats .s {
+    text-align: center;
+    border-right: 1px solid var(--page-line);
+    padding: 4px 0;
+  }
+  .frame.dark .player-card .stats .s { border-color: var(--n-800); }
+  .player-card .stats .s:last-child { border-right: 0; }
+  .player-card .stats .v {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 24px; letter-spacing: -0.025em;
+    color: var(--ink-900);
+    font-variant-numeric: tabular-nums;
+    line-height: 1.05;
+  }
+  .frame.dark .player-card .stats .v { color: var(--n-50); }
+  .player-card .stats .v.amber { color: var(--amber-800); }
+  .frame.dark .player-card .stats .v.amber { color: var(--amber-400); }
+  .player-card .stats .l {
+    margin-top: 4px;
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--page-mute);
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .player-card .actions {
+    padding: 12px 22px;
+    border-top: 1px solid var(--page-line);
+    background: var(--n-50);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+  }
+  .frame.dark .player-card .actions { background: var(--n-950); border-color: var(--n-800); color: var(--n-400); }
+
+  /* Hero player card */
+  .player-hero {
+    background: var(--ink-1000);
+    color: white;
+    border-radius: 18px;
+    overflow: hidden;
+    padding: 32px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 28px;
+    align-items: center;
+    position: relative;
+  }
+  .player-hero::before {
+    content: ''; position: absolute;
+    top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    border-radius: 50%;
+    background: var(--amber-400);
+    opacity: 0.16;
+    filter: blur(20px);
+  }
+  .player-hero .left { position: relative; z-index: 1; }
+  .player-hero .right {
+    display: flex; flex-direction: column; gap: 18px;
+    position: relative; z-index: 1;
+  }
+  .player-hero .nm {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 32px; letter-spacing: -0.025em;
+    line-height: 1.05;
+    margin: 0;
+  }
+  .player-hero .role {
+    display: flex; gap: 10px; align-items: center;
+    font-family: var(--font-mono); font-size: 11px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .player-hero .role .pos { background: rgba(255,255,255,0.12); color: white; }
+  .player-hero .vitals {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 24px; padding-top: 8px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+  }
+  .player-hero .vitals .s .v {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 22px; letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+  }
+  .player-hero .vitals .s .v.amber { color: var(--amber-400); }
+  .player-hero .vitals .s .l {
+    font-family: var(--font-mono); font-size: 10px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     04 — STANDINGS / Tabellen-Ranking
+     ════════════════════════════════════════════════════════════ */
+  .stand {
+    border: 1px solid var(--page-line); border-radius: 14px;
+    overflow: hidden; background: var(--n-0);
+  }
+  .frame.dark .stand { background: var(--n-900); border-color: var(--n-800); }
+  .stand .row {
+    display: grid;
+    grid-template-columns: 50px 14px 1fr 64px 80px 80px;
+    align-items: center;
+    padding: 10px 18px;
+    gap: 14px;
+    border-bottom: 1px solid var(--page-line);
+    font-size: 14px;
+    transition: background 0.12s;
+  }
+  .frame.dark .stand .row { border-bottom-color: var(--n-800); }
+  .stand .row:last-child { border-bottom: 0; }
+  .stand .row.head {
+    background: var(--n-50);
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 12px 18px;
+  }
+  .frame.dark .stand .row.head { background: var(--n-950); color: var(--n-400); }
+  .stand .row:hover:not(.head) { background: var(--n-50); }
+  .frame.dark .stand .row:hover:not(.head) { background: var(--n-950); }
+  .stand .row.qual { box-shadow: inset 3px 0 0 var(--ok-fill); }
+  .stand .row.releg { box-shadow: inset 3px 0 0 var(--err-fill); }
+
+  .stand .rk {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 17px; letter-spacing: -0.01em;
+    color: var(--ink-900);
+    font-variant-numeric: tabular-nums;
+    text-align: center;
+  }
+  .frame.dark .stand .rk { color: var(--n-50); }
+  .stand .mv {
+    width: 14px; text-align: center;
+    font-family: var(--font-mono); font-size: 10px;
+    line-height: 1;
+  }
+  .stand .mv.up { color: var(--ok-fill); }
+  .stand .mv.dn { color: var(--err-fill); }
+  .stand .mv.eq { color: var(--n-400); }
+  .stand .team {
+    display: flex; align-items: center; gap: 12px;
+    min-width: 0;
+  }
+  .stand .team .crest {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--team-heim); color: white;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 12px;
+    letter-spacing: -0.02em;
+    flex-shrink: 0;
+  }
+  .stand .team .nm {
+    font-family: var(--font-display); font-weight: 600; font-size: 14.5px;
+    color: var(--ink-900); letter-spacing: -0.005em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .frame.dark .stand .team .nm { color: var(--n-50); }
+  .stand .num {
+    font-family: var(--font-mono); font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    color: var(--ink-700);
+  }
+  .frame.dark .stand .num { color: var(--n-200); }
+  .stand .num.pts {
+    font-weight: 800; font-size: 16px;
+    color: var(--ink-900);
+  }
+  .frame.dark .stand .num.pts { color: var(--n-50); }
+  .stand .form {
+    display: flex; gap: 3px; justify-content: flex-end;
+  }
+  .stand .form .f {
+    width: 16px; height: 16px; border-radius: 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 800; font-size: 9.5px;
+    color: white;
+    letter-spacing: -0.02em;
+  }
+  .stand .form .f.w { background: var(--ok-fill); }
+  .stand .form .f.l { background: var(--err-fill); }
+  .stand .form .f.n { background: var(--n-300); color: var(--n-700); }
+
+  /* Standings legend */
+  .stand-legend {
+    display: flex; gap: 20px;
+    padding: 12px 18px;
+    border-top: 1px solid var(--page-line);
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    background: var(--n-50);
+  }
+  .frame.dark .stand-legend { background: var(--n-950); border-color: var(--n-800); color: var(--n-400); }
+  .stand-legend .li {
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .stand-legend .bar {
+    width: 4px; height: 16px; border-radius: 2px;
+  }
+  .stand-legend .bar.qual  { background: var(--ok-fill); }
+  .stand-legend .bar.releg { background: var(--err-fill); }
+
+  /* ════════════════════════════════════════════════════════════
+     05 — CREW & TEAM PEOPLE
+     ════════════════════════════════════════════════════════════ */
+  .person {
+    display: grid;
+    grid-template-columns: 48px 1fr auto;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+    border-radius: 12px;
+  }
+  .frame.dark .person { background: var(--n-900); border-color: var(--n-800); }
+  .person .av {
+    width: 48px; height: 48px; border-radius: 50%;
+    background: var(--sky-600); color: white;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 16px;
+    letter-spacing: -0.02em;
+  }
+  .person .av.amber { background: var(--amber-500); color: var(--ink-1000); }
+  .person .av.gast  { background: var(--team-gast); }
+  .person .info { min-width: 0; }
+  .person .nm {
+    font-family: var(--font-display); font-weight: 600; font-size: 15px;
+    color: var(--ink-900); letter-spacing: -0.005em;
+  }
+  .frame.dark .person .nm { color: var(--n-50); }
+  .person .sub {
+    margin-top: 2px;
+    display: flex; gap: 10px; align-items: center;
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .person .sub::after { display: none; }
+  .person .sub b { color: var(--ink-700); font-weight: 700; }
+  .frame.dark .person .sub b { color: var(--n-200); }
+  .person .status {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .person .status::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--ok-fill);
+  }
+  .person .status.pending::before { background: var(--warn-fill); }
+  .person .status.missing::before { background: var(--err-fill); }
+
+  /* ════════════════════════════════════════════════════════════
+     06 — EMPTY STATES
+     ════════════════════════════════════════════════════════════ */
+  .empty {
+    padding: 56px 40px;
+    text-align: center;
+    background: var(--n-0);
+    border: 1px dashed var(--page-line);
+    border-radius: 16px;
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+  }
+  .frame.dark .empty { background: var(--n-900); border-color: var(--n-700); }
+  .empty .ilo {
+    width: 88px; height: 88px; border-radius: 50%;
+    background: var(--n-100);
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--n-500);
+    font-size: 40px;
+    margin-bottom: 6px;
+  }
+  .frame.dark .empty .ilo { background: var(--n-800); color: var(--n-400); }
+  .empty h4 {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 20px; letter-spacing: -0.015em;
+    color: var(--ink-900);
+    margin: 0;
+  }
+  .frame.dark .empty h4 { color: var(--n-50); }
+  .empty p {
+    color: var(--n-700);
+    margin: 0; font-size: 14px;
+    max-width: 340px;
+    text-wrap: pretty;
+  }
+  .frame.dark .empty p { color: var(--n-300); }
+  .empty .cta {
+    margin-top: 14px;
+    display: flex; gap: 10px;
+  }
+
+  .btn {
+    appearance: none; border: 0;
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 14px;
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 9px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform 0.08s, background 0.12s;
+    text-decoration: none;
+  }
+  .btn:active { transform: scale(0.98); }
+  .btn.primary { background: var(--ink-900); color: white; }
+  .frame.dark .btn.primary { background: var(--amber-400); color: var(--ink-1000); }
+  .btn.primary:hover { background: var(--ink-700); }
+  .btn.amber { background: var(--amber-400); color: var(--ink-1000); }
+  .btn.ghost { background: transparent; color: var(--ink-900); box-shadow: inset 0 0 0 1px var(--page-line); }
+  .frame.dark .btn.ghost { color: var(--n-50); box-shadow: inset 0 0 0 1px var(--n-700); }
+
+  /* ════════════════════════════════════════════════════════════
+     07 — SKELETONS / LOADING
+     ════════════════════════════════════════════════════════════ */
+  @keyframes shimmer {
+    0% { background-position: -300px 0; }
+    100% { background-position: 300px 0; }
+  }
+  .sk {
+    background:
+      linear-gradient(90deg,
+        var(--n-100) 0,
+        var(--n-200) 50%,
+        var(--n-100) 100%);
+    background-size: 600px 100%;
+    animation: shimmer 1.5s linear infinite;
+    border-radius: 6px;
+    display: block;
+  }
+  .frame.dark .sk {
+    background: linear-gradient(90deg,
+        var(--n-900) 0,
+        var(--n-800) 50%,
+        var(--n-900) 100%);
+    background-size: 600px 100%;
+  }
+  .sk.h-xl { height: 36px; }
+  .sk.h-lg { height: 22px; }
+  .sk.h-md { height: 14px; }
+  .sk.h-sm { height: 10px; }
+  .sk.circ { border-radius: 50%; }
+  .sk.tn   { width: 44px; height: 44px; border-radius: 10px; }
+  .sk.box  { border-radius: 12px; }
+
+  .sk-card {
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    padding: 22px;
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .frame.dark .sk-card { background: var(--n-900); border-color: var(--n-800); }
+
+  /* ════════════════════════════════════════════════════════════
+     08 — ERROR STATES
+     ════════════════════════════════════════════════════════════ */
+  .errblock {
+    padding: 48px 40px;
+    background: var(--err-soft);
+    border: 1px solid oklch(0.88 0.06 27);
+    border-radius: 16px;
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 28px; align-items: center;
+  }
+  .frame.dark .errblock {
+    background: oklch(0.22 0.08 27);
+    border-color: oklch(0.32 0.12 27);
+  }
+  .errblock .ilo {
+    width: 80px; height: 80px; border-radius: 20px;
+    background: var(--err-fill);
+    color: white;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 40px;
+    font-family: var(--font-display); font-weight: 800;
+  }
+  .errblock h4 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 22px; letter-spacing: -0.015em;
+    color: var(--err-text);
+    margin: 0 0 4px;
+  }
+  .frame.dark .errblock h4 { color: oklch(0.85 0.10 27); }
+  .errblock p {
+    color: var(--ink-700);
+    margin: 0; font-size: 14px;
+    max-width: 480px;
+    text-wrap: pretty;
+  }
+  .frame.dark .errblock p { color: var(--n-200); }
+  .errblock .actions { display: flex; gap: 10px; }
+
+  .errblock.warn {
+    background: var(--warn-soft);
+    border-color: oklch(0.88 0.08 75);
+  }
+  .frame.dark .errblock.warn {
+    background: oklch(0.22 0.08 75);
+    border-color: oklch(0.34 0.12 75);
+  }
+  .errblock.warn .ilo { background: var(--warn-fill); color: var(--ink-1000); }
+  .errblock.warn h4 { color: var(--warn-text); }
+  .frame.dark .errblock.warn h4 { color: oklch(0.85 0.10 75); }
+
+  /* Inline form/validation error (mini banner) */
+  .err-inline {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 12px 16px;
+    background: var(--err-soft);
+    border-left: 3px solid var(--err-fill);
+    border-radius: 8px;
+  }
+  .frame.dark .err-inline { background: oklch(0.22 0.08 27); }
+  .err-inline .dot {
+    flex-shrink: 0;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--err-fill); color: white;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 14px;
+  }
+  .err-inline .body { font-size: 13.5px; color: var(--err-text); line-height: 1.45; }
+  .frame.dark .err-inline .body { color: oklch(0.88 0.10 27); }
+  .err-inline .body b { color: var(--err-button); font-weight: 700; display: block; margin-bottom: 2px; }
+  .frame.dark .err-inline .body b { color: oklch(0.85 0.13 27); }
+
+</style>
+</head>
+
+<body>
+
+<!-- Inline SVG icon defs -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-ball" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3v18M5.5 5.5c4 3 8 9 6 13M18.5 5.5c-4 3-8 9-6 13"/></symbol>
+    <symbol id="i-cal-empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-arr-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-wifi-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8c5-4 13-4 18 0"/><path d="M6 12c3.3-2.5 9-2.5 12 0M9 16c1.6-1 4.4-1 6 0"/><circle cx="12" cy="19" r=".5" fill="currentColor"/><path d="M3 3l18 18" stroke-width="2"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 4 10 17H2L12 4Z"/><path d="M12 10v5M12 18v.5"/></symbol>
+    <symbol id="i-arr-up" viewBox="0 0 24 24" fill="currentColor"><path d="M12 6 5 14h4v4h6v-4h4Z"/></symbol>
+    <symbol id="i-arr-dn" viewBox="0 0 24 24" fill="currentColor"><path d="m12 18 7-8h-4V6H9v4H5Z"/></symbol>
+    <symbol id="i-eq" viewBox="0 0 24 24" fill="currentColor"><rect x="5" y="9" width="14" height="2" rx="1"/><rect x="5" y="13" width="14" height="2" rx="1"/></symbol>
+  </defs>
+</svg>
+
+<div class="page">
+
+  <!-- TOP STRIP -->
+  <div class="topstrip">
+    <div class="left">
+      <span class="monogram">D</span>
+      <span>DSS Design System</span>
+      <span>·</span>
+      <span>Cards &amp; Lists v0.1</span>
+    </div>
+    <div class="nav-l">
+      <a href="DSS Design System - Identity Overview v0.3.html">← Identity</a>
+      <a href="DSS Design System - Navigation.html">← Navigation</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero" data-screen-label="00 Hero">
+    <div class="eyebrow">Component Library · Cards &amp; Lists · v0.1</div>
+    <h1>Karten für <em>Spiele, Spieler, Stände</em> und alles dazwischen.</h1>
+    <p class="lead">
+      Die wiederkehrenden Bausteine jeder DSS-App: Match-Cards für Live-Listen und
+      Spielplan, Spieler-Cards in drei Größen, Standings für Ligen, Crew-People für
+      Schiri-Listen — plus die unverzichtbaren Empty-, Loading- und Error-States,
+      die jede Liste hat, sobald sie real wird.
+    </p>
+  </header>
+
+  <!-- ════════════════════════════════════════════════════════════
+       01 — CARD ANATOMY
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="01 Anatomy">
+    <div class="s-head">
+      <div class="s-num">01 — Anatomy</div>
+      <div class="s-title">
+        <h2>Vier Karten-Varianten, eine Grammatik.</h2>
+        <p>
+          Jede Karte besteht aus Body und optionalem Footer. Default ist border + radius 14;
+          elevated tauscht den Rahmen gegen einen Shadow; flat verzichtet auf beides und
+          nutzt eine Surface-2; hoverable hebt sich auf Tap leicht an. Der Footer trägt
+          Meta-Informationen in Mono.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div class="frame">
+        <div class="frame-head">
+          <h3>Varianten</h3>
+          <div class="meta"><span>Radius 14 · Padding 20 / 22</span></div>
+        </div>
+        <div class="frame-body canvas">
+          <div class="row3">
+
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-h">Default</h4>
+                <p style="margin: 0; color: var(--n-700); font-size: 14px;">Border 1 px <code style="font-family: var(--font-mono); font-size: 12px; background: var(--n-100); padding: 1px 5px; border-radius: 3px;">--page-line</code>, Background Surface-0.</p>
+              </div>
+              <div class="card-foot">
+                <span>border · radius-14</span>
+                <span>1 · 22 · 20</span>
+              </div>
+            </div>
+
+            <div class="card elevated">
+              <div class="card-body">
+                <h4 class="card-h">Elevated</h4>
+                <p style="margin: 0; color: var(--n-700); font-size: 14px;">Shadow-md statt Border. Für schwebende Listen-Items und Live-Anzeige-Container.</p>
+              </div>
+              <div class="card-foot" style="background: var(--n-0);">
+                <span>shadow-md</span>
+                <span>borderless</span>
+              </div>
+            </div>
+
+            <div class="card flat">
+              <div class="card-body">
+                <h4 class="card-h">Flat</h4>
+                <p style="margin: 0; color: var(--n-700); font-size: 14px;">Surface-2 ohne Border. Für ruhige Listen mit hoher Dichte, in denen jede Border zu viel wäre.</p>
+              </div>
+            </div>
+
+          </div>
+          <div style="height: 14px;"></div>
+
+          <div class="card hoverable" style="max-width: 480px;">
+            <div class="card-body" style="display: grid; grid-template-columns: 1fr auto; align-items: center;">
+              <div>
+                <h4 class="card-h">Hoverable · interaktiv</h4>
+                <p style="margin: 4px 0 0; color: var(--n-700); font-size: 14px;">Cursor wird Pointer, Border zieht auf Ink-300 an, leichter Lift &amp; Schatten.</p>
+              </div>
+              <svg class="ic" style="font-size: 22px; color: var(--page-mute);"><use href="#i-arr-r"/></svg>
+            </div>
+          </div>
+
+          <div class="caption" style="margin-top: 24px;"><b>Tip.</b> Hoverable nur dort, wo die ganze Karte klickbar ist — Cursor und Lift signalisieren das eindeutig.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       02 — MATCH CARDS
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="02 Match Cards">
+    <div class="s-head">
+      <div class="s-num">02 — Match Cards</div>
+      <div class="s-title">
+        <h2>Drei Zustände eines Spiels.</h2>
+        <p>
+          <b>Scheduled</b> zeigt Anpfiff und Halle, <b>Live</b> öffnet sich ins
+          Score-Cluster mit Uhr und Quarter, <b>Finished</b> rückt den Gewinner mit Amber-Akzent
+          ins Auge. Alle drei teilen Head (Liga &amp; Spieltag) und Foot (Action-Link).
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <div class="row3">
+
+        <!-- Scheduled -->
+        <div>
+          <div class="sub"><span class="pill">2.1a — Scheduled</span></div>
+          <article class="match">
+            <header class="match-head">
+              <span class="league">Bayernliga Süd</span>
+              <span class="chip scheduled">Sa · 24.05.</span>
+            </header>
+            <div class="match-body">
+              <div class="team-row">
+                <span class="crest">HEL</span>
+                <div>
+                  <div class="name">Mü-Hellas 1929</div>
+                  <div class="meta">Heim · 12. Tabelle</div>
+                </div>
+                <span class="meta" style="font-size:11px;">14–8</span>
+              </div>
+              <div class="vs-rule"></div>
+              <div class="team-row gast">
+                <span class="crest">WAR</span>
+                <div>
+                  <div class="name">SpVgg Wartenberg</div>
+                  <div class="meta">Gast · 4. Tabelle</div>
+                </div>
+                <span class="meta" style="font-size:11px;">18–4</span>
+              </div>
+            </div>
+            <footer class="match-foot">
+              <span>Halle Olympiazentrum · 16:30</span>
+              <a>Details <svg class="ic" style="font-size: 13px;"><use href="#i-arr-r"/></svg></a>
+            </footer>
+          </article>
+        </div>
+
+        <!-- Live -->
+        <div>
+          <div class="sub"><span class="pill err">2.1b — Live</span></div>
+          <article class="match" style="border-color: oklch(0.85 0.12 27);">
+            <header class="match-head">
+              <span class="league">Bayernliga Süd · Sp. 22</span>
+              <span class="chip live">Live</span>
+            </header>
+            <div class="match-body" style="padding-bottom: 22px;">
+              <div class="match-live">
+                <div class="lside">
+                  <span class="crest heim">HEL</span>
+                  <div class="nm">Mü-Hellas 1929</div>
+                  <div class="sc">62</div>
+                </div>
+                <div class="center">
+                  <span class="q">Q2</span>
+                  <span class="clk">07:18</span>
+                  <span style="font-family: var(--font-mono); font-weight: 700; font-size: 11.5px; padding: 2px 6px; border-radius: 4px; background: var(--ink-900); color: var(--amber-300);">24"</span>
+                </div>
+                <div class="lside r">
+                  <span class="crest gast">WAR</span>
+                  <div class="nm">SpVgg Wartenberg</div>
+                  <div class="sc">58</div>
+                </div>
+              </div>
+            </div>
+            <footer class="match-foot">
+              <span>+ 4 · Heim · Spielzug</span>
+              <a>Verfolgen <svg class="ic" style="font-size: 13px;"><use href="#i-arr-r"/></svg></a>
+            </footer>
+          </article>
+        </div>
+
+        <!-- Finished -->
+        <div>
+          <div class="sub"><span class="pill ok">2.1c — Finished</span></div>
+          <article class="match">
+            <header class="match-head">
+              <span class="league">Bayernliga Süd · Sp. 21</span>
+              <span class="chip finished">Beendet</span>
+            </header>
+            <div class="match-body">
+              <div class="team-row winner" style="position: relative;">
+                <span class="crest">HEL</span>
+                <div>
+                  <div class="name">Mü-Hellas 1929</div>
+                  <div class="meta">Heim</div>
+                </div>
+                <span class="score">84</span>
+              </div>
+              <div class="vs-rule"></div>
+              <div class="team-row loser">
+                <span class="crest">WAR</span>
+                <div>
+                  <div class="name">SpVgg Wartenberg</div>
+                  <div class="meta">Gast</div>
+                </div>
+                <span class="score">78</span>
+              </div>
+            </div>
+            <footer class="match-foot">
+              <span>SO · 17.05. · 18:00</span>
+              <a>Endbericht <svg class="ic" style="font-size: 13px;"><use href="#i-arr-r"/></svg></a>
+            </footer>
+          </article>
+        </div>
+
+      </div>
+
+      <div>
+        <div class="sub"><span class="pill amber">2.2 — Compact List-Row · Spielplan</span></div>
+        <div class="frame">
+          <div class="frame-head"><h3>Spielplan · 6 Spiele dieser Woche</h3><div class="meta"><span>Dichte: 60 px Row</span></div></div>
+          <div class="frame-body" style="padding: 0;">
+            <div class="matchlist">
+
+              <div class="row">
+                <div class="when">
+                  <span class="d">SA · 24.05.</span>
+                  <span class="t">16:30</span>
+                </div>
+                <div class="teams">
+                  <div class="t"><span class="dot"></span><span class="nm">Mü-Hellas 1929</span><span class="sc">—</span></div>
+                  <div class="t gast"><span class="dot"></span><span class="nm">SpVgg Wartenberg</span><span class="sc">—</span></div>
+                </div>
+                <span class="chip scheduled">Geplant</span>
+                <span class="where">Halle am Olympiazentrum</span>
+              </div>
+
+              <div class="row" style="background: oklch(0.99 0.012 27);">
+                <div class="when">
+                  <span class="d">SA · 24.05.</span>
+                  <span class="t">19:00</span>
+                </div>
+                <div class="teams">
+                  <div class="t"><span class="dot"></span><span class="nm">TSV Aubing</span><span class="sc">68</span></div>
+                  <div class="t gast"><span class="dot"></span><span class="nm">DJK Würmtal</span><span class="sc">62</span></div>
+                </div>
+                <span class="chip live">Live · Q4</span>
+                <span class="where">Sportzentrum Aubing</span>
+              </div>
+
+              <div class="row">
+                <div class="when">
+                  <span class="d">SO · 25.05.</span>
+                  <span class="t">11:00</span>
+                </div>
+                <div class="teams">
+                  <div class="t"><span class="dot"></span><span class="nm">FC Bayern BBC</span><span class="sc">—</span></div>
+                  <div class="t gast"><span class="dot"></span><span class="nm">USC München</span><span class="sc">—</span></div>
+                </div>
+                <span class="chip scheduled">Geplant</span>
+                <span class="where">Audi Dome · Halle B</span>
+              </div>
+
+              <div class="row">
+                <div class="when">
+                  <span class="d">SO · 25.05.</span>
+                  <span class="t">16:00</span>
+                </div>
+                <div class="teams">
+                  <div class="t"><span class="nm" style="color: var(--n-500); font-style: italic;"><span class="dot" style="display:inline-block; margin-right:12px;"></span>BC Freising</span><span class="sc">—</span></div>
+                  <div class="t gast"><span class="nm" style="color: var(--n-500); font-style: italic;"><span class="dot" style="display:inline-block; margin-right:12px; background: var(--team-gast);"></span>Eichenau Hoops</span><span class="sc">—</span></div>
+                </div>
+                <span class="chip warn">Verlegt</span>
+                <span class="where">Neuer Termin offen</span>
+              </div>
+
+              <div class="row">
+                <div class="when">
+                  <span class="d">SA · 17.05.</span>
+                  <span class="t">18:00</span>
+                </div>
+                <div class="teams">
+                  <div class="t winner"><span class="dot"></span><span class="nm">Mü-Hellas 1929</span><span class="sc">84</span></div>
+                  <div class="t loser gast"><span class="dot"></span><span class="nm">TSV Trudering</span><span class="sc">71</span></div>
+                </div>
+                <span class="chip finished">Beendet</span>
+                <span class="where">Halle Olympiazentrum</span>
+              </div>
+
+              <div class="row">
+                <div class="when">
+                  <span class="d">SA · 17.05.</span>
+                  <span class="t">19:30</span>
+                </div>
+                <div class="teams">
+                  <div class="t loser"><span class="dot"></span><span class="nm">TSV Aubing</span><span class="sc">62</span></div>
+                  <div class="t gast winner"><span class="dot"></span><span class="nm">FC Bayern BBC</span><span class="sc">75</span></div>
+                </div>
+                <span class="chip finished">Beendet</span>
+                <span class="where">Sportzentrum Aubing</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class="caption"><b>Dichte.</b> 60 px Row erlaubt 2 Teams + Score in einer Zeile ohne zu drängen — auf Tablet weiterhin gut tappbar.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       03 — PLAYER CARDS
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="03 Player Cards">
+    <div class="s-head">
+      <div class="s-num">03 — Player Cards</div>
+      <div class="s-title">
+        <h2>Spieler in drei Maßstäben.</h2>
+        <p>
+          Compact für Roster-Listen und Bench-Anzeige, Standard für Spieltags-Übersicht
+          mit Top-Line-Stats, Hero für Spieler-Detailseite und Aktions-Modals.
+          Trikotnummern teilen die Sprache der Tabellen-Komponente.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <div>
+        <div class="sub"><span class="pill">3.1 — Compact List-Row</span></div>
+        <div class="frame">
+          <div class="frame-head"><h3>Roster-Liste · Active 5</h3></div>
+          <div class="frame-body" style="display: flex; flex-direction: column; gap: 8px;">
+
+            <div class="player-row">
+              <span class="tn heim captain">14</span>
+              <div class="who">
+                <div class="name">K. Hartmann <span style="font-family: var(--font-mono); font-size: 9.5px; color: var(--amber-800); padding: 1px 5px; border-radius: 3px; background: var(--amber-100); margin-left: 4px; letter-spacing: .06em;">C</span></div>
+                <div class="meta">PG · 1.94 m · 26 J.</div>
+              </div>
+              <span class="pos pg">PG</span>
+              <div class="stat">18 <span class="l">PTS</span></div>
+            </div>
+
+            <div class="player-row">
+              <span class="tn heim">7</span>
+              <div class="who">
+                <div class="name">M. Brückner</div>
+                <div class="meta">SG · 1.88 m · 24 J.</div>
+              </div>
+              <span class="pos sg">SG</span>
+              <div class="stat">14 <span class="l">PTS</span></div>
+            </div>
+
+            <div class="player-row">
+              <span class="tn heim">23</span>
+              <div class="who">
+                <div class="name">A. Lindgren</div>
+                <div class="meta">SF · 2.01 m · 28 J.</div>
+              </div>
+              <span class="pos sf">SF</span>
+              <div class="stat">12 <span class="l">PTS</span></div>
+            </div>
+
+            <div class="player-row">
+              <span class="tn heim">42</span>
+              <div class="who">
+                <div class="name">D. Kovač</div>
+                <div class="meta">PF · 2.04 m · 30 J.</div>
+              </div>
+              <span class="pos pf">PF</span>
+              <div class="stat">10 <span class="l">PTS</span></div>
+            </div>
+
+            <div class="player-row">
+              <span class="tn heim">55</span>
+              <div class="who">
+                <div class="name">P. Obermeier</div>
+                <div class="meta">C · 2.08 m · 27 J.</div>
+              </div>
+              <span class="pos c">C</span>
+              <div class="stat">8 <span class="l">PTS</span></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="row2">
+
+        <div>
+          <div class="sub"><span class="pill amber">3.2 — Standard · mit Top-Line-Stats</span></div>
+          <div class="frame">
+            <div class="frame-head"><h3>Light · Standardkarte</h3></div>
+            <div class="frame-body canvas">
+              <div class="player-card" style="max-width: 420px; margin: 0 auto;">
+                <div class="head">
+                  <span class="tn heim large captain">14</span>
+                  <div class="who">
+                    <div class="nm">Konrad Hartmann</div>
+                    <div class="role">
+                      <span class="pos pg">PG</span>
+                      <span>Captain</span>
+                      <span>·</span>
+                      <span>1.94 m</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="stats">
+                  <div class="s"><div class="v amber">18</div><div class="l">PTS</div></div>
+                  <div class="s"><div class="v">6</div><div class="l">AST</div></div>
+                  <div class="s"><div class="v">3</div><div class="l">REB</div></div>
+                  <div class="s"><div class="v">22</div><div class="l">EFF</div></div>
+                </div>
+                <div class="actions">
+                  <span>Letzte 5: 18 · 22 · 14 · 11 · 19</span>
+                  <a style="color: var(--ink-900); text-decoration: none; font-weight: 700;">Profil →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub"><span class="pill dark">3.2b — Dark · Tablet-Layout</span></div>
+          <div class="frame dark">
+            <div class="frame-head"><h3>Dark · Kampfgericht</h3></div>
+            <div class="frame-body canvas">
+              <div class="player-card" style="max-width: 420px; margin: 0 auto;">
+                <div class="head">
+                  <span class="tn gast large">7</span>
+                  <div class="who">
+                    <div class="nm">Mateo Brückner</div>
+                    <div class="role">
+                      <span class="pos sg">SG</span>
+                      <span>Starter</span>
+                      <span>·</span>
+                      <span>1.88 m</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="stats">
+                  <div class="s"><div class="v amber">14</div><div class="l">PTS</div></div>
+                  <div class="s"><div class="v">2</div><div class="l">AST</div></div>
+                  <div class="s"><div class="v">4</div><div class="l">REB</div></div>
+                  <div class="s"><div class="v">15</div><div class="l">EFF</div></div>
+                </div>
+                <div class="actions">
+                  <span>3PT: 3 / 6</span>
+                  <a style="color: var(--n-50); text-decoration: none; font-weight: 700;">Profil →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div>
+        <div class="sub"><span class="pill dark">3.3 — Hero · Spieler-Detail</span></div>
+        <div class="player-hero" data-screen-label="03c Hero">
+          <div class="left">
+            <span class="tn hero" style="background: var(--amber-400); color: var(--ink-1000);">14</span>
+          </div>
+          <div class="right">
+            <div>
+              <div class="role">
+                <span class="pos" style="background: rgba(255,255,255,0.16); color: white;">PG</span>
+                <span>Captain · Mü-Hellas 1929</span>
+                <span>·</span>
+                <span>Lic. #SP-1138</span>
+              </div>
+              <h3 class="nm">Konrad Hartmann</h3>
+            </div>
+            <p style="margin: 0; color: rgba(255,255,255,0.7); max-width: 520px; font-size: 14.5px; line-height: 1.55;">
+              26 Jahre · 1.94 m · Seit 2019 bei Mü-Hellas · 87 Saisonspiele
+            </p>
+            <div class="vitals">
+              <div class="s"><div class="v amber">17.4</div><div class="l">PPG</div></div>
+              <div class="s"><div class="v">5.8</div><div class="l">APG</div></div>
+              <div class="s"><div class="v">3.1</div><div class="l">RPG</div></div>
+              <div class="s"><div class="v">41 %</div><div class="l">3PT</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="caption">Hero-Karte: dunkler Ink-Hintergrund, Amber-Akzent als Glow hinter dem Spieler — funktioniert als Header für Detail-Seiten und Aktions-Modals.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       04 — STANDINGS
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="04 Standings">
+    <div class="s-head">
+      <div class="s-num">04 — Standings</div>
+      <div class="s-title">
+        <h2>Tabellen mit Form &amp; Bewegung.</h2>
+        <p>
+          Standings sind kompakter als Boxscores, dafür zeigen sie Tendenz: Movement-Pfeil
+          links, Form-Sequenz (W/L) rechts, Quali- und Abstiegszonen als 3 px Border am
+          linken Rand der Zeile.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <div>
+        <div class="sub"><span class="pill amber">Bayernliga Süd · Saison 25/26</span></div>
+        <div class="frame">
+          <div class="frame-head"><h3>Tabelle nach Spieltag 22</h3><div class="meta"><span>Stand 18.05.2026</span></div></div>
+          <div class="frame-body" style="padding: 0;">
+            <div class="stand">
+              <div class="row head">
+                <span>#</span>
+                <span></span>
+                <span>Mannschaft</span>
+                <span style="text-align: right;">Sp.</span>
+                <span style="text-align: right;">PTS</span>
+                <span style="text-align: right;">Form</span>
+              </div>
+
+              <div class="row qual">
+                <span class="rk">1</span>
+                <span class="mv eq"><svg class="ic" style="font-size: 9px;"><use href="#i-eq"/></svg></span>
+                <span class="team"><span class="crest">FCB</span><span class="nm">FC Bayern BBC</span></span>
+                <span class="num">22</span>
+                <span class="num pts">42</span>
+                <span class="form">
+                  <span class="f w">W</span><span class="f w">W</span><span class="f w">W</span><span class="f w">W</span><span class="f w">W</span>
+                </span>
+              </div>
+
+              <div class="row qual">
+                <span class="rk">2</span>
+                <span class="mv up"><svg class="ic" style="font-size: 10px;"><use href="#i-arr-up"/></svg></span>
+                <span class="team"><span class="crest" style="background: var(--team-gast);">WAR</span><span class="nm">SpVgg Wartenberg</span></span>
+                <span class="num">22</span>
+                <span class="num pts">38</span>
+                <span class="form">
+                  <span class="f w">W</span><span class="f l">L</span><span class="f w">W</span><span class="f w">W</span><span class="f w">W</span>
+                </span>
+              </div>
+
+              <div class="row qual">
+                <span class="rk">3</span>
+                <span class="mv dn"><svg class="ic" style="font-size: 10px;"><use href="#i-arr-dn"/></svg></span>
+                <span class="team"><span class="crest" style="background: oklch(0.45 0.14 140);">USC</span><span class="nm">USC München</span></span>
+                <span class="num">22</span>
+                <span class="num pts">36</span>
+                <span class="form">
+                  <span class="f w">W</span><span class="f w">W</span><span class="f l">L</span><span class="f w">W</span><span class="f l">L</span>
+                </span>
+              </div>
+
+              <div class="row">
+                <span class="rk">4</span>
+                <span class="mv up"><svg class="ic" style="font-size: 10px;"><use href="#i-arr-up"/></svg></span>
+                <span class="team"><span class="crest" style="background: oklch(0.52 0.15 80);">TSA</span><span class="nm">TSV Aubing</span></span>
+                <span class="num">22</span>
+                <span class="num pts">30</span>
+                <span class="form">
+                  <span class="f l">L</span><span class="f w">W</span><span class="f w">W</span><span class="f l">L</span><span class="f w">W</span>
+                </span>
+              </div>
+
+              <div class="row">
+                <span class="rk">5</span>
+                <span class="mv eq"><svg class="ic" style="font-size: 9px;"><use href="#i-eq"/></svg></span>
+                <span class="team"><span class="crest" style="background: oklch(0.42 0.13 200);">DJK</span><span class="nm">DJK Würmtal</span></span>
+                <span class="num">22</span>
+                <span class="num pts">26</span>
+                <span class="form">
+                  <span class="f w">W</span><span class="f l">L</span><span class="f w">W</span><span class="f l">L</span><span class="f w">W</span>
+                </span>
+              </div>
+
+              <div class="row">
+                <span class="rk">6</span>
+                <span class="mv dn"><svg class="ic" style="font-size: 10px;"><use href="#i-arr-dn"/></svg></span>
+                <span class="team"><span class="crest" style="background: oklch(0.48 0.16 30);">TST</span><span class="nm">TSV Trudering</span></span>
+                <span class="num">22</span>
+                <span class="num pts">22</span>
+                <span class="form">
+                  <span class="f l">L</span><span class="f l">L</span><span class="f w">W</span><span class="f l">L</span><span class="f l">L</span>
+                </span>
+              </div>
+
+              <div class="row">
+                <span class="rk">11</span>
+                <span class="mv eq"><svg class="ic" style="font-size: 9px;"><use href="#i-eq"/></svg></span>
+                <span class="team"><span class="crest" style="background: oklch(0.55 0.10 280);">EHO</span><span class="nm">Eichenau Hoops</span></span>
+                <span class="num">22</span>
+                <span class="num pts">10</span>
+                <span class="form">
+                  <span class="f l">L</span><span class="f l">L</span><span class="f l">L</span><span class="f w">W</span><span class="f l">L</span>
+                </span>
+              </div>
+
+              <div class="row releg">
+                <span class="rk">12</span>
+                <span class="mv dn"><svg class="ic" style="font-size: 10px;"><use href="#i-arr-dn"/></svg></span>
+                <span class="team"><span class="crest">HEL</span><span class="nm">Mü-Hellas 1929</span></span>
+                <span class="num">22</span>
+                <span class="num pts">6</span>
+                <span class="form">
+                  <span class="f l">L</span><span class="f l">L</span><span class="f l">L</span><span class="f w">W</span><span class="f l">L</span>
+                </span>
+              </div>
+
+              <div class="stand-legend">
+                <span class="li"><span class="bar qual"></span>Pos. 1–3 · Aufstieg / Playoffs</span>
+                <span class="li"><span class="bar releg"></span>Pos. 12 · Abstieg Regionalliga</span>
+                <span style="margin-left:auto;"><span style="color: var(--ok-fill);">▲</span> Verbessert · <span style="color: var(--err-fill);">▼</span> Verschlechtert · <span style="color: var(--n-400);">=</span> Unverändert</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       05 — CREW & PEOPLE
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="05 Crew">
+    <div class="s-head">
+      <div class="s-num">05 — Crew &amp; People</div>
+      <div class="s-title">
+        <h2>Wer ist heute am Tisch.</h2>
+        <p>
+          Avatar-First-Karte für Schiri-Crew, Anschreiber, Coach und Team-Manager.
+          Statuspunkt rechts zeigt, ob alle anwesend, eingeloggt und freigegeben sind.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <div class="row2">
+        <div>
+          <div class="sub"><span class="pill">Schiedsrichter-Crew</span></div>
+          <div class="stack" style="gap: 10px;">
+            <div class="person">
+              <span class="av amber">AR</span>
+              <div class="info">
+                <div class="nm">Andrea Reiter</div>
+                <div class="sub"><span><b>Hauptschiedsrichterin</b></span><span>·</span><span>Lic. SR-1138</span></div>
+              </div>
+              <span class="status">Anwesend</span>
+            </div>
+            <div class="person">
+              <span class="av">JK</span>
+              <div class="info">
+                <div class="nm">Jonas Kraus</div>
+                <div class="sub"><span><b>2. Schiedsrichter</b></span><span>·</span><span>Lic. SR-2104</span></div>
+              </div>
+              <span class="status">Anwesend</span>
+            </div>
+            <div class="person">
+              <span class="av">SB</span>
+              <div class="info">
+                <div class="nm">Sara Beck</div>
+                <div class="sub"><span><b>Anschreiberin</b></span><span>·</span><span>Lic. KG-887</span></div>
+              </div>
+              <span class="status pending">Eingeloggt · warten auf Signatur</span>
+            </div>
+            <div class="person">
+              <span class="av">—</span>
+              <div class="info">
+                <div class="nm" style="color: var(--n-500); font-style: italic;">Zeitnehmer</div>
+                <div class="sub"><span><b>Slot offen</b></span><span>·</span><span>vor Anpfiff zu vergeben</span></div>
+              </div>
+              <span class="status missing">Offen</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub"><span class="pill amber">Team-People</span></div>
+          <div class="stack" style="gap: 10px;">
+            <div class="person">
+              <span class="av" style="background: var(--team-heim);">TW</span>
+              <div class="info">
+                <div class="nm">Thomas Weidinger</div>
+                <div class="sub"><span><b>Cheftrainer</b></span><span>·</span><span>Mü-Hellas 1929</span></div>
+              </div>
+              <span class="status">Eingecheckt</span>
+            </div>
+            <div class="person">
+              <span class="av" style="background: var(--team-heim);">MS</span>
+              <div class="info">
+                <div class="nm">Maria Steinhauser</div>
+                <div class="sub"><span><b>Co-Trainerin</b></span><span>·</span><span>Mü-Hellas 1929</span></div>
+              </div>
+              <span class="status">Eingecheckt</span>
+            </div>
+            <div class="person">
+              <span class="av gast">VK</span>
+              <div class="info">
+                <div class="nm">Vesna Kovač</div>
+                <div class="sub"><span><b>Cheftrainerin</b></span><span>·</span><span>SpVgg Wartenberg</span></div>
+              </div>
+              <span class="status pending">Wartet auf Aufstellung</span>
+            </div>
+            <div class="person">
+              <span class="av gast">DM</span>
+              <div class="info">
+                <div class="nm">David Maier</div>
+                <div class="sub"><span><b>Team-Manager</b></span><span>·</span><span>SpVgg Wartenberg</span></div>
+              </div>
+              <span class="status">Eingecheckt</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       06 — EMPTY STATES
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="06 Empty States">
+    <div class="s-head">
+      <div class="s-num">06 — Empty States</div>
+      <div class="s-title">
+        <h2>Wenn nichts da ist, etwas erklären.</h2>
+        <p>
+          Drei Tonalitäten: <b>neutral</b> (keine Daten vorhanden), <b>action-required</b> (kein
+          Eintrag gepflegt, mit CTA) und <b>filtered</b> (durch Filter ausgegrenzt — Reset
+          anbieten). Immer mit Glyphe, knappem H4 und einem Satz.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div class="row3">
+
+        <div>
+          <div class="sub"><span class="pill">Neutral</span></div>
+          <div class="empty">
+            <div class="ilo"><svg class="ic"><use href="#i-cal-empty"/></svg></div>
+            <h4>Kein Spiel angesetzt</h4>
+            <p>Für die kommende Woche stehen noch keine Spiele in deinem Spielplan.</p>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub"><span class="pill amber">Action-required</span></div>
+          <div class="empty">
+            <div class="ilo"><svg class="ic"><use href="#i-ball"/></svg></div>
+            <h4>Roster noch leer</h4>
+            <p>Lege deine Mannschaft an, um Aufstellungen und Boxscores zu erfassen.</p>
+            <div class="cta">
+              <button class="btn primary"><svg class="ic"><use href="#i-plus"/></svg> Spieler anlegen</button>
+              <button class="btn ghost">Import CSV</button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub"><span class="pill">Filtered · Reset</span></div>
+          <div class="empty">
+            <div class="ilo"><svg class="ic"><use href="#i-search"/></svg></div>
+            <h4>Keine Treffer</h4>
+            <p>Mit den aktuellen Filtern findet sich kein Spiel. Filter zurücksetzen oder Suche anpassen.</p>
+            <div class="cta">
+              <button class="btn ghost">Filter zurücksetzen</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       07 — SKELETONS
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="07 Skeletons">
+    <div class="s-head">
+      <div class="s-num">07 — Skeletons</div>
+      <div class="s-title">
+        <h2>Loading ohne Springen.</h2>
+        <p>
+          Shimmer-Placeholder, die genau die Form der späteren Komponente einnehmen — damit
+          beim Daten-Eintreffen nichts mehr umspringt. Animation: 1.5 s linear, Surface-1 →
+          Surface-2 → Surface-1.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div class="row3">
+
+        <div>
+          <div class="sub"><span class="pill">Match-Card · Skeleton</span></div>
+          <div class="sk-card">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div class="sk h-md" style="width: 120px;"></div>
+              <div class="sk h-md" style="width: 60px;"></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 44px 1fr auto; gap: 12px; align-items: center;">
+              <div class="sk tn"></div>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="sk h-lg" style="width: 70%;"></div>
+                <div class="sk h-sm" style="width: 35%;"></div>
+              </div>
+              <div class="sk h-xl" style="width: 50px;"></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 44px 1fr auto; gap: 12px; align-items: center;">
+              <div class="sk tn"></div>
+              <div style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="sk h-lg" style="width: 60%;"></div>
+                <div class="sk h-sm" style="width: 30%;"></div>
+              </div>
+              <div class="sk h-xl" style="width: 50px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub"><span class="pill">Player-Row · Skeleton ×3</span></div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="player-row" style="border-style: dashed;">
+              <div class="sk tn"></div>
+              <div class="who" style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="sk h-md" style="width: 70%;"></div>
+                <div class="sk h-sm" style="width: 40%;"></div>
+              </div>
+              <div class="sk h-md" style="width: 32px;"></div>
+              <div class="sk h-md" style="width: 50px;"></div>
+            </div>
+            <div class="player-row" style="border-style: dashed;">
+              <div class="sk tn"></div>
+              <div class="who" style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="sk h-md" style="width: 55%;"></div>
+                <div class="sk h-sm" style="width: 30%;"></div>
+              </div>
+              <div class="sk h-md" style="width: 32px;"></div>
+              <div class="sk h-md" style="width: 50px;"></div>
+            </div>
+            <div class="player-row" style="border-style: dashed;">
+              <div class="sk tn"></div>
+              <div class="who" style="display: flex; flex-direction: column; gap: 6px;">
+                <div class="sk h-md" style="width: 65%;"></div>
+                <div class="sk h-sm" style="width: 35%;"></div>
+              </div>
+              <div class="sk h-md" style="width: 32px;"></div>
+              <div class="sk h-md" style="width: 50px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub"><span class="pill">Standings · Skeleton</span></div>
+          <div class="sk-card" style="gap: 14px; padding: 14px 18px;">
+            <div style="display: grid; grid-template-columns: 30px 1fr 50px 50px; gap: 12px; align-items: center;">
+              <div class="sk h-lg" style="width: 24px;"></div>
+              <div style="display: flex; gap: 10px; align-items: center;"><div class="sk" style="width: 24px; height: 24px; border-radius: 6px;"></div><div class="sk h-md" style="flex: 1;"></div></div>
+              <div class="sk h-md"></div>
+              <div class="sk h-lg"></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 30px 1fr 50px 50px; gap: 12px; align-items: center;">
+              <div class="sk h-lg" style="width: 24px;"></div>
+              <div style="display: flex; gap: 10px; align-items: center;"><div class="sk" style="width: 24px; height: 24px; border-radius: 6px;"></div><div class="sk h-md" style="flex: 1;"></div></div>
+              <div class="sk h-md"></div>
+              <div class="sk h-lg"></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 30px 1fr 50px 50px; gap: 12px; align-items: center;">
+              <div class="sk h-lg" style="width: 24px;"></div>
+              <div style="display: flex; gap: 10px; align-items: center;"><div class="sk" style="width: 24px; height: 24px; border-radius: 6px;"></div><div class="sk h-md" style="flex: 1;"></div></div>
+              <div class="sk h-md"></div>
+              <div class="sk h-lg"></div>
+            </div>
+            <div style="display: grid; grid-template-columns: 30px 1fr 50px 50px; gap: 12px; align-items: center;">
+              <div class="sk h-lg" style="width: 24px;"></div>
+              <div style="display: flex; gap: 10px; align-items: center;"><div class="sk" style="width: 24px; height: 24px; border-radius: 6px;"></div><div class="sk h-md" style="flex: 1;"></div></div>
+              <div class="sk h-md"></div>
+              <div class="sk h-lg"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="caption" style="margin-top: 24px;"><b>Regel.</b> Niemals Spinner an Stelle von Skeletons. Skeletons reservieren Platz und signalisieren strukturell, was kommt.</div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       08 — ERROR STATES
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="08 Error States" style="border-bottom: 0;">
+    <div class="s-head">
+      <div class="s-num">08 — Error States</div>
+      <div class="s-title">
+        <h2>Wenn etwas schiefläuft, immer einen nächsten Schritt anbieten.</h2>
+        <p>
+          Drei Größen je nach Schwere: Inline für Form-Felder, kompakter Block für Sektionen,
+          ganzseitig für komplette Ausfälle. Jede Fehlermeldung muss benennen <i>was</i> passiert
+          ist und <i>was als Nächstes geht</i>.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <div>
+        <div class="sub"><span class="pill err">Page-Level · Connection Lost</span></div>
+        <div class="errblock">
+          <div class="ilo"><svg class="ic"><use href="#i-wifi-off"/></svg></div>
+          <div>
+            <h4>Verbindung zum Server verloren</h4>
+            <p>Eingaben werden lokal gespeichert und synchronisieren sich, sobald wieder Netz da ist. Du kannst weiterscoren — keine Daten gehen verloren.</p>
+          </div>
+          <div class="actions">
+            <button class="btn ghost">Erneut versuchen</button>
+            <button class="btn primary">Im Offline-Modus weiter</button>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sub"><span class="pill warn">Block-Level · Validation</span></div>
+        <div class="errblock warn">
+          <div class="ilo"><svg class="ic"><use href="#i-warn"/></svg></div>
+          <div>
+            <h4>Aufstellung unvollständig</h4>
+            <p>Heim-Mannschaft braucht mindestens 8 Spieler und einen Captain. Gast-Mannschaft ist freigegeben.</p>
+          </div>
+          <div class="actions">
+            <button class="btn primary" style="background: var(--ink-900);">Heim öffnen</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div>
+          <div class="sub"><span class="pill">Inline · Field-Error</span></div>
+          <div class="err-inline">
+            <span class="dot">!</span>
+            <div class="body">
+              <b>Trikotnummer bereits vergeben</b>
+              Nummer 14 wird schon von Konrad Hartmann getragen. FIBA verlangt eindeutige Nummern pro Mannschaft.
+            </div>
+          </div>
+          <div style="height: 12px;"></div>
+          <div class="err-inline">
+            <span class="dot">!</span>
+            <div class="body">
+              <b>Lizenz abgelaufen</b>
+              Spielerlizenz war gültig bis 30.04.2026. Verlängerung beim Verband beantragen.
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="sub"><span class="pill">Inline · Soft-Warning</span></div>
+          <div class="err-inline" style="background: var(--warn-soft); border-left-color: var(--warn-fill);">
+            <span class="dot" style="background: var(--warn-fill); color: var(--ink-1000);">!</span>
+            <div class="body" style="color: var(--warn-text);">
+              <b style="color: oklch(0.36 0.13 60);">Schiedsrichter noch nicht eingecheckt</b>
+              2. Schiedsrichter Jonas Kraus hat sich noch nicht eingeloggt. Anpfiff erst nach Login möglich.
+            </div>
+          </div>
+          <div style="height: 12px;"></div>
+          <div class="err-inline" style="background: var(--info-soft); border-left-color: var(--info-fill);">
+            <span class="dot" style="background: var(--info-fill);">i</span>
+            <div class="body" style="color: var(--info-text);">
+              <b style="color: oklch(0.34 0.14 245);">Spielzeit anpassbar</b>
+              Diese Liga spielt 4 × 10 Min. Falls vor Anpfiff abweichend vereinbart, jetzt im Setup ändern.
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════════════════════ -->
+  <footer style="padding: 72px 0 0; display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: 11px; color: var(--page-mute); letter-spacing: 0.06em; text-transform: uppercase;">
+    <span>DSS Design System · Cards &amp; Lists v0.1</span>
+    <span>v0.6 · Mai 2026</span>
+  </footer>
+
+</div>
+
+<!-- TWEAKS ISLAND -->
+<div id="tweaks-root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+const CARDS_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "amberHue": 83,
+  "skyHue": 244,
+  "inkHue": 60
+}/*EDITMODE-END*/;
+
+function CardsTweaks() {
+  const [t, setTweak] = useTweaks(CARDS_TWEAK_DEFAULTS);
+  React.useEffect(() => {
+    const r = document.documentElement;
+    r.style.setProperty('--h-ink',   t.inkHue);
+    r.style.setProperty('--h-amber', t.amberHue);
+    r.style.setProperty('--h-sky',   t.skyHue);
+  }, [t]);
+
+  return (
+    <TweaksPanel title="Cards Tweaks">
+      <TweakSection label="Hue (sync mit Identity)">
+        <TweakSlider label="Ink" value={t.inkHue} min={0} max={120} step={1} unit="°"
+          onChange={(v) => setTweak('inkHue', v)} />
+        <TweakSlider label="Amber" value={t.amberHue} min={30} max={100} step={1} unit="°"
+          onChange={(v) => setTweak('amberHue', v)} />
+        <TweakSlider label="Sky" value={t.skyHue} min={200} max={260} step={1} unit="°"
+          onChange={(v) => setTweak('skyHue', v)} />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<CardsTweaks />);
+</script>
+
+</body>
+</html>

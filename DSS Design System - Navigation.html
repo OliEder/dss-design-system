@@ -1,0 +1,2180 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DSS Design System — Navigation v0.1</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+<style>
+  /* ── DSS Tokens (sync v0.3) ─────────────────────────────────── */
+  :root {
+    --h-ink: 60;
+    --h-amber: 83;
+    --h-sky: 244;
+
+    --ink-0:    oklch(1.000 0     0);
+    --ink-50:   oklch(0.985 0.003 var(--h-ink));
+    --ink-100:  oklch(0.965 0.005 var(--h-ink));
+    --ink-200:  oklch(0.925 0.007 var(--h-ink));
+    --ink-300:  oklch(0.850 0.009 var(--h-ink));
+    --ink-400:  oklch(0.700 0.011 var(--h-ink));
+    --ink-500:  oklch(0.560 0.012 var(--h-ink));
+    --ink-600:  oklch(0.420 0.013 var(--h-ink));
+    --ink-700:  oklch(0.300 0.012 var(--h-ink));
+    --ink-800:  oklch(0.200 0.010 var(--h-ink));
+    --ink-900:  oklch(0.130 0.008 var(--h-ink));
+    --ink-950:  oklch(0.080 0.006 var(--h-ink));
+    --ink-1000: oklch(0.020 0.004 var(--h-ink));
+
+    --amber-50:  oklch(0.975 0.025 var(--h-amber));
+    --amber-100: oklch(0.940 0.060 var(--h-amber));
+    --amber-200: oklch(0.880 0.110 var(--h-amber));
+    --amber-300: oklch(0.830 0.145 var(--h-amber));
+    --amber-400: oklch(0.800 0.165 var(--h-amber));
+    --amber-500: oklch(0.760 0.165 var(--h-amber));
+    --amber-600: oklch(0.660 0.150 calc(var(--h-amber) - 5));
+    --amber-700: oklch(0.540 0.130 calc(var(--h-amber) - 10));
+    --amber-800: oklch(0.420 0.110 calc(var(--h-amber) - 20));
+    --amber-900: oklch(0.290 0.080 calc(var(--h-amber) - 25));
+
+    --sky-50:  oklch(0.975 0.018 var(--h-sky));
+    --sky-100: oklch(0.940 0.045 var(--h-sky));
+    --sky-200: oklch(0.880 0.080 var(--h-sky));
+    --sky-300: oklch(0.820 0.110 var(--h-sky));
+    --sky-400: oklch(0.760 0.125 var(--h-sky));
+    --sky-500: oklch(0.680 0.140 calc(var(--h-sky) + 2));
+    --sky-600: oklch(0.560 0.140 calc(var(--h-sky) + 5));
+    --sky-700: oklch(0.450 0.135 calc(var(--h-sky) + 8));
+    --sky-800: oklch(0.345 0.120 calc(var(--h-sky) + 12));
+    --sky-900: oklch(0.230 0.080 calc(var(--h-sky) + 15));
+
+    --n-0:    oklch(1.000 0     0);
+    --n-50:   oklch(0.985 0.003 250);
+    --n-100:  oklch(0.965 0.005 250);
+    --n-200:  oklch(0.925 0.006 250);
+    --n-300:  oklch(0.860 0.008 250);
+    --n-400:  oklch(0.700 0.010 250);
+    --n-500:  oklch(0.520 0.011 250);
+    --n-600:  oklch(0.420 0.011 250);
+    --n-700:  oklch(0.320 0.010 250);
+    --n-800:  oklch(0.215 0.009 250);
+    --n-900:  oklch(0.145 0.008 250);
+    --n-950:  oklch(0.085 0.006 250);
+    --n-1000: oklch(0.025 0.004 250);
+
+    --ok-fill: oklch(0.640 0.150 150);
+    --ok-text: oklch(0.400 0.130 150);
+    --ok-soft: oklch(0.960 0.040 150);
+    --warn-fill: oklch(0.770 0.165 75);
+    --warn-text: oklch(0.420 0.120 60);
+    --warn-soft: oklch(0.970 0.055 80);
+    --err-fill:  oklch(0.580 0.220 27);
+    --err-button: oklch(0.400 0.190 27);
+    --err-text:  oklch(0.420 0.180 27);
+    --err-soft:  oklch(0.955 0.045 27);
+    --info-fill: oklch(0.620 0.140 245);
+    --info-text: oklch(0.380 0.130 245);
+    --info-soft: oklch(0.955 0.035 245);
+
+    --team-heim: var(--sky-700);
+    --team-gast: oklch(0.520 0.180 25);
+
+    --font-display: 'Sora', system-ui, sans-serif;
+    --font-body:    'Manrope', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+    --page-bg:   var(--n-50);
+    --page-fg:   var(--ink-900);
+    --page-mute: var(--n-600);
+    --page-line: var(--n-200);
+
+    --ring-color: oklch(0.82 0.10 var(--h-sky));
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page-bg);
+    color: var(--page-fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* ── Page shell ─────────────────────────────────────────────── */
+  .page { max-width: 1320px; margin: 0 auto; padding: 56px 56px 120px; }
+
+  .topstrip {
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--page-mute);
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .topstrip .left { display: flex; gap: 14px; align-items: center; }
+  .topstrip .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--amber-500); display: inline-block; }
+  .topstrip .monogram {
+    width: 22px; height: 22px; border-radius: 5px;
+    background: var(--ink-800); color: var(--n-0);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 11px;
+    letter-spacing: -0.02em;
+  }
+  .topstrip a {
+    color: inherit; text-decoration: none;
+    padding: 4px 8px; border-radius: 5px;
+    background: var(--ink-100);
+    transition: background 0.12s;
+  }
+  .topstrip a:hover { background: var(--ink-200); }
+
+  /* ── Hero ───────────────────────────────────────────────────── */
+  .hero { padding: 48px 0 56px; border-bottom: 1px solid var(--page-line); }
+  .hero .eyebrow {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--amber-800);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(40px, 5.5vw, 76px);
+    letter-spacing: -0.035em; line-height: 0.98;
+    margin: 0 0 20px;
+    color: var(--ink-900);
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(180deg, var(--amber-700), var(--amber-800));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .lead {
+    max-width: 720px; font-size: 17px; line-height: 1.55;
+    color: var(--n-700); text-wrap: pretty;
+  }
+
+  /* ── Sections ───────────────────────────────────────────────── */
+  section.s {
+    padding: 72px 0;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .s-head {
+    display: grid; grid-template-columns: 80px 1fr;
+    gap: 32px; align-items: baseline;
+    margin-bottom: 36px;
+  }
+  .s-num {
+    font-family: var(--font-mono);
+    font-size: 12px; letter-spacing: 0.06em;
+    color: var(--amber-800);
+    padding-top: 8px;
+  }
+  .s-title h2 {
+    font-family: var(--font-display);
+    font-weight: 700; font-size: 34px;
+    letter-spacing: -0.02em; line-height: 1.08;
+    margin: 0 0 10px;
+    color: var(--ink-900);
+  }
+  .s-title p {
+    margin: 0; color: var(--n-700);
+    font-size: 15.5px; max-width: 720px;
+    text-wrap: pretty;
+  }
+  .s-body { display: flex; flex-direction: column; gap: 40px; }
+
+  .sub {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--page-mute);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sub::after { content: ''; flex: 1; height: 1px; background: var(--page-line); }
+  .sub .pill {
+    background: var(--ink-100); color: var(--ink-700);
+    padding: 2px 8px; border-radius: 4px;
+    font-size: 9.5px; letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .sub .pill.dark { background: var(--ink-900); color: var(--n-50); }
+  .sub .pill.amber { background: var(--amber-100); color: var(--amber-800); }
+  .sub .pill.ok    { background: var(--ok-soft);   color: var(--ok-text); }
+
+  /* ── Frame (container per example) ──────────────────────────── */
+  .frame {
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    background: var(--n-0);
+    overflow: hidden;
+  }
+  .frame.dark {
+    background: var(--n-1000);
+    border-color: var(--n-800);
+    color: var(--n-100);
+  }
+  .frame-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--page-line);
+    background: var(--n-50);
+  }
+  .frame.dark .frame-head {
+    background: var(--n-950);
+    border-color: var(--n-800);
+  }
+  .frame-head h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 600; font-size: 15px;
+    color: inherit;
+    letter-spacing: -0.005em;
+  }
+  .frame-head .meta {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    display: flex; gap: 14px; align-items: center;
+  }
+  .frame.dark .frame-head .meta { color: var(--n-400); }
+  .frame-body { padding: 28px; }
+  .frame-body.tight { padding: 0; }
+  .frame-body.canvas {
+    background:
+      linear-gradient(0deg,   var(--page-line) 1px, transparent 1px) 0 0/24px 24px,
+      linear-gradient(90deg,  var(--page-line) 1px, transparent 1px) 0 0/24px 24px;
+    padding: 32px;
+  }
+  .frame.dark .frame-body.canvas {
+    background:
+      linear-gradient(0deg,   var(--n-800) 1px, transparent 1px) 0 0/24px 24px,
+      linear-gradient(90deg,  var(--n-800) 1px, transparent 1px) 0 0/24px 24px;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     ICONS — inline SVG sprite (24×24, currentColor)
+     ════════════════════════════════════════════════════════════ */
+  .ic { width: 1em; height: 1em; display: inline-block; vertical-align: -2px; flex-shrink: 0; }
+  .ic.lg { font-size: 22px; }
+  .ic.md { font-size: 18px; }
+  .ic.sm { font-size: 14px; }
+
+  /* ════════════════════════════════════════════════════════════
+     01 — APP SHELL
+     ════════════════════════════════════════════════════════════ */
+  .shell {
+    display: grid;
+    grid-template-columns: 256px 1fr;
+    grid-template-rows: 56px 1fr;
+    height: 560px;
+    background: var(--n-50);
+  }
+  .frame.dark .shell { background: var(--n-950); }
+  .shell-top {
+    grid-column: 1 / 3;
+    display: flex; align-items: center;
+    padding: 0 20px;
+    background: var(--ink-1000); color: var(--n-100);
+    border-bottom: 1px solid var(--n-900);
+    gap: 20px;
+  }
+  .shell-top .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 15px; letter-spacing: -0.01em;
+    color: white;
+  }
+  .shell-top .brand .mark {
+    width: 26px; height: 26px; border-radius: 6px;
+    background: var(--amber-400); color: var(--ink-1000);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 13px;
+  }
+  .shell-top .ctx {
+    display: flex; align-items: center; gap: 10px;
+    margin-left: 28px;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--n-300);
+    letter-spacing: 0.04em;
+  }
+  .shell-top .ctx .live {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--err-fill); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+  }
+  .shell-top .ctx .live::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--err-fill);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+  .shell-top .spacer { flex: 1; }
+  .shell-top .userchip {
+    display: flex; align-items: center; gap: 10px;
+    padding: 5px 10px 5px 5px;
+    border-radius: 999px;
+    background: var(--n-900);
+    color: var(--n-100);
+    font-size: 12.5px;
+    font-weight: 500;
+  }
+  .shell-top .userchip .av {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--sky-600); color: white;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 12px;
+  }
+  .shell-side {
+    background: var(--n-0);
+    border-right: 1px solid var(--page-line);
+    padding: 22px 12px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .frame.dark .shell-side { background: var(--n-1000); border-color: var(--n-900); }
+  .shell-side .group-label {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--page-mute);
+    padding: 14px 12px 6px;
+  }
+  .frame.dark .shell-side .group-label { color: var(--n-400); }
+  .shell-main {
+    padding: 32px;
+    background: var(--n-50);
+    overflow: hidden; position: relative;
+  }
+  .frame.dark .shell-main { background: var(--n-950); }
+  .shell-main .placeholder-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 22px;
+  }
+  .shell-main .placeholder-head h4 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 26px; letter-spacing: -0.02em;
+    color: var(--ink-900); margin: 0 0 6px;
+  }
+  .frame.dark .shell-main .placeholder-head h4 { color: var(--n-50); }
+  .shell-main .crumbs {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+    display: flex; gap: 6px;
+    margin-bottom: 10px;
+  }
+  .shell-main .crumbs span { opacity: 0.5; }
+  .shell-main .placeholder-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .shell-main .ph-card {
+    border: 1px solid var(--page-line);
+    border-radius: 10px;
+    background: var(--n-0);
+    height: 96px;
+  }
+  .frame.dark .shell-main .ph-card { background: var(--n-1000); border-color: var(--n-900); }
+
+  /* ── Sidebar nav items (shared by shell + sidebar section) ──── */
+  .navi {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-family: var(--font-body); font-weight: 500;
+    font-size: 14px;
+    color: var(--n-700);
+    cursor: pointer;
+    position: relative;
+    transition: background 0.12s, color 0.12s;
+    text-decoration: none;
+  }
+  .frame.dark .navi { color: var(--n-300); }
+  .navi:hover { background: var(--n-100); color: var(--ink-900); }
+  .frame.dark .navi:hover { background: var(--n-900); color: var(--n-50); }
+  .navi.active {
+    background: var(--ink-50);
+    color: var(--ink-900);
+    font-weight: 600;
+  }
+  .frame.dark .navi.active { background: var(--n-800); color: var(--n-0); }
+  .navi.active::before {
+    content: ''; position: absolute;
+    left: -12px; top: 8px; bottom: 8px;
+    width: 3px; border-radius: 0 3px 3px 0;
+    background: var(--amber-500);
+  }
+  .navi .ic { font-size: 18px; color: currentColor; opacity: 0.85; }
+  .navi.active .ic { opacity: 1; }
+  .navi .grow { flex: 1; }
+  .navi .count {
+    font-family: var(--font-mono); font-weight: 600;
+    font-size: 10.5px;
+    padding: 2px 7px; border-radius: 999px;
+    background: var(--n-200); color: var(--ink-700);
+    letter-spacing: 0.04em;
+  }
+  .frame.dark .navi .count { background: var(--n-800); color: var(--n-100); }
+  .navi .count.amber { background: var(--amber-200); color: var(--amber-900); }
+  .navi .count.err   { background: var(--err-soft);  color: var(--err-text); }
+  .navi .kb {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--page-mute);
+    padding: 2px 6px; border-radius: 4px;
+    border: 1px solid var(--page-line);
+    background: var(--n-0);
+  }
+  .frame.dark .navi .kb { background: var(--n-900); border-color: var(--n-800); color: var(--n-400); }
+
+  /* ════════════════════════════════════════════════════════════
+     02 — TOP-BAR  (standalone block variants)
+     ════════════════════════════════════════════════════════════ */
+  .topbar {
+    height: 64px;
+    display: flex; align-items: center;
+    padding: 0 24px;
+    gap: 24px;
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+  }
+  .frame.dark .topbar { background: var(--n-1000); border-color: var(--n-800); }
+  .topbar.dense { height: 56px; }
+  .topbar.tall  { height: 72px; }
+  .topbar .brand {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 15px; letter-spacing: -0.01em;
+    color: var(--ink-900);
+  }
+  .frame.dark .topbar .brand { color: var(--n-50); }
+  .topbar .brand .mark {
+    width: 28px; height: 28px; border-radius: 7px;
+    background: var(--ink-900); color: var(--n-0);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px;
+  }
+  .frame.dark .topbar .brand .mark { background: var(--amber-400); color: var(--ink-1000); }
+  .topbar .div {
+    width: 1px; height: 28px; background: var(--page-line);
+  }
+  .frame.dark .topbar .div { background: var(--n-800); }
+  .topbar .spacer { flex: 1; }
+
+  /* horizontal in-bar nav */
+  .topbar .hnav {
+    display: flex; gap: 4px;
+  }
+  .topbar .hnav a {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-family: var(--font-body); font-weight: 500;
+    font-size: 14px;
+    color: var(--n-700);
+    text-decoration: none;
+    transition: background 0.12s;
+  }
+  .frame.dark .topbar .hnav a { color: var(--n-300); }
+  .topbar .hnav a:hover { background: var(--n-100); color: var(--ink-900); }
+  .frame.dark .topbar .hnav a:hover { background: var(--n-900); color: var(--n-50); }
+  .topbar .hnav a.active {
+    background: var(--ink-900); color: white;
+    font-weight: 600;
+  }
+  .frame.dark .topbar .hnav a.active { background: var(--amber-400); color: var(--ink-1000); }
+
+  /* search field */
+  .top-search {
+    display: flex; align-items: center; gap: 10px;
+    height: 40px; padding: 0 14px;
+    border-radius: 10px;
+    background: var(--n-100);
+    color: var(--n-600);
+    font-size: 13.5px;
+    width: 280px;
+  }
+  .frame.dark .top-search { background: var(--n-900); color: var(--n-400); }
+  .top-search .kb {
+    margin-left: auto;
+    font-family: var(--font-mono); font-size: 10px;
+    padding: 2px 6px; border-radius: 4px;
+    background: var(--n-0); border: 1px solid var(--page-line);
+    color: var(--page-mute);
+  }
+  .frame.dark .top-search .kb { background: var(--n-1000); border-color: var(--n-800); color: var(--n-400); }
+
+  /* icon-only buttons */
+  .iconbtn {
+    width: 40px; height: 40px;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--n-700);
+    cursor: pointer;
+    border: 0;
+    position: relative;
+    transition: background 0.12s;
+  }
+  .frame.dark .iconbtn { color: var(--n-300); }
+  .iconbtn:hover { background: var(--n-100); color: var(--ink-900); }
+  .frame.dark .iconbtn:hover { background: var(--n-900); color: var(--n-50); }
+  .iconbtn .ic { font-size: 19px; }
+  .iconbtn .badge-pip {
+    position: absolute; top: 6px; right: 8px;
+    min-width: 8px; height: 8px; border-radius: 999px;
+    background: var(--err-fill);
+    box-shadow: 0 0 0 2px var(--n-0);
+  }
+  .frame.dark .iconbtn .badge-pip { box-shadow: 0 0 0 2px var(--n-1000); }
+  .iconbtn .badge-pip.lg {
+    height: 16px; padding: 0 5px;
+    font-family: var(--font-mono); font-size: 9.5px; font-weight: 700;
+    color: white;
+    display: inline-flex; align-items: center; justify-content: center;
+    top: 3px;
+  }
+
+  /* user chip */
+  .userchip {
+    display: flex; align-items: center; gap: 10px;
+    padding: 4px 12px 4px 4px;
+    border-radius: 999px;
+    background: var(--n-100);
+    color: var(--ink-900);
+    font-size: 13.5px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  .frame.dark .userchip { background: var(--n-900); color: var(--n-50); }
+  .userchip .av {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--sky-600); color: white;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 700; font-size: 12px;
+  }
+  .userchip .role {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--page-mute);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    padding-left: 10px; margin-left: 4px;
+    border-left: 1px solid var(--page-line);
+  }
+  .frame.dark .userchip .role { border-color: var(--n-800); color: var(--n-400); }
+
+  /* match-context cluster inside topbar */
+  .matchctx {
+    display: flex; align-items: center; gap: 16px;
+    padding: 6px 14px;
+    border-radius: 10px;
+    background: var(--n-100);
+  }
+  .frame.dark .matchctx { background: var(--n-900); }
+  .matchctx .live {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+    color: var(--err-fill);
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .matchctx .live::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--err-fill);
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  .matchctx .pair {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--font-body); font-weight: 600;
+    font-size: 13.5px;
+    color: var(--ink-900);
+  }
+  .frame.dark .matchctx .pair { color: var(--n-50); }
+  .matchctx .score {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 18px; letter-spacing: -0.02em;
+    color: var(--ink-900);
+    font-variant-numeric: tabular-nums;
+  }
+  .frame.dark .matchctx .score { color: var(--n-50); }
+  .matchctx .clock {
+    font-family: var(--font-mono); font-weight: 700;
+    font-size: 13px; padding: 3px 7px; border-radius: 5px;
+    background: var(--ink-900); color: var(--amber-300);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* admin breadcrumb in topbar (no nav-pills) */
+  .topbar .bc-strip {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+  }
+  .topbar .bc-strip .crumb {
+    color: var(--n-700);
+  }
+  .frame.dark .topbar .bc-strip .crumb { color: var(--n-300); }
+  .topbar .bc-strip .crumb.head {
+    color: var(--ink-900);
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 14px;
+    text-transform: none; letter-spacing: -0.005em;
+  }
+  .frame.dark .topbar .bc-strip .crumb.head { color: var(--n-50); }
+  .topbar .bc-strip .sep { opacity: 0.45; }
+
+  /* ════════════════════════════════════════════════════════════
+     03 — SIDEBAR (collapsed + expanded)
+     ════════════════════════════════════════════════════════════ */
+  .side-row {
+    display: grid; grid-template-columns: 72px 256px 1fr;
+    gap: 24px; align-items: stretch;
+  }
+  .side {
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    padding: 16px 12px;
+    display: flex; flex-direction: column; gap: 4px;
+    min-height: 460px;
+  }
+  .frame.dark .side, .side.dark {
+    background: var(--n-1000); border-color: var(--n-800);
+  }
+  .side.dark { color: var(--n-100); }
+  .side.collapsed {
+    padding: 16px 10px;
+    align-items: stretch;
+  }
+  .side.collapsed .navi {
+    justify-content: center;
+    padding: 12px 0;
+    width: 48px; margin: 0 auto;
+  }
+  .side.collapsed .navi .grow,
+  .side.collapsed .navi .count,
+  .side.collapsed .navi .kb { display: none; }
+  .side.collapsed .group-label {
+    text-align: center; padding: 14px 0 6px;
+  }
+  .side .group-label {
+    font-family: var(--font-mono); font-size: 10px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--page-mute);
+    padding: 14px 12px 6px;
+  }
+  .side.dark .group-label { color: var(--n-400); }
+
+  .side-footer {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--page-line);
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; color: var(--page-mute);
+  }
+  .side.dark .side-footer { border-color: var(--n-800); color: var(--n-400); }
+  .side-footer .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok-fill); }
+  .side-footer .sync-dot.offline { background: var(--warn-fill); }
+
+  /* annotation in side-row */
+  .side-doc { display: flex; flex-direction: column; gap: 18px; padding: 16px 4px; }
+  .side-doc .doc-h {
+    font-family: var(--font-display); font-weight: 600; font-size: 15px;
+    color: var(--ink-900); margin: 0 0 4px;
+  }
+  .side-doc .doc-p {
+    font-size: 13.5px; color: var(--n-700); margin: 0;
+  }
+  .side-doc .doc-li {
+    display: flex; gap: 10px; align-items: flex-start;
+    font-size: 13px; color: var(--n-700);
+  }
+  .side-doc .doc-li .b {
+    font-family: var(--font-mono); font-size: 10px;
+    background: var(--ink-100); color: var(--ink-800);
+    padding: 2px 7px; border-radius: 4px;
+    letter-spacing: 0.04em;
+    flex-shrink: 0; margin-top: 2px;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     04 — TABS
+     ════════════════════════════════════════════════════════════ */
+  /* Underlined (default desktop) */
+  .tabs-line {
+    display: flex; align-items: stretch;
+    gap: 0; border-bottom: 1px solid var(--page-line);
+  }
+  .frame.dark .tabs-line { border-color: var(--n-800); }
+  .tabs-line .tab {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 18px;
+    font-family: var(--font-body); font-weight: 500;
+    font-size: 14px;
+    color: var(--n-600);
+    cursor: pointer;
+    border: 0; background: transparent;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    position: relative;
+    transition: color 0.12s, border-color 0.12s;
+  }
+  .frame.dark .tabs-line .tab { color: var(--n-400); }
+  .tabs-line .tab:hover { color: var(--ink-900); }
+  .frame.dark .tabs-line .tab:hover { color: var(--n-50); }
+  .tabs-line .tab.active {
+    color: var(--ink-900);
+    border-bottom-color: var(--ink-900);
+    font-weight: 600;
+  }
+  .frame.dark .tabs-line .tab.active {
+    color: var(--n-50); border-bottom-color: var(--amber-400);
+  }
+  .tabs-line .tab .count {
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 600;
+    padding: 2px 7px; border-radius: 999px;
+    background: var(--n-100); color: var(--n-700);
+  }
+  .frame.dark .tabs-line .tab .count { background: var(--n-900); color: var(--n-300); }
+  .tabs-line .tab.active .count { background: var(--ink-900); color: white; }
+  .frame.dark .tabs-line .tab.active .count { background: var(--amber-400); color: var(--ink-1000); }
+
+  /* Segmented (compact, panel) */
+  .seg {
+    display: inline-flex;
+    padding: 4px;
+    background: var(--n-100);
+    border-radius: 12px;
+    gap: 2px;
+  }
+  .frame.dark .seg { background: var(--n-900); }
+  .seg .tab {
+    border: 0; background: transparent;
+    padding: 8px 16px;
+    border-radius: 9px;
+    font-family: var(--font-body); font-weight: 500;
+    font-size: 13.5px;
+    color: var(--n-700);
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s, box-shadow 0.12s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .frame.dark .seg .tab { color: var(--n-300); }
+  .seg .tab:hover { color: var(--ink-900); }
+  .frame.dark .seg .tab:hover { color: var(--n-50); }
+  .seg .tab.active {
+    background: var(--n-0);
+    color: var(--ink-900);
+    font-weight: 600;
+    box-shadow: 0 1px 2px rgba(15,20,38,0.06), 0 0 0 1px var(--page-line);
+  }
+  .frame.dark .seg .tab.active {
+    background: var(--n-700); color: var(--n-0);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.3), 0 0 0 1px var(--n-600);
+  }
+  .seg.touch .tab { padding: 12px 20px; font-size: 14.5px; }
+
+  /* Pills */
+  .pillrow {
+    display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .pillrow .tab {
+    border: 0;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: var(--n-100);
+    color: var(--n-700);
+    font-family: var(--font-body); font-weight: 500;
+    font-size: 13.5px;
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 6px;
+    transition: background 0.12s, color 0.12s;
+  }
+  .frame.dark .pillrow .tab { background: var(--n-900); color: var(--n-300); }
+  .pillrow .tab:hover { background: var(--n-200); color: var(--ink-900); }
+  .frame.dark .pillrow .tab:hover { background: var(--n-800); color: var(--n-50); }
+  .pillrow .tab.active {
+    background: var(--ink-900); color: white;
+    font-weight: 600;
+  }
+  .frame.dark .pillrow .tab.active { background: var(--amber-400); color: var(--ink-1000); }
+
+  /* Vertical tabs */
+  .vtabs {
+    display: flex; flex-direction: column;
+    border-right: 1px solid var(--page-line);
+    padding-right: 16px; gap: 2px;
+    min-width: 200px;
+  }
+  .frame.dark .vtabs { border-color: var(--n-800); }
+  .vtabs .tab {
+    border: 0; background: transparent;
+    padding: 10px 14px;
+    text-align: left;
+    border-radius: 8px;
+    color: var(--n-700);
+    font-family: var(--font-body); font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 10px;
+    position: relative;
+    transition: color 0.12s, background 0.12s;
+  }
+  .frame.dark .vtabs .tab { color: var(--n-300); }
+  .vtabs .tab:hover { background: var(--n-100); color: var(--ink-900); }
+  .frame.dark .vtabs .tab:hover { background: var(--n-900); color: var(--n-50); }
+  .vtabs .tab.active {
+    color: var(--ink-900); background: var(--ink-50);
+    font-weight: 600;
+  }
+  .frame.dark .vtabs .tab.active { background: var(--n-800); color: var(--n-0); }
+  .vtabs .tab.active::after {
+    content: ''; position: absolute; right: -17px;
+    top: 8px; bottom: 8px; width: 2px;
+    background: var(--ink-900); border-radius: 2px 0 0 2px;
+  }
+  .frame.dark .vtabs .tab.active::after { background: var(--amber-400); }
+
+  /* ════════════════════════════════════════════════════════════
+     05 — BREADCRUMBS
+     ════════════════════════════════════════════════════════════ */
+  .bc {
+    display: inline-flex; align-items: center;
+    font-family: var(--font-body); font-size: 13.5px;
+    color: var(--n-600);
+    gap: 8px;
+  }
+  .frame.dark .bc { color: var(--n-400); }
+  .bc a, .bc .crumb {
+    color: inherit; text-decoration: none;
+    padding: 4px 8px; border-radius: 5px;
+    transition: background 0.12s, color 0.12s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .bc a:hover { background: var(--n-100); color: var(--ink-900); }
+  .frame.dark .bc a:hover { background: var(--n-900); color: var(--n-50); }
+  .bc .crumb.current {
+    color: var(--ink-900); font-weight: 600;
+    padding-left: 0;
+  }
+  .frame.dark .bc .crumb.current { color: var(--n-50); }
+  .bc .sep {
+    color: var(--n-400); font-size: 13px; opacity: 0.7;
+  }
+
+  /* breadcrumbs with kind labels */
+  .bc.tagged .crumb .kind {
+    font-family: var(--font-mono); font-size: 9.5px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--page-mute);
+    margin-right: 6px;
+  }
+  .frame.dark .bc.tagged .crumb .kind { color: var(--n-400); }
+
+  /* breadcrumb on dark surface */
+  .bc.invert { color: rgba(255,255,255,0.7); }
+  .bc.invert a:hover { background: rgba(255,255,255,0.08); color: white; }
+  .bc.invert .crumb.current { color: white; }
+
+  /* ════════════════════════════════════════════════════════════
+     06 — BOTTOM NAV (mobile)
+     ════════════════════════════════════════════════════════════ */
+  .mob-frame {
+    width: 360px; height: 720px;
+    border-radius: 36px;
+    background: var(--n-50);
+    overflow: hidden;
+    position: relative;
+    border: 1px solid var(--page-line);
+    box-shadow: 0 30px 80px -10px rgba(15,20,38,0.18);
+    display: flex; flex-direction: column;
+  }
+  .frame.dark .mob-frame { background: var(--n-1000); border-color: var(--n-800); }
+  .mob-frame .status {
+    height: 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+    color: var(--ink-900);
+  }
+  .frame.dark .mob-frame .status { color: var(--n-50); }
+  .mob-frame .status .icons {
+    display: flex; gap: 6px; align-items: center;
+    font-size: 14px;
+  }
+  .mob-frame .body {
+    flex: 1;
+    padding: 16px 20px;
+    overflow: hidden;
+    position: relative;
+  }
+  .mob-frame .body h5 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 26px; letter-spacing: -0.02em;
+    margin: 8px 0 16px;
+    color: var(--ink-900);
+  }
+  .frame.dark .mob-frame .body h5 { color: var(--n-50); }
+  .mob-frame .body .row {
+    height: 56px; border-radius: 10px;
+    background: var(--n-0); border: 1px solid var(--page-line);
+    margin-bottom: 10px;
+  }
+  .frame.dark .mob-frame .body .row { background: var(--n-900); border-color: var(--n-800); }
+
+  .botnav {
+    height: 80px;
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    background: var(--n-0);
+    border-top: 1px solid var(--page-line);
+    padding: 8px 8px 18px;
+    position: relative;
+  }
+  .frame.dark .botnav { background: var(--n-1000); border-color: var(--n-800); }
+  .botnav .item {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 4px;
+    color: var(--n-500);
+    font-family: var(--font-body); font-weight: 500;
+    font-size: 10.5px;
+    cursor: pointer;
+    text-decoration: none;
+    position: relative;
+    border-radius: 12px;
+    transition: color 0.12s;
+  }
+  .frame.dark .botnav .item { color: var(--n-500); }
+  .botnav .item .ic { font-size: 22px; }
+  .botnav .item.active {
+    color: var(--ink-900);
+    font-weight: 600;
+  }
+  .frame.dark .botnav .item.active { color: var(--amber-400); }
+  .botnav .item.active::before {
+    content: ''; position: absolute; top: 0;
+    width: 28px; height: 3px; border-radius: 0 0 3px 3px;
+    background: var(--ink-900);
+  }
+  .frame.dark .botnav .item.active::before { background: var(--amber-400); }
+  .botnav .item .pip {
+    position: absolute; top: 6px; right: calc(50% - 18px);
+    min-width: 16px; height: 16px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background: var(--err-fill);
+    color: white;
+    font-family: var(--font-mono); font-weight: 700; font-size: 9.5px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+
+  .botnav.with-fab .item.fab-slot { visibility: hidden; }
+  .botnav .fab {
+    position: absolute;
+    top: -24px;
+    left: 50%; transform: translateX(-50%);
+    width: 60px; height: 60px;
+    border-radius: 18px;
+    background: var(--amber-400);
+    color: var(--ink-1000);
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 4px solid var(--n-0);
+    box-shadow: 0 8px 20px -4px oklch(0.80 0.165 var(--h-amber) / 0.55);
+    cursor: pointer;
+    font-size: 28px;
+  }
+  .frame.dark .botnav .fab { border-color: var(--n-1000); }
+
+  /* ════════════════════════════════════════════════════════════
+     07 — STEPPER
+     ════════════════════════════════════════════════════════════ */
+  .stepper-h {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    counter-reset: step;
+  }
+  .stepper-h .step {
+    display: flex; flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding-top: 18px;
+    position: relative;
+  }
+  .stepper-h .step::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 4px;
+    border-radius: 2px;
+    background: var(--n-200);
+  }
+  .frame.dark .stepper-h .step::before { background: var(--n-800); }
+  .stepper-h .step.done::before    { background: var(--ok-fill); }
+  .stepper-h .step.current::before { background: var(--ink-900); }
+  .frame.dark .stepper-h .step.current::before { background: var(--amber-400); }
+  .stepper-h .step .num {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--page-mute);
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .stepper-h .step .label {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 15px;
+    color: var(--n-600);
+    letter-spacing: -0.005em;
+  }
+  .frame.dark .stepper-h .step .label { color: var(--n-400); }
+  .stepper-h .step.current .label,
+  .stepper-h .step.done    .label {
+    color: var(--ink-900);
+  }
+  .frame.dark .stepper-h .step.current .label,
+  .frame.dark .stepper-h .step.done    .label { color: var(--n-50); }
+  .stepper-h .step .sub {
+    font-size: 12px; color: var(--page-mute);
+    font-family: var(--font-body); font-weight: 500;
+    text-transform: none; letter-spacing: 0;
+    margin: 0; display: block;
+  }
+  .stepper-h .step .sub::after { display: none; }
+
+  /* vertical stepper */
+  .stepper-v {
+    display: flex; flex-direction: column;
+    gap: 0;
+    max-width: 380px;
+  }
+  .stepper-v .step {
+    display: grid; grid-template-columns: 36px 1fr;
+    gap: 16px;
+    padding: 0 0 24px;
+    position: relative;
+  }
+  .stepper-v .step:not(:last-child)::before {
+    content: ''; position: absolute;
+    left: 17px; top: 36px; bottom: 0; width: 2px;
+    background: var(--n-200);
+  }
+  .frame.dark .stepper-v .step:not(:last-child)::before { background: var(--n-800); }
+  .stepper-v .step.done::before { background: var(--ok-fill); }
+  .stepper-v .marker {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-weight: 700; font-size: 13.5px;
+    background: var(--n-100); color: var(--n-600);
+    border: 2px solid var(--n-200);
+  }
+  .frame.dark .stepper-v .marker { background: var(--n-900); border-color: var(--n-800); color: var(--n-400); }
+  .stepper-v .step.done .marker {
+    background: var(--ok-fill); color: white; border-color: var(--ok-fill);
+  }
+  .stepper-v .step.current .marker {
+    background: var(--ink-900); color: white; border-color: var(--ink-900);
+  }
+  .frame.dark .stepper-v .step.current .marker { background: var(--amber-400); color: var(--ink-1000); border-color: var(--amber-400); }
+  .stepper-v .step .body {
+    padding-top: 6px;
+  }
+  .stepper-v .step .label {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 15px;
+    color: var(--n-700);
+  }
+  .stepper-v .step.current .label,
+  .stepper-v .step.done    .label { color: var(--ink-900); }
+  .frame.dark .stepper-v .step.current .label,
+  .frame.dark .stepper-v .step.done    .label { color: var(--n-50); }
+  .stepper-v .step .meta {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    margin-top: 4px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+
+  /* progress dots */
+  .dotstep {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .dotstep .dots { display: flex; gap: 6px; }
+  .dotstep .d {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--n-200);
+  }
+  .frame.dark .dotstep .d { background: var(--n-800); }
+  .dotstep .d.done    { background: var(--ok-fill); }
+  .dotstep .d.current { background: var(--ink-900); width: 20px; border-radius: 999px; }
+  .frame.dark .dotstep .d.current { background: var(--amber-400); }
+
+  /* ════════════════════════════════════════════════════════════
+     08 — SUB-NAV / FILTER STRIP
+     ════════════════════════════════════════════════════════════ */
+  .subnav {
+    display: flex; align-items: center;
+    padding: 10px 16px;
+    gap: 16px;
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+    border-radius: 12px;
+  }
+  .frame.dark .subnav { background: var(--n-1000); border-color: var(--n-800); }
+  .subnav .group {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .subnav .label {
+    font-family: var(--font-mono); font-size: 10.5px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--page-mute);
+    padding-right: 8px;
+    border-right: 1px solid var(--page-line);
+    margin-right: 4px;
+    height: 18px;
+    display: inline-flex; align-items: center;
+  }
+  .frame.dark .subnav .label { border-color: var(--n-800); }
+  .subnav .chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--n-700);
+    font-family: var(--font-body); font-weight: 500;
+    font-size: 13px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s, border-color 0.12s;
+  }
+  .frame.dark .subnav .chip { color: var(--n-300); }
+  .subnav .chip:hover { background: var(--n-100); }
+  .frame.dark .subnav .chip:hover { background: var(--n-900); }
+  .subnav .chip.active {
+    background: var(--ink-900); color: white;
+    font-weight: 600;
+  }
+  .frame.dark .subnav .chip.active { background: var(--amber-400); color: var(--ink-1000); }
+  .subnav .chip.has-x {
+    background: var(--ink-100); color: var(--ink-900);
+    border-color: var(--ink-200);
+    font-weight: 500;
+  }
+  .frame.dark .subnav .chip.has-x { background: var(--n-800); color: var(--n-50); border-color: var(--n-700); }
+  .subnav .chip .x {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: rgba(0,0,0,0.12);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    opacity: 0.9;
+  }
+  .subnav .chip.active .x { background: rgba(255,255,255,0.2); }
+  .subnav .grow { flex: 1; }
+  .subnav .results {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+  }
+  .subnav .results b { color: var(--ink-900); font-weight: 700; }
+  .frame.dark .subnav .results b { color: var(--n-50); }
+
+  /* ════════════════════════════════════════════════════════════
+     Captions, notes
+     ════════════════════════════════════════════════════════════ */
+  .caption {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-top: 14px;
+  }
+  .caption b { color: var(--ink-900); font-weight: 700; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; }
+  .row-1-1-2 { display: grid; grid-template-columns: 1fr 1fr 2fr; gap: 24px; }
+  .stack { display: flex; flex-direction: column; gap: 18px; }
+  .hstack { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+
+  .legend {
+    display: flex; flex-direction: column; gap: 10px;
+    font-size: 13px; color: var(--n-700);
+    border-left: 2px solid var(--amber-400);
+    padding: 4px 0 4px 16px;
+  }
+  .frame.dark .legend { color: var(--n-300); }
+  .legend b { color: var(--ink-900); font-weight: 600; font-family: var(--font-display); }
+  .frame.dark .legend b { color: var(--n-50); }
+  .legend code {
+    font-family: var(--font-mono); font-size: 11.5px;
+    background: var(--n-100); color: var(--ink-800);
+    padding: 1px 6px; border-radius: 4px;
+  }
+  .frame.dark .legend code { background: var(--n-900); color: var(--n-100); }
+
+</style>
+</head>
+
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     ICON SPRITE (re-used across the doc, currentColor)
+     ════════════════════════════════════════════════════════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <!-- standard line set, 24×24, stroke 1.75 -->
+    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></symbol>
+    <symbol id="i-whistle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 9.5 14 12l-1.6-4.4a1 1 0 0 1 .59-1.28l5.7-1.9a1 1 0 0 1 1.3.85L21 9.5Z"/><circle cx="9" cy="14.5" r="5.5"/><path d="M9 14.5h2"/></symbol>
+    <symbol id="i-table" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="1.5"/><path d="M3.5 10h17M3.5 14.5h17M9.5 5v14M15 5v14"/></symbol>
+    <symbol id="i-board" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M7 20h10M10 17v3M14 17v3"/><path d="M7 9h4M13 9h4M7 13h2M13 13h4"/></symbol>
+    <symbol id="i-roster" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3.25"/><path d="M3.5 19c.7-3.2 2.9-5 5.5-5s4.8 1.8 5.5 5"/><path d="M16 6.5a3 3 0 0 1 0 5.5"/><path d="M17.5 19c-.4-2.1-1.6-3.7-3-4.5"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-stats" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20V4"/><path d="M3.5 20h17"/><rect x="7" y="12" width="3" height="5"/><rect x="12" y="8" width="3" height="9"/><rect x="17" y="14" width="3" height="3"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2H4.5L6 16Z"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="i-question" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 9.5a2.5 2.5 0 0 1 5 0c0 1.6-2.5 2-2.5 3.5"/><circle cx="12" cy="16.5" r=".5" fill="currentColor"/></symbol>
+    <symbol id="i-cog" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="m19.5 12 1.4-1.4-1.5-2.6-1.9.5-1.6-.9-.5-1.9h-3l-.5 1.9-1.6.9-1.9-.5-1.5 2.6L8.5 12l-1.4 1.4 1.5 2.6 1.9-.5 1.6.9.5 1.9h3l.5-1.9 1.6-.9 1.9.5 1.5-2.6L19.5 12Z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/><path d="M10 14v3h4v-3M8 20h8"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6.5a1.5 1.5 0 0 1 1.5-1.5h4l2 2h8a1.5 1.5 0 0 1 1.5 1.5V18a1.5 1.5 0 0 1-1.5 1.5h-14A1.5 1.5 0 0 1 3.5 18V6.5Z"/></symbol>
+    <symbol id="i-print" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 9V4h10v5M7 17H5a1 1 0 0 1-1-1v-5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a1 1 0 0 1-1 1h-2"/><rect x="7" y="14" width="10" height="6" rx="1"/></symbol>
+    <symbol id="i-export" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M8 8l4-4 4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66L11.5 7"/><path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66L12.5 17"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3.5" width="6" height="11" rx="3"/><path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3"/></symbol>
+    <symbol id="i-status-bat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="16" height="8" rx="1.5"/><path d="M21 11v2"/><rect x="5" y="10" width="10" height="4" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-status-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8c5-4 13-4 18 0M6 12c3.3-2.5 9-2.5 12 0M9 16c1.6-1 4.4-1 6 0"/><circle cx="12" cy="19" r=".75" fill="currentColor"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  </defs>
+</svg>
+
+<div class="page">
+
+  <!-- TOP STRIP -->
+  <div class="topstrip">
+    <div class="left">
+      <span class="monogram">D</span>
+      <span>DSS Design System</span>
+      <span>·</span>
+      <span>Navigation v0.1</span>
+    </div>
+    <div>
+      <a href="DSS Design System - Identity Overview v0.3.html">← Identity Overview</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero" data-screen-label="00 Hero">
+    <div class="eyebrow">Component Library · Navigation · v0.1</div>
+    <h1>Wegweiser für <em>Halle, Tisch und Verwaltung.</em></h1>
+    <p class="lead">
+      Sieben Patterns, die jedes DSS-Produkt strukturieren — von der Top-Bar im Kampfgericht-Tab
+      über die Sidebar im Liga-Backend bis zur Bottom-Navigation der Schiri-App. Alle teilen
+      Tokens mit Tables, Forms und Modals, halten AAA-Kontraste auf hellem und dunklem
+      Hintergrund und kennen drei Surfaces: Web · Tablet · Hallen-Tisch.
+    </p>
+  </header>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 01 — APP SHELL
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="01 App Shell">
+    <div class="s-head">
+      <div class="s-num">01 — App Shell</div>
+      <div class="s-title">
+        <h2>Anatomie eines Produkts.</h2>
+        <p>
+          Das Standard-Layout für jede DSS-App: dunkle Top-Bar trägt Marke, Match-Kontext und
+          User-Chip; helle Sidebar trägt Sektionen; Main-Bereich bekommt seine eigene
+          Breadcrumb und einen Page-Header. Diese drei Zonen tauchen in allen folgenden
+          Patterns einzeln auf.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div>
+        <div class="sub"><span class="pill amber">App Shell · Light</span></div>
+        <div class="frame">
+          <div class="frame-head">
+            <h3>Liga-Backend — Spielbericht</h3>
+            <div class="meta"><span>Desktop · 1280 px</span><span>·</span><span>data-theme="light"</span></div>
+          </div>
+          <div class="frame-body tight">
+            <div class="shell">
+              <div class="shell-top">
+                <div class="brand"><span class="mark">D</span> DSS</div>
+                <div class="ctx">
+                  <span class="live">Live</span>
+                  <span>·</span>
+                  <span>Mü-Hellas 1929 — SpVgg Wartenberg</span>
+                  <span>·</span>
+                  <span>Q3 · 04:12</span>
+                </div>
+                <div class="spacer"></div>
+                <div class="userchip">
+                  <span class="av">SK</span>
+                  <span>Sascha K.</span>
+                </div>
+              </div>
+              <aside class="shell-side">
+                <div class="navi active"><svg class="ic"><use href="#i-whistle"/></svg><span class="grow">Spielbericht</span><span class="kb">⌘1</span></div>
+                <div class="navi"><svg class="ic"><use href="#i-roster"/></svg><span class="grow">Aufstellung</span></div>
+                <div class="navi"><svg class="ic"><use href="#i-table"/></svg><span class="grow">Boxscore</span></div>
+                <div class="navi"><svg class="ic"><use href="#i-stats"/></svg><span class="grow">Play-by-Play</span><span class="count amber">12</span></div>
+                <div class="navi"><svg class="ic"><use href="#i-board"/></svg><span class="grow">Schiri-Crew</span></div>
+                <div class="group-label">Verwaltung</div>
+                <div class="navi"><svg class="ic"><use href="#i-cal"/></svg><span class="grow">Spielplan</span></div>
+                <div class="navi"><svg class="ic"><use href="#i-folder"/></svg><span class="grow">Archiv</span></div>
+                <div class="navi"><svg class="ic"><use href="#i-cog"/></svg><span class="grow">Einstellungen</span></div>
+              </aside>
+              <main class="shell-main">
+                <div class="crumbs"><span>Bayernliga Süd</span><span>›</span><span>Spieltag 22</span><span>›</span><span style="opacity:1; color:var(--ink-900); font-weight:600;">Spielbericht #4421</span></div>
+                <div class="placeholder-head">
+                  <div>
+                    <h4>Spielbericht #4421</h4>
+                    <div style="font-family:var(--font-mono); font-size:11px; color:var(--page-mute); letter-spacing:.04em;">SO · 18.05.2026 · 16:30 · Halle am Olympiazentrum</div>
+                  </div>
+                </div>
+                <div class="placeholder-grid">
+                  <div class="ph-card"></div><div class="ph-card"></div><div class="ph-card"></div>
+                  <div class="ph-card"></div><div class="ph-card"></div><div class="ph-card"></div>
+                </div>
+              </main>
+            </div>
+          </div>
+        </div>
+        <div class="caption">Top-Bar <b>64 px</b> · Sidebar <b>256 px</b> · Content-Inset <b>32 px</b></div>
+      </div>
+
+      <div>
+        <div class="sub"><span class="pill dark">App Shell · Dark · Kampfgericht-Tablet</span></div>
+        <div class="frame dark">
+          <div class="frame-head">
+            <h3>Tablet · 1024 × 768 · data-theme="dark"</h3>
+            <div class="meta"><span>Hallen-Modus</span><span>·</span><span>Touch-Targets 56 px</span></div>
+          </div>
+          <div class="frame-body tight">
+            <div class="shell">
+              <div class="shell-top">
+                <div class="brand"><span class="mark">D</span> Spielbericht</div>
+                <div class="ctx">
+                  <span class="live">Live</span><span>·</span><span>Q2 · 7:18 · 24"</span>
+                </div>
+                <div class="spacer"></div>
+                <div class="userchip">
+                  <span class="av" style="background: var(--amber-400); color: var(--ink-1000);">AR</span>
+                  <span>A. Reiter</span>
+                </div>
+              </div>
+              <aside class="shell-side">
+                <div class="navi active"><svg class="ic"><use href="#i-whistle"/></svg><span class="grow">Scoring</span></div>
+                <div class="navi"><svg class="ic"><use href="#i-roster"/></svg><span class="grow">Aufstellung</span></div>
+                <div class="navi"><svg class="ic"><use href="#i-table"/></svg><span class="grow">Boxscore</span></div>
+                <div class="navi"><svg class="ic"><use href="#i-stats"/></svg><span class="grow">Verlauf</span></div>
+                <div class="group-label">Match</div>
+                <div class="navi"><svg class="ic"><use href="#i-board"/></svg><span class="grow">Crew</span></div>
+                <div class="navi"><svg class="ic"><use href="#i-print"/></svg><span class="grow">Drucken</span></div>
+              </aside>
+              <main class="shell-main">
+                <div class="crumbs"><span style="opacity:1; color:var(--n-50); font-weight:600;">Live-Scoring</span></div>
+                <div class="placeholder-head">
+                  <div>
+                    <h4>62 : 58</h4>
+                    <div style="font-family:var(--font-mono); font-size:11px; color:var(--n-400); letter-spacing:.04em;">Q2 · 07:18 · Spielzug Heim</div>
+                  </div>
+                </div>
+                <div class="placeholder-grid">
+                  <div class="ph-card"></div><div class="ph-card"></div><div class="ph-card"></div>
+                  <div class="ph-card"></div><div class="ph-card"></div><div class="ph-card"></div>
+                </div>
+              </main>
+            </div>
+          </div>
+        </div>
+        <div class="caption">Dark-Modus: Active-Accent springt von <b>Ink-900</b> auf <b>Amber-400</b> — höherer Kontrast bei Hallen-Beleuchtung.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 02 — TOP-BAR
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="02 Top-Bar">
+    <div class="s-head">
+      <div class="s-num">02 — Top-Bar</div>
+      <div class="s-title">
+        <h2>Drei Anatomien für drei Kontexte.</h2>
+        <p>
+          Die Top-Bar bleibt strukturell gleich — Brand links, Spacer, Aktionen rechts — aber
+          der mittlere Slot ändert sich: Hauptnavigation für die Verbands-Website,
+          Match-Kontext-Strip für Live-Scoring, Breadcrumb-Strang für Admin-Tools.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <!-- 2.1 — Web standard: hnav -->
+      <div>
+        <div class="sub"><span class="pill amber">2.1 — Web · Horizontale Nav</span></div>
+        <div class="frame">
+          <div class="frame-head">
+            <h3>Verbands-Website / Liga-Backend</h3>
+            <div class="meta"><span>Höhe 64 px</span><span>·</span><span>Hover · Active · Notification-Pip</span></div>
+          </div>
+          <div class="frame-body canvas">
+            <div class="topbar">
+              <div class="brand"><span class="mark">D</span> DSS</div>
+              <div class="div"></div>
+              <nav class="hnav">
+                <a href="#" class="active">Spielplan</a>
+                <a href="#">Tabellen</a>
+                <a href="#">Schiedsrichter</a>
+                <a href="#">Vereine</a>
+                <a href="#">News</a>
+              </nav>
+              <div class="spacer"></div>
+              <div class="top-search">
+                <svg class="ic"><use href="#i-search"/></svg>
+                <span>Verein, Spiel, Person …</span>
+                <span class="kb">⌘K</span>
+              </div>
+              <button class="iconbtn"><svg class="ic"><use href="#i-bell"/></svg><span class="badge-pip lg">3</span></button>
+              <div class="userchip">
+                <span class="av">SK</span>
+                <span>Sascha K.</span>
+                <span class="role">Admin</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.2 — Live scoring with match context -->
+      <div>
+        <div class="sub"><span class="pill dark">2.2 — Live-Scoring · Match-Kontext</span></div>
+        <div class="frame">
+          <div class="frame-head">
+            <h3>Kampfgericht-Tablet · Live</h3>
+            <div class="meta"><span>Höhe 72 px</span><span>·</span><span>Pulsierende LIVE-Marke + Quarter-Score-Clock-Cluster</span></div>
+          </div>
+          <div class="frame-body canvas">
+            <div class="topbar tall">
+              <div class="brand"><span class="mark">D</span> Spielbericht</div>
+              <div class="div"></div>
+              <div class="matchctx">
+                <span class="live">Live</span>
+                <div class="pair">
+                  <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:var(--team-heim)"></span>HEL</span>
+                  <span class="score">62</span>
+                  <span style="color:var(--page-mute);font-weight:400;">:</span>
+                  <span class="score">58</span>
+                  <span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:var(--team-gast)"></span>WAR</span>
+                </div>
+                <span style="font-family:var(--font-mono); font-size:11px; color:var(--page-mute); letter-spacing:.06em; text-transform:uppercase;">Q2</span>
+                <span class="clock">07:18</span>
+              </div>
+              <div class="spacer"></div>
+              <button class="iconbtn"><svg class="ic"><use href="#i-print"/></svg></button>
+              <button class="iconbtn"><svg class="ic"><use href="#i-export"/></svg></button>
+              <div class="div"></div>
+              <div class="userchip" style="background: var(--ink-900); color: white;">
+                <span class="av" style="background: var(--amber-400); color: var(--ink-1000);">AR</span>
+                <span>A. Reiter</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2.3 — Admin with breadcrumb -->
+      <div>
+        <div class="sub"><span class="pill">2.3 — Admin · Breadcrumb-Strang</span></div>
+        <div class="frame">
+          <div class="frame-head">
+            <h3>Detail-Sicht im Backend</h3>
+            <div class="meta"><span>Höhe 56 px (dense)</span><span>·</span><span>Brand → Sektion → Detail</span></div>
+          </div>
+          <div class="frame-body canvas">
+            <div class="topbar dense">
+              <div class="brand"><span class="mark">D</span> DSS</div>
+              <div class="div"></div>
+              <div class="bc-strip">
+                <span class="crumb">Bayernliga Süd</span>
+                <span class="sep">›</span>
+                <span class="crumb">Spieltag 22</span>
+                <span class="sep">›</span>
+                <span class="crumb head">Spielbericht #4421</span>
+              </div>
+              <div class="spacer"></div>
+              <button class="iconbtn"><svg class="ic"><use href="#i-question"/></svg></button>
+              <button class="iconbtn"><svg class="ic"><use href="#i-cog"/></svg></button>
+              <div class="userchip">
+                <span class="av">SK</span>
+                <span>Sascha K.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 03 — SIDEBAR
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="03 Sidebar">
+    <div class="s-head">
+      <div class="s-num">03 — Sidebar</div>
+      <div class="s-title">
+        <h2>Permanente Navigation, zwei Breiten.</h2>
+        <p>
+          Sidebar in 256 px (Standard, mit Labels und Counters) und 72 px (collapsed, nur
+          Icons). Group-Labels schichten Bereiche; aktive Items markieren sich mit einem
+          Amber-Balken links und einer dezenten Ink-Fläche. Counters in zwei Tonalitäten:
+          neutral (Routine) und Amber (handlungsbedürftig).
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div class="frame">
+        <div class="frame-head">
+          <h3>Collapsed · Expanded · Annotation</h3>
+          <div class="meta"><span>72 px / 256 px</span><span>·</span><span>Active-Mark · Counter · Keyboard-Hint</span></div>
+        </div>
+        <div class="frame-body">
+          <div class="side-row">
+
+            <aside class="side collapsed">
+              <div class="navi active"><svg class="ic"><use href="#i-whistle"/></svg></div>
+              <div class="navi"><svg class="ic"><use href="#i-roster"/></svg></div>
+              <div class="navi"><svg class="ic"><use href="#i-table"/></svg></div>
+              <div class="navi"><svg class="ic"><use href="#i-stats"/></svg></div>
+              <div class="group-label">·</div>
+              <div class="navi"><svg class="ic"><use href="#i-cal"/></svg></div>
+              <div class="navi"><svg class="ic"><use href="#i-folder"/></svg></div>
+              <div class="navi"><svg class="ic"><use href="#i-cog"/></svg></div>
+              <div class="side-footer" style="justify-content:center;">
+                <span class="sync-dot"></span>
+              </div>
+            </aside>
+
+            <aside class="side">
+              <div class="navi active">
+                <svg class="ic"><use href="#i-whistle"/></svg>
+                <span class="grow">Spielbericht</span>
+                <span class="kb">⌘1</span>
+              </div>
+              <div class="navi">
+                <svg class="ic"><use href="#i-roster"/></svg>
+                <span class="grow">Aufstellung</span>
+              </div>
+              <div class="navi">
+                <svg class="ic"><use href="#i-table"/></svg>
+                <span class="grow">Boxscore</span>
+              </div>
+              <div class="navi">
+                <svg class="ic"><use href="#i-stats"/></svg>
+                <span class="grow">Play-by-Play</span>
+                <span class="count amber">12</span>
+              </div>
+              <div class="navi">
+                <svg class="ic"><use href="#i-board"/></svg>
+                <span class="grow">Schiri-Crew</span>
+                <span class="count">5</span>
+              </div>
+
+              <div class="group-label">Verwaltung</div>
+              <div class="navi"><svg class="ic"><use href="#i-cal"/></svg><span class="grow">Spielplan</span></div>
+              <div class="navi"><svg class="ic"><use href="#i-folder"/></svg><span class="grow">Archiv</span><span class="count">203</span></div>
+              <div class="navi"><svg class="ic"><use href="#i-trophy"/></svg><span class="grow">Tabellen</span></div>
+              <div class="navi"><svg class="ic"><use href="#i-cog"/></svg><span class="grow">Einstellungen</span></div>
+
+              <div class="side-footer">
+                <span class="sync-dot"></span>
+                <span>Synchron · vor 4 s</span>
+              </div>
+            </aside>
+
+            <div class="side-doc">
+              <div>
+                <div class="doc-h">Anatomie</div>
+                <p class="doc-p">Jeder Eintrag ist ein <b>flex-row</b> mit 12 px Gap: Icon (20 px) · Label (flex-grow) · optionaler Counter oder Keyboard-Hint.</p>
+              </div>
+              <div class="doc-li"><span class="b">A</span><span><b>Active-Bar.</b> 3 px Amber-500, links vom Item, top/bottom 8 px Inset.</span></div>
+              <div class="doc-li"><span class="b">B</span><span><b>Group-Label.</b> JetBrains Mono 10 px, uppercase, oberhalb jeder Gruppe.</span></div>
+              <div class="doc-li"><span class="b">C</span><span><b>Counter.</b> Neutral für reine Anzahlen, Amber für aktionsbedürftige (zu prüfen, Probleme).</span></div>
+              <div class="doc-li"><span class="b">D</span><span><b>Footer-Sync.</b> Dot grün / amber / rot — eindeutiger Status, ohne Text wenn collapsed.</span></div>
+            </div>
+
+          </div>
+        </div>
+        <div style="padding: 0 28px 24px;">
+          <div class="caption">Collapsed-Toggle wird über die Top-Bar gesteuert (Burger-Icon links der Brand auf Mobile-Surfaces).</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 04 — TABS
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="04 Tabs">
+    <div class="s-head">
+      <div class="s-num">04 — Tabs</div>
+      <div class="s-title">
+        <h2>Vier Tab-Stile, ein Vokabular.</h2>
+        <p>
+          Underline für hierarchische Seitenebenen, Segmented für In-Panel-Schaltflächen,
+          Pills für Filter-Cluster, Vertical für lange Listen in Settings-Drawern. Alle
+          unterstützen optionale Counter und Icons; das aktive Element trägt immer
+          Ink-900 (Light) bzw. Amber-400 (Dark).
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <!-- 4.1 underline -->
+      <div>
+        <div class="sub"><span class="pill amber">4.1 — Underlined · Default</span></div>
+        <div class="frame">
+          <div class="frame-head"><h3>Seiten-Tabs · Boxscore-Detail</h3><div class="meta"><span>Höhe 48 px</span><span>·</span><span>Sticky-fähig</span></div></div>
+          <div class="frame-body" style="padding-bottom: 0;">
+            <div class="tabs-line">
+              <button class="tab active"><svg class="ic"><use href="#i-board"/></svg> Übersicht</button>
+              <button class="tab">Aufstellung <span class="count">12</span></button>
+              <button class="tab">Boxscore</button>
+              <button class="tab">Play-by-Play <span class="count">147</span></button>
+              <button class="tab">Vergleich</button>
+              <button class="tab">Crew</button>
+            </div>
+            <div style="height: 56px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.2 segmented -->
+      <div class="row2">
+        <div>
+          <div class="sub"><span class="pill">4.2 — Segmented · Default</span></div>
+          <div class="frame">
+            <div class="frame-head"><h3>Density-Auswahl in einer Tabelle</h3></div>
+            <div class="frame-body canvas">
+              <div class="seg">
+                <button class="tab">Touch</button>
+                <button class="tab active">Default</button>
+                <button class="tab">Compact</button>
+                <button class="tab">Dense</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub"><span class="pill dark">4.2b — Segmented · Touch (Hallen-Tisch)</span></div>
+          <div class="frame">
+            <div class="frame-head"><h3>Quarter-Switch · Anzeigetafel</h3></div>
+            <div class="frame-body canvas">
+              <div class="seg touch">
+                <button class="tab">Q1</button>
+                <button class="tab active"><svg class="ic"><use href="#i-check"/></svg> Q2</button>
+                <button class="tab">Q3</button>
+                <button class="tab">Q4</button>
+                <button class="tab">OT</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.3 pills -->
+      <div>
+        <div class="sub"><span class="pill ok">4.3 — Pills · Filter-Cluster</span></div>
+        <div class="frame">
+          <div class="frame-head"><h3>Spielplan-Filter</h3><div class="meta"><span>Multi-Select</span></div></div>
+          <div class="frame-body canvas">
+            <div class="pillrow">
+              <button class="tab active"><svg class="ic"><use href="#i-check"/></svg> Bayernliga Süd</button>
+              <button class="tab">Regionalliga</button>
+              <button class="tab active"><svg class="ic"><use href="#i-check"/></svg> Saison 25/26</button>
+              <button class="tab">Damen</button>
+              <button class="tab">U18 männl.</button>
+              <button class="tab">Pokal</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4.4 vertical -->
+      <div>
+        <div class="sub"><span class="pill">4.4 — Vertical · Settings / Drawer</span></div>
+        <div class="frame">
+          <div class="frame-head"><h3>Einstellungs-Drawer</h3><div class="meta"><span>Min-Width 200 px</span></div></div>
+          <div class="frame-body" style="padding: 0;">
+            <div style="display: flex; padding: 24px 28px;">
+              <div class="vtabs">
+                <button class="tab"><svg class="ic"><use href="#i-cog"/></svg> Profil</button>
+                <button class="tab"><svg class="ic"><use href="#i-bell"/></svg> Benachrichtigungen</button>
+                <button class="tab active"><svg class="ic"><use href="#i-roster"/></svg> Team-Config</button>
+                <button class="tab"><svg class="ic"><use href="#i-board"/></svg> Schiedsrichter-Lizenz</button>
+                <button class="tab"><svg class="ic"><use href="#i-print"/></svg> Druck &amp; Export</button>
+                <button class="tab"><svg class="ic"><use href="#i-link"/></svg> Verbundene Apps</button>
+              </div>
+              <div style="padding: 0 0 0 28px; flex: 1; min-width: 0;">
+                <h4 style="font-family: var(--font-display); font-weight: 700; font-size: 22px; margin: 0 0 6px; color: var(--ink-900); letter-spacing: -0.015em;">Team-Config</h4>
+                <p style="color: var(--n-700); font-size: 14px; margin: 0 0 18px;">Trikotfarben, Logos und Default-Spielrichtung pro Mannschaft.</p>
+                <div style="height: 6px; background: var(--n-100); border-radius: 3px; margin-bottom: 10px;"></div>
+                <div style="height: 6px; background: var(--n-100); border-radius: 3px; margin-bottom: 10px; width: 80%;"></div>
+                <div style="height: 6px; background: var(--n-100); border-radius: 3px; width: 70%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 05 — BREADCRUMBS
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="05 Breadcrumbs">
+    <div class="s-head">
+      <div class="s-num">05 — Breadcrumbs</div>
+      <div class="s-title">
+        <h2>Wo bin ich, wo komme ich her.</h2>
+        <p>
+          Drei Ausführungen: schlicht (für Page-Header), tagged (mit Kontext-Labels für
+          Datentypen) und Stand-alone im Topbar-Strang (siehe 2.3). Trennzeichen ist immer
+          das Chevron, nie der Slash — leichter zu unterscheiden vom URL-Pfad in der
+          Adressleiste.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <div class="frame">
+        <div class="frame-head"><h3>Standard</h3><div class="meta"><span>Body 13.5 px · Sep 0.7 Opacity</span></div></div>
+        <div class="frame-body canvas">
+          <nav class="bc">
+            <a>Bayernliga Süd</a>
+            <span class="sep"><svg class="ic"><use href="#i-chevron-right"/></svg></span>
+            <a>Spieltag 22</a>
+            <span class="sep"><svg class="ic"><use href="#i-chevron-right"/></svg></span>
+            <a>HEL — WAR</a>
+            <span class="sep"><svg class="ic"><use href="#i-chevron-right"/></svg></span>
+            <span class="crumb current">Boxscore</span>
+          </nav>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div>
+          <div class="sub"><span class="pill">Tagged · Mit Kontext-Label</span></div>
+          <div class="frame">
+            <div class="frame-head"><h3>Detail-Sicht</h3></div>
+            <div class="frame-body canvas">
+              <nav class="bc tagged">
+                <a><span class="kind">Liga</span>Bayernliga Süd</a>
+                <span class="sep"><svg class="ic"><use href="#i-chevron-right"/></svg></span>
+                <a><span class="kind">Verein</span>Mü-Hellas 1929</a>
+                <span class="sep"><svg class="ic"><use href="#i-chevron-right"/></svg></span>
+                <span class="crumb current"><span class="kind">Spieler</span>K. Hartmann · #14</span>
+              </nav>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="sub"><span class="pill dark">Auf dunkler Fläche · Invert</span></div>
+          <div class="frame dark">
+            <div class="frame-head"><h3>Inside-Topbar / Modal-Header</h3></div>
+            <div class="frame-body" style="background: var(--n-1000);">
+              <nav class="bc invert">
+                <a>Saison 25/26</a>
+                <span class="sep"><svg class="ic"><use href="#i-chevron-right"/></svg></span>
+                <a>Bayernliga Süd</a>
+                <span class="sep"><svg class="ic"><use href="#i-chevron-right"/></svg></span>
+                <span class="crumb current">Spielbericht #4421</span>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 06 — BOTTOM NAV (Mobile)
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="06 Bottom Nav">
+    <div class="s-head">
+      <div class="s-num">06 — Bottom Nav</div>
+      <div class="s-title">
+        <h2>Schiri-App, Coach-App, Zuschauer-Modus.</h2>
+        <p>
+          Für Mobile-Surfaces in der Halle: Bottom-Nav mit 4 oder 5 Items, alternativ mit
+          zentrierter Floating-Action — die schnelle Aktion ist auf dem Tablet oft der
+          Korbeintrag, in der Schiri-App ein Foul-Eingabefenster.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div class="row2">
+
+        <div>
+          <div class="sub"><span class="pill">6.1 — 5 Items · Standard (Coach-App)</span></div>
+          <div class="frame">
+            <div class="frame-head"><h3>Mobile · 360 × 720</h3><div class="meta"><span>Touch 44 px</span></div></div>
+            <div class="frame-body canvas" style="display: flex; justify-content: center;">
+              <div class="mob-frame">
+                <div class="status">
+                  <span>09:41</span>
+                  <span class="icons">
+                    <svg class="ic"><use href="#i-status-wifi"/></svg>
+                    <svg class="ic" style="width:1.4em"><use href="#i-status-bat"/></svg>
+                  </span>
+                </div>
+                <div class="body">
+                  <div style="font-family: var(--font-mono); font-size: 11px; color: var(--page-mute); letter-spacing: .08em; text-transform: uppercase;">Heute</div>
+                  <h5>Mein Spielplan</h5>
+                  <div class="row" style="background: var(--ink-50);"></div>
+                  <div class="row"></div>
+                  <div class="row"></div>
+                  <div class="row"></div>
+                  <div class="row"></div>
+                </div>
+                <nav class="botnav">
+                  <a class="item active"><svg class="ic"><use href="#i-home"/></svg>Heute</a>
+                  <a class="item"><svg class="ic"><use href="#i-cal"/></svg>Spielplan</a>
+                  <a class="item"><svg class="ic"><use href="#i-roster"/></svg>Team</a>
+                  <a class="item"><svg class="ic"><use href="#i-bell"/></svg>Inbox<span class="pip">7</span></a>
+                  <a class="item"><svg class="ic"><use href="#i-cog"/></svg>Mehr</a>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub"><span class="pill amber">6.2 — Mit zentriertem FAB (Schiri-App)</span></div>
+          <div class="frame dark">
+            <div class="frame-head"><h3>Mobile · Dark · Schiri-Modus</h3><div class="meta"><span>FAB = Foul erfassen</span></div></div>
+            <div class="frame-body canvas" style="display: flex; justify-content: center;">
+              <div class="mob-frame">
+                <div class="status">
+                  <span>09:41</span>
+                  <span class="icons">
+                    <svg class="ic"><use href="#i-status-wifi"/></svg>
+                    <svg class="ic" style="width:1.4em"><use href="#i-status-bat"/></svg>
+                  </span>
+                </div>
+                <div class="body">
+                  <div style="display: flex; align-items: baseline; justify-content: space-between;">
+                    <h5 style="margin: 0;">Q2 · 07:18</h5>
+                    <span style="font-family: var(--font-mono); font-weight: 700; font-size: 13px; padding: 3px 8px; border-radius: 4px; background: var(--amber-400); color: var(--ink-1000);">24"</span>
+                  </div>
+                  <div style="font-family: var(--font-mono); font-size: 11px; color: var(--n-400); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 18px;">HEL 62 · WAR 58</div>
+                  <div class="row"></div>
+                  <div class="row"></div>
+                  <div class="row"></div>
+                </div>
+                <nav class="botnav with-fab">
+                  <a class="item active"><svg class="ic"><use href="#i-whistle"/></svg>Live</a>
+                  <a class="item"><svg class="ic"><use href="#i-roster"/></svg>Roster</a>
+                  <a class="item fab-slot">spacer</a>
+                  <a class="item"><svg class="ic"><use href="#i-stats"/></svg>Verlauf</a>
+                  <a class="item"><svg class="ic"><use href="#i-cog"/></svg>Mehr</a>
+                  <button class="fab"><svg class="ic"><use href="#i-plus"/></svg></button>
+                </nav>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 07 — STEPPER
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="07 Stepper">
+    <div class="s-head">
+      <div class="s-num">07 — Stepper</div>
+      <div class="s-title">
+        <h2>Setup-Flows, Spiel-Vorbereitung, Onboarding.</h2>
+        <p>
+          Drei Repräsentationen, gleiche Datenstruktur (done · current · pending):
+          Horizontal als prominenter Wizard-Header, vertikal für ausführliche Steps mit
+          Beschreibung, Dots als kompakter Status z. B. in einer Bottom-Sheet.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+
+      <div>
+        <div class="sub"><span class="pill amber">7.1 — Horizontal · Wizard-Header</span></div>
+        <div class="frame">
+          <div class="frame-head"><h3>Pre-Game · Spielvorbereitung</h3><div class="meta"><span>Schritt 3 von 5</span></div></div>
+          <div class="frame-body">
+            <div class="stepper-h">
+              <div class="step done">
+                <div class="num">01</div>
+                <div class="label">Crew</div>
+                <span class="sub">Schiedsrichter, Anschreiber</span>
+              </div>
+              <div class="step done">
+                <div class="num">02</div>
+                <div class="label">Aufstellung Heim</div>
+                <span class="sub">12 Spieler · 1 Captain</span>
+              </div>
+              <div class="step current">
+                <div class="num">03</div>
+                <div class="label">Aufstellung Gast</div>
+                <span class="sub">10 Spieler · noch 2 offen</span>
+              </div>
+              <div class="step">
+                <div class="num">04</div>
+                <div class="label">Team-Config</div>
+                <span class="sub">Trikotfarben, Spielrichtung</span>
+              </div>
+              <div class="step">
+                <div class="num">05</div>
+                <div class="label">Freigabe</div>
+                <span class="sub">Signaturen, Anpfiff</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row2">
+
+        <div>
+          <div class="sub"><span class="pill">7.2 — Vertical · Mit Beschreibung</span></div>
+          <div class="frame">
+            <div class="frame-head"><h3>Lizenz-Prüfung Schiedsrichter</h3></div>
+            <div class="frame-body">
+              <div class="stepper-v">
+                <div class="step done">
+                  <div class="marker"><svg class="ic"><use href="#i-check"/></svg></div>
+                  <div class="body">
+                    <div class="label">Antrag eingereicht</div>
+                    <div class="meta">12.04.2026 · 14:22</div>
+                  </div>
+                </div>
+                <div class="step done">
+                  <div class="marker"><svg class="ic"><use href="#i-check"/></svg></div>
+                  <div class="body">
+                    <div class="label">Theorie-Prüfung</div>
+                    <div class="meta">82 / 100 Punkte · bestanden</div>
+                  </div>
+                </div>
+                <div class="step current">
+                  <div class="marker">3</div>
+                  <div class="body">
+                    <div class="label">Praxis-Spiel</div>
+                    <div class="meta">SA 24.05. · Halle Riem</div>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="marker">4</div>
+                  <div class="body">
+                    <div class="label">Mentor-Gespräch</div>
+                    <div class="meta">Noch nicht terminiert</div>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="marker">5</div>
+                  <div class="body">
+                    <div class="label">Lizenz ausgestellt</div>
+                    <div class="meta">Erwartet KW 24</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="sub"><span class="pill">7.3 — Dots · Kompakt</span></div>
+          <div class="frame">
+            <div class="frame-head"><h3>Inline-Progress (Bottom-Sheet, Toast, Card-Footer)</h3></div>
+            <div class="frame-body">
+              <div class="stack" style="gap: 24px;">
+                <div class="dotstep">
+                  <span>Setup</span>
+                  <span class="dots">
+                    <span class="d done"></span><span class="d done"></span><span class="d current"></span><span class="d"></span><span class="d"></span>
+                  </span>
+                  <span>3 / 5</span>
+                </div>
+                <div class="dotstep">
+                  <span>Onboarding</span>
+                  <span class="dots">
+                    <span class="d done"></span><span class="d done"></span><span class="d done"></span><span class="d current"></span>
+                  </span>
+                  <span>Last step</span>
+                </div>
+                <div class="dotstep">
+                  <span>Foul-Workflow</span>
+                  <span class="dots">
+                    <span class="d done"></span><span class="d current"></span><span class="d"></span>
+                  </span>
+                  <span>Spieler wählen</span>
+                </div>
+              </div>
+              <div class="legend" style="margin-top: 28px;">
+                <span><b>State-Tokens.</b> Die drei Marker-Zustände sind in jedem Stepper gleich: <code>.done</code> · <code>.current</code> · pending.</span>
+                <span><b>Done</b> verwendet immer <code>--ok-fill</code>, <b>current</b> Ink-900 (light) bzw. Amber-400 (dark).</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       SECTION 08 — SUB-NAV / FILTER STRIP
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="08 Sub-Nav" style="border-bottom: 0;">
+    <div class="s-head">
+      <div class="s-num">08 — Sub-Nav</div>
+      <div class="s-title">
+        <h2>Filter-Strip unter dem Page-Header.</h2>
+        <p>
+          Eine Zeile zwischen Page-Header und Datenliste, die schnellen Filterzugriff ohne
+          Modal erlaubt. Aktive Chips sind Ink-900, gesetzte Filter-Werte tragen ein X für
+          das schnelle Entfernen.
+        </p>
+      </div>
+    </div>
+
+    <div class="s-body">
+      <div>
+        <div class="sub"><span class="pill amber">Spielplan · Filter</span></div>
+        <div class="frame">
+          <div class="frame-head"><h3>Beispiel — Spielplan-Filter</h3><div class="meta"><span>Active-Chips · Werte-Chips · Result-Counter</span></div></div>
+          <div class="frame-body canvas">
+            <div class="subnav">
+              <div class="group">
+                <span class="label">Status</span>
+                <button class="chip active">Alle</button>
+                <button class="chip">Geplant</button>
+                <button class="chip">Live</button>
+                <button class="chip">Beendet</button>
+              </div>
+              <div class="group">
+                <span class="label">Liga</span>
+                <button class="chip has-x">Bayernliga Süd <span class="x"><svg class="ic" style="font-size: 10px;"><use href="#i-x"/></svg></span></button>
+                <button class="chip has-x">Saison 25/26 <span class="x"><svg class="ic" style="font-size: 10px;"><use href="#i-x"/></svg></span></button>
+              </div>
+              <div class="grow"></div>
+              <div class="results"><b>147</b> Spiele</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sub"><span class="pill dark">Boxscore · In-Panel-Subnav</span></div>
+        <div class="frame dark">
+          <div class="frame-head"><h3>Beispiel — Boxscore-Ansicht-Switcher</h3></div>
+          <div class="frame-body canvas">
+            <div class="subnav">
+              <div class="group">
+                <span class="label">Sicht</span>
+                <button class="chip">Standard</button>
+                <button class="chip active">Erweitert</button>
+                <button class="chip">Effizienz</button>
+                <button class="chip">+ / –</button>
+              </div>
+              <div class="group">
+                <span class="label">Vierteln</span>
+                <button class="chip">Q1</button>
+                <button class="chip">Q2</button>
+                <button class="chip">Q3</button>
+                <button class="chip">Q4</button>
+                <button class="chip active">Gesamt</button>
+              </div>
+              <div class="grow"></div>
+              <div class="results"><b>22</b> Spieler</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════════════════════ -->
+  <footer style="padding: 72px 0 0; display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: 11px; color: var(--page-mute); letter-spacing: 0.06em; text-transform: uppercase;">
+    <span>DSS Design System · Navigation v0.1</span>
+    <span>v0.6 · Mai 2026</span>
+  </footer>
+
+</div>
+
+<!-- TWEAKS ISLAND -->
+<div id="tweaks-root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+const NAV_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "amberHue": 83,
+  "skyHue": 244,
+  "inkHue": 60
+}/*EDITMODE-END*/;
+
+function NavTweaks() {
+  const [t, setTweak] = useTweaks(NAV_TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    const r = document.documentElement;
+    r.style.setProperty('--h-ink',   t.inkHue);
+    r.style.setProperty('--h-amber', t.amberHue);
+    r.style.setProperty('--h-sky',   t.skyHue);
+  }, [t]);
+
+  return (
+    <TweaksPanel title="Navigation Tweaks">
+      <TweakSection label="Hue (sync mit Identity)">
+        <TweakSlider label="Ink" value={t.inkHue} min={0} max={120} step={1} unit="°"
+          onChange={(v) => setTweak('inkHue', v)} />
+        <TweakSlider label="Amber" value={t.amberHue} min={30} max={100} step={1} unit="°"
+          onChange={(v) => setTweak('amberHue', v)} />
+        <TweakSlider label="Sky" value={t.skyHue} min={200} max={260} step={1} unit="°"
+          onChange={(v) => setTweak('skyHue', v)} />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<NavTweaks />);
+</script>
+
+</body>
+</html>

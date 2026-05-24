@@ -1,0 +1,1283 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DSS Design System — Icons v0.1</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --h-ink: 60;
+    --h-amber: 83;
+    --h-sky: 244;
+
+    --ink-0:    oklch(1.000 0     0);
+    --ink-50:   oklch(0.985 0.003 var(--h-ink));
+    --ink-100:  oklch(0.965 0.005 var(--h-ink));
+    --ink-200:  oklch(0.925 0.007 var(--h-ink));
+    --ink-300:  oklch(0.850 0.009 var(--h-ink));
+    --ink-400:  oklch(0.700 0.011 var(--h-ink));
+    --ink-500:  oklch(0.560 0.012 var(--h-ink));
+    --ink-600:  oklch(0.420 0.013 var(--h-ink));
+    --ink-700:  oklch(0.300 0.012 var(--h-ink));
+    --ink-800:  oklch(0.200 0.010 var(--h-ink));
+    --ink-900:  oklch(0.130 0.008 var(--h-ink));
+    --ink-1000: oklch(0.020 0.004 var(--h-ink));
+
+    --amber-100: oklch(0.940 0.060 var(--h-amber));
+    --amber-200: oklch(0.880 0.110 var(--h-amber));
+    --amber-300: oklch(0.830 0.145 var(--h-amber));
+    --amber-400: oklch(0.800 0.165 var(--h-amber));
+    --amber-500: oklch(0.760 0.165 var(--h-amber));
+    --amber-700: oklch(0.540 0.130 calc(var(--h-amber) - 10));
+    --amber-800: oklch(0.420 0.110 calc(var(--h-amber) - 20));
+
+    --sky-100: oklch(0.940 0.045 var(--h-sky));
+    --sky-200: oklch(0.880 0.080 var(--h-sky));
+    --sky-400: oklch(0.760 0.125 var(--h-sky));
+    --sky-500: oklch(0.680 0.140 calc(var(--h-sky) + 2));
+    --sky-700: oklch(0.450 0.135 calc(var(--h-sky) + 8));
+    --sky-800: oklch(0.345 0.120 calc(var(--h-sky) + 12));
+
+    --n-0:    oklch(1.000 0     0);
+    --n-50:   oklch(0.985 0.003 250);
+    --n-100:  oklch(0.965 0.005 250);
+    --n-200:  oklch(0.925 0.006 250);
+    --n-300:  oklch(0.860 0.008 250);
+    --n-400:  oklch(0.700 0.010 250);
+    --n-500:  oklch(0.520 0.011 250);
+    --n-600:  oklch(0.420 0.011 250);
+    --n-700:  oklch(0.320 0.010 250);
+    --n-800:  oklch(0.215 0.009 250);
+    --n-900:  oklch(0.145 0.008 250);
+    --n-950:  oklch(0.085 0.006 250);
+    --n-1000: oklch(0.025 0.004 250);
+
+    --ok-fill: oklch(0.640 0.150 150);
+    --ok-text: oklch(0.400 0.130 150);
+    --ok-soft: oklch(0.960 0.040 150);
+    --warn-fill: oklch(0.770 0.165 75);
+    --warn-text: oklch(0.420 0.120 60);
+    --warn-soft: oklch(0.970 0.055 80);
+    --err-fill:  oklch(0.580 0.220 27);
+    --err-text:  oklch(0.420 0.180 27);
+    --err-soft:  oklch(0.955 0.045 27);
+
+    --font-display: 'Sora', system-ui, sans-serif;
+    --font-body:    'Manrope', system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+    --page-bg:   var(--n-50);
+    --page-fg:   var(--ink-900);
+    --page-mute: var(--n-600);
+    --page-line: var(--n-200);
+
+    /* Icon-spezifisch */
+    --icon-stroke: 1.75;
+    --icon-stroke-bold: 2.25;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--page-bg);
+    color: var(--page-fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Page shell (same as siblings) */
+  .page { max-width: 1320px; margin: 0 auto; padding: 56px 56px 120px; }
+
+  .topstrip {
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--page-mute);
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--page-line);
+  }
+  .topstrip .left { display: flex; gap: 14px; align-items: center; }
+  .topstrip .monogram {
+    width: 22px; height: 22px; border-radius: 5px;
+    background: var(--ink-800); color: var(--n-0);
+    display: inline-flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 11px;
+    letter-spacing: -0.02em;
+  }
+  .topstrip a {
+    color: inherit; text-decoration: none;
+    padding: 4px 8px; border-radius: 5px;
+    background: var(--ink-100); transition: background 0.12s;
+  }
+  .topstrip a:hover { background: var(--ink-200); }
+  .topstrip .nav-l { display: flex; gap: 8px; }
+
+  .hero { padding: 48px 0 56px; border-bottom: 1px solid var(--page-line); }
+  .hero .eyebrow {
+    font-family: var(--font-mono); font-size: 11px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--amber-800);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: clamp(40px, 5.5vw, 76px);
+    letter-spacing: -0.035em; line-height: 0.98;
+    margin: 0 0 20px;
+    color: var(--ink-900);
+    text-wrap: balance;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(180deg, var(--amber-700), var(--amber-800));
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .lead {
+    max-width: 720px; font-size: 17px; line-height: 1.55;
+    color: var(--n-700); text-wrap: pretty;
+  }
+
+  section.s { padding: 72px 0; border-bottom: 1px solid var(--page-line); }
+  .s-head { display: grid; grid-template-columns: 80px 1fr; gap: 32px; align-items: baseline; margin-bottom: 36px; }
+  .s-num { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--amber-800); padding-top: 8px; }
+  .s-title h2 { font-family: var(--font-display); font-weight: 700; font-size: 34px; letter-spacing: -0.02em; line-height: 1.08; margin: 0 0 10px; color: var(--ink-900); }
+  .s-title p { margin: 0; color: var(--n-700); font-size: 15.5px; max-width: 720px; text-wrap: pretty; }
+  .s-body { display: flex; flex-direction: column; gap: 32px; }
+
+  .sub {
+    font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--page-mute);
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .sub::after { content: ''; flex: 1; height: 1px; background: var(--page-line); }
+  .sub .pill { background: var(--ink-100); color: var(--ink-700); padding: 2px 8px; border-radius: 4px; font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; }
+  .sub .pill.dark { background: var(--ink-900); color: var(--n-50); }
+  .sub .pill.amber { background: var(--amber-100); color: var(--amber-800); }
+  .sub .pill.err   { background: var(--err-soft);  color: var(--err-text); }
+  .sub .pill.ok    { background: var(--ok-soft);   color: var(--ok-text); }
+
+  /* ── Icon-Grid ──────────────────────────────────────────────── */
+  .ic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0;
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--n-0);
+  }
+
+  .ic-cell {
+    border-right: 1px solid var(--page-line);
+    border-bottom: 1px solid var(--page-line);
+    padding: 22px 18px 18px;
+    display: flex; flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    background: var(--n-0);
+    transition: background 0.12s;
+    cursor: copy;
+    position: relative;
+  }
+  .ic-cell:hover { background: var(--n-50); }
+  .ic-cell .glyph {
+    width: 36px; height: 36px;
+    color: var(--ink-900);
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .ic-cell .glyph svg { width: 100%; height: 100%; }
+  .ic-cell .name {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.04em;
+    text-align: center;
+    word-break: break-all;
+  }
+  .ic-cell .name b { color: var(--ink-900); font-weight: 700; font-size: 12.5px; display: block; margin-bottom: 2px; letter-spacing: 0; font-family: var(--font-body); }
+
+  /* dark-themed grid */
+  .ic-grid.dark {
+    border-color: var(--n-800);
+    background: var(--n-1000);
+  }
+  .ic-grid.dark .ic-cell {
+    background: var(--n-1000);
+    border-color: var(--n-800);
+    color: var(--n-100);
+  }
+  .ic-grid.dark .ic-cell .glyph { color: var(--n-50); }
+  .ic-grid.dark .ic-cell:hover { background: var(--n-950); }
+  .ic-grid.dark .ic-cell .name { color: var(--n-500); }
+  .ic-grid.dark .ic-cell .name b { color: var(--n-50); }
+
+  /* hide rightmost border per row */
+  .ic-grid .ic-cell:last-child { border-right: 0; }
+
+  /* ── Anatomy block ──────────────────────────────────────────── */
+  .anat {
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    background: var(--n-0);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    overflow: hidden;
+  }
+  .anat-art {
+    padding: 56px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 32px;
+    background:
+      linear-gradient(0deg,   var(--page-line) 1px, transparent 1px) 0 0/24px 24px,
+      linear-gradient(90deg,  var(--page-line) 1px, transparent 1px) 0 0/24px 24px,
+      var(--n-50);
+    border-right: 1px solid var(--page-line);
+  }
+  .anat-art .big {
+    width: 240px; height: 240px;
+    color: var(--ink-900);
+    position: relative;
+  }
+  .anat-art .big::before {
+    content: ''; position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(0deg,  rgba(15,20,38,0.06) 1px, transparent 1px) 0 0/30px 30px,
+      linear-gradient(90deg, rgba(15,20,38,0.06) 1px, transparent 1px) 0 0/30px 30px;
+    pointer-events: none;
+  }
+  .anat-art .scale-set {
+    display: flex; gap: 36px; align-items: flex-end;
+    color: var(--ink-900);
+  }
+  .anat-art .scale-set .s {
+    display: flex; flex-direction: column; gap: 8px; align-items: center;
+  }
+  .anat-art .scale-set .s .lab {
+    font-family: var(--font-mono); font-size: 10px;
+    color: var(--page-mute);
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .anat-art .scale-set .ic-16 { width: 16px; height: 16px; }
+  .anat-art .scale-set .ic-24 { width: 24px; height: 24px; }
+  .anat-art .scale-set .ic-32 { width: 32px; height: 32px; }
+  .anat-art .scale-set .ic-48 { width: 48px; height: 48px; }
+  .anat-art .scale-set svg { width: 100%; height: 100%; }
+  .anat-spec {
+    padding: 36px 40px;
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  .anat-spec h3 {
+    font-family: var(--font-display); font-weight: 700;
+    font-size: 22px; letter-spacing: -0.015em;
+    margin: 0 0 4px; color: var(--ink-900);
+  }
+  .anat-spec p { margin: 0; color: var(--n-700); font-size: 14px; }
+  .anat-spec .row {
+    display: grid; grid-template-columns: 140px 1fr;
+    gap: 16px; align-items: baseline;
+    border-bottom: 1px solid var(--page-line);
+    padding: 12px 0;
+  }
+  .anat-spec .row:last-of-type { border-bottom: 0; }
+  .anat-spec .k {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .anat-spec .v {
+    font-family: var(--font-body); font-size: 14px;
+    color: var(--ink-900);
+  }
+  .anat-spec .v code {
+    font-family: var(--font-mono); font-size: 12.5px;
+    background: var(--n-100); color: var(--ink-800);
+    padding: 1px 7px; border-radius: 4px;
+  }
+
+  /* ── Usage examples ─────────────────────────────────────────── */
+  .usage {
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .usage-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    padding: 24px 28px;
+    align-items: center;
+    border-bottom: 1px solid var(--page-line);
+    gap: 32px;
+  }
+  .usage-row:last-child { border-bottom: 0; }
+  .usage-row .label {
+    font-family: var(--font-mono); font-size: 10.5px;
+    color: var(--page-mute);
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .usage-row .label b {
+    display: block; color: var(--ink-900); font-weight: 700;
+    font-family: var(--font-body); font-size: 14px;
+    letter-spacing: -0.005em; margin-bottom: 4px;
+    text-transform: none;
+  }
+  .usage-row .demo { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .usage-row .code {
+    font-family: var(--font-mono); font-size: 11.5px;
+    background: var(--n-100); color: var(--ink-800);
+    padding: 8px 12px; border-radius: 8px;
+    white-space: pre; overflow-x: auto;
+    line-height: 1.5;
+  }
+
+  /* button/input variants for usage demo */
+  .demo-btn {
+    appearance: none; border: 0;
+    font-family: var(--font-body); font-weight: 600; font-size: 14px;
+    height: 40px; padding: 0 16px;
+    border-radius: 9px;
+    display: inline-flex; align-items: center; gap: 8px;
+    cursor: pointer;
+  }
+  .demo-btn.primary { background: var(--ink-900); color: white; }
+  .demo-btn.amber { background: var(--amber-400); color: var(--ink-1000); }
+  .demo-btn.ghost { background: transparent; color: var(--ink-900); box-shadow: inset 0 0 0 1px var(--page-line); }
+  .demo-btn svg { width: 18px; height: 18px; }
+
+  .demo-input {
+    display: flex; align-items: center; gap: 10px;
+    height: 40px; padding: 0 14px;
+    border-radius: 9px;
+    background: var(--n-100);
+    color: var(--n-600);
+    font-size: 13.5px;
+    width: 240px;
+  }
+  .demo-input svg { width: 16px; height: 16px; }
+
+  /* color-token demo */
+  .color-demo {
+    display: flex; gap: 8px;
+  }
+  .color-demo .swatch {
+    width: 40px; height: 40px; border-radius: 10px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .color-demo .swatch svg { width: 22px; height: 22px; }
+
+  /* sticky search / filter */
+  .controls {
+    position: sticky; top: 0;
+    z-index: 5;
+    background: oklch(0.985 0.003 250 / 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--page-line);
+    padding: 16px 0;
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 24px;
+  }
+  .controls .search {
+    flex: 1;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--n-0);
+    border: 1px solid var(--page-line);
+    padding: 0 16px;
+    display: flex; align-items: center; gap: 10px;
+    color: var(--n-700);
+  }
+  .controls .search input {
+    flex: 1; border: 0; background: transparent;
+    outline: none; font: inherit; color: var(--ink-900);
+  }
+  .controls .search input::placeholder { color: var(--n-500); }
+  .controls .results {
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--page-mute);
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .controls .results b { color: var(--ink-900); font-weight: 700; }
+
+  /* tag categories */
+  .cat-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-family: var(--font-mono); font-size: 10px;
+    padding: 3px 7px; border-radius: 4px;
+    background: var(--n-100); color: var(--n-700);
+    letter-spacing: 0.06em; text-transform: uppercase;
+    margin-left: 8px;
+  }
+  .cat-tag.amber { background: var(--amber-100); color: var(--amber-800); }
+  .cat-tag.sky   { background: var(--sky-100); color: var(--sky-800); }
+  .cat-tag.ok    { background: var(--ok-soft); color: var(--ok-text); }
+  .cat-tag.err   { background: var(--err-soft); color: var(--err-text); }
+
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  /* Foul-color tinting helper classes */
+  .tint-amber { color: var(--amber-700); }
+  .tint-sky   { color: var(--sky-700); }
+  .tint-ok    { color: var(--ok-fill); }
+  .tint-warn  { color: var(--warn-text); }
+  .tint-err   { color: var(--err-fill); }
+
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════════════════
+     ICON DEFS · all glyphs use stroke="currentColor" stroke-width=1.75
+     ════════════════════════════════════════════════════════════ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+
+    <!-- ── BASKETBALL ACTIONS ── -->
+
+    <!-- 2 Punkte: arrow into hoop -->
+    <symbol id="i-2p" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6.5 20h11"/>
+      <path d="M6.5 17.5h11"/>
+      <path d="M8 20v-1.5M16 20v-1.5"/>
+      <path d="M12 4v9"/>
+      <path d="M8 9l4-4 4 4"/>
+      <path d="M9 13h6" opacity="0"/>
+      <text x="12" y="11" text-anchor="middle" font-family="Sora, sans-serif" font-weight="800" font-size="9" fill="currentColor" stroke="none">2</text>
+    </symbol>
+
+    <!-- 3 Punkte: arrow into hoop, "3" label -->
+    <symbol id="i-3p" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6.5 20h11"/>
+      <path d="M6.5 17.5h11"/>
+      <path d="M8 20v-1.5M16 20v-1.5"/>
+      <path d="M12 4v9"/>
+      <path d="M8 9l4-4 4 4"/>
+      <text x="12" y="11" text-anchor="middle" font-family="Sora, sans-serif" font-weight="800" font-size="9" fill="currentColor" stroke="none">3</text>
+    </symbol>
+
+    <!-- Freiwurf -->
+    <symbol id="i-ft" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 19h14"/>
+      <path d="M5 17h14"/>
+      <path d="M6.5 19v-1.5M17.5 19v-1.5"/>
+      <circle cx="12" cy="7" r="2.5"/>
+      <path d="M12 9.5v3.5"/>
+      <path d="M9.5 13.5h5"/>
+    </symbol>
+
+    <!-- Foul · Personal: hand-contact -->
+    <symbol id="i-foul-p" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <text x="12" y="15.5" text-anchor="middle" font-family="Sora, sans-serif" font-weight="800" font-size="10.5" fill="currentColor" stroke="none">P</text>
+    </symbol>
+
+    <!-- Foul · Technisch -->
+    <symbol id="i-foul-t" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <text x="12" y="15.5" text-anchor="middle" font-family="Sora, sans-serif" font-weight="800" font-size="10.5" fill="currentColor" stroke="none">T</text>
+    </symbol>
+
+    <!-- Foul · Unsportlich -->
+    <symbol id="i-foul-u" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <text x="12" y="15.5" text-anchor="middle" font-family="Sora, sans-serif" font-weight="800" font-size="10.5" fill="currentColor" stroke="none">U</text>
+    </symbol>
+
+    <!-- Foul · Disqualifizierend -->
+    <symbol id="i-foul-d" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+      <circle cx="12" cy="12" r="9"/>
+      <text x="12" y="15.5" text-anchor="middle" font-family="Sora, sans-serif" font-weight="800" font-size="10.5" fill="#fff" stroke="none">D</text>
+    </symbol>
+
+    <!-- Rebound: ball + circular arrow -->
+    <symbol id="i-rebound" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="4.5"/>
+      <path d="M12 7.5V4M16.5 12H20M12 16.5V20M7.5 12H4"/>
+      <path d="M9.4 9.4 7 7M16.6 9.4 19 7M9.4 14.6 7 17M16.6 14.6 19 17"/>
+    </symbol>
+
+    <!-- Assist: arrow to ball -->
+    <symbol id="i-assist" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="17" cy="12" r="4"/>
+      <path d="M17 9v6M14 12h6"/>
+      <path d="M3 17 11 11"/>
+      <path d="M3 17v-3M3 17h3"/>
+    </symbol>
+
+    <!-- Steal: hand grabbing -->
+    <symbol id="i-steal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 13V8a1.5 1.5 0 0 1 3 0v4"/>
+      <path d="M8 11V6a1.5 1.5 0 0 1 3 0v6"/>
+      <path d="M11 11V7a1.5 1.5 0 0 1 3 0v6"/>
+      <path d="M14 9.5a1.5 1.5 0 0 1 3 0V15a5 5 0 0 1-10 0v-2"/>
+      <path d="M20 7 16 11"/>
+      <path d="M20 7v-3M20 7h3" opacity=".6"/>
+    </symbol>
+
+    <!-- Block: hand stopping arrow -->
+    <symbol id="i-block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 7c0-1.1-.9-2-2-2s-2 .9-2 2v6"/>
+      <path d="M10 9c0-1.1-.9-2-2-2s-2 .9-2 2v5"/>
+      <path d="M6 11c0-1.1-.9-2-2-2v6a6 6 0 0 0 12 0V8a2 2 0 1 0-4 0"/>
+      <path d="M20 5l-4 4M16 5l4 4" stroke-width="2"/>
+    </symbol>
+
+    <!-- Turnover: arrows crossing -->
+    <symbol id="i-turnover" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 7h11a3 3 0 0 1 0 6H10"/>
+      <path d="M14 16 10 13l4-3"/>
+      <path d="M19 17H8a3 3 0 0 1 0-6h6" opacity=".5"/>
+    </symbol>
+
+    <!-- Substitution: arrows up/down -->
+    <symbol id="i-sub" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 4v16M8 4 5 7M8 4l3 3"/>
+      <path d="M16 20V4M16 20l-3-3M16 20l3-3"/>
+    </symbol>
+
+    <!-- ── COURT ELEMENTS ── -->
+
+    <!-- Basket / Korb -->
+    <symbol id="i-hoop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <ellipse cx="12" cy="9.5" rx="7" ry="2"/>
+      <path d="M6.5 10c0 1.5.5 4 1 6.5M17.5 10c0 1.5-.5 4-1 6.5"/>
+      <path d="M9 9.7c.5 2 1 5 1.5 7M15 9.7c-.5 2-1 5-1.5 7"/>
+      <path d="M11.5 16.5h1"/>
+    </symbol>
+
+    <!-- Backboard -->
+    <symbol id="i-backboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3.5" y="4" width="17" height="11" rx="1"/>
+      <rect x="9.5" y="9" width="5" height="4"/>
+      <path d="M9.5 17.5h5"/>
+      <path d="M11 15v2.5"/>
+    </symbol>
+
+    <!-- Zone / Paint / Keyhole -->
+    <symbol id="i-zone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 4h10v8a5 5 0 0 1-10 0V4Z"/>
+      <path d="M7 9h10"/>
+      <circle cx="12" cy="17" r="2.5" opacity=".55"/>
+    </symbol>
+
+    <!-- 3-Punkte-Linie -->
+    <symbol id="i-3line" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3.5 19V5h17v14"/>
+      <path d="M3.5 19c5-1 6-10 8.5-10s3.5 9 8.5 10"/>
+      <circle cx="12" cy="6" r="1" fill="currentColor"/>
+    </symbol>
+
+    <!-- Mittellinie / Center Circle -->
+    <symbol id="i-center" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3.5" y="3.5" width="17" height="17" rx="1"/>
+      <path d="M3.5 12h17"/>
+      <circle cx="12" cy="12" r="3"/>
+    </symbol>
+
+    <!-- Shot-Clock -->
+    <symbol id="i-shotclock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3.5" y="5.5" width="17" height="13" rx="1.5"/>
+      <text x="12" y="15" text-anchor="middle" font-family="JetBrains Mono, monospace" font-weight="700" font-size="7.5" fill="currentColor" stroke="none">24</text>
+      <path d="M9 3.5v2M15 3.5v2"/>
+    </symbol>
+
+    <!-- ── ROLES ── -->
+
+    <!-- Schiri / Pfeife -->
+    <symbol id="i-whistle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M21 9.5 14 12l-1.6-4.4a1 1 0 0 1 .59-1.28l5.7-1.9a1 1 0 0 1 1.3.85L21 9.5Z"/>
+      <circle cx="9" cy="14.5" r="5.5"/>
+      <path d="M9 14.5h2"/>
+    </symbol>
+
+    <!-- Anschreiber / Scorer -->
+    <symbol id="i-scorer" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="5" y="3.5" width="14" height="17" rx="1.5"/>
+      <path d="M9 3.5h6v2H9z" fill="currentColor" stroke="none"/>
+      <path d="M8 11h8M8 14h8M8 17h5"/>
+    </symbol>
+
+    <!-- Trainer / Coach: clipboard with X-O -->
+    <symbol id="i-coach" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="5" y="3.5" width="14" height="17" rx="1.5"/>
+      <path d="M9 3.5h6v2H9z" fill="currentColor" stroke="none"/>
+      <path d="m8.5 11 2 2M10.5 11l-2 2"/>
+      <circle cx="14.5" cy="12" r="1.75"/>
+      <path d="M8.5 16.5l2 2M10.5 16.5l-2 2" opacity=".5"/>
+      <circle cx="14.5" cy="17.5" r="1.75" opacity=".5"/>
+    </symbol>
+
+    <!-- Captain -->
+    <symbol id="i-captain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3 4 6v6c0 4.5 3.3 7.5 8 9 4.7-1.5 8-4.5 8-9V6l-8-3Z"/>
+      <text x="12" y="15" text-anchor="middle" font-family="Sora, sans-serif" font-weight="800" font-size="9" fill="currentColor" stroke="none">C</text>
+    </symbol>
+
+    <!-- DNP / DnD -->
+    <symbol id="i-dnp" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="8.5"/>
+      <path d="M6.5 6.5l11 11" stroke-width="2"/>
+    </symbol>
+
+    <!-- ── STATUS ── -->
+
+    <!-- Live -->
+    <symbol id="i-live" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="2.5" fill="currentColor"/>
+      <path d="M7 7a7 7 0 0 0 0 10M17 7a7 7 0 0 1 0 10"/>
+      <path d="M4 4a11 11 0 0 0 0 16M20 4a11 11 0 0 1 0 16" opacity=".55"/>
+    </symbol>
+
+    <!-- Auszeit / Timeout: hand T -->
+    <symbol id="i-timeout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3.5" y="3.5" width="17" height="17" rx="2"/>
+      <path d="M6.5 8.5h11M12 8.5v9"/>
+    </symbol>
+
+    <!-- Halbzeit -->
+    <symbol id="i-half" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M12 3v18"/>
+      <path d="M12 3a9 9 0 0 1 0 18" fill="currentColor" opacity=".15"/>
+    </symbol>
+
+    <!-- Disqualifikation -->
+    <symbol id="i-dq" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="M8 8l8 8M16 8l-8 8" stroke="#fff" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </symbol>
+
+    <!-- Foul-Out (5) -->
+    <symbol id="i-foulout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="5"  cy="12" r="1.6" fill="currentColor"/>
+      <circle cx="9.5"  cy="12" r="1.6" fill="currentColor"/>
+      <circle cx="14" cy="12" r="1.6" fill="currentColor"/>
+      <circle cx="18.5" cy="12" r="1.6" fill="currentColor"/>
+      <path d="M2 18l20-12" stroke-width="2"/>
+    </symbol>
+
+    <!-- Bonus -->
+    <symbol id="i-bonus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 4v17M5 4l4 1 4-1 4 1 4-1v8l-4 1-4-1-4 1-4-1"/>
+      <text x="12" y="11" text-anchor="middle" font-family="Sora, sans-serif" font-weight="800" font-size="7" fill="currentColor" stroke="none">+</text>
+    </symbol>
+
+    <!-- ── SYSTEM ── -->
+
+    <symbol id="i-sync" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 11a8 8 0 0 1 14-5"/>
+      <path d="M18 3v4h-4"/>
+      <path d="M20 13a8 8 0 0 1-14 5"/>
+      <path d="M6 21v-4h4"/>
+    </symbol>
+
+    <symbol id="i-offline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 11a4 4 0 0 1 4-4 5 5 0 0 1 4.7 3.2A3.5 3.5 0 0 1 18.5 17H7a3 3 0 0 1-2-5.7Z" opacity=".55"/>
+      <path d="M3 3l18 18" stroke-width="2.2"/>
+    </symbol>
+
+    <symbol id="i-valid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="9"/>
+      <path d="m7.5 12.5 3 3 6-7" stroke-width="2"/>
+    </symbol>
+
+    <symbol id="i-print" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M7 9V4h10v5"/>
+      <path d="M7 18H5a1 1 0 0 1-1-1v-5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5a1 1 0 0 1-1 1h-2"/>
+      <rect x="7" y="14" width="10" height="6" rx="1"/>
+    </symbol>
+
+    <symbol id="i-signature" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 17c2-.5 3.5-1.5 4-3s-.5-3.5-2-3-1.5 4 0 6 4 1.5 6-1 1-5 2.5-4 1 4 2.5 4 3-2 4.5-2"/>
+      <path d="M3 21h18"/>
+    </symbol>
+
+    <symbol id="i-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 17a4 4 0 0 1 4-7 5 5 0 0 1 4.7 3.2A3.5 3.5 0 0 1 18 19H7a3 3 0 0 1-2-2Z"/>
+    </symbol>
+
+    <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="5" y="11" width="14" height="9" rx="1.5"/>
+      <path d="M8 11V8a4 4 0 1 1 8 0v3"/>
+    </symbol>
+
+    <!-- ── UI (selection) ── -->
+
+    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16v-5a6 6 0 1 1 12 0v5l1.5 2H4.5L6 16Z"/><path d="M10 20a2 2 0 0 0 4 0"/></symbol>
+    <symbol id="i-cog" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="m19.5 12 1.4-1.4-1.5-2.6-1.9.5-1.6-.9-.5-1.9h-3l-.5 1.9-1.6.9-1.9-.5-1.5 2.6L8.5 12l-1.4 1.4 1.5 2.6 1.9-.5 1.6.9.5 1.9h3l.5-1.9 1.6-.9 1.9.5 1.5-2.6L19.5 12Z"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-chevron-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-chevron-d" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-chevron-l" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></symbol>
+    <symbol id="i-chevron-u" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></symbol>
+    <symbol id="i-arr-r" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+    <symbol id="i-roster" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="9" r="3.25"/><path d="M3.5 19c.7-3.2 2.9-5 5.5-5s4.8 1.8 5.5 5"/><path d="M16 6.5a3 3 0 0 1 0 5.5"/><path d="M17.5 19c-.4-2.1-1.6-3.7-3-4.5"/></symbol>
+    <symbol id="i-stats" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 20V4"/><path d="M3.5 20h17"/><rect x="7" y="12" width="3" height="5"/><rect x="12" y="8" width="3" height="9"/><rect x="17" y="14" width="3" height="3"/></symbol>
+    <symbol id="i-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0V4Z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/><path d="M10 14v3h4v-3M8 20h8"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 6.5A1.5 1.5 0 0 1 5 5h4l2 2h8a1.5 1.5 0 0 1 1.5 1.5V18a1.5 1.5 0 0 1-1.5 1.5h-14A1.5 1.5 0 0 1 3.5 18V6.5Z"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l11-11-4-4L4 16v4Z"/><path d="m13 6 4 4"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 6.5h15M9 6.5V4h6v2.5"/><path d="M6.5 6.5 7 20a1.5 1.5 0 0 0 1.5 1.5h7A1.5 1.5 0 0 0 17 20l.5-13.5"/><path d="M10 10v8M14 10v8"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5h17l-6.5 8v6l-4-2v-4Z"/></symbol>
+    <symbol id="i-sort" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v16M3 8l4-4 4 4"/><path d="M17 20V4M13 16l4 4 4-4"/></symbol>
+    <symbol id="i-export" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M8 8l4-4 4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></symbol>
+    <symbol id="i-import" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M8 11l4 4 4-4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="m8.2 11 7.6-4M8.2 13l7.6 4"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-more-h" viewBox="0 0 24 24" fill="currentColor"><circle cx="6" cy="12" r="1.75"/><circle cx="12" cy="12" r="1.75"/><circle cx="18" cy="12" r="1.75"/></symbol>
+    <symbol id="i-question" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M9.5 9.5a2.5 2.5 0 0 1 5 0c0 1.6-2.5 2-2.5 3.5"/><circle cx="12" cy="16.5" r=".6" fill="currentColor"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v6"/><circle cx="12" cy="8" r=".6" fill="currentColor"/></symbol>
+    <symbol id="i-warn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m12 4 10 17H2L12 4Z"/><path d="M12 10v5"/><circle cx="12" cy="18.2" r=".6" fill="currentColor"/></symbol>
+
+  </defs>
+</svg>
+
+<div class="page">
+
+  <!-- TOP STRIP -->
+  <div class="topstrip">
+    <div class="left">
+      <span class="monogram">D</span>
+      <span>DSS Design System</span>
+      <span>·</span>
+      <span>Icons v0.1</span>
+    </div>
+    <div class="nav-l">
+      <a href="DSS Design System - Identity Overview v0.3.html">← Identity</a>
+      <a href="DSS Design System - Navigation.html">← Navigation</a>
+      <a href="DSS Design System - Cards &amp; Lists.html">← Cards</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <header class="hero" data-screen-label="00 Hero">
+    <div class="eyebrow">Component Library · Icons · v0.1</div>
+    <h1>Eine Glyphen-Sprache, <em>basketball-eigen.</em></h1>
+    <p class="lead">
+      Sieben Familien Iconografie: Spielaktionen, Spielfeld-Elemente, Rollen am Tisch,
+      Status-Markierungen, System-Operationen und ein UI-Kern. Alle Glyphen leben auf
+      derselben 24-Pixel-Bühne mit Stroke 1.75, runden Enden und <code style="font-family:var(--font-mono);font-size:13px;background:var(--n-100);padding:1px 6px;border-radius:4px;">currentColor</code>
+      — sie tragen die Farbe ihres Containers und reagieren auf Text-Größe via <code style="font-family:var(--font-mono);font-size:13px;background:var(--n-100);padding:1px 6px;border-radius:4px;">font-size</code>.
+    </p>
+  </header>
+
+  <!-- ════════════════════════════════════════════════════════════
+       01 — ANATOMY
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="01 Anatomy">
+    <div class="s-head">
+      <div class="s-num">01 — Anatomy</div>
+      <div class="s-title">
+        <h2>Eine Grammatik für alle Glyphen.</h2>
+        <p>
+          24-Pixel-Bühne mit 2-Pixel-Sicherheitsraum auf jeder Seite. Stroke 1.75 (bzw. 2.25
+          für Buttons-Akzente), round-cap, round-join. Fills nur dort, wo sie Bedeutung
+          tragen (DQ-Kreis, Live-Dot). Drei Standard-Größen: 16 inline, 24 default, 32 für
+          Touch-Surfaces und Hallen-Tisch.
+        </p>
+      </div>
+    </div>
+
+    <div class="anat">
+      <div class="anat-art">
+        <div class="big">
+          <svg viewBox="0 0 24 24" width="100%" height="100%" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="position: relative; z-index: 1;">
+            <use href="#i-whistle"/>
+          </svg>
+        </div>
+        <div class="scale-set">
+          <div class="s"><span class="ic-16"><svg><use href="#i-whistle"/></svg></span><span class="lab">16</span></div>
+          <div class="s"><span class="ic-24"><svg><use href="#i-whistle"/></svg></span><span class="lab">24</span></div>
+          <div class="s"><span class="ic-32"><svg><use href="#i-whistle"/></svg></span><span class="lab">32</span></div>
+          <div class="s"><span class="ic-48"><svg><use href="#i-whistle"/></svg></span><span class="lab">48</span></div>
+        </div>
+      </div>
+      <div class="anat-spec">
+        <div>
+          <h3>Anatomie</h3>
+          <p>Eine Pfeife durch alle vier Standard-Größen.</p>
+        </div>
+        <div class="row"><span class="k">viewBox</span><span class="v"><code>0 0 24 24</code></span></div>
+        <div class="row"><span class="k">stroke</span><span class="v"><code>currentColor</code> · 1.75 px</span></div>
+        <div class="row"><span class="k">line-caps</span><span class="v">round · round join</span></div>
+        <div class="row"><span class="k">fill</span><span class="v">none · außer bei Status-Pellets (Live, DQ)</span></div>
+        <div class="row"><span class="k">sizes</span><span class="v">16 · 24 · 32 · 48 px</span></div>
+        <div class="row"><span class="k">color</span><span class="v">Folgt <code>color</code> des Containers (currentColor)</span></div>
+        <div class="row"><span class="k">safe-area</span><span class="v">2 px Padding auf jeder Seite</span></div>
+      </div>
+    </div>
+
+    <div class="row2" style="margin-top: 32px;">
+      <div>
+        <div class="sub"><span class="pill">Einbindung · HTML</span></div>
+        <div class="usage">
+          <div class="usage-row" style="grid-template-columns: 1fr 1fr;">
+            <div class="label">
+              <b>SVG-Sprite</b>
+              Empfohlen — einmal global definieren, beliebig oft per <code style="font-family:var(--font-mono);font-size:11px;">&lt;use&gt;</code> einbinden.
+            </div>
+            <div class="code">&lt;svg class="ic"&gt;
+  &lt;use href="#i-whistle"/&gt;
+&lt;/svg&gt;</div>
+          </div>
+          <div class="usage-row" style="grid-template-columns: 1fr 1fr;">
+            <div class="label">
+              <b>CSS-Anker</b>
+              Eine Helper-Klasse, die Größe an Font-Size koppelt.
+            </div>
+            <div class="code">.ic {
+  width: 1em;
+  height: 1em;
+  vertical-align: -2px;
+}</div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="sub"><span class="pill amber">Token-Farbe</span></div>
+        <div class="usage">
+          <div class="usage-row" style="grid-template-columns: 1fr 1fr;">
+            <div class="label">
+              <b>currentColor</b>
+              Icon erbt die Farbe aus dem Eltern-Element. Keine Hard-Coded-Fills.
+            </div>
+            <div class="color-demo">
+              <span class="swatch" style="background: var(--ink-900); color: white;"><svg><use href="#i-whistle"/></svg></span>
+              <span class="swatch" style="background: var(--amber-400); color: var(--ink-1000);"><svg><use href="#i-whistle"/></svg></span>
+              <span class="swatch" style="background: var(--sky-700); color: white;"><svg><use href="#i-whistle"/></svg></span>
+              <span class="swatch" style="background: var(--err-fill); color: white;"><svg><use href="#i-whistle"/></svg></span>
+              <span class="swatch" style="background: var(--n-100); color: var(--ink-900);"><svg><use href="#i-whistle"/></svg></span>
+            </div>
+          </div>
+          <div class="usage-row" style="grid-template-columns: 1fr 1fr;">
+            <div class="label">
+              <b>Foul-Familie · semantische Tönung</b>
+              <code>P</code> neutral · <code>T</code> warn · <code>U</code> err · <code>D</code> err-fill
+            </div>
+            <div class="color-demo">
+              <span class="swatch" style="background: var(--n-100); color: var(--ink-800);"><svg><use href="#i-foul-p"/></svg></span>
+              <span class="swatch" style="background: var(--warn-soft); color: var(--warn-text);"><svg><use href="#i-foul-t"/></svg></span>
+              <span class="swatch" style="background: var(--err-soft); color: var(--err-text);"><svg><use href="#i-foul-u"/></svg></span>
+              <span class="swatch" style="background: var(--err-soft); color: var(--err-fill);"><svg><use href="#i-foul-d"/></svg></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live filter / sticky controls -->
+  <div class="controls" data-screen-label="01b Search">
+    <span class="results" style="min-width: 80px;"><b>54</b> Glyphen</span>
+    <div class="search">
+      <svg style="width:18px;height:18px;color:var(--n-500);"><use href="#i-search"/></svg>
+      <input type="text" id="icon-search" placeholder="i-foul · rebound · pfeife …" />
+    </div>
+    <span class="results"><b>7</b> Familien</span>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════
+       02 — GAME ACTIONS
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="02 Aktionen" data-category="Aktionen">
+    <div class="s-head">
+      <div class="s-num">02 — Spielaktionen <span class="cat-tag amber">12</span></div>
+      <div class="s-title">
+        <h2>Was auf dem Feld passiert.</h2>
+        <p>
+          Wurf-Klassen mit eingebetteter Punktzahl, Foul-Familie als geschlossene Kreis-Sprache,
+          plus die typischen Defense-Statistiken (Steal, Block, Rebound) und Turnover.
+          Foul-D als einziges gefülltes Glyph im Set — Disqualifikation ist die einzige
+          Aktion, die ein Spiel beendet.
+        </p>
+      </div>
+    </div>
+
+    <div class="ic-grid" data-grid="aktionen">
+      <div class="ic-cell" data-name="i-2p 2 punkte korb feldwurf"><div class="glyph"><svg><use href="#i-2p"/></svg></div><div class="name"><b>2-Punkte-Wurf</b>i-2p</div></div>
+      <div class="ic-cell" data-name="i-3p 3 punkte dreier"><div class="glyph"><svg><use href="#i-3p"/></svg></div><div class="name"><b>3-Punkte-Wurf</b>i-3p</div></div>
+      <div class="ic-cell" data-name="i-ft freiwurf"><div class="glyph"><svg><use href="#i-ft"/></svg></div><div class="name"><b>Freiwurf</b>i-ft</div></div>
+      <div class="ic-cell" data-name="i-foul-p persönlich foul"><div class="glyph" style="color: var(--ink-800);"><svg><use href="#i-foul-p"/></svg></div><div class="name"><b>Foul · Persönlich</b>i-foul-p</div></div>
+      <div class="ic-cell" data-name="i-foul-t technisch"><div class="glyph" style="color: var(--warn-text);"><svg><use href="#i-foul-t"/></svg></div><div class="name"><b>Foul · Technisch</b>i-foul-t</div></div>
+      <div class="ic-cell" data-name="i-foul-u unsportlich"><div class="glyph" style="color: var(--err-text);"><svg><use href="#i-foul-u"/></svg></div><div class="name"><b>Foul · Unsportlich</b>i-foul-u</div></div>
+      <div class="ic-cell" data-name="i-foul-d disqualifizierend"><div class="glyph" style="color: var(--err-fill);"><svg><use href="#i-foul-d"/></svg></div><div class="name"><b>Foul · Disqualif.</b>i-foul-d</div></div>
+      <div class="ic-cell" data-name="i-rebound rebound abpraller"><div class="glyph"><svg><use href="#i-rebound"/></svg></div><div class="name"><b>Rebound</b>i-rebound</div></div>
+      <div class="ic-cell" data-name="i-assist assist anspiel vorlage"><div class="glyph"><svg><use href="#i-assist"/></svg></div><div class="name"><b>Assist</b>i-assist</div></div>
+      <div class="ic-cell" data-name="i-steal steal ballgewinn"><div class="glyph"><svg><use href="#i-steal"/></svg></div><div class="name"><b>Steal</b>i-steal</div></div>
+      <div class="ic-cell" data-name="i-block block geblockt"><div class="glyph"><svg><use href="#i-block"/></svg></div><div class="name"><b>Block</b>i-block</div></div>
+      <div class="ic-cell" data-name="i-turnover turnover ballverlust"><div class="glyph"><svg><use href="#i-turnover"/></svg></div><div class="name"><b>Turnover</b>i-turnover</div></div>
+      <div class="ic-cell" data-name="i-sub wechsel auswechslung"><div class="glyph"><svg><use href="#i-sub"/></svg></div><div class="name"><b>Wechsel</b>i-sub</div></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       03 — COURT
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="03 Court" data-category="Court">
+    <div class="s-head">
+      <div class="s-num">03 — Court <span class="cat-tag sky">6</span></div>
+      <div class="s-title">
+        <h2>Räumliche Markierungen.</h2>
+        <p>
+          Für Heatmaps, Shot-Charts, Schiri-Schulungen und Halbfeld-Skizzen. Diese Familie
+          ist bewusst minimaler — Funktion vor Detail.
+        </p>
+      </div>
+    </div>
+
+    <div class="ic-grid">
+      <div class="ic-cell" data-name="i-hoop korb"><div class="glyph"><svg><use href="#i-hoop"/></svg></div><div class="name"><b>Korb</b>i-hoop</div></div>
+      <div class="ic-cell" data-name="i-backboard brett"><div class="glyph"><svg><use href="#i-backboard"/></svg></div><div class="name"><b>Backboard</b>i-backboard</div></div>
+      <div class="ic-cell" data-name="i-zone zone paint zonenwurf"><div class="glyph"><svg><use href="#i-zone"/></svg></div><div class="name"><b>Zone / Paint</b>i-zone</div></div>
+      <div class="ic-cell" data-name="i-3line dreierlinie"><div class="glyph"><svg><use href="#i-3line"/></svg></div><div class="name"><b>3-Punkte-Linie</b>i-3line</div></div>
+      <div class="ic-cell" data-name="i-center mittelkreis mittellinie"><div class="glyph"><svg><use href="#i-center"/></svg></div><div class="name"><b>Mittelkreis</b>i-center</div></div>
+      <div class="ic-cell" data-name="i-shotclock 24 sekunden"><div class="glyph"><svg><use href="#i-shotclock"/></svg></div><div class="name"><b>Shot-Clock</b>i-shotclock</div></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       04 — ROLES
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="04 Rollen" data-category="Rollen">
+    <div class="s-head">
+      <div class="s-num">04 — Rollen <span class="cat-tag">5</span></div>
+      <div class="s-title">
+        <h2>Wer steht wo am Tisch.</h2>
+        <p>
+          Identifikatoren für Sidebar-Menüs, Crew-Listen und Avatare. Captain trägt seine
+          Auszeichnung als Wappen — passt zur Captain-Markierung der Trikotnummer.
+        </p>
+      </div>
+    </div>
+
+    <div class="ic-grid">
+      <div class="ic-cell" data-name="i-whistle schiri schiedsrichter pfeife"><div class="glyph"><svg><use href="#i-whistle"/></svg></div><div class="name"><b>Schiedsrichter</b>i-whistle</div></div>
+      <div class="ic-cell" data-name="i-scorer anschreiber kampfgericht"><div class="glyph"><svg><use href="#i-scorer"/></svg></div><div class="name"><b>Anschreiber</b>i-scorer</div></div>
+      <div class="ic-cell" data-name="i-coach trainer taktik"><div class="glyph"><svg><use href="#i-coach"/></svg></div><div class="name"><b>Trainer</b>i-coach</div></div>
+      <div class="ic-cell" data-name="i-captain kapitän"><div class="glyph" style="color: var(--amber-700);"><svg><use href="#i-captain"/></svg></div><div class="name"><b>Captain</b>i-captain</div></div>
+      <div class="ic-cell" data-name="i-dnp did not play"><div class="glyph" style="color: var(--n-500);"><svg><use href="#i-dnp"/></svg></div><div class="name"><b>DNP</b>i-dnp</div></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       05 — STATUS
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="05 Status" data-category="Status">
+    <div class="s-head">
+      <div class="s-num">05 — Status <span class="cat-tag err">6</span></div>
+      <div class="s-title">
+        <h2>Spiel-Phasen und Markierungen.</h2>
+        <p>
+          Anzeige-Glyphen, keine Aktionen — sie kommentieren einen Zustand. Live, Timeout,
+          Halbzeit, Bonus, sowie die zwei Endspiel-Marker Foul-Out und DQ.
+        </p>
+      </div>
+    </div>
+
+    <div class="ic-grid">
+      <div class="ic-cell" data-name="i-live live broadcast übertragung"><div class="glyph" style="color: var(--err-fill);"><svg><use href="#i-live"/></svg></div><div class="name"><b>Live</b>i-live</div></div>
+      <div class="ic-cell" data-name="i-timeout auszeit pause"><div class="glyph"><svg><use href="#i-timeout"/></svg></div><div class="name"><b>Auszeit</b>i-timeout</div></div>
+      <div class="ic-cell" data-name="i-half halbzeit pause"><div class="glyph"><svg><use href="#i-half"/></svg></div><div class="name"><b>Halbzeit</b>i-half</div></div>
+      <div class="ic-cell" data-name="i-bonus mannschaftsfoul"><div class="glyph" style="color: var(--amber-700);"><svg><use href="#i-bonus"/></svg></div><div class="name"><b>Bonus</b>i-bonus</div></div>
+      <div class="ic-cell" data-name="i-foulout foulout fünf fouls"><div class="glyph" style="color: var(--err-text);"><svg><use href="#i-foulout"/></svg></div><div class="name"><b>Foul-Out</b>i-foulout</div></div>
+      <div class="ic-cell" data-name="i-dq disqualifikation"><div class="glyph" style="color: var(--err-fill);"><svg><use href="#i-dq"/></svg></div><div class="name"><b>Disqualifikation</b>i-dq</div></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       06 — SYSTEM
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="06 System" data-category="System">
+    <div class="s-head">
+      <div class="s-num">06 — System <span class="cat-tag ok">7</span></div>
+      <div class="s-title">
+        <h2>App-Status und Workflow-Marker.</h2>
+        <p>
+          Vom Sync-Pfeil über Offline-Wolke bis zur Signatur — Glyphen für alles, was
+          zwischen Live-Spiel und freigegebenem Endbericht passiert.
+        </p>
+      </div>
+    </div>
+
+    <div class="ic-grid">
+      <div class="ic-cell" data-name="i-sync sync synchronisieren"><div class="glyph"><svg><use href="#i-sync"/></svg></div><div class="name"><b>Sync</b>i-sync</div></div>
+      <div class="ic-cell" data-name="i-cloud cloud online"><div class="glyph"><svg><use href="#i-cloud"/></svg></div><div class="name"><b>Cloud / Online</b>i-cloud</div></div>
+      <div class="ic-cell" data-name="i-offline offline"><div class="glyph" style="color: var(--warn-text);"><svg><use href="#i-offline"/></svg></div><div class="name"><b>Offline</b>i-offline</div></div>
+      <div class="ic-cell" data-name="i-valid validiert freigegeben"><div class="glyph" style="color: var(--ok-fill);"><svg><use href="#i-valid"/></svg></div><div class="name"><b>Validiert</b>i-valid</div></div>
+      <div class="ic-cell" data-name="i-signature signatur unterschrift"><div class="glyph"><svg><use href="#i-signature"/></svg></div><div class="name"><b>Signatur</b>i-signature</div></div>
+      <div class="ic-cell" data-name="i-print drucken spielbogen"><div class="glyph"><svg><use href="#i-print"/></svg></div><div class="name"><b>Drucken</b>i-print</div></div>
+      <div class="ic-cell" data-name="i-lock gesperrt freigegeben"><div class="glyph"><svg><use href="#i-lock"/></svg></div><div class="name"><b>Gesperrt</b>i-lock</div></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       07 — UI CORE
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="07 UI" data-category="UI">
+    <div class="s-head">
+      <div class="s-num">07 — UI-Core <span class="cat-tag">18</span></div>
+      <div class="s-title">
+        <h2>Der unverzichtbare UI-Kern.</h2>
+        <p>
+          Generisch, aber im DSS-Stroke gehalten — Chevrons, Plus/Minus, Edit, Filter, Sort,
+          Export usw. So sehen Standard-Icons konsistent zur basketball-spezifischen
+          Familie aus.
+        </p>
+      </div>
+    </div>
+
+    <div class="ic-grid">
+      <div class="ic-cell" data-name="i-home home start"><div class="glyph"><svg><use href="#i-home"/></svg></div><div class="name"><b>Home</b>i-home</div></div>
+      <div class="ic-cell" data-name="i-search suche"><div class="glyph"><svg><use href="#i-search"/></svg></div><div class="name"><b>Suche</b>i-search</div></div>
+      <div class="ic-cell" data-name="i-bell benachrichtigung"><div class="glyph"><svg><use href="#i-bell"/></svg></div><div class="name"><b>Benachrichtigung</b>i-bell</div></div>
+      <div class="ic-cell" data-name="i-cog einstellungen"><div class="glyph"><svg><use href="#i-cog"/></svg></div><div class="name"><b>Einstellungen</b>i-cog</div></div>
+      <div class="ic-cell" data-name="i-calendar kalender spielplan"><div class="glyph"><svg><use href="#i-calendar"/></svg></div><div class="name"><b>Kalender</b>i-calendar</div></div>
+      <div class="ic-cell" data-name="i-roster mannschaft team"><div class="glyph"><svg><use href="#i-roster"/></svg></div><div class="name"><b>Roster</b>i-roster</div></div>
+      <div class="ic-cell" data-name="i-stats statistik"><div class="glyph"><svg><use href="#i-stats"/></svg></div><div class="name"><b>Statistik</b>i-stats</div></div>
+      <div class="ic-cell" data-name="i-trophy pokal tabelle"><div class="glyph"><svg><use href="#i-trophy"/></svg></div><div class="name"><b>Pokal</b>i-trophy</div></div>
+      <div class="ic-cell" data-name="i-folder archiv"><div class="glyph"><svg><use href="#i-folder"/></svg></div><div class="name"><b>Archiv</b>i-folder</div></div>
+      <div class="ic-cell" data-name="i-plus hinzufügen"><div class="glyph"><svg><use href="#i-plus"/></svg></div><div class="name"><b>Plus</b>i-plus</div></div>
+      <div class="ic-cell" data-name="i-minus minus"><div class="glyph"><svg><use href="#i-minus"/></svg></div><div class="name"><b>Minus</b>i-minus</div></div>
+      <div class="ic-cell" data-name="i-check haken bestätigen"><div class="glyph"><svg><use href="#i-check"/></svg></div><div class="name"><b>Check</b>i-check</div></div>
+      <div class="ic-cell" data-name="i-x schließen abbrechen"><div class="glyph"><svg><use href="#i-x"/></svg></div><div class="name"><b>Close</b>i-x</div></div>
+      <div class="ic-cell" data-name="i-chevron-r"><div class="glyph"><svg><use href="#i-chevron-r"/></svg></div><div class="name"><b>Chevron R</b>i-chevron-r</div></div>
+      <div class="ic-cell" data-name="i-chevron-d"><div class="glyph"><svg><use href="#i-chevron-d"/></svg></div><div class="name"><b>Chevron D</b>i-chevron-d</div></div>
+      <div class="ic-cell" data-name="i-chevron-l"><div class="glyph"><svg><use href="#i-chevron-l"/></svg></div><div class="name"><b>Chevron L</b>i-chevron-l</div></div>
+      <div class="ic-cell" data-name="i-chevron-u"><div class="glyph"><svg><use href="#i-chevron-u"/></svg></div><div class="name"><b>Chevron U</b>i-chevron-u</div></div>
+      <div class="ic-cell" data-name="i-arr-r pfeil rechts"><div class="glyph"><svg><use href="#i-arr-r"/></svg></div><div class="name"><b>Pfeil →</b>i-arr-r</div></div>
+      <div class="ic-cell" data-name="i-edit bearbeiten"><div class="glyph"><svg><use href="#i-edit"/></svg></div><div class="name"><b>Bearbeiten</b>i-edit</div></div>
+      <div class="ic-cell" data-name="i-trash löschen"><div class="glyph"><svg><use href="#i-trash"/></svg></div><div class="name"><b>Löschen</b>i-trash</div></div>
+      <div class="ic-cell" data-name="i-filter filter"><div class="glyph"><svg><use href="#i-filter"/></svg></div><div class="name"><b>Filter</b>i-filter</div></div>
+      <div class="ic-cell" data-name="i-sort sortieren"><div class="glyph"><svg><use href="#i-sort"/></svg></div><div class="name"><b>Sortieren</b>i-sort</div></div>
+      <div class="ic-cell" data-name="i-import importieren"><div class="glyph"><svg><use href="#i-import"/></svg></div><div class="name"><b>Import</b>i-import</div></div>
+      <div class="ic-cell" data-name="i-export exportieren"><div class="glyph"><svg><use href="#i-export"/></svg></div><div class="name"><b>Export</b>i-export</div></div>
+      <div class="ic-cell" data-name="i-share teilen"><div class="glyph"><svg><use href="#i-share"/></svg></div><div class="name"><b>Teilen</b>i-share</div></div>
+      <div class="ic-cell" data-name="i-menu menü burger"><div class="glyph"><svg><use href="#i-menu"/></svg></div><div class="name"><b>Menü</b>i-menu</div></div>
+      <div class="ic-cell" data-name="i-more-h mehr ellipsis"><div class="glyph"><svg><use href="#i-more-h"/></svg></div><div class="name"><b>Mehr ···</b>i-more-h</div></div>
+      <div class="ic-cell" data-name="i-info information"><div class="glyph" style="color: var(--info-text);"><svg><use href="#i-info"/></svg></div><div class="name"><b>Info</b>i-info</div></div>
+      <div class="ic-cell" data-name="i-question hilfe frage"><div class="glyph"><svg><use href="#i-question"/></svg></div><div class="name"><b>Hilfe</b>i-question</div></div>
+      <div class="ic-cell" data-name="i-warn warnung"><div class="glyph" style="color: var(--warn-text);"><svg><use href="#i-warn"/></svg></div><div class="name"><b>Warnung</b>i-warn</div></div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       08 — USAGE
+       ════════════════════════════════════════════════════════════ -->
+  <section class="s" data-screen-label="08 Usage" style="border-bottom: 0;">
+    <div class="s-head">
+      <div class="s-num">08 — Usage</div>
+      <div class="s-title">
+        <h2>In Buttons, Inputs, Listen — und zwei Don'ts.</h2>
+        <p>
+          Drei sinnvolle Einbau-Größen je nach Container. Wichtig: niemals Icons als Schmuck
+          neben jedes Listenelement schrauben, niemals Icons unter 14 px ohne Begleit-Label.
+        </p>
+      </div>
+    </div>
+
+    <div class="usage">
+
+      <div class="usage-row">
+        <div class="label">
+          <b>In Buttons</b>
+          18 px Icon · 8 px Gap zum Label
+        </div>
+        <div class="demo">
+          <button class="demo-btn primary"><svg><use href="#i-plus"/></svg> Aktion erfassen</button>
+          <button class="demo-btn amber"><svg><use href="#i-whistle"/></svg> Anpfiff</button>
+        </div>
+        <div class="demo">
+          <button class="demo-btn ghost"><svg><use href="#i-export"/></svg> Exportieren</button>
+          <button class="demo-btn ghost"><svg><use href="#i-print"/></svg> Drucken</button>
+        </div>
+      </div>
+
+      <div class="usage-row">
+        <div class="label">
+          <b>In Inputs</b>
+          16 px Icon · 10 px Gap, linksbündig im Field
+        </div>
+        <div class="demo">
+          <div class="demo-input"><svg><use href="#i-search"/></svg>Verein, Spieler, Spiel …</div>
+        </div>
+        <div class="demo">
+          <div class="demo-input" style="background: var(--n-0); border: 1px solid var(--page-line);"><svg style="color: var(--ink-700);"><use href="#i-calendar"/></svg><span style="color: var(--ink-900);">SA · 24.05.2026</span></div>
+        </div>
+      </div>
+
+      <div class="usage-row">
+        <div class="label">
+          <b>Inline-Tag</b>
+          Vertical-align <code>-2px</code>, Größe an Font-Size gekoppelt
+        </div>
+        <div class="demo" style="font-size: 15px; color: var(--ink-700);">
+          Spielzug · <svg class="ic" style="width: 1em; height: 1em; vertical-align: -2px; color: var(--err-fill);"><use href="#i-live"/></svg> Live · Q2
+        </div>
+        <div class="demo" style="font-size: 15px; color: var(--ink-700);">
+          <svg class="ic" style="width: 1em; height: 1em; vertical-align: -2px; color: var(--ok-fill);"><use href="#i-valid"/></svg> Endbericht freigegeben
+        </div>
+      </div>
+
+      <div class="usage-row">
+        <div class="label">
+          <b>In Trikotnummer-Slots</b>
+          Captain-Glyph als Adjunkt, nicht im selben Token
+        </div>
+        <div class="demo">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;background:var(--sky-700);color:white;font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:-0.02em;position:relative;">
+            14
+            <svg style="width:14px;height:14px;color:var(--amber-500);position:absolute;top:-4px;right:-4px;background:var(--n-0);border-radius:50%;padding:2px;"><use href="#i-captain"/></svg>
+          </span>
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;background:var(--n-100);color:var(--ink-900);font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:-0.02em;position:relative;opacity:0.5;">
+            42
+            <svg style="width:14px;height:14px;color:var(--err-fill);position:absolute;top:-4px;right:-4px;background:var(--n-0);border-radius:50%;padding:2px;"><use href="#i-foulout"/></svg>
+          </span>
+        </div>
+        <div class="demo" style="color: var(--page-mute); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em;">
+          14 — Hartmann · <b style="color: var(--amber-700);">C</b><br>
+          42 — Kovač · Foul-Out (5 Fouls)
+        </div>
+      </div>
+
+      <div class="usage-row" style="background: var(--err-soft);">
+        <div class="label" style="color: var(--err-text);">
+          <b style="color: var(--err-button);">Don't</b>
+          Icon als alleiniger Indikator ohne Label
+        </div>
+        <div class="demo">
+          <span style="color: var(--err-fill); font-size: 22px;"><svg style="width:1em;height:1em;"><use href="#i-foul-u"/></svg></span>
+          <span style="color: var(--err-fill); font-size: 22px;"><svg style="width:1em;height:1em;"><use href="#i-foul-t"/></svg></span>
+          <span style="color: var(--err-fill); font-size: 22px;"><svg style="width:1em;height:1em;"><use href="#i-dq"/></svg></span>
+        </div>
+        <div class="demo" style="color: var(--err-text); font-size: 13px;">
+          Foul-Glyphen sind ohne Text-Label nicht eindeutig auseinanderzuhalten. Immer mit Klartext kombinieren.
+        </div>
+      </div>
+
+      <div class="usage-row" style="background: var(--err-soft);">
+        <div class="label" style="color: var(--err-text);">
+          <b style="color: var(--err-button);">Don't</b>
+          Custom-Tönung mit Hex-Code statt Token
+        </div>
+        <div class="demo">
+          <span style="color: #ff8800; font-size: 28px;"><svg style="width:1em;height:1em;"><use href="#i-whistle"/></svg></span>
+        </div>
+        <div class="demo" style="color: var(--err-text); font-size: 13px;">
+          Farben kommen aus Token-Variablen (<code>--ink-900</code>, <code>--amber-700</code>, <code>--err-fill</code> …). Free-Hex bricht DBB-Compat und Dark-Mode.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════════════════════ -->
+  <footer style="padding: 72px 0 0; display: flex; justify-content: space-between; align-items: baseline; font-family: var(--font-mono); font-size: 11px; color: var(--page-mute); letter-spacing: 0.06em; text-transform: uppercase;">
+    <span>DSS Design System · Icons v0.1 · 54 Glyphen</span>
+    <span>v0.6 · Mai 2026</span>
+  </footer>
+
+</div>
+
+<!-- TWEAKS ISLAND -->
+<div id="tweaks-root"></div>
+
+<script>
+  // Live-search: hides/shows cells based on data-name
+  (function () {
+    const input = document.getElementById('icon-search');
+    const cells = document.querySelectorAll('.ic-cell');
+    if (!input) return;
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      cells.forEach((c) => {
+        const n = (c.getAttribute('data-name') || '').toLowerCase();
+        c.style.display = (q === '' || n.includes(q)) ? '' : 'none';
+      });
+    });
+
+    // Click-to-copy icon ID
+    cells.forEach((c) => {
+      c.addEventListener('click', () => {
+        const txt = c.querySelector('.name').textContent.split(/\s/).filter(s => s.startsWith('i-'))[0]
+          || (c.getAttribute('data-name') || '').split(' ')[0];
+        if (!txt) return;
+        try { navigator.clipboard.writeText(txt); } catch (_) {}
+        const original = c.style.background;
+        c.style.background = 'var(--amber-100)';
+        setTimeout(() => { c.style.background = original; }, 240);
+      });
+    });
+  })();
+</script>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+const ICONS_TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "amberHue": 83,
+  "skyHue": 244,
+  "inkHue": 60,
+  "stroke": 1.75
+}/*EDITMODE-END*/;
+
+function IconsTweaks() {
+  const [t, setTweak] = useTweaks(ICONS_TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    const r = document.documentElement;
+    r.style.setProperty('--h-ink',   t.inkHue);
+    r.style.setProperty('--h-amber', t.amberHue);
+    r.style.setProperty('--h-sky',   t.skyHue);
+
+    // apply stroke-width to all sprite symbols
+    document.querySelectorAll('svg symbol[stroke="currentColor"]').forEach((s) => {
+      s.setAttribute('stroke-width', t.stroke);
+    });
+  }, [t]);
+
+  return (
+    <TweaksPanel title="Icons Tweaks">
+      <TweakSection label="Stroke">
+        <TweakSlider label="Stroke-Width" value={t.stroke} min={1} max={2.5} step={0.05} unit=" px"
+          onChange={(v) => setTweak('stroke', v)} />
+      </TweakSection>
+      <TweakSection label="Hue (sync mit Identity)">
+        <TweakSlider label="Ink" value={t.inkHue} min={0} max={120} step={1} unit="°"
+          onChange={(v) => setTweak('inkHue', v)} />
+        <TweakSlider label="Amber" value={t.amberHue} min={30} max={100} step={1} unit="°"
+          onChange={(v) => setTweak('amberHue', v)} />
+        <TweakSlider label="Sky" value={t.skyHue} min={200} max={260} step={1} unit="°"
+          onChange={(v) => setTweak('skyHue', v)} />
+      </TweakSection>
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('tweaks-root')).render(<IconsTweaks />);
+</script>
+
+</body>
+</html>
