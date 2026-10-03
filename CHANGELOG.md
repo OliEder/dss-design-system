@@ -3,6 +3,29 @@
 Alle nennenswerten Änderungen an diesem Design System werden hier dokumentiert.
 Versionierung folgt [Semantic Versioning](https://semver.org/).
 
+## [Unreleased] — Vanilla-CSS-Komponenten
+
+Framework-freie Umsetzung der Komponenten (`css/components.css`), entstanden im Vereinsregister
+(Basketball Vereinsregister Deutschland), das das DSS ohne Svelte und ohne Build-Schritt nutzt.
+
+### Neu
+- `css/components.css` mit denselben Klassennamen wie die Svelte-Komponenten: `dss-btn` (primary · amber ·
+  secondary · ghost, Größen sm/md/lg, Icon), `dss-card` (default · elevated · flat · hoverable),
+  `dss-tabs` (underline · segmented · pills, auch per `aria-pressed`/`aria-selected`), `dss-frame` +
+  `dss-tbl` (Tabelle mit `num`/`lead`-Spalten, `is-own`-Zeile, compact), Eingabe (`dss-input-group`,
+  `dss-input`, `dss-select`).
+- Neue Bausteine: `dss-chip` (neutral · sky · amber · ok · warn · err · mono · link), `dss-stat`
+  (Kennzahl-Kachel), `dss-rows`/`dss-row` (Listenzeile für Spielpläne), `dss-topbar`, `dss-empty`,
+  `dss-eyebrow`, `dss-link`, `dss-sr-only`.
+- Semantische Aliase `--dss-*` (Text, Linien, Flächen, Link, Akzent, Button, Chips) mit Light- und
+  Dark-Werten. Komponenten verwenden nur diese Aliase, daher funktioniert Dark ohne Overrides.
+- Dark-Theme: Primär-Button wechselt auf helle Fläche mit dunklem Text (ink-900 wäre auf dunklem
+  Hintergrund unsichtbar).
+
+### Geprüft
+- Im Vereinsregister läuft ein axe-core-Test (WCAG 2.2 AA als Gate, AAA-Kontrast 7:1 und 44-px-Ziele
+  als Ratchet): alle Seiten bestehen in Light und Dark ohne offene AAA-Verstöße.
+
 ## [0.6.0] — 2026-05 · App-Shell-Pack
 
 Drei Komponenten-Specs, die das Foundation-Set zu einem produktionstauglichen App-Shell-Pack

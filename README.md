@@ -80,6 +80,23 @@ npx style-dictionary build --tokens tokens/tokens.json
 
 ---
 
+## Vanilla CSS (ohne Svelte)
+
+Für Seiten ohne Build-Schritt gibt es `css/components.css` mit denselben Klassennamen wie die
+Svelte-Komponenten (`dss-btn`, `dss-card`, `dss-tabs`, `dss-tbl`, `dss-chip`, …):
+
+```html
+<html data-theme="light">
+<link rel="stylesheet" href="tokens/tokens.css" />
+<link rel="stylesheet" href="css/components.css" />
+
+<button class="dss-btn dss-btn--amber dss-btn--lg">Suchen</button>
+<span class="dss-chip dss-chip--sky">Männlich</span>
+```
+
+Farben laufen über die semantischen Variablen `--dss-*`; Dark schaltet `data-theme="dark"` oder die
+OS-Präferenz.
+
 ## Identitäts-Achsen
 
 | Achse | Rolle | Anchor |
