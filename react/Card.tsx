@@ -1,4 +1,4 @@
-import { forwardRef, type ComponentType, type HTMLAttributes, type KeyboardEvent, type ReactNode, type SyntheticEvent } from 'react';
+import { forwardRef, type ElementType, type HTMLAttributes, type KeyboardEvent, type ReactNode, type Ref, type SyntheticEvent } from 'react';
 import { cn } from './cn';
 
 export type CardVariant = 'default' | 'elevated' | 'flat' | 'hoverable';
@@ -20,11 +20,12 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(
   ref,
 ) {
   const tagName = href ? 'a' : as;
-  const Tag = tagName as unknown as ComponentType<any>;
+  const Tag: ElementType = tagName;
   const interactiveDiv = tagName === 'div' && Boolean(onClick);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     onKeyDown?.(event);
+    if (event.target !== event.currentTarget) return;
     if (!event.defaultPrevented && (event.key === 'Enter' || event.key === ' ')) {
       event.preventDefault();
       onClick?.(event);
@@ -33,7 +34,7 @@ export const Card = forwardRef<HTMLElement, CardProps>(function Card(
 
   return (
     <Tag
-      ref={ref}
+      ref={ref as Ref<never>}
       href={href}
       onClick={onClick}
       onKeyDown={interactiveDiv ? handleKeyDown : onKeyDown}

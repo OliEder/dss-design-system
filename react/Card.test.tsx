@@ -45,6 +45,21 @@ describe('Card', () => {
     expect(onClick).toHaveBeenCalledTimes(3);
   });
 
+  it.each([['Enter', 'Enter'], ['Space', ' ']])(
+    'löst die Karte nicht aus, wenn %s auf einem Button innerhalb gedrückt wird',
+    (_name, key) => {
+      const onClick = vi.fn();
+      render(
+        <Card variant="hoverable" onClick={onClick}>
+          <button type="button">Innen</button>
+        </Card>,
+      );
+      const notPrevented = fireEvent.keyDown(screen.getByText('Innen'), { key });
+      expect(onClick).not.toHaveBeenCalled();
+      expect(notPrevented).toBe(true);
+    },
+  );
+
   it('hat keine axe-Verstöße', async () => {
     const { container } = render(<Card header="Titel" footer="Fuß">Body</Card>);
     await expectNoA11yViolations(container);
