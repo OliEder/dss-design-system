@@ -1,6 +1,6 @@
 {
   "name": "@bbv/dss-design-system",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "DSS Design System — Komponenten-Library für Basketball-Apps (Digitaler Spielbericht, Scoreboard, Vereinsregister)",
   "type": "module",
   "main": "tokens/tokens.css",
@@ -9,14 +9,19 @@
     "./tokens.css": "./tokens/tokens.css",
     "./tokens.json": "./tokens/tokens.json",
     "./tailwind": "./tokens/tailwind.preset.js",
+    "./components.css": "./css/components.css",
+    "./react": {
+      "types": "./dist/react/index.d.ts",
+      "import": "./dist/react/index.js"
+    },
     "./svelte/Button": "./svelte/Button.svelte",
     "./svelte/Input": "./svelte/TextInput.svelte",
     "./svelte/Modal": "./svelte/Modal.svelte",
     "./svelte/Card": "./svelte/Card.svelte",
     "./svelte/Tabs": "./svelte/Tabs.svelte",
     "./svelte/Icon": "./svelte/Icon.svelte",
-    "./svelte/Select":      "./svelte/Select.svelte",
-    "./svelte/Banner":      "./svelte/Banner.svelte",
+    "./svelte/Select": "./svelte/Select.svelte",
+    "./svelte/Banner": "./svelte/Banner.svelte",
     "./svelte/Table": "./svelte/Table.svelte",
     "./svelte/PlayByPlay": "./svelte/PlayByPlay.svelte",
     "./svelte/TopBar": "./svelte/TopBar.svelte",
@@ -30,14 +35,20 @@
   },
   "files": [
     "tokens/",
+    "css/",
+    "icons/",
     "svelte/",
+    "dist/",
     "README.md",
     "CHANGELOG.md"
   ],
   "scripts": {
     "test": "vitest run",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build -o storybook-static"
+    "build-storybook": "storybook build -o storybook-static",
+    "build:react": "tsup",
+    "typecheck": "tsc -p react/tsconfig.json --noEmit",
+    "prepare": "npm run build:react"
   },
   "keywords": [
     "design-system",
@@ -48,16 +59,20 @@
     "tokens",
     "svelte",
     "tailwind",
-    "wcag-aaa"
+    "wcag-aaa",
+    "react"
   ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/<your-user>/dss-design-system.git"
+    "url": "git+https://github.com/OliEder/dss-design-system.git"
   },
   "peerDependencies": {
     "svelte": "^5.0.0",
-    "tailwindcss": "^3.4.0 || ^4.0.0"
+    "tailwindcss": "^3.4.0 || ^4.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "@radix-ui/react-dialog": "^1.1.0"
   },
   "peerDependenciesMeta": {
     "svelte": {
@@ -65,15 +80,35 @@
     },
     "tailwindcss": {
       "optional": true
+    },
+    "react": {
+      "optional": true
+    },
+    "react-dom": {
+      "optional": true
+    },
+    "@radix-ui/react-dialog": {
+      "optional": true
     }
   },
   "devDependencies": {
+    "@radix-ui/react-dialog": "^1.1.23",
     "@storybook/addon-a11y": "^10.4.0",
     "@storybook/addon-themes": "^10.4.0",
     "@storybook/svelte-vite": "^10.4.0",
     "@sveltejs/vite-plugin-svelte": "^6.0.0",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "axe-core": "^4.14.0",
+    "jsdom": "^29.1.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "storybook": "^10.4.0",
     "svelte": "^5.0.0",
+    "tsup": "^8.5.1",
+    "typescript": "~5.8.3",
     "vite": "^7.0.0",
     "vitest": "^4.1.11"
   },
