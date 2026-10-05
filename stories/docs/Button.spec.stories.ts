@@ -1,4 +1,4 @@
-import ButtonDoc from './docs/ButtonDoc.svelte';
+import ButtonDoc from './ButtonDoc.svelte';
 export default {
   title: 'Docs/Button',
   component: ButtonDoc,

@@ -4,6 +4,7 @@ import { withThemeByDataAttribute } from '@storybook/addon-themes';
 // Pull in design-system tokens so every story renders with the real
 // color, type, spacing scale.
 import '../tokens/tokens.css';
+import '../css/components.css';
 import './storybook.css';
 
 const preview: Preview = {
@@ -25,7 +26,7 @@ const preview: Preview = {
           'Introduction',
           'Docs', ['Button', 'Forms', 'Cards & Lists', 'Navigation', 'Tables & Live-Scoring'],
           'Foundation', ['Colors', 'Typography', 'Spacing', 'Shadows'],
-          'Components', ['Button', 'TextInput', 'Modal', 'Card', 'Card Library', 'Tabs', 'Navigation', 'Table', 'PlayByPlay', 'Icon'],
+          'Components', ['Button', 'TextInput', 'Select', 'Modal', 'Banner', 'Card', 'Card Library', 'Tabs', 'Navigation', 'Table', 'PlayByPlay', 'Icon'],
         ],
       },
     },
