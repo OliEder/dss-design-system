@@ -3,7 +3,7 @@
 Alle nennenswerten Änderungen an diesem Design System werden hier dokumentiert.
 Versionierung folgt [Semantic Versioning](https://semver.org/).
 
-## [Unreleased] — Vanilla-CSS-Komponenten
+## [0.7.0] — React-Paket + Vanilla-CSS
 
 Framework-freie Umsetzung der Komponenten (`css/components.css`), entstanden im Vereinsregister
 (Basketball Vereinsregister Deutschland), das das DSS ohne Svelte und ohne Build-Schritt nutzt.
@@ -29,10 +29,27 @@ Framework-freie Umsetzung der Komponenten (`css/components.css`), entstanden im 
 - Svelte: neue Komponenten `Select` (natives `<select>`) und `Banner`, beide nur mit `dss-*`-Klassen.
 - Storybook lädt jetzt `css/components.css`; Stories für Select und Banner.
 - Tests: `tests/components-css.test.ts` (Vitest) prüft die benötigten Klassen.
+- **React-Paket** (`@bbv/dss-design-system/react`): `Button`, `TextInput`, `Select` (nativ), `Modal` (Radix Dialog),
+  `Banner`, `Card`, `Tabs`, `Icon`. Rendert nur `dss-*`-Klassen aus `css/components.css`
+  (`@bbv/dss-design-system/components.css`). `react`, `react-dom` und `@radix-ui/react-dialog` sind optionale
+  `peerDependencies`; das Paket baut sich per `prepare` (tsup) selbst, auch als Git-Dependency.
+- `Modal`: Prop `dismissOnBackdrop` (Standard `true`) für Dialoge, die nicht per Klick außerhalb schließen sollen.
+- Gemeinsamer Icon-Sprite (`icons/sprite.ts`) für Svelte und React.
+- Paritäts-Test (`parity.manifest.json`, `tests/parity.test.ts`): neue Komponenten brauchen Svelte + CSS + React.
+- Tests: Vitest + Testing Library + axe-core für alle React-Komponenten.
 
 ### Geprüft
 - Im Vereinsregister läuft ein axe-core-Test (WCAG 2.2 AA als Gate, AAA-Kontrast 7:1 und 44-px-Ziele
   als Ratchet): alle Seiten bestehen in Light und Dark ohne offene AAA-Verstöße.
+
+### Bekannt / Follow-up
+- `Tabs` (React) lässt im Multi-Modus alle Buttons per Tab erreichbar; `svelte/Tabs.svelte` setzt dort noch
+  `tabindex="-1"` auf inaktive Einträge.
+- Die Svelte-Komponenten Button, TextInput, Modal, Card und Tabs enthalten weiterhin eigene Scoped-Styles, die
+  `css/components.css` doppeln.
+- `css/`, `icons/` und `dist/` sind jetzt in `files` des Pakets (zuvor fehlte `css/`).
+- `Card` (React) fängt Enter/Space nicht mehr von interaktiven Kindern ab; `svelte/Card.svelte` setzt bei
+  klickbarem `div` zwar `role="button"` und `tabindex="0"`, hat aber keinen Tastatur-Handler.
 
 ## [0.6.0] — 2026-05 · App-Shell-Pack
 

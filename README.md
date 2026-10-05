@@ -21,6 +21,11 @@ svelte/
   Icon.svelte           ← v0.6 (67 Glyphen)
   Select.svelte         ← v0.7 · natives <select> im DSS-Look
   Banner.svelte         ← v0.7 · Inline-Hinweis
+react/                  ← v0.7 · React-Komponenten (Button, TextInput, Select, Modal, Banner, Card, Tabs, Icon)
+icons/
+  sprite.ts             ← v0.7 · gemeinsamer Icon-Sprite für Svelte und React
+css/
+  components.css        ← Vanilla-CSS-Komponenten (einzige CSS-Quelle)
 .storybook/             ← v0.6 · Storybook config
 stories/                ← v0.6 · Stories für alle Komponenten + Foundation
 docs/
@@ -98,6 +103,24 @@ Svelte-Komponenten (`dss-btn`, `dss-card`, `dss-tabs`, `dss-tbl`, `dss-chip`, �
 
 Farben laufen über die semantischen Variablen `--dss-*`; Dark schaltet `data-theme="dark"` oder die
 OS-Präferenz.
+
+## React
+
+```bash
+npm install github:OliEder/dss-design-system#v0.7.0 react react-dom @radix-ui/react-dialog
+```
+
+```tsx
+import '@bbv/dss-design-system/tokens.css';
+import '@bbv/dss-design-system/components.css';
+import { Button, TextInput, Select, Modal, Banner } from '@bbv/dss-design-system/react';
+
+<Button variant="amber">Speichern</Button>
+<TextInput label="Name" required />
+<Modal open={open} onOpenChange={setOpen} title="Turnier löschen?" severity="danger" dismissOnBackdrop={false}>…</Modal>
+```
+
+Tailwind-Nutzer: `components.css` **nach** `@tailwind base` laden (Preflight setzt sonst Button-Hintergründe zurück).
 
 ## Identitäts-Achsen
 
