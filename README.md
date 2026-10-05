@@ -18,7 +18,9 @@ svelte/
   Modal.svelte          ← Reference component
   Card.svelte           ← v0.6
   Tabs.svelte           ← v0.6
-  Icon.svelte           ← v0.6 (54 Glyphen)
+  Icon.svelte           ← v0.6 (67 Glyphen)
+  Select.svelte         ← v0.7 · natives <select> im DSS-Look
+  Banner.svelte         ← v0.7 · Inline-Hinweis
 .storybook/             ← v0.6 · Storybook config
 stories/                ← v0.6 · Stories für alle Komponenten + Foundation
 docs/
@@ -158,7 +160,7 @@ Tokens unterstützen Light und Dark out-of-the-box:
 | **Modals** | Confirm · Sheet · Drawer · Toast · Banner · Popover |
 | **Navigation** *(v0.6)* | App-Shell · Top-Bar · Sidebar · Tabs · Breadcrumbs · Bottom-Nav · Stepper · Sub-Nav |
 | **Cards & Lists** *(v0.6)* | Match-Cards · Player-Cards · Standings · Crew · Empty / Loading / Error |
-| **Icons** *(v0.6)* | 54 Glyphen: Aktionen · Court · Rollen · Status · System · UI-Core |
+| **Icons** *(v0.6)* | 67 Glyphen: Aktionen · Court · Rollen · Status · System · UI-Core |
 
 Jede HTML-Datei ist ein eigenständiges, scrollbares Dokument zum Live-Anschauen.
 

@@ -1632,7 +1632,7 @@
   <!-- ════════════════════════════════════════════════════════════
        06 — ENDBERICHT (zusammengesetzte Komposition)
        ════════════════════════════════════════════════════════════ -->
-  <section class="s" data-screen-label="06 Endbericht" style="border-bottom: 0;">
+  <section class="s" data-screen-label="06 Endbericht">
     <div class="s-head">
       <div class="s-num">06 — Endbericht</div>
       <div class="s-title">
@@ -1729,9 +1729,46 @@
     </div>
   </section>
 
+  <section class="s" data-screen-label="07 Vanilla CSS" style="border-bottom: 0;">
+    <div class="s-head">
+      <div class="s-num">07 — Vanilla CSS &amp; React</div>
+      <div class="s-title">
+        <h2>Modal und Banner ohne Framework.</h2>
+        <p>
+          <code>css/components.css</code> enthält <code>dss-modal*</code> und <code>dss-banner*</code>.
+          Dasselbe Markup rendern die Svelte- und React-Komponenten. Das React-Modal nutzt Radix Dialog
+          (Fokus-Falle, Escape, ARIA); <code>dismissOnBackdrop={false}</code> verhindert das Schließen per Klick
+          außerhalb. Live-Demos: Storybook, Components / Modal und Banner.
+        </p>
+      </div>
+    </div>
+    <div class="s-body">
+<pre style="background:#f4f4f2;padding:16px;border-radius:8px;overflow:auto;font-size:13px">&lt;!-- Banner: severity = info | ok | warn | danger --&gt;
+&lt;div class="dss-banner dss-banner--warn" role="alert"&gt;
+  &lt;div class="dss-banner-body"&gt;
+    &lt;p class="dss-banner-title"&gt;Hallenzeit knapp&lt;/p&gt;
+    Rundenzahl reduzieren oder mehr Felder einplanen.
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- Modal: Größen dss-modal--sm | (md) | --wide | --xwide --&gt;
+&lt;div class="dss-backdrop"&gt;&lt;/div&gt;
+&lt;div class="dss-modal-wrap"&gt;
+  &lt;div class="dss-modal" role="dialog" aria-modal="true" aria-labelledby="t"&gt;
+    &lt;div class="dss-m-head"&gt;
+      &lt;div class="dss-m-head-icon dss-m-head-icon--danger"&gt;…&lt;/div&gt;
+      &lt;div class="dss-m-head-text"&gt;&lt;h2 class="dss-m-title" id="t"&gt;Turnier löschen?&lt;/h2&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="dss-m-body"&gt;…&lt;/div&gt;
+    &lt;div class="dss-m-footer"&gt;&lt;button class="dss-btn dss-btn--ghost dss-btn--md"&gt;Abbrechen&lt;/button&gt;&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+    </div>
+  </section>
+
   <div class="foot">
     <span class="iter">Modals v0.1</span> &nbsp;·&nbsp;
-    Anatomy · 4 Confirms · 2 Sheets · Drawer · 3 Toasts · 4 Banner · 3 Popover · Endbericht
+    Anatomy · 4 Confirms · 2 Sheets · Drawer · 3 Toasts · 4 Banner · 3 Popover · Endbericht · Vanilla CSS
   </div>
 
 </div>

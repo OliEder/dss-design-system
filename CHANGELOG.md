@@ -21,6 +21,14 @@ Framework-freie Umsetzung der Komponenten (`css/components.css`), entstanden im 
   Dark-Werten. Komponenten verwenden nur diese Aliase, daher funktioniert Dark ohne Overrides.
 - Dark-Theme: Primär-Button wechselt auf helle Fläche mit dunklem Text (ink-900 wäre auf dunklem
   Hintergrund unsichtbar).
+- `dss-btn--danger`, `dss-btn.is-touch`; Feld-Bausteine `dss-field-help*`, Zustände `is-error|ok|warn`,
+  Dichte `dss-input--default|compact`, `dss-select--compact`, `dss-addon--right`.
+- `dss-banner*` (info · ok · warn · danger) und `dss-modal*` (aus `svelte/Modal.svelte` extrahiert,
+  dark-sicher über die `--dss-*`-Aliase).
+- Tabs: Größen `sm|lg`, Variante `vertical`, `dss-tab-count`, `dss-tab-ic`; `dss-icon`.
+- Svelte: neue Komponenten `Select` (natives `<select>`) und `Banner`, beide nur mit `dss-*`-Klassen.
+- Storybook lädt jetzt `css/components.css`; Stories für Select und Banner.
+- Tests: `tests/components-css.test.ts` (Vitest) prüft die benötigten Klassen.
 
 ### Geprüft
 - Im Vereinsregister läuft ein axe-core-Test (WCAG 2.2 AA als Gate, AAA-Kontrast 7:1 und 44-px-Ziele

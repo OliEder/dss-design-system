@@ -2528,7 +2528,7 @@
   <!-- ════════════════════════════════════════════════════════════
        SECTION 05 — LIVE SCORING & KORREKTUREN
        ════════════════════════════════════════════════════════════ -->
-  <section class="s" data-screen-label="05 Live Scoring" style="border-bottom: 0;">
+  <section class="s" data-screen-label="05 Live Scoring">
     <div class="s-head">
       <div class="s-num">05 — Live Scoring</div>
       <div class="s-title">
@@ -3135,9 +3135,35 @@
     </div>
   </section>
 
+  <section class="s" data-screen-label="06 Select" style="border-bottom: 0;">
+    <div class="s-head">
+      <div class="s-num">06 — Select</div>
+      <div class="s-title">
+        <h2>Natives Select im DSS-Look.</h2>
+        <p>
+          Bewusst ein natives <code>&lt;select&gt;</code>: Tastatur, Screenreader und Mobile-Picker kommen vom
+          Betriebssystem. Verfügbar als Svelte-Komponente, als Vanilla-CSS (<code>dss-select</code>) und als
+          React-Komponente. Live-Demos: Storybook, Components / Select.
+        </p>
+      </div>
+    </div>
+    <div class="s-body">
+<pre style="background:#f4f4f2;padding:16px;border-radius:8px;overflow:auto;font-size:13px">&lt;div class="dss-field"&gt;
+  &lt;label class="dss-field-label" for="modus"&gt;Turniermodus&lt;/label&gt;
+  &lt;select id="modus" class="dss-select"&gt;
+    &lt;option value="round-robin"&gt;Jeder gegen Jeden&lt;/option&gt;
+    &lt;option value="swiss"&gt;Schweizer System&lt;/option&gt;
+  &lt;/select&gt;
+&lt;/div&gt;
+
+Modifier: dss-select--compact (36 px) · Zustände auf dem Wrapper: is-error · is-ok · is-warn
+Hilfetext: &lt;div class="dss-field-help dss-field-help--err"&gt;…&lt;/div&gt;</pre>
+    </div>
+  </section>
+
   <div class="foot">
     <span class="iter">Forms v0.2</span> &nbsp;·&nbsp;
-    Input-Types · States · Spielbericht-Setup · Team-Config · Live Scoring · Follow-Up-Dialoge
+    Input-Types · States · Spielbericht-Setup · Team-Config · Live Scoring · Follow-Up-Dialoge · Select
   </div>
 
 </div>
