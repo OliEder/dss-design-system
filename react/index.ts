@@ -11,3 +11,12 @@ export { Table, type TableProps, type TableColumn, type TableDensity } from './T
 export { TopBar, type TopBarProps, type TopBarContext } from './TopBar';
 export { EmptyState, type EmptyStateProps, type EmptyStateTone } from './EmptyState';
 export { Stepper, type StepperProps, type StepItem, type StepState, type StepperVariant } from './Stepper';
+export {
+  AppNav,
+  type AppNavProps,
+  type AppNavItem,
+  type AppNavLink,
+  type AppNavGroup,
+  type AppNavTone,
+  type AppNavLinkRenderProps,
+} from './AppNav';

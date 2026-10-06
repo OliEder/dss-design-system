@@ -596,3 +596,55 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
 .dss-step-body { padding-top: 4px; flex: 1; }
 .dss-step--v .dss-step-label { font-size: 14px; }
 .dss-step-desc { font-size: 13px; color: var(--dss-mute); margin-top: 2px; }
+
+/* ── AppNav · Hauptnavigation mit Gruppen-Dropdowns und mobilem Menü ── */
+.dss-appnav { position: relative; background: var(--dss-surface); border-bottom: 1px solid var(--dss-line); font-family: var(--font-body); }
+.dss-appnav-bar { display: flex; align-items: center; gap: 4px; padding: 0 12px; }
+.dss-appnav-list { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.dss-appnav-item { position: relative; }
+.dss-appnav-context { margin-left: auto; display: flex; align-items: center; gap: 8px; padding: 0 8px; }
+.dss-appnav-link, .dss-appnav-group-btn, .dss-appnav-toggle {
+  appearance: none; display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 0 12px;
+  border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px; background: none;
+  font: inherit; font-size: 14px; font-weight: 600; color: var(--dss-fg-soft); text-decoration: none; cursor: pointer;
+}
+.dss-appnav-link:hover, .dss-appnav-group-btn:hover, .dss-appnav-toggle:hover { color: var(--dss-fg); background: var(--dss-hover-bg); }
+.dss-appnav-link.is-active, .dss-appnav-group-btn.is-active { color: var(--dss-fg); border-bottom-color: var(--amber-400); }
+.dss-appnav-link.is-disabled { color: var(--dss-mute); cursor: not-allowed; background: none; }
+.dss-appnav-link:focus-visible, .dss-appnav-group-btn:focus-visible, .dss-appnav-toggle:focus-visible {
+  outline: var(--ring-w) solid var(--ring-color); outline-offset: -3px;
+}
+.dss-appnav-chev { transition: transform 0.12s; }
+.dss-appnav-group-btn.is-open .dss-appnav-chev { transform: rotate(180deg); }
+.dss-appnav-panel {
+  position: absolute; top: 100%; left: 0; z-index: 50; min-width: 230px; margin: 4px 0 0; padding: 6px;
+  list-style: none; background: var(--dss-surface); border: 1px solid var(--dss-line);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-md);
+}
+.dss-appnav-panel[hidden] { display: none; }
+.dss-appnav-panel .dss-appnav-link {
+  display: flex; width: 100%; min-height: 44px; margin: 0; border-bottom: 0; border-radius: var(--radius-md);
+}
+.dss-appnav-panel .dss-appnav-link.is-active { background: var(--dss-selected-bg); box-shadow: inset 3px 0 0 var(--amber-400); }
+.dss-appnav-toggle { display: none; }
+
+.dss-appnav--dark { background: var(--ink-1000); border-bottom-color: var(--n-900); color: var(--n-100); }
+.dss-appnav--dark .dss-appnav-link, .dss-appnav--dark .dss-appnav-group-btn, .dss-appnav--dark .dss-appnav-toggle { color: var(--n-300); }
+.dss-appnav--dark .dss-appnav-link:hover, .dss-appnav--dark .dss-appnav-group-btn:hover, .dss-appnav--dark .dss-appnav-toggle:hover { color: white; background: var(--n-900); }
+.dss-appnav--dark .dss-appnav-link.is-active, .dss-appnav--dark .dss-appnav-group-btn.is-active { color: white; }
+.dss-appnav--dark .dss-appnav-link.is-disabled { color: var(--n-500); background: none; }
+.dss-appnav--dark .dss-appnav-link:focus-visible, .dss-appnav--dark .dss-appnav-group-btn:focus-visible, .dss-appnav--dark .dss-appnav-toggle:focus-visible { outline-color: var(--amber-300); }
+.dss-appnav--dark .dss-appnav-panel { background: var(--n-950); border-color: var(--n-800); }
+.dss-appnav--dark .dss-appnav-panel .dss-appnav-link.is-active { background: var(--n-900); }
+
+@media (max-width: 720px) {
+  .dss-appnav-bar { flex-wrap: wrap; padding: 0 8px; }
+  .dss-appnav-toggle { display: inline-flex; margin-bottom: 0; border-bottom: 0; }
+  .dss-appnav-list { display: none; flex-direction: column; align-items: stretch; width: 100%; gap: 0; padding-bottom: 8px; }
+  .dss-appnav.is-open .dss-appnav-list { display: flex; }
+  .dss-appnav-link, .dss-appnav-group-btn { width: 100%; justify-content: space-between; border-bottom: 0; margin-bottom: 0; border-radius: var(--radius-md); }
+  .dss-appnav-link.is-active, .dss-appnav-group-btn.is-active { background: var(--dss-selected-bg); box-shadow: inset 3px 0 0 var(--amber-400); }
+  .dss-appnav--dark .dss-appnav-link.is-active, .dss-appnav--dark .dss-appnav-group-btn.is-active { background: var(--n-900); }
+  .dss-appnav-panel { position: static; min-width: 0; margin: 0; padding: 0 0 0 14px; border: 0; box-shadow: none; background: none; }
+  .dss-appnav-context { margin-left: auto; }
+}

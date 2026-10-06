@@ -31,12 +31,16 @@
     "./svelte/MatchCard": "./svelte/MatchCard.svelte",
     "./svelte/PlayerCard": "./svelte/PlayerCard.svelte",
     "./svelte/EmptyState": "./svelte/EmptyState.svelte",
-    "./svelte/Skeleton": "./svelte/Skeleton.svelte"
+    "./svelte/Skeleton": "./svelte/Skeleton.svelte",
+    "./svelte/AppNav": "./svelte/AppNav.svelte",
+    "./svelte/Checkbox": "./svelte/Checkbox.svelte",
+    "./appnav.js": "./js/appnav.js"
   },
   "files": [
     "tokens/",
     "css/",
     "icons/",
+    "js/",
     "svelte/",
     "dist/",
     "README.md",

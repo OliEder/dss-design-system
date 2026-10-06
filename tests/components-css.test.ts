@@ -38,6 +38,9 @@ const REQUIRED = [
   'dss-step--h', 'dss-step--c', 'dss-step--v', 'dss-step-item', 'dss-step-dot', 'dss-step-label',
   'dss-step-line', 'dss-step-rail', 'dss-step-vline', 'dss-step-body', 'dss-step-desc',
   'dss-step-track', 'dss-step-fill', 'dss-step-info', 'dss-step-num', 'dss-step-cur',
+  // AppNav (v0.8)
+  'dss-appnav', 'dss-appnav--dark', 'dss-appnav-bar', 'dss-appnav-list', 'dss-appnav-item', 'dss-appnav-link',
+  'dss-appnav-group-btn', 'dss-appnav-chev', 'dss-appnav-panel', 'dss-appnav-toggle', 'dss-appnav-context',
   // Icon
   'dss-icon',
 ];
