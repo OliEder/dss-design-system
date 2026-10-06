@@ -1,6 +1,6 @@
 {
   "name": "@bbv/dss-design-system",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "DSS Design System — Komponenten-Library für Basketball-Apps (Digitaler Spielbericht, Scoreboard, Vereinsregister)",
   "type": "module",
   "main": "tokens/tokens.css",

@@ -21,7 +21,15 @@ svelte/
   Icon.svelte           ← v0.6 (67 Glyphen)
   Select.svelte         ← v0.7 · natives <select> im DSS-Look
   Banner.svelte         ← v0.7 · Inline-Hinweis
-react/                  ← v0.7 · React-Komponenten (Button, TextInput, Select, Modal, Banner, Card, Tabs, Icon)
+  Table.svelte          ← Tabelle mit Rahmenkopf (CSS jetzt in css/components.css)
+  TopBar.svelte         ← App-Leiste (CSS jetzt in css/components.css)
+  EmptyState.svelte     ← Leerzustand (CSS jetzt in css/components.css)
+  Stepper.svelte        ← Schrittanzeige (CSS jetzt in css/components.css)
+  AppNav.svelte         ← v0.8 · Hauptnavigation
+  Checkbox.svelte       ← v0.8 · Kontrollkästchen
+react/                  ← v0.8 · React-Komponenten (Button, TextInput, Select, Modal, Banner, Card, Tabs, Icon, Checkbox, Table, TopBar, EmptyState, Stepper, AppNav)
+js/
+  appnav.js             ← v0.8 · Vanilla-Verhalten der AppNav
 icons/
   sprite.ts             ← v0.7 · gemeinsamer Icon-Sprite für Svelte und React
 css/
@@ -107,13 +115,13 @@ OS-Präferenz.
 ## React
 
 ```bash
-npm install github:OliEder/dss-design-system#v0.7.0 react react-dom @radix-ui/react-dialog
+npm install github:OliEder/dss-design-system#v0.8.0 react react-dom @radix-ui/react-dialog
 ```
 
 ```tsx
 import '@bbv/dss-design-system/tokens.css';
 import '@bbv/dss-design-system/components.css';
-import { Button, TextInput, Select, Modal, Banner } from '@bbv/dss-design-system/react';
+import { Button, TextInput, Select, Modal, Banner, AppNav, Checkbox, Table } from '@bbv/dss-design-system/react';
 
 <Button variant="amber">Speichern</Button>
 <TextInput label="Name" required />
@@ -121,6 +129,34 @@ import { Button, TextInput, Select, Modal, Banner } from '@bbv/dss-design-system
 ```
 
 Tailwind-Nutzer: `components.css` **nach** `@tailwind base` laden (Preflight setzt sonst Button-Hintergründe zurück).
+
+## AppNav ohne Framework
+
+`css/components.css` + `js/appnav.js` genügen. Das Skript initialisiert alle `[data-dss-appnav]`.
+
+```html
+<link rel="stylesheet" href="…/tokens/tokens.css" />
+<link rel="stylesheet" href="…/css/components.css" />
+
+<nav class="dss-appnav dss-appnav--light" data-dss-appnav aria-label="Hauptnavigation">
+  <div class="dss-appnav-bar">
+    <button type="button" class="dss-appnav-toggle" data-appnav-toggle aria-expanded="false" aria-controls="nav-list">Menü</button>
+    <ul class="dss-appnav-list" id="nav-list">
+      <li class="dss-appnav-item"><a class="dss-appnav-link is-active" aria-current="page" href="/">Start</a></li>
+      <li class="dss-appnav-item">
+        <button type="button" class="dss-appnav-group-btn" data-appnav-group aria-expanded="false" aria-controls="nav-g1">Gruppe</button>
+        <ul class="dss-appnav-panel" id="nav-g1" hidden>
+          <li><a class="dss-appnav-link" href="/a">Seite A</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<script type="module" src="…/js/appnav.js"></script>
+```
+
+Gesperrte Einträge: `<span role="link" aria-disabled="true" class="dss-appnav-link is-disabled" title="Hinweis">Label</span>`.
 
 ## Identitäts-Achsen
 
