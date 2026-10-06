@@ -10,3 +10,4 @@ export { Checkbox, type CheckboxProps, type CheckboxDensity } from './Checkbox';
 export { Table, type TableProps, type TableColumn, type TableDensity } from './Table';
 export { TopBar, type TopBarProps, type TopBarContext } from './TopBar';
 export { EmptyState, type EmptyStateProps, type EmptyStateTone } from './EmptyState';
+export { Stepper, type StepperProps, type StepItem, type StepState, type StepperVariant } from './Stepper';

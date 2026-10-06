@@ -34,6 +34,10 @@ const REQUIRED = [
   // EmptyState (v0.8)
   'dss-empty--neutral', 'dss-empty--action', 'dss-empty--error', 'dss-empty-icon', 'dss-empty-title',
   'dss-empty-body', 'dss-empty-actions', 'dss-empty-extra',
+  // Stepper (v0.8)
+  'dss-step--h', 'dss-step--c', 'dss-step--v', 'dss-step-item', 'dss-step-dot', 'dss-step-label',
+  'dss-step-line', 'dss-step-rail', 'dss-step-vline', 'dss-step-body', 'dss-step-desc',
+  'dss-step-track', 'dss-step-fill', 'dss-step-info', 'dss-step-num', 'dss-step-cur',
   // Icon
   'dss-icon',
 ];

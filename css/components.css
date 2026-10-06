@@ -548,3 +548,51 @@
 .dss-empty-body { margin: 0 0 16px; max-width: 360px; font-size: 14px; line-height: 1.55; color: var(--dss-fg-soft); text-wrap: pretty; }
 .dss-empty-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .dss-empty-extra { margin-top: 12px; font-size: 12.5px; color: var(--dss-mute); }
+
+/* ── Stepper (horizontal · kompakt · vertikal) ──────────────── */
+.dss-step { font-family: var(--font-body); }
+.dss-step--h, .dss-step--v { list-style: none; margin: 0; padding: 0; }
+.dss-step-dot {
+  appearance: none; flex-shrink: 0; margin: 0; padding: 0; border: 2px solid var(--dss-line-strong);
+  border-radius: 50%; background: var(--dss-surface); color: var(--dss-mute);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 700; transition: background 0.12s, border-color 0.12s;
+}
+button.dss-step-dot { cursor: pointer; }
+button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
+.dss-step-item.is-done .dss-step-dot { background: var(--ok-fill); border-color: var(--ok-fill); color: white; }
+.dss-step-item.is-current .dss-step-dot {
+  border-color: var(--amber-500); background: var(--amber-500); color: var(--ink-1000);
+  box-shadow: 0 0 0 4px var(--dss-chip-amber-bg);
+}
+.dss-step-label { font-weight: 600; color: var(--dss-fg-soft); }
+.dss-step-item.is-done .dss-step-label { color: var(--dss-fg); }
+.dss-step-item.is-current .dss-step-label { color: var(--dss-fg); font-weight: 700; }
+.dss-step-item.is-pending .dss-step-label, .dss-step-item.is-pending .dss-step-desc { color: var(--dss-mute); }
+
+/* horizontal */
+.dss-step--h { display: flex; align-items: flex-start; }
+.dss-step--h .dss-step-item { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; min-width: 0; }
+.dss-step--h .dss-step-dot { width: 32px; height: 32px; font-size: 13px; z-index: 1; }
+.dss-step--h .dss-step-label { font-size: 12.5px; margin-top: 8px; text-align: center; max-width: 140px; }
+.dss-step--h .dss-step-line { position: absolute; top: 16px; left: calc(50% + 18px); right: calc(-50% + 18px); height: 2px; background: var(--dss-line); z-index: 0; }
+.dss-step--h .dss-step-item.is-done .dss-step-line { background: var(--ok-fill); }
+
+/* kompakt */
+.dss-step--c { display: flex; flex-direction: column; gap: 8px; }
+.dss-step-track { height: 4px; border-radius: 999px; background: var(--dss-line); overflow: hidden; }
+.dss-step-fill { height: 100%; background: var(--ok-fill); transition: width 0.3s; }
+.dss-step-info { display: flex; gap: 12px; align-items: baseline; font-size: 13px; }
+.dss-step-num { font-family: var(--font-mono); font-weight: 700; color: var(--dss-mute); text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
+.dss-step-cur { color: var(--dss-fg); font-weight: 600; }
+
+/* vertikal */
+.dss-step--v .dss-step-item { display: flex; gap: 14px; padding-bottom: 18px; }
+.dss-step--v .dss-step-item:last-child { padding-bottom: 0; }
+.dss-step-rail { display: flex; flex-direction: column; align-items: center; width: 32px; flex-shrink: 0; }
+.dss-step--v .dss-step-dot { width: 30px; height: 30px; font-size: 12px; }
+.dss-step-vline { flex: 1; width: 2px; background: var(--dss-line); margin: 4px 0; min-height: 16px; }
+.dss-step--v .dss-step-item.is-done .dss-step-vline { background: var(--ok-fill); }
+.dss-step-body { padding-top: 4px; flex: 1; }
+.dss-step--v .dss-step-label { font-size: 14px; }
+.dss-step-desc { font-size: 13px; color: var(--dss-mute); margin-top: 2px; }
