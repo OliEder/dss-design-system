@@ -11,6 +11,7 @@
    * aus css/components.css. Aktiv ist der Link, dessen href `currentHref`
    * entspricht (aria-current="page").
    */
+  import type { Snippet } from 'svelte';
   import Icon from './Icon.svelte';
 
   type Link = { id: string; label: string; href: string; disabled?: boolean; hint?: string };
@@ -23,12 +24,15 @@
     tone = 'light',
     ariaLabel = 'Hauptnavigation',
     menuLabel = 'Menü',
+    context,
   }: {
     items: Item[];
     currentHref?: string;
     tone?: 'light' | 'dark';
     ariaLabel?: string;
     menuLabel?: string;
+    /** Platz rechts in der Leiste, z. B. für einen späteren Turnierumschalter. */
+    context?: Snippet;
   } = $props();
 
   const baseId = `dss-appnav-${++seq}`;
@@ -129,5 +133,6 @@
         {/if}
       {/each}
     </ul>
+    {#if context}<div class="dss-appnav-context">{@render context()}</div>{/if}
   </div>
 </nav>

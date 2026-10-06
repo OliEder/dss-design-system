@@ -91,4 +91,21 @@ describe('js/appnav.js', () => {
     fireEvent.click(toggle);
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
   });
+  it('entfernt beim Cleanup alle Listener und erlaubt erneutes Initialisieren', () => {
+    const { root, toggle } = mount();
+    cleanup();
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    cleanup = initAppNav(root);
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  it('schließt mit Esc das mobile Menü, wenn keine Gruppe offen ist', () => {
+    const { root, toggle } = mount();
+    fireEvent.click(toggle);
+    fireEvent.keyDown(toggle, { key: 'Escape' });
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(root).not.toHaveClass('is-open');
+  });
 });

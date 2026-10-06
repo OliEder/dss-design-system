@@ -60,6 +60,11 @@ describe('Stepper', () => {
     expect(screen.getByText('läuft')).toBeInTheDocument();
   });
 
+  it('rendert die kompakte Variante ohne Schritte ohne NaN-Breite', () => {
+    const { container } = render(<Stepper steps={[]} variant="compact" />);
+    expect(container.querySelector('.dss-step-fill')).toHaveStyle({ width: '0%' });
+  });
+
   it.each(['horizontal', 'compact', 'vertical'] as const)('hat in %s keine A11y-Verstöße', async (variant) => {
     const { container } = render(<Stepper steps={STEPS} variant={variant} onStep={() => {}} />);
     await expectNoA11yViolations(container);

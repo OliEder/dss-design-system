@@ -26,10 +26,12 @@
  */
 const OPEN = 'is-open';
 
-/** Initialisiert eine AppNav; gibt eine Funktion zum Entfernen des globalen Listeners zurück. */
+/** Initialisiert eine AppNav; gibt eine Funktion zurück, die alle Listener entfernt und erneutes Initialisieren erlaubt. */
 export function initAppNav(root) {
   if (root.dataset.dssAppnavReady) return () => {};
   root.dataset.dssAppnavReady = 'true';
+  const controller = new AbortController();
+  const { signal } = controller;
 
   const toggle = root.querySelector('[data-appnav-toggle]');
   const groups = Array.from(root.querySelectorAll('[data-appnav-group]'));
@@ -48,7 +50,7 @@ export function initAppNav(root) {
   };
 
   if (toggle) {
-    toggle.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'));
+    toggle.addEventListener('click', () => setMenu(toggle.getAttribute('aria-expanded') !== 'true'), { signal });
   }
 
   groups.forEach((button) => {
@@ -56,7 +58,7 @@ export function initAppNav(root) {
       const open = button.getAttribute('aria-expanded') !== 'true';
       closeGroups();
       setGroup(button, open);
-    });
+    }, { signal });
   });
 
   root.addEventListener('click', (event) => {
@@ -64,7 +66,7 @@ export function initAppNav(root) {
       closeGroups();
       setMenu(false);
     }
-  });
+  }, { signal });
 
   root.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape') return;
@@ -76,13 +78,16 @@ export function initAppNav(root) {
       setMenu(false);
       toggle.focus();
     }
-  });
+  }, { signal });
 
   const onOutside = (event) => {
     if (!root.contains(event.target)) closeGroups();
   };
-  document.addEventListener('mousedown', onOutside);
-  return () => document.removeEventListener('mousedown', onOutside);
+  document.addEventListener('mousedown', onOutside, { signal });
+  return () => {
+    controller.abort();
+    delete root.dataset.dssAppnavReady;
+  };
 }
 
 /** Initialisiert alle AppNavs im Bereich (Standard: ganzes Dokument). */

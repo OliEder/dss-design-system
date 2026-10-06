@@ -73,7 +73,7 @@
 {:else if variant === 'compact'}
   <div class="dss-step dss-step--c" role="group" aria-label={ariaLabel}>
     <div class="dss-step-track" aria-hidden="true">
-      <div class="dss-step-fill" style={`width: ${(doneCount / steps.length) * 100}%;`}></div>
+      <div class="dss-step-fill" style={`width: ${steps.length ? (doneCount / steps.length) * 100 : 0}%;`}></div>
     </div>
     <div class="dss-step-info">
       <span class="dss-step-num">{currentIdx + 1} / {steps.length}</span>

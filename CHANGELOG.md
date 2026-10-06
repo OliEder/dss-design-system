@@ -29,6 +29,11 @@ noch `dss-*`-Klassen. Bereits vom Vereinsregister genutzte Klassen (`.dss-tbl`, 
 - Hinweis: Table-Frame, -Kopf, -Footer und Striping nutzen jetzt die `--dss-*`-Aliase (leichte
   Farbnuance gegenüber den Roh-Tokens, dafür dark-sicher).
 
+### Hinweise
+- Svelte `AppNav` hat `context` (Snippet), aber kein `renderLink`-Pendant (Svelte-Nutzer verwenden normale Links).
+- React `Checkbox`: `className` geht an das `input`, nicht an den Wrapper.
+- `Table`: sortierbare Spaltenköpfe sind nur gestaltet und per `aria-sort` ausgezeichnet; die Sortier-Interaktion liefert die Anwendung.
+
 ### Geändert
 - Svelte `EmptyState`: CTA nutzt `dss-btn`, Titel standardmäßig `h3` (vorher `h4`, per `titleAs`),
   neue Props `titleAs` und `actions`.

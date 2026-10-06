@@ -55,7 +55,7 @@ export function Stepper({ steps, variant = 'horizontal', onStep, ariaLabel = 'Fo
     return (
       <div className={cn('dss-step', 'dss-step--c', className)} role="group" aria-label={ariaLabel}>
         <div className="dss-step-track" aria-hidden="true">
-          <div className="dss-step-fill" style={{ width: `${(doneCount / steps.length) * 100}%` }} />
+          <div className="dss-step-fill" style={{ width: `${steps.length ? (doneCount / steps.length) * 100 : 0}%` }} />
         </div>
         <div className="dss-step-info">
           <span className="dss-step-num">
