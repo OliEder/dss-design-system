@@ -444,6 +444,7 @@
 .dss-frame--dark .dss-tbl td { border-bottom-color: var(--n-800); color: var(--n-200); }
 .dss-frame--dark .dss-tbl tbody tr:hover td { background: var(--n-900); }
 .dss-frame--dark .dss-tbl td.num.lead { color: var(--n-50); }
+.dss-frame--dark .dss-tbl th.sortable::after { border-top-color: var(--n-400); }
 .dss-frame--dark .dss-tbl th.sort-asc::after { border-bottom-color: var(--n-50); }
 .dss-frame--dark .dss-tbl th.sort-desc::after { border-top-color: var(--n-50); }
 .dss-frame--dark .dss-tbl--striped tbody tr:nth-child(even) td { background: var(--n-900); }
