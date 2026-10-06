@@ -7,3 +7,4 @@ export { Card, type CardProps, type CardVariant, type CardPadding } from './Card
 export { Tabs, type TabsProps, type TabItem, type TabsVariant, type TabsSize } from './Tabs';
 export { Icon, ICON_NAMES, ensureSprite, type IconProps, type IconName } from './Icon';
 export { Checkbox, type CheckboxProps, type CheckboxDensity } from './Checkbox';
+export { Table, type TableProps, type TableColumn, type TableDensity } from './Table';

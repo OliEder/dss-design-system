@@ -399,3 +399,89 @@
 .dss-check-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .dss-check-label { font-weight: 500; line-height: 1.3; }
 .dss-check-hint { font-size: 12px; line-height: 1.4; color: var(--dss-mute); }
+
+/* ── Tabelle · Rahmenkopf, Dichten, Sortierung, Footer, Dark ── */
+.dss-frame--dark { background: var(--n-1000); border-color: var(--n-800); color: var(--n-100); }
+.dss-frame-head {
+  display: flex; justify-content: space-between; align-items: center; padding: 16px 22px;
+  border-bottom: 1px solid var(--dss-line); background: var(--dss-hover-bg);
+}
+.dss-frame--dark .dss-frame-head { background: var(--n-950); border-color: var(--n-800); }
+.dss-frame-title { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 16px; color: inherit; letter-spacing: -0.005em; }
+.dss-frame-meta {
+  display: flex; gap: 14px; align-items: center; font-family: var(--font-mono); font-size: 11px;
+  color: var(--dss-mute); letter-spacing: 0.06em; text-transform: uppercase;
+}
+.dss-frame--dark .dss-frame-meta { color: var(--n-400); }
+.dss-crumb { display: inline-flex; align-items: center; gap: 6px; }
+.dss-crumb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok-fill); animation: dss-pulse 2s infinite; }
+@keyframes dss-pulse {
+  0%   { box-shadow: 0 0 0 0 oklch(0.65 0.18 150 / 0.6); }
+  70%  { box-shadow: 0 0 0 8px oklch(0.65 0.18 150 / 0); }
+  100% { box-shadow: 0 0 0 0 oklch(0.65 0.18 150 / 0); }
+}
+@media (prefers-reduced-motion: reduce) { .dss-crumb-dot { animation: none; } }
+
+.dss-tbl th { position: sticky; top: 0; z-index: 1; }
+.dss-tbl th.right, .dss-tbl td.right { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 500; }
+.dss-tbl td.num.dim { color: var(--dss-mute); }
+.dss-tbl th.sortable { cursor: pointer; user-select: none; }
+.dss-tbl th.sortable::after {
+  content: ''; display: inline-block; width: 0; height: 0; border: 4px solid transparent;
+  border-top-color: var(--dss-mute); margin-left: 6px; vertical-align: -2px; opacity: 0.5;
+}
+.dss-tbl th.sort-asc::after { border-top: 0; border-bottom-color: var(--dss-fg-soft); opacity: 1; vertical-align: 1px; }
+.dss-tbl th.sort-desc::after { border-top-color: var(--dss-fg-soft); opacity: 1; }
+.dss-tbl--touch td { height: 60px; font-size: 15px; }
+.dss-tbl--dense td { height: 32px; font-size: 13px; padding: 0 10px; }
+.dss-tbl--dense th { padding: 0 10px; height: 32px; }
+.dss-tbl--striped tbody tr:nth-child(even) td { background: var(--dss-hover-bg); }
+.dss-tbl tfoot td {
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 700; color: var(--dss-fg);
+  background: var(--dss-surface-2); border-top: 1px solid var(--dss-line-strong); border-bottom: 0; height: 42px;
+}
+.dss-frame--dark .dss-tbl th { color: var(--n-400); background: var(--n-950); border-bottom-color: var(--n-800); }
+.dss-frame--dark .dss-tbl td { border-bottom-color: var(--n-800); color: var(--n-200); }
+.dss-frame--dark .dss-tbl tbody tr:hover td { background: var(--n-900); }
+.dss-frame--dark .dss-tbl td.num.lead { color: var(--n-50); }
+.dss-frame--dark .dss-tbl th.sort-asc::after { border-bottom-color: var(--n-50); }
+.dss-frame--dark .dss-tbl th.sort-desc::after { border-top-color: var(--n-50); }
+.dss-frame--dark .dss-tbl--striped tbody tr:nth-child(even) td { background: var(--n-900); }
+.dss-frame--dark .dss-tbl tfoot td { background: var(--n-900); color: var(--n-50); border-top-color: var(--n-700); }
+
+/* Dekorations-Klassen für Boxscore/Roster (Trikotnummer, Position, Pille) */
+.dss-tn {
+  display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 10px;
+  font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -0.02em;
+  background: var(--n-100); color: var(--ink-900); font-variant-numeric: tabular-nums;
+}
+.dss-frame--dark .dss-tn { background: var(--n-800); color: var(--n-50); }
+.dss-tn.heim { background: var(--team-heim, oklch(0.55 0.20 27)); color: white; }
+.dss-tn.gast { background: var(--team-gast, oklch(0.55 0.18 245)); color: white; }
+.dss-tn.captain { box-shadow: 0 0 0 2px var(--amber-500); }
+.dss-tn.small { width: 32px; height: 32px; font-size: 13.5px; border-radius: 7px; }
+.dss-player { display: flex; align-items: center; gap: 12px; }
+.dss-player-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dss-player-name { font-family: var(--font-body); font-weight: 600; font-size: 14px; color: var(--dss-fg); letter-spacing: -0.005em; line-height: 1.2; }
+.dss-player-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--dss-mute); letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.2; }
+.dss-frame--dark .dss-player-name { color: var(--n-50); }
+.dss-frame--dark .dss-player-meta { color: var(--n-400); }
+.dss-player.bench .dss-player-name { color: var(--dss-fg-soft); font-weight: 500; }
+.dss-frame--dark .dss-player.bench .dss-player-name { color: var(--n-300); }
+.dss-player.dnp .dss-player-name { color: var(--dss-mute); text-decoration: line-through; font-weight: 400; }
+.dss-pos {
+  display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 5px;
+  font-family: var(--font-mono); font-weight: 700; font-size: 10px; background: var(--ink-100); color: var(--ink-700);
+}
+.dss-pos.pg { background: var(--sky-100); color: var(--sky-800); }
+.dss-pos.sg { background: var(--info-soft); color: var(--info-text); }
+.dss-pos.sf { background: var(--amber-100); color: var(--amber-800); }
+.dss-pos.pf { background: var(--warn-soft); color: var(--warn-text); }
+.dss-pos.c { background: var(--err-soft); color: var(--err-text); }
+.dss-pill-s {
+  display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  padding: 3px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.06em; background: var(--n-100); color: var(--n-700);
+}
+.dss-pill-s.on { background: var(--ok-soft); color: var(--ok-text); }
+.dss-pill-s.cap { background: var(--amber-100); color: var(--amber-800); }
+.dss-pill-s.dnp { background: var(--err-soft); color: var(--err-text); }
