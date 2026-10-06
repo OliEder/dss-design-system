@@ -9,3 +9,4 @@ export { Icon, ICON_NAMES, ensureSprite, type IconProps, type IconName } from '.
 export { Checkbox, type CheckboxProps, type CheckboxDensity } from './Checkbox';
 export { Table, type TableProps, type TableColumn, type TableDensity } from './Table';
 export { TopBar, type TopBarProps, type TopBarContext } from './TopBar';
+export { EmptyState, type EmptyStateProps, type EmptyStateTone } from './EmptyState';

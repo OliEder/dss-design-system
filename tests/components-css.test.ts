@@ -31,6 +31,9 @@ const REQUIRED = [
   // TopBar (v0.8)
   'dss-topbar--dark', 'dss-topbar-brand', 'dss-topbar-mark', 'dss-topbar-ctx', 'dss-topbar-live',
   'dss-topbar-score', 'dss-topbar-clock', 'dss-topbar-center', 'dss-topbar-spacer', 'dss-topbar-user', 'dss-topbar-av',
+  // EmptyState (v0.8)
+  'dss-empty--neutral', 'dss-empty--action', 'dss-empty--error', 'dss-empty-icon', 'dss-empty-title',
+  'dss-empty-body', 'dss-empty-actions', 'dss-empty-extra',
   // Icon
   'dss-icon',
 ];
