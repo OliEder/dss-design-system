@@ -23,6 +23,8 @@ const REQUIRED = [
   'dss-m-subtitle', 'dss-m-close', 'dss-m-body', 'dss-m-footer',
   // Tabs
   'dss-tabs--sm', 'dss-tabs--lg', 'dss-tabs--vertical', 'dss-tab-ic', 'dss-tab-count',
+  // Checkbox (v0.8)
+  'dss-check', 'dss-check--compact', 'dss-check-input', 'dss-check-text', 'dss-check-label', 'dss-check-hint',
   // Icon
   'dss-icon',
 ];

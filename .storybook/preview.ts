@@ -26,7 +26,7 @@ const preview: Preview = {
           'Introduction',
           'Docs', ['Button', 'Forms', 'Cards & Lists', 'Navigation', 'Tables & Live-Scoring'],
           'Foundation', ['Colors', 'Typography', 'Spacing', 'Shadows'],
-          'Components', ['Button', 'TextInput', 'Select', 'Modal', 'Banner', 'Card', 'Card Library', 'Tabs', 'Navigation', 'Table', 'EmptyState', 'PlayByPlay', 'Icon'],
+          'Components', ['Button', 'TextInput', 'Select', 'Checkbox', 'Modal', 'Banner', 'Card', 'Card Library', 'Tabs', 'Navigation', 'Table', 'EmptyState', 'PlayByPlay', 'Icon'],
         ],
       },
     },

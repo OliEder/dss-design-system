@@ -6,5 +6,6 @@
   "Banner":    { "svelte": "svelte/Banner.svelte",    "react": "react/Banner.tsx",    "css": ["dss-banner"] },
   "Card":      { "svelte": "svelte/Card.svelte",      "react": "react/Card.tsx",      "css": ["dss-card"] },
   "Tabs":      { "svelte": "svelte/Tabs.svelte",      "react": "react/Tabs.tsx",      "css": ["dss-tabs", "dss-tab"] },
-  "Icon":      { "svelte": "svelte/Icon.svelte",      "react": "react/Icon.tsx",      "css": ["dss-icon"] }
+  "Icon":      { "svelte": "svelte/Icon.svelte",      "react": "react/Icon.tsx",      "css": ["dss-icon"] },
+  "Checkbox":  { "svelte": "svelte/Checkbox.svelte",  "react": "react/Checkbox.tsx",  "css": ["dss-check", "dss-check--compact", "dss-check-input", "dss-check-label", "dss-check-hint"] }
 }
