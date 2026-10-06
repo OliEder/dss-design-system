@@ -1,6 +1,6 @@
 {
   "name": "@bbv/dss-design-system",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "DSS Design System — Komponenten-Library für Basketball-Apps (Digitaler Spielbericht, Scoreboard, Vereinsregister)",
   "type": "module",
   "main": "tokens/tokens.css",
@@ -31,18 +31,25 @@
     "./svelte/MatchCard": "./svelte/MatchCard.svelte",
     "./svelte/PlayerCard": "./svelte/PlayerCard.svelte",
     "./svelte/EmptyState": "./svelte/EmptyState.svelte",
-    "./svelte/Skeleton": "./svelte/Skeleton.svelte"
+    "./svelte/Skeleton": "./svelte/Skeleton.svelte",
+    "./svelte/AppNav": "./svelte/AppNav.svelte",
+    "./svelte/Checkbox": "./svelte/Checkbox.svelte",
+    "./appnav.js": "./js/appnav.js"
   },
   "files": [
     "tokens/",
     "css/",
     "icons/",
+    "js/",
     "svelte/",
     "dist/",
     "README.md",
     "CHANGELOG.md"
   ],
   "scripts": {
+    "visual:before": "node scripts/visual-compare.mjs capture before",
+    "visual:after": "node scripts/visual-compare.mjs capture after",
+    "visual:compare": "node scripts/visual-compare.mjs compare",
     "test": "vitest run",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o storybook-static",
@@ -103,6 +110,7 @@
     "@types/react-dom": "^18.3.7",
     "axe-core": "^4.14.0",
     "jsdom": "^29.1.1",
+    "playwright": "^1.63.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "storybook": "^10.4.0",

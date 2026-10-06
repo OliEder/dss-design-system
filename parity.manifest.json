@@ -6,5 +6,11 @@
   "Banner":    { "svelte": "svelte/Banner.svelte",    "react": "react/Banner.tsx",    "css": ["dss-banner"] },
   "Card":      { "svelte": "svelte/Card.svelte",      "react": "react/Card.tsx",      "css": ["dss-card"] },
   "Tabs":      { "svelte": "svelte/Tabs.svelte",      "react": "react/Tabs.tsx",      "css": ["dss-tabs", "dss-tab"] },
-  "Icon":      { "svelte": "svelte/Icon.svelte",      "react": "react/Icon.tsx",      "css": ["dss-icon"] }
+  "Icon":      { "svelte": "svelte/Icon.svelte",      "react": "react/Icon.tsx",      "css": ["dss-icon"] },
+  "Checkbox":  { "svelte": "svelte/Checkbox.svelte",  "react": "react/Checkbox.tsx",  "css": ["dss-check", "dss-check--compact", "dss-check-input", "dss-check-label", "dss-check-hint"] },
+  "Table":     { "svelte": "svelte/Table.svelte",     "react": "react/Table.tsx",     "css": ["dss-frame", "dss-frame--dark", "dss-frame-head", "dss-crumb", "dss-tbl", "dss-tbl--dense", "dss-tbl--striped"] },
+  "TopBar":    { "svelte": "svelte/TopBar.svelte",    "react": "react/TopBar.tsx",    "css": ["dss-topbar", "dss-topbar--dark", "dss-topbar-brand", "dss-topbar-mark", "dss-topbar-user"] },
+  "EmptyState": { "svelte": "svelte/EmptyState.svelte", "react": "react/EmptyState.tsx", "css": ["dss-empty", "dss-empty--neutral", "dss-empty--action", "dss-empty--error", "dss-empty-icon", "dss-empty-title"] },
+  "Stepper":   { "svelte": "svelte/Stepper.svelte",   "react": "react/Stepper.tsx",   "css": ["dss-step", "dss-step--h", "dss-step--c", "dss-step--v", "dss-step-item", "dss-step-dot"] },
+  "AppNav":    { "svelte": "svelte/AppNav.svelte",    "react": "react/AppNav.tsx",    "css": ["dss-appnav", "dss-appnav--dark", "dss-appnav-link", "dss-appnav-group-btn", "dss-appnav-panel", "dss-appnav-toggle"] }
 }

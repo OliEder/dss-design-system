@@ -23,6 +23,24 @@ const REQUIRED = [
   'dss-m-subtitle', 'dss-m-close', 'dss-m-body', 'dss-m-footer',
   // Tabs
   'dss-tabs--sm', 'dss-tabs--lg', 'dss-tabs--vertical', 'dss-tab-ic', 'dss-tab-count',
+  // Checkbox (v0.8)
+  'dss-check', 'dss-check--compact', 'dss-check-input', 'dss-check-text', 'dss-check-label', 'dss-check-hint',
+  // Table (v0.8)
+  'dss-frame--dark', 'dss-frame-head', 'dss-frame-title', 'dss-frame-meta', 'dss-crumb', 'dss-crumb-dot',
+  'dss-tbl--touch', 'dss-tbl--dense', 'dss-tbl--striped', 'dss-tn', 'dss-player', 'dss-pos', 'dss-pill-s',
+  // TopBar (v0.8)
+  'dss-topbar--dark', 'dss-topbar-brand', 'dss-topbar-mark', 'dss-topbar-ctx', 'dss-topbar-live',
+  'dss-topbar-score', 'dss-topbar-clock', 'dss-topbar-center', 'dss-topbar-spacer', 'dss-topbar-user', 'dss-topbar-av',
+  // EmptyState (v0.8)
+  'dss-empty--neutral', 'dss-empty--action', 'dss-empty--error', 'dss-empty-icon', 'dss-empty-title',
+  'dss-empty-body', 'dss-empty-actions', 'dss-empty-extra',
+  // Stepper (v0.8)
+  'dss-step--h', 'dss-step--c', 'dss-step--v', 'dss-step-item', 'dss-step-dot', 'dss-step-label',
+  'dss-step-line', 'dss-step-rail', 'dss-step-vline', 'dss-step-body', 'dss-step-desc',
+  'dss-step-track', 'dss-step-fill', 'dss-step-info', 'dss-step-num', 'dss-step-cur',
+  // AppNav (v0.8)
+  'dss-appnav', 'dss-appnav--dark', 'dss-appnav-bar', 'dss-appnav-list', 'dss-appnav-item', 'dss-appnav-link',
+  'dss-appnav-group-btn', 'dss-appnav-chev', 'dss-appnav-panel', 'dss-appnav-toggle', 'dss-appnav-context',
   // Icon
   'dss-icon',
 ];

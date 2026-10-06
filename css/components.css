@@ -368,3 +368,283 @@
 
 /* ── Icon ───────────────────────────────────────────────────── */
 .dss-icon { display: inline-block; vertical-align: -0.15em; color: currentColor; flex-shrink: 0; }
+
+/* ══════════════════════════════════════════════════════════════
+   v0.8 · Checkbox, Tabelle (aus Svelte extrahiert), TopBar dark,
+   EmptyState-Tonalitäten, Stepper, AppNav
+   Bereits genutzte Klassen (.dss-tbl, .dss-frame, .dss-topbar,
+   .dss-empty) werden nur ergänzt, nie verändert.
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── Checkbox ───────────────────────────────────────────────── */
+.dss-check {
+  display: inline-flex; align-items: center; gap: 10px; min-height: var(--fld-h-default);
+  cursor: pointer; font-family: var(--font-body); font-size: 14px; color: var(--dss-fg);
+}
+.dss-check--compact { min-height: var(--fld-h-compact); }
+.dss-check.is-disabled { cursor: not-allowed; opacity: 0.5; }
+.dss-check-input {
+  appearance: none; -webkit-appearance: none; flex-shrink: 0; margin: 0; width: 22px; height: 22px;
+  display: grid; place-content: center; cursor: inherit;
+  border: 2px solid var(--dss-mute); border-radius: 6px; background: var(--dss-surface);
+  transition: background 0.12s, border-color 0.12s;
+}
+.dss-check-input::after {
+  content: ''; width: 6px; height: 11px; border: solid var(--dss-btn-fg); border-width: 0 2.5px 2.5px 0;
+  transform: translateY(-1px) rotate(45deg) scale(0); transition: transform 0.1s;
+}
+.dss-check-input:checked { background: var(--dss-btn-bg); border-color: var(--dss-btn-bg); }
+.dss-check-input:checked::after { transform: translateY(-1px) rotate(45deg) scale(1); }
+.dss-check-input:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
+.dss-check-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dss-check-label { font-weight: 500; line-height: 1.3; }
+.dss-check-hint { font-size: 12px; line-height: 1.4; color: var(--dss-mute); }
+
+/* ── Tabelle · Rahmenkopf, Dichten, Sortierung, Footer, Dark ── */
+.dss-frame--dark { background: var(--n-1000); border-color: var(--n-800); color: var(--n-100); }
+.dss-frame-head {
+  display: flex; justify-content: space-between; align-items: center; padding: 16px 22px;
+  border-bottom: 1px solid var(--dss-line); background: var(--dss-hover-bg);
+}
+.dss-frame--dark .dss-frame-head { background: var(--n-950); border-color: var(--n-800); }
+.dss-frame-title { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 16px; color: inherit; letter-spacing: -0.005em; }
+.dss-frame-meta {
+  display: flex; gap: 14px; align-items: center; font-family: var(--font-mono); font-size: 11px;
+  color: var(--dss-mute); letter-spacing: 0.06em; text-transform: uppercase;
+}
+.dss-frame--dark .dss-frame-meta { color: var(--n-400); }
+.dss-crumb { display: inline-flex; align-items: center; gap: 6px; }
+.dss-crumb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok-fill); animation: dss-pulse 2s infinite; }
+@keyframes dss-pulse {
+  0%   { box-shadow: 0 0 0 0 oklch(0.65 0.18 150 / 0.6); }
+  70%  { box-shadow: 0 0 0 8px oklch(0.65 0.18 150 / 0); }
+  100% { box-shadow: 0 0 0 0 oklch(0.65 0.18 150 / 0); }
+}
+@media (prefers-reduced-motion: reduce) { .dss-crumb-dot { animation: none; } }
+
+.dss-tbl th { position: sticky; top: 0; z-index: 1; }
+.dss-tbl th.right, .dss-tbl td.right { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 500; }
+.dss-tbl td.num.dim { color: var(--dss-mute); }
+.dss-tbl th.sortable { cursor: pointer; user-select: none; }
+.dss-tbl th.sortable::after {
+  content: ''; display: inline-block; width: 0; height: 0; border: 4px solid transparent;
+  border-top-color: var(--dss-mute); margin-left: 6px; vertical-align: -2px; opacity: 0.5;
+}
+.dss-tbl th.sort-asc::after { border-top: 0; border-bottom-color: var(--dss-fg-soft); opacity: 1; vertical-align: 1px; }
+.dss-tbl th.sort-desc::after { border-top-color: var(--dss-fg-soft); opacity: 1; }
+.dss-tbl--touch td { height: 60px; font-size: 15px; }
+.dss-tbl--dense td { height: 32px; font-size: 13px; padding: 0 10px; }
+.dss-tbl--dense th { padding: 0 10px; height: 32px; }
+.dss-tbl--striped tbody tr:nth-child(even) td { background: var(--dss-hover-bg); }
+.dss-tbl tfoot td {
+  font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 700; color: var(--dss-fg);
+  background: var(--dss-surface-2); border-top: 1px solid var(--dss-line-strong); border-bottom: 0; height: 42px;
+}
+.dss-frame--dark .dss-tbl th { color: var(--n-400); background: var(--n-950); border-bottom-color: var(--n-800); }
+.dss-frame--dark .dss-tbl td { border-bottom-color: var(--n-800); color: var(--n-200); }
+.dss-frame--dark .dss-tbl tbody tr:hover td { background: var(--n-900); }
+.dss-frame--dark .dss-tbl td.num.lead { color: var(--n-50); }
+.dss-frame--dark .dss-tbl th.sortable::after { border-top-color: var(--n-400); }
+.dss-frame--dark .dss-tbl th.sort-asc::after { border-bottom-color: var(--n-50); }
+.dss-frame--dark .dss-tbl th.sort-desc::after { border-top-color: var(--n-50); }
+.dss-frame--dark .dss-tbl--striped tbody tr:nth-child(even) td { background: var(--n-900); }
+.dss-frame--dark .dss-tbl tfoot td { background: var(--n-900); color: var(--n-50); border-top-color: var(--n-700); }
+
+/* Dekorations-Klassen für Boxscore/Roster (Trikotnummer, Position, Pille) */
+.dss-tn {
+  display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 10px;
+  font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -0.02em;
+  background: var(--n-100); color: var(--ink-900); font-variant-numeric: tabular-nums;
+}
+.dss-frame--dark .dss-tn { background: var(--n-800); color: var(--n-50); }
+.dss-tn.heim { background: var(--team-heim, oklch(0.55 0.20 27)); color: white; }
+.dss-tn.gast { background: var(--team-gast, oklch(0.55 0.18 245)); color: white; }
+.dss-tn.captain { box-shadow: 0 0 0 2px var(--amber-500); }
+.dss-tn.small { width: 32px; height: 32px; font-size: 13.5px; border-radius: 7px; }
+.dss-player { display: flex; align-items: center; gap: 12px; }
+.dss-player-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dss-player-name { font-family: var(--font-body); font-weight: 600; font-size: 14px; color: var(--dss-fg); letter-spacing: -0.005em; line-height: 1.2; }
+.dss-player-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--dss-mute); letter-spacing: 0.04em; text-transform: uppercase; line-height: 1.2; }
+.dss-frame--dark .dss-player-name { color: var(--n-50); }
+.dss-frame--dark .dss-player-meta { color: var(--n-400); }
+.dss-player.bench .dss-player-name { color: var(--dss-fg-soft); font-weight: 500; }
+.dss-frame--dark .dss-player.bench .dss-player-name { color: var(--n-300); }
+.dss-player.dnp .dss-player-name { color: var(--dss-mute); text-decoration: line-through; font-weight: 400; }
+.dss-pos {
+  display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 5px;
+  font-family: var(--font-mono); font-weight: 700; font-size: 10px; background: var(--ink-100); color: var(--ink-700);
+}
+.dss-pos.pg { background: var(--sky-100); color: var(--sky-800); }
+.dss-pos.sg { background: var(--info-soft); color: var(--info-text); }
+.dss-pos.sf { background: var(--amber-100); color: var(--amber-800); }
+.dss-pos.pf { background: var(--warn-soft); color: var(--warn-text); }
+.dss-pos.c { background: var(--err-soft); color: var(--err-text); }
+.dss-pill-s {
+  display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+  padding: 3px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.06em; background: var(--n-100); color: var(--n-700);
+}
+.dss-pill-s.on { background: var(--ok-soft); color: var(--ok-text); }
+.dss-pill-s.cap { background: var(--amber-100); color: var(--amber-800); }
+.dss-pill-s.dnp { background: var(--err-soft); color: var(--err-text); }
+
+/* ── TopBar · dunkle App-Leiste (Modifier, die helle Vereinsregister-Leiste bleibt) ── */
+.dss-topbar.dss-topbar--dark {
+  display: flex; align-items: center; height: 56px; padding: 0 20px; gap: 20px;
+  background: var(--ink-1000); color: var(--n-100); border-bottom: 1px solid var(--n-900);
+  font-family: var(--font-body);
+}
+.dss-topbar-brand {
+  display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700;
+  font-size: 15px; letter-spacing: -0.01em; color: white;
+}
+.dss-topbar-mark {
+  width: 26px; height: 26px; border-radius: 6px; background: var(--amber-400); color: var(--ink-1000);
+  display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px;
+}
+.dss-topbar-ctx {
+  display: flex; align-items: center; gap: 14px; margin-left: 28px; font-family: var(--font-mono);
+  font-size: 11px; color: var(--n-300); letter-spacing: 0.04em;
+}
+.dss-topbar-live {
+  display: inline-flex; align-items: center; gap: 6px; color: var(--err-fill); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.dss-topbar-live::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--err-fill);
+  animation: dss-tb-pulse 1.6s ease-in-out infinite;
+}
+@keyframes dss-tb-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) { .dss-topbar-live::before { animation: none; } }
+.dss-topbar-score { font-weight: 700; font-size: 14px; color: white; letter-spacing: -0.01em; }
+.dss-topbar-clock { color: var(--amber-300); font-weight: 700; }
+.dss-topbar-center { flex: 1; display: flex; justify-content: center; }
+.dss-topbar-spacer { flex: 1; }
+.dss-topbar-user {
+  display: flex; align-items: center; gap: 10px; padding: 5px 12px 5px 5px; border-radius: 999px;
+  background: var(--n-900); color: var(--n-100); font-size: 12.5px; font-weight: 500;
+}
+.dss-topbar-av {
+  width: 28px; height: 28px; border-radius: 50%; background: var(--sky-600); color: white;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 12px;
+}
+
+/* ── EmptyState · Tonalitäten (Basis .dss-empty bleibt der schlichte Text-Zustand) ── */
+.dss-empty--neutral, .dss-empty--action, .dss-empty--error {
+  display: flex; flex-direction: column; align-items: center; max-width: 460px; margin: 0 auto;
+  padding: 40px 32px; border: 1px dashed var(--dss-line-strong); border-radius: 14px;
+  background: var(--dss-surface); color: var(--dss-fg-soft); font-family: var(--font-body);
+}
+.dss-empty--action { border-color: var(--amber-400); background: var(--dss-chip-amber-bg); }
+.dss-empty--error { border-color: var(--err-fill); background: var(--dss-chip-err-bg); }
+.dss-empty-icon {
+  width: 60px; height: 60px; border-radius: 50%; margin-bottom: 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.dss-empty--neutral .dss-empty-icon { background: var(--dss-surface-2); color: var(--dss-mute); }
+.dss-empty--action .dss-empty-icon { background: var(--dss-surface); color: var(--dss-chip-amber-fg); }
+.dss-empty--error .dss-empty-icon { background: var(--dss-surface); color: var(--dss-chip-err-fg); }
+.dss-empty-title { margin: 0 0 6px; font-family: var(--font-display); font-weight: 700; font-size: 18px; color: var(--dss-fg); letter-spacing: -0.01em; }
+.dss-empty-body { margin: 0 0 16px; max-width: 360px; font-size: 14px; line-height: 1.55; color: var(--dss-fg-soft); text-wrap: pretty; }
+.dss-empty-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.dss-empty-extra { margin-top: 12px; font-size: 12.5px; color: var(--dss-mute); }
+
+/* ── Stepper (horizontal · kompakt · vertikal) ──────────────── */
+.dss-step { font-family: var(--font-body); }
+.dss-step--h, .dss-step--v { list-style: none; margin: 0; padding: 0; }
+.dss-step-dot {
+  appearance: none; box-sizing: border-box; flex-shrink: 0; margin: 0; padding: 0; border: 2px solid var(--dss-line-strong);
+  border-radius: 50%; background: var(--dss-surface); color: var(--dss-mute);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-weight: 700; transition: background 0.12s, border-color 0.12s;
+}
+button.dss-step-dot { cursor: pointer; }
+button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
+.dss-step-item.is-done .dss-step-dot { background: var(--ok-fill); border-color: var(--ok-fill); color: white; }
+.dss-step-item.is-current .dss-step-dot {
+  border-color: var(--amber-500); background: var(--amber-500); color: var(--ink-1000);
+  box-shadow: 0 0 0 4px var(--dss-chip-amber-bg);
+}
+.dss-step-label { font-weight: 600; color: var(--dss-fg-soft); }
+.dss-step-item.is-done .dss-step-label { color: var(--dss-fg); }
+.dss-step-item.is-current .dss-step-label { color: var(--dss-fg); font-weight: 700; }
+.dss-step-item.is-pending .dss-step-label, .dss-step-item.is-pending .dss-step-desc { color: var(--dss-mute); }
+
+/* horizontal */
+.dss-step--h { display: flex; align-items: flex-start; }
+.dss-step--h .dss-step-item { flex: 1; display: flex; flex-direction: column; align-items: center; position: relative; min-width: 0; }
+.dss-step--h .dss-step-dot { width: 32px; height: 32px; font-size: 13px; z-index: 1; }
+.dss-step--h .dss-step-label { font-size: 12.5px; margin-top: 8px; text-align: center; max-width: 140px; }
+.dss-step--h .dss-step-line { position: absolute; top: 16px; left: calc(50% + 18px); right: calc(-50% + 18px); height: 2px; background: var(--dss-line); z-index: 0; }
+.dss-step--h .dss-step-item.is-done .dss-step-line { background: var(--ok-fill); }
+
+/* kompakt */
+.dss-step--c { display: flex; flex-direction: column; gap: 8px; }
+.dss-step-track { height: 4px; border-radius: 999px; background: var(--dss-line); overflow: hidden; }
+.dss-step-fill { height: 100%; background: var(--ok-fill); transition: width 0.3s; }
+.dss-step-info { display: flex; gap: 12px; align-items: baseline; font-size: 13px; }
+.dss-step-num { font-family: var(--font-mono); font-weight: 700; color: var(--dss-mute); text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
+.dss-step-cur { color: var(--dss-fg); font-weight: 600; }
+
+/* vertikal */
+.dss-step--v .dss-step-item { display: flex; gap: 14px; padding-bottom: 18px; }
+.dss-step--v .dss-step-item:last-child { padding-bottom: 0; }
+.dss-step-rail { display: flex; flex-direction: column; align-items: center; width: 32px; flex-shrink: 0; }
+.dss-step--v .dss-step-dot { width: 30px; height: 30px; font-size: 12px; }
+.dss-step-vline { flex: 1; width: 2px; background: var(--dss-line); margin: 4px 0; min-height: 16px; }
+.dss-step--v .dss-step-item.is-done .dss-step-vline { background: var(--ok-fill); }
+.dss-step-body { padding-top: 4px; flex: 1; }
+.dss-step--v .dss-step-label { font-size: 14px; }
+.dss-step-desc { font-size: 13px; color: var(--dss-mute); margin-top: 2px; }
+
+/* ── AppNav · Hauptnavigation mit Gruppen-Dropdowns und mobilem Menü ── */
+.dss-appnav { position: relative; background: var(--dss-surface); border-bottom: 1px solid var(--dss-line); font-family: var(--font-body); }
+.dss-appnav-bar { display: flex; align-items: center; gap: 4px; padding: 0 12px; }
+.dss-appnav-list { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0; }
+.dss-appnav-item { position: relative; }
+.dss-appnav-context { margin-left: auto; display: flex; align-items: center; gap: 8px; padding: 0 8px; }
+.dss-appnav-link, .dss-appnav-group-btn, .dss-appnav-toggle {
+  appearance: none; display: inline-flex; align-items: center; gap: 6px; min-height: 48px; padding: 0 12px;
+  border: 0; border-bottom: 3px solid transparent; margin-bottom: -1px; background: none;
+  font: inherit; font-size: 14px; font-weight: 600; color: var(--dss-fg-soft); text-decoration: none; cursor: pointer;
+}
+.dss-appnav-link:hover, .dss-appnav-group-btn:hover, .dss-appnav-toggle:hover { color: var(--dss-fg); background: var(--dss-hover-bg); }
+.dss-appnav-link.is-active, .dss-appnav-group-btn.is-active { color: var(--dss-fg); border-bottom-color: var(--amber-400); }
+.dss-appnav-link.is-disabled { color: var(--dss-mute); cursor: not-allowed; background: none; }
+.dss-appnav-link:focus-visible, .dss-appnav-group-btn:focus-visible, .dss-appnav-toggle:focus-visible {
+  outline: var(--ring-w) solid var(--ring-color); outline-offset: -3px;
+}
+.dss-appnav-chev { transition: transform 0.12s; }
+.dss-appnav-group-btn.is-open .dss-appnav-chev { transform: rotate(180deg); }
+.dss-appnav-panel {
+  position: absolute; top: 100%; left: 0; z-index: 50; min-width: 230px; margin: 4px 0 0; padding: 6px;
+  list-style: none; background: var(--dss-surface); border: 1px solid var(--dss-line);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-md);
+}
+.dss-appnav-panel[hidden] { display: none; }
+.dss-appnav-panel .dss-appnav-link {
+  display: flex; width: 100%; min-height: 44px; margin: 0; border-bottom: 0; border-radius: var(--radius-md);
+}
+.dss-appnav-panel .dss-appnav-link.is-active { background: var(--dss-selected-bg); box-shadow: inset 3px 0 0 var(--amber-400); }
+.dss-appnav-toggle { display: none; }
+
+.dss-appnav--dark { background: var(--ink-1000); border-bottom-color: var(--n-900); color: var(--n-100); }
+.dss-appnav--dark .dss-appnav-link, .dss-appnav--dark .dss-appnav-group-btn, .dss-appnav--dark .dss-appnav-toggle { color: var(--n-300); }
+.dss-appnav--dark .dss-appnav-link:hover, .dss-appnav--dark .dss-appnav-group-btn:hover, .dss-appnav--dark .dss-appnav-toggle:hover { color: white; background: var(--n-900); }
+.dss-appnav--dark .dss-appnav-link.is-active, .dss-appnav--dark .dss-appnav-group-btn.is-active { color: white; }
+.dss-appnav--dark .dss-appnav-link.is-disabled { color: var(--n-500); background: none; }
+.dss-appnav--dark .dss-appnav-link:focus-visible, .dss-appnav--dark .dss-appnav-group-btn:focus-visible, .dss-appnav--dark .dss-appnav-toggle:focus-visible { outline-color: var(--amber-300); }
+.dss-appnav--dark .dss-appnav-panel { background: var(--n-950); border-color: var(--n-800); }
+.dss-appnav--dark .dss-appnav-panel .dss-appnav-link.is-active { background: var(--n-900); }
+
+@media (max-width: 720px) {
+  .dss-appnav-bar { flex-wrap: wrap; padding: 0 8px; }
+  .dss-appnav-toggle { display: inline-flex; margin-bottom: 0; border-bottom: 0; }
+  .dss-appnav-list { display: none; flex-direction: column; align-items: stretch; width: 100%; gap: 0; padding-bottom: 8px; }
+  .dss-appnav.is-open .dss-appnav-list { display: flex; }
+  .dss-appnav-link, .dss-appnav-group-btn { width: 100%; justify-content: space-between; border-bottom: 0; margin-bottom: 0; border-radius: var(--radius-md); }
+  .dss-appnav-link.is-active, .dss-appnav-group-btn.is-active { background: var(--dss-selected-bg); box-shadow: inset 3px 0 0 var(--amber-400); }
+  .dss-appnav--dark .dss-appnav-link.is-active, .dss-appnav--dark .dss-appnav-group-btn.is-active { background: var(--n-900); }
+  .dss-appnav-panel { position: static; min-width: 0; margin: 0; padding: 0 0 0 14px; border: 0; box-shadow: none; background: none; }
+  .dss-appnav-context { margin-left: auto; }
+}

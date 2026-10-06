@@ -3,6 +3,46 @@
 Alle nennenswerten Änderungen an diesem Design System werden hier dokumentiert.
 Versionierung folgt [Semantic Versioning](https://semver.org/).
 
+## [0.8.0] — Table, TopBar, EmptyState, Stepper, AppNav, Checkbox
+
+Sechs weitere Komponenten in allen drei Varianten (Svelte, Vanilla-CSS, React). Das Scoped-CSS von
+Table, TopBar, EmptyState und Stepper liegt jetzt in `css/components.css`; die Svelte-Dateien nutzen nur
+noch `dss-*`-Klassen. Bereits vom Vereinsregister genutzte Klassen (`.dss-tbl`, `.dss-frame`,
+`.dss-topbar`, `.dss-empty`) wurden nur ergänzt, nicht verändert.
+
+### Neu
+- **AppNav** (`svelte/AppNav.svelte`, `react/AppNav.tsx`, `js/appnav.js`): Hauptnavigation mit
+  Gruppen-Dropdowns (Disclosure), gesperrten Einträgen (nicht fokussierbar, mit Hinweis), `aria-current`,
+  Esc/Klick-außerhalb, Hamburger-Menü unter 720 px, Tonalität hell/dunkel, Kontext-Slot, `renderLink` für
+  Router-Links (React). Export `@bbv/dss-design-system/appnav.js`.
+- **Checkbox** (`dss-check*`): natives Kontrollkästchen, ganze Label-Fläche klickbar (44 px, kompakt 36 px),
+  Hinweistext per `aria-describedby`.
+- **Table** (React): Rahmenkopf mit Titel/Meta/Live, Dichten, Sortier-Pfeil mit `aria-sort`, Footer,
+  dunkle Fläche, `caption` für Screenreader.
+- **TopBar** (React): dunkle App-Leiste (`dss-topbar--dark`), Kontexte default/live/admin, Slots, optional
+  als `header`-Landmark.
+- **EmptyState** (React): Tonalitäten neutral/action/error, CTA oder freie `actions`, Überschriftenebene
+  wählbar.
+- **Stepper** (React): horizontal/kompakt/vertikal, `aria-current="step"`, Zustand per Screenreader-Text.
+- Storybook: Stories für EmptyState, Checkbox, AppNav; `npm run visual:before|after|compare` für den
+  Screenshot-Vergleich der Svelte-Stories.
+- Hinweis: Table-Frame, -Kopf, -Footer und Striping nutzen jetzt die `--dss-*`-Aliase (leichte
+  Farbnuance gegenüber den Roh-Tokens, dafür dark-sicher).
+
+### Hinweise
+- Svelte `AppNav` hat `context` (Snippet), aber kein `renderLink`-Pendant (Svelte-Nutzer verwenden normale Links).
+- React `Checkbox`: `className` geht an das `input`, nicht an den Wrapper.
+- `Table`: sortierbare Spaltenköpfe sind nur gestaltet und per `aria-sort` ausgezeichnet; die Sortier-Interaktion liefert die Anwendung.
+
+### Geändert
+- Svelte `EmptyState`: CTA nutzt `dss-btn`, Titel standardmäßig `h3` (vorher `h4`, per `titleAs`),
+  neue Props `titleAs` und `actions`.
+- Svelte `Stepper`: der Schritt-Punkt ist nur noch ein Button, wenn `onstep` gesetzt ist und der Schritt
+  nicht `pending` ist; Zustand wird per Screenreader-Text angesagt, neue Prop `ariaLabel`.
+- Svelte `Stepper`: die grüne Verbindungslinie hinter dem aktuellen Schritt entfällt (war ein Fehler der
+  alten Selektorregel `.state-done + .step .line`).
+- Svelte `Table`/`TopBar`: Innen-Klassen heißen jetzt `dss-frame-*` bzw. `dss-topbar-*`.
+
 ## [0.7.0] — React-Paket + Vanilla-CSS
 
 Framework-freie Umsetzung der Komponenten (`css/components.css`), entstanden im Vereinsregister
