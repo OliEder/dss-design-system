@@ -486,3 +486,45 @@
 .dss-pill-s.on { background: var(--ok-soft); color: var(--ok-text); }
 .dss-pill-s.cap { background: var(--amber-100); color: var(--amber-800); }
 .dss-pill-s.dnp { background: var(--err-soft); color: var(--err-text); }
+
+/* ── TopBar · dunkle App-Leiste (Modifier, die helle Vereinsregister-Leiste bleibt) ── */
+.dss-topbar.dss-topbar--dark {
+  display: flex; align-items: center; height: 56px; padding: 0 20px; gap: 20px;
+  background: var(--ink-1000); color: var(--n-100); border-bottom: 1px solid var(--n-900);
+  font-family: var(--font-body);
+}
+.dss-topbar-brand {
+  display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 700;
+  font-size: 15px; letter-spacing: -0.01em; color: white;
+}
+.dss-topbar-mark {
+  width: 26px; height: 26px; border-radius: 6px; background: var(--amber-400); color: var(--ink-1000);
+  display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px;
+}
+.dss-topbar-ctx {
+  display: flex; align-items: center; gap: 14px; margin-left: 28px; font-family: var(--font-mono);
+  font-size: 11px; color: var(--n-300); letter-spacing: 0.04em;
+}
+.dss-topbar-live {
+  display: inline-flex; align-items: center; gap: 6px; color: var(--err-fill); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.dss-topbar-live::before {
+  content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--err-fill);
+  animation: dss-tb-pulse 1.6s ease-in-out infinite;
+}
+@keyframes dss-tb-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) { .dss-topbar-live::before { animation: none; } }
+.dss-topbar-score { font-weight: 700; font-size: 14px; color: white; letter-spacing: -0.01em; }
+.dss-topbar-clock { color: var(--amber-300); font-weight: 700; }
+.dss-topbar-center { flex: 1; display: flex; justify-content: center; }
+.dss-topbar-spacer { flex: 1; }
+.dss-topbar-user {
+  display: flex; align-items: center; gap: 10px; padding: 5px 12px 5px 5px; border-radius: 999px;
+  background: var(--n-900); color: var(--n-100); font-size: 12.5px; font-weight: 500;
+}
+.dss-topbar-av {
+  width: 28px; height: 28px; border-radius: 50%; background: var(--sky-600); color: white;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 12px;
+}
