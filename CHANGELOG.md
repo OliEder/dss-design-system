@@ -3,6 +3,48 @@
 Alle nennenswerten Änderungen an diesem Design System werden hier dokumentiert.
 Versionierung folgt [Semantic Versioning](https://semver.org/).
 
+## [0.9.0] — BottomNav, Breadcrumbs, Skeleton, MatchCard, PlayerCard, PlayByPlay
+
+Die letzten sechs Svelte-Komponenten gibt es jetzt auch als React-Version; alle Svelte-Komponenten haben
+Svelte-, Vanilla-CSS- und React-Fassung (die Paritätsliste `PENDING_REACT` ist entfallen). Das Scoped-CSS liegt in
+`css/components.css`, die Svelte-Dateien nutzen nur noch `dss-*`-Klassen.
+
+### Neu
+- **React:** `BottomNav` (Buttons oder Links, FAB, Badge, kontrolliert/unkontrolliert), `Breadcrumbs`
+  (plain · tagged · chip, `aria-current="page"`), `Skeleton` (line · block · circle · row · match, Status-Text für
+  Screenreader), `MatchCard` (Link, Button oder div), `PlayerCard` (compact · standard · hero), `PlayByPlay`
+  (`role="log"`, per Tastatur scrollbar, Mannschaft und Spielstand für Screenreader).
+- **CourtLines** (Svelte, Vanilla-CSS, React): Spielfeldlinien (FIBA 28 × 15 m) als dezenter Seitenhintergrund, aus dem
+  Vereinsregister übernommen. SVG-Maske über `--dss-line` (dark-sicher), Hochformat-Variante auf dem Handy, SVGs
+  unter `css/courtlines/`. Seiteninhalt braucht `position: relative; z-index: 1`.
+- `TopBar` und `AppNav`: Prop `contained` begrenzt den Inhalt auf `--dss-shell-max` (Standard `64rem`), die Leiste
+  bleibt voll breit.
+- AppNav: offenes Dropdown schließt, wenn der Fokus auf ein Ziel außerhalb der Navigation wechselt (React, Svelte,
+  Vanilla; bei `relatedTarget` null bleibt es offen, wegen Safari); Panel-IDs werden auch bei Sonderzeichen in der
+  Gruppen-ID gültig gebildet.
+
+### Geändert
+- `.dss-tn` und `.dss-pos` gehören jetzt Table UND PlayerCard gemeinsam (eine Definition in `components.css`):
+  `.dss-tn` hat `flex-shrink: 0` und die Größen `large`/`hero`; `.dss-pos` hat `min-width` + Padding statt fester
+  Breite, `.dss-pos.sf` ist Amber (Table-Farbe; PlayerCard zeigte vorher Grün).
+- `.dss-pos` hat `box-sizing: border-box` und `min-width: 22px` mit Padding (statt fester Breite); die PlayerCard
+  behält über einen Override die etwas größere Marke (26 px, 10,5 px Schrift).
+- MatchCard/PlayerCard-Zeile (div/a) haben `box-sizing: border-box`.
+- Svelte `BottomNav`: eigene Klassen `dss-bnav-*` für Innenelemente, Einträge mit `href` werden Links, neue Prop
+  `ariaLabel`, Badge nutzt `--err-button` (AAA mit weißem Text).
+- Svelte `Breadcrumbs`: `aria-current="page"` am letzten Element, Einträge ohne `href` sind Text (statt Link `#`),
+  Innenklassen `dss-crumbs-*`.
+- Svelte `Skeleton`: Platzhalter `aria-hidden`, ein Status-Text (`label`) meldet das Laden.
+- Svelte `MatchCard`/`PlayerCard` (compact): Link, Button oder div statt immer Button; innen nur `span`.
+- Svelte `PlayByPlay`: Feed ist `role="log"` und fokussierbar, Innenklassen `dss-pbp-*` vollständig präfixiert,
+  `PbpEvent` wird aus dem `module`-Skript exportiert.
+- `Table`: `columns` hat Vorrang vor `head` (kein doppeltes `<thead>`).
+
+### Hinweise
+- React `PlayerCard`: Props heißen `heightCm` und `playerRole` (Svelte: `height_cm`, `role`).
+- Svelte-Komponenten haben weiterhin keine Unit-Tests; abgesichert sind sie durch den Screenshot-Vergleich
+  (`npm run visual:before|after|compare`).
+
 ## [0.8.0] — Table, TopBar, EmptyState, Stepper, AppNav, Checkbox
 
 Sechs weitere Komponenten in allen drei Varianten (Svelte, Vanilla-CSS, React). Das Scoped-CSS von

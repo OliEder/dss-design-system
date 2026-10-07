@@ -1,7 +1,7 @@
 # DSS Design System
 
 **Digitaler Spielbericht · Komponenten-Library für Basketball-Apps**
-Version 0.6 · WCAG 2.1 AAA · Framework-agnostisch · *Pre-release*
+Version 0.9 · WCAG 2.1 AAA · Framework-agnostisch · *Pre-release*
 
 ---
 
@@ -27,13 +27,21 @@ svelte/
   Stepper.svelte        ← Schrittanzeige (CSS jetzt in css/components.css)
   AppNav.svelte         ← v0.8 · Hauptnavigation
   Checkbox.svelte       ← v0.8 · Kontrollkästchen
-react/                  ← v0.8 · React-Komponenten (Button, TextInput, Select, Modal, Banner, Card, Tabs, Icon, Checkbox, Table, TopBar, EmptyState, Stepper, AppNav)
+  BottomNav.svelte      ← v0.9 · Tab-Leiste für Mobile (CSS in css/components.css)
+  Breadcrumbs.svelte    ← v0.9 · Brotkrumen (CSS in css/components.css)
+  Skeleton.svelte       ← v0.9 · Lade-Platzhalter (CSS in css/components.css)
+  MatchCard.svelte      ← v0.9 · Spielkarte (CSS in css/components.css)
+  PlayerCard.svelte     ← v0.9 · Spielerkarte (CSS in css/components.css)
+  PlayByPlay.svelte     ← v0.9 · Spielverlauf-Feed (CSS in css/components.css)
+  CourtLines.svelte     ← v0.9 · Spielfeldlinien-Seitenhintergrund
+react/                  ← v0.9 · React-Fassung aller Svelte-Komponenten (Button, TextInput, Select, Modal, Banner, Card, Tabs, Icon, Checkbox, Table, TopBar, EmptyState, Stepper, AppNav, BottomNav, Breadcrumbs, Skeleton, MatchCard, PlayerCard, PlayByPlay, CourtLines)
 js/
   appnav.js             ← v0.8 · Vanilla-Verhalten der AppNav
 icons/
   sprite.ts             ← v0.7 · gemeinsamer Icon-Sprite für Svelte und React
 css/
   components.css        ← Vanilla-CSS-Komponenten (einzige CSS-Quelle)
+  courtlines/           ← v0.9 · court.svg, court-portrait.svg (Maske für CourtLines)
 .storybook/             ← v0.6 · Storybook config
 stories/                ← v0.6 · Stories für alle Komponenten + Foundation
 docs/
@@ -115,13 +123,13 @@ OS-Präferenz.
 ## React
 
 ```bash
-npm install github:OliEder/dss-design-system#v0.8.0 react react-dom @radix-ui/react-dialog
+npm install github:OliEder/dss-design-system#v0.9.0 react react-dom @radix-ui/react-dialog
 ```
 
 ```tsx
 import '@bbv/dss-design-system/tokens.css';
 import '@bbv/dss-design-system/components.css';
-import { Button, TextInput, Select, Modal, Banner, AppNav, Checkbox, Table } from '@bbv/dss-design-system/react';
+import { Button, TextInput, Select, Modal, Banner, AppNav, Checkbox, Table, BottomNav, Breadcrumbs, MatchCard, PlayerCard, CourtLines } from '@bbv/dss-design-system/react';
 
 <Button variant="amber">Speichern</Button>
 <TextInput label="Name" required />
@@ -157,6 +165,39 @@ Tailwind-Nutzer: `components.css` **nach** `@tailwind base` laden (Preflight set
 ```
 
 Gesperrte Einträge: `<span role="link" aria-disabled="true" class="dss-appnav-link is-disabled" title="Hinweis">Label</span>`.
+
+## Leisten mit begrenzter Inhaltsbreite
+
+`TopBar` und `AppNav` laufen mit ihrem Hintergrund über die volle Breite. Mit `contained` richtet sich der Inhalt
+an `--dss-shell-max` (Standard `64rem`, entspricht Tailwind `max-w-5xl`) aus und fluchtet so mit einem zentrierten
+Inhaltscontainer:
+
+```tsx
+<TopBar as="header" brand="Turnier-Manager" mark="T" contained />
+<AppNav items={items} contained />
+```
+
+Vanilla: Klassen `dss-topbar dss-topbar--dark dss-topbar--contained` bzw. `dss-appnav dss-appnav--contained`.
+Die Breite lässt sich über `--dss-shell-max` ändern.
+
+## CourtLines
+
+Dezente Spielfeldlinien (FIBA 28 × 15 m) als Seitenhintergrund, rein dekorativ (`aria-hidden`). Die Linien sind
+eine SVG-Maske über `--dss-line` (dark-sicher); auf dem Handy wird die Hochformat-Variante genutzt. Die SVGs liegen
+unter `css/courtlines/`.
+
+```tsx
+<CourtLines />                      {/* füllt den Viewport (position: fixed) */}
+<CourtLines position="absolute" />  {/* füllt den nächsten positionierten Container */}
+```
+
+Vanilla:
+
+```html
+<div class="dss-courtbg" aria-hidden="true"><div class="dss-courtlines"></div></div>
+```
+
+Der Seiteninhalt braucht `position: relative; z-index: 1`, damit er über dem Hintergrund liegt.
 
 ## Identitäts-Achsen
 
