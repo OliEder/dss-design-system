@@ -18,6 +18,8 @@ export interface TopBarProps {
   actions?: ReactNode;
   /** `header` macht die Leiste zur banner-Landmark (Standard: div). */
   as?: 'header' | 'div';
+  /** Begrenzt den Inhalt auf `--dss-shell-max` (Hintergrund bleibt voll breit). */
+  contained?: boolean;
   className?: string;
 }
 
@@ -35,10 +37,11 @@ export function TopBar({
   center,
   actions,
   as: Root = 'div',
+  contained = false,
   className,
 }: TopBarProps) {
   return (
-    <Root className={cn('dss-topbar', 'dss-topbar--dark', className)}>
+    <Root className={cn('dss-topbar', 'dss-topbar--dark', contained && 'dss-topbar--contained', className)}>
       <div className="dss-topbar-brand">
         <span className="dss-topbar-mark" aria-hidden="true">
           {mark}

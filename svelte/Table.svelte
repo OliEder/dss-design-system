@@ -74,7 +74,7 @@
           </tr>
         </thead>
       {/if}
-      {#if head}<thead>{@render head()}</thead>{/if}
+      {#if head && !columns}<thead>{@render head()}</thead>{/if}
       {#if body || rows}<tbody>{@render (body ?? rows)?.()}</tbody>{/if}
       {#if foot}<tfoot>{@render foot()}</tfoot>{/if}
     </table>

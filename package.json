@@ -1,6 +1,6 @@
 {
   "name": "@bbv/dss-design-system",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "DSS Design System — Komponenten-Library für Basketball-Apps (Digitaler Spielbericht, Scoreboard, Vereinsregister)",
   "type": "module",
   "main": "tokens/tokens.css",
@@ -34,6 +34,7 @@
     "./svelte/Skeleton": "./svelte/Skeleton.svelte",
     "./svelte/AppNav": "./svelte/AppNav.svelte",
     "./svelte/Checkbox": "./svelte/Checkbox.svelte",
+    "./svelte/CourtLines": "./svelte/CourtLines.svelte",
     "./appnav.js": "./js/appnav.js"
   },
   "files": [

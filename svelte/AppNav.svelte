@@ -25,6 +25,7 @@
     ariaLabel = 'Hauptnavigation',
     menuLabel = 'Menü',
     context,
+    contained = false,
   }: {
     items: Item[];
     currentHref?: string;
@@ -33,6 +34,8 @@
     menuLabel?: string;
     /** Platz rechts in der Leiste, z. B. für einen späteren Turnierumschalter. */
     context?: Snippet;
+    /** Begrenzt den Inhalt auf --dss-shell-max (Hintergrund bleibt voll breit). */
+    contained?: boolean;
   } = $props();
 
   const baseId = `dss-appnav-${++seq}`;
@@ -42,6 +45,7 @@
   let toggleEl: HTMLButtonElement | undefined = $state();
   const triggers: Record<string, HTMLButtonElement | undefined> = {};
 
+  const slug = (id: string) => id.replace(/[^A-Za-z0-9_-]/g, '-');
   const isGroup = (item: Item): item is Group => 'items' in item;
   const isCurrent = (link: Link) => currentHref !== '' && link.href === currentHref;
 
@@ -60,6 +64,12 @@
       menuOpen = false;
       toggleEl?.focus();
     }
+  }
+
+  function onFocusout(event: FocusEvent) {
+    // Nur schließen, wenn der Fokus auf ein Element außerhalb wandert (relatedTarget null = z. B. Safari-Klick, nicht schließen).
+    const next = event.relatedTarget as Node | null;
+    if (openGroup && next && root && !root.contains(next)) openGroup = null;
   }
 
   function onWindowMousedown(event: MouseEvent) {
@@ -89,9 +99,11 @@
 <nav
   bind:this={root}
   class="dss-appnav dss-appnav--{tone}"
+  class:dss-appnav--contained={contained}
   class:is-open={menuOpen}
   aria-label={ariaLabel}
   onkeydown={onKeydown}
+  onfocusout={onFocusout}
 >
   <div class="dss-appnav-bar">
     <button
@@ -116,13 +128,13 @@
               class:is-active={item.items.some(isCurrent)}
               class:is-open={openGroup === item.id}
               aria-expanded={openGroup === item.id}
-              aria-controls="{baseId}-{item.id}"
+              aria-controls="{baseId}-{slug(item.id)}"
               onclick={() => (openGroup = openGroup === item.id ? null : item.id)}
             >
               {item.label}
               <Icon name="chevron-d" size={16} class="dss-appnav-chev" />
             </button>
-            <ul id="{baseId}-{item.id}" class="dss-appnav-panel" hidden={openGroup !== item.id}>
+            <ul id="{baseId}-{slug(item.id)}" class="dss-appnav-panel" hidden={openGroup !== item.id}>
               {#each item.items as child (child.id)}
                 <li>{@render link(child)}</li>
               {/each}

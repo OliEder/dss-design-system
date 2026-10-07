@@ -25,6 +25,7 @@
     leading,
     center,
     actions,
+    contained = false,
   }: {
     brand?: string;
     mark?: string;
@@ -37,10 +38,12 @@
     leading?: Snippet;
     center?: Snippet;
     actions?: Snippet;
+    /** Begrenzt den Inhalt auf `--dss-shell-max` (Hintergrund bleibt voll breit). */
+    contained?: boolean;
   } = $props();
 </script>
 
-<div class="dss-topbar dss-topbar--dark">
+<div class="dss-topbar dss-topbar--dark" class:dss-topbar--contained={contained}>
   <div class="dss-topbar-brand">
     <span class="dss-topbar-mark" aria-hidden="true">{mark}</span>
     {brand}

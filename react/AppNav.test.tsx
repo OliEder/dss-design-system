@@ -128,4 +128,38 @@ describe('AppNav', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Ansehen' }));
     await expectNoA11yViolations(container);
   });
+
+  it('setzt die Klasse für die begrenzte Inhaltsbreite mit contained', () => {
+    const { container } = render(<AppNav items={ITEMS} contained />);
+    expect(container.querySelector('nav')).toHaveClass('dss-appnav--contained');
+  });
+
+  it('bildet gültige IDs für aria-controls auch bei Sonderzeichen in der Gruppen-ID', () => {
+    render(<AppNav items={[{ id: 'a b/c', label: 'Gruppe', items: [{ id: 'x', label: 'Eins', href: '/1' }] }]} />);
+    const controls = screen.getByRole('button', { name: 'Gruppe' }).getAttribute('aria-controls')!;
+    expect(controls).not.toMatch(/\s/);
+    expect(document.getElementById(controls)).toBeInTheDocument();
+  });
+
+  it('schließt das Dropdown, wenn der Fokus die Navigation verlässt', () => {
+    render(
+      <div>
+        <AppNav items={ITEMS} />
+        <button type="button">Außen</button>
+      </div>,
+    );
+    const prep = screen.getByRole('button', { name: 'Vorbereiten' });
+    fireEvent.click(prep);
+    prep.focus();
+    fireEvent.blur(prep, { relatedTarget: screen.getByRole('button', { name: 'Außen' }) });
+    expect(prep).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('lässt das Dropdown offen, wenn der Fokus innerhalb der Navigation wandert', () => {
+    render(<AppNav items={ITEMS} />);
+    const prep = screen.getByRole('button', { name: 'Vorbereiten' });
+    fireEvent.click(prep);
+    fireEvent.blur(prep, { relatedTarget: screen.getByRole('link', { name: 'Teams' }) });
+    expect(prep).toHaveAttribute('aria-expanded', 'true');
+  });
 });

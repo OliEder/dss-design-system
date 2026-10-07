@@ -80,4 +80,14 @@ describe('Table', () => {
     );
     await expectNoA11yViolations(container);
   });
+
+  it('rendert nur ein thead, wenn columns und head gleichzeitig übergeben werden (columns gewinnt)', () => {
+    const { container } = render(
+      <Table columns={COLUMNS} head={<tr><th>Eigener Kopf</th></tr>}>
+        {ROWS}
+      </Table>,
+    );
+    expect(container.querySelectorAll('thead')).toHaveLength(1);
+    expect(screen.queryByText('Eigener Kopf')).toBeNull();
+  });
 });

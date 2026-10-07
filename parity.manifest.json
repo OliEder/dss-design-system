@@ -12,5 +12,12 @@
   "TopBar":    { "svelte": "svelte/TopBar.svelte",    "react": "react/TopBar.tsx",    "css": ["dss-topbar", "dss-topbar--dark", "dss-topbar-brand", "dss-topbar-mark", "dss-topbar-user"] },
   "EmptyState": { "svelte": "svelte/EmptyState.svelte", "react": "react/EmptyState.tsx", "css": ["dss-empty", "dss-empty--neutral", "dss-empty--action", "dss-empty--error", "dss-empty-icon", "dss-empty-title"] },
   "Stepper":   { "svelte": "svelte/Stepper.svelte",   "react": "react/Stepper.tsx",   "css": ["dss-step", "dss-step--h", "dss-step--c", "dss-step--v", "dss-step-item", "dss-step-dot"] },
-  "AppNav":    { "svelte": "svelte/AppNav.svelte",    "react": "react/AppNav.tsx",    "css": ["dss-appnav", "dss-appnav--dark", "dss-appnav-link", "dss-appnav-group-btn", "dss-appnav-panel", "dss-appnav-toggle"] }
+  "AppNav":    { "svelte": "svelte/AppNav.svelte",    "react": "react/AppNav.tsx",    "css": ["dss-appnav", "dss-appnav--dark", "dss-appnav-link", "dss-appnav-group-btn", "dss-appnav-panel", "dss-appnav-toggle"] },
+  "BottomNav": { "svelte": "svelte/BottomNav.svelte", "react": "react/BottomNav.tsx", "css": ["dss-bnav", "dss-bnav-item", "dss-bnav-fab", "dss-bnav-badge"] },
+  "Breadcrumbs": { "svelte": "svelte/Breadcrumbs.svelte", "react": "react/Breadcrumbs.tsx", "css": ["dss-crumbs", "dss-crumbs--tagged", "dss-crumbs--chip", "dss-crumbs-item", "dss-crumbs-chip"] },
+  "Skeleton": { "svelte": "svelte/Skeleton.svelte", "react": "react/Skeleton.tsx", "css": ["dss-skel", "dss-skel--line", "dss-skel--block", "dss-skel--circle", "dss-skel-row", "dss-skel-match"] },
+  "MatchCard": { "svelte": "svelte/MatchCard.svelte", "react": "react/MatchCard.tsx", "css": ["dss-match", "dss-match--live", "dss-match-team", "dss-match-score"] },
+  "PlayerCard": { "svelte": "svelte/PlayerCard.svelte", "react": "react/PlayerCard.tsx", "css": ["dss-pc-row", "dss-pc-card", "dss-pc-hero", "dss-pc-vitals", "dss-tn", "dss-pos"] },
+  "PlayByPlay": { "svelte": "svelte/PlayByPlay.svelte", "react": "react/PlayByPlay.tsx", "css": ["dss-pbp-frame", "dss-pbp-frame--dark", "dss-pbp-event", "dss-pbp-feed", "dss-pbp-score"] },
+  "CourtLines": { "svelte": "svelte/CourtLines.svelte", "react": "react/CourtLines.tsx", "css": ["dss-courtbg", "dss-courtbg--absolute", "dss-courtlines"] }
 }

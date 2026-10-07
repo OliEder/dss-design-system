@@ -24,6 +24,7 @@ export interface TableProps {
   striped?: boolean;
   /** Einfacher Kopf aus Spaltendefinitionen; alternativ `head` für eigene Kopfzeilen. */
   columns?: TableColumn[];
+  /** Eigene Kopfzeilen; wird ignoriert, wenn `columns` gesetzt ist. */
   head?: ReactNode;
   /** Zeilen des tbody (`<tr>`-Elemente). */
   children?: ReactNode;
@@ -87,7 +88,7 @@ export function Table({
               </tr>
             </thead>
           ) : null}
-          {head ? <thead>{head}</thead> : null}
+          {!columns && head ? <thead>{head}</thead> : null}
           <tbody>{children}</tbody>
           {foot ? <tfoot>{foot}</tfoot> : null}
         </table>
