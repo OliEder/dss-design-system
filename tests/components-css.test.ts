@@ -45,6 +45,9 @@ const REQUIRED = [
   'dss-bnav', 'dss-bnav-item', 'dss-bnav-ic', 'dss-bnav-lbl', 'dss-bnav-badge', 'dss-bnav-fab',
   // Breadcrumbs (v0.9)
   'dss-crumbs', 'dss-crumbs--tagged', 'dss-crumbs--chip', 'dss-crumbs-item', 'dss-crumbs-sep', 'dss-crumbs-tag', 'dss-crumbs-chip',
+  // Skeleton (v0.9)
+  'dss-skel', 'dss-skel--line', 'dss-skel--block', 'dss-skel--circle', 'dss-skel-row', 'dss-skel-who',
+  'dss-skel-match', 'dss-skel-match-head', 'dss-skel-match-row',
   // Icon
   'dss-icon',
 ];

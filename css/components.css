@@ -711,3 +711,25 @@ a.dss-crumbs-item:hover { color: var(--dss-fg); }
 a.dss-crumbs-chip:hover { background: var(--dss-line); color: var(--dss-fg); }
 .dss-crumbs-chip.is-current { background: var(--dss-btn-bg); color: var(--dss-btn-fg); font-weight: 600; }
 a.dss-crumbs-item:focus-visible, a.dss-crumbs-chip:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
+
+/* ── Skeleton ───────────────────────────────────────────────── */
+.dss-skel {
+  display: inline-block; background-size: 200% 100%; animation: dss-skel-shimmer 1.4s ease-in-out infinite;
+  background-image: linear-gradient(90deg, var(--dss-surface-2) 0%, var(--dss-line) 50%, var(--dss-surface-2) 100%);
+}
+.dss-skel--line { display: block; width: 100%; height: 14px; border-radius: 4px; }
+.dss-skel--block { display: block; width: 100%; height: 120px; border-radius: 8px; }
+.dss-skel--circle { border-radius: 50%; }
+@keyframes dss-skel-shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .dss-skel { animation: none; } }
+.dss-skel-row {
+  display: grid; grid-template-columns: 44px 1fr auto; gap: 14px; align-items: center; padding: 12px 16px;
+  background: var(--dss-surface); border: 1px solid var(--dss-line); border-radius: 12px; margin-bottom: 8px;
+}
+.dss-skel-who { display: flex; flex-direction: column; min-width: 0; }
+.dss-skel-match {
+  display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; min-width: 320px;
+  background: var(--dss-surface); border: 1px solid var(--dss-line); border-radius: 14px;
+}
+.dss-skel-match-head { display: flex; justify-content: space-between; }
+.dss-skel-match-row { display: flex; gap: 14px; align-items: center; }

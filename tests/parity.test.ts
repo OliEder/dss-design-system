@@ -14,7 +14,7 @@ const indexTs = readFileSync(new URL('react/index.ts', root), 'utf8');
 // Jede NEUE Komponente muss ins Manifest (Svelte + CSS + React) — sonst schlägt der Test fehl.
 const PENDING_REACT = [
   'PlayByPlay',
-  'MatchCard', 'PlayerCard', 'Skeleton',
+  'MatchCard', 'PlayerCard',
 ];
 
 describe.each(Object.entries(manifest))('Parität: %s', (name, entry) => {
