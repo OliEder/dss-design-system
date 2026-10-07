@@ -16,7 +16,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 const ROOT = new URL('../', import.meta.url).pathname;
 const STATIC_DIR = join(ROOT, 'storybook-static');
 const OUT = join(ROOT, '.visual');
-const TITLES = ['Components/Table', 'Components/Navigation', 'Components/EmptyState'];
+const TITLES = ['Components/Table', 'Components/Navigation', 'Components/EmptyState', 'Components/Card Library', 'Components/PlayByPlay', 'Components/AppNav'];
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json', '.svg': 'image/svg+xml', '.woff2': 'font/woff2', '.woff': 'font/woff', '.png': 'image/png' };
 
 function serveStatic() {

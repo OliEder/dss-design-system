@@ -11,7 +11,7 @@
   const schiriNav = [
     { id: 'overview',  label: 'Übersicht', icon: 'i-home' },
     { id: 'roster',    label: 'Roster',    icon: 'i-roster' },
-    { id: 'score',     label: '',          icon: 'i-plus',   fab: true },
+    { id: 'score',     label: 'Erfassen',  icon: 'i-plus',   fab: true },
     { id: 'foul',      label: 'Fouls',     icon: 'i-foul-p', badge: 3 },
     { id: 'settings',  label: 'Settings',  icon: 'i-cog' },
   ];
