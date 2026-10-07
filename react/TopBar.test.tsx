@@ -50,4 +50,9 @@ describe('TopBar', () => {
     const { container } = render(<TopBar as="header" brand="Turnier-Manager" mark="T" user="Anna" userInitials="A" />);
     await expectNoA11yViolations(container);
   });
+
+  it('setzt die Klasse für die begrenzte Inhaltsbreite mit contained', () => {
+    const { container } = render(<TopBar contained />);
+    expect(container.firstElementChild).toHaveClass('dss-topbar--contained');
+  });
 });

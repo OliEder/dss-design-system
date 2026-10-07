@@ -916,3 +916,12 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
     mask: url("courtlines/court-portrait.svg") center 3% / 96% auto no-repeat;
   }
 }
+
+/* ── contained: Leisten voll breit, Inhalt an --dss-shell-max ausgerichtet ── */
+:root { --dss-shell-max: 64rem; }
+.dss-topbar.dss-topbar--dark.dss-topbar--contained {
+  padding-inline: max(20px, calc((100% - var(--dss-shell-max)) / 2 + 16px));
+}
+.dss-appnav--contained .dss-appnav-bar {
+  padding-inline: max(8px, calc((100% - var(--dss-shell-max)) / 2 + 4px));
+}

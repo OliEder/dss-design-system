@@ -41,10 +41,13 @@ export interface AppNavProps {
   context?: ReactNode;
   /** Eigene Link-Darstellung, z. B. für React Router (`Link` statt `a`). */
   renderLink?: (props: AppNavLinkRenderProps) => ReactNode;
+  /** Begrenzt den Inhalt auf --dss-shell-max (Hintergrund bleibt voll breit). */
+  contained?: boolean;
   className?: string;
 }
 
 const isGroup = (item: AppNavItem): item is AppNavGroup => 'items' in item;
+const slug = (id: string) => id.replace(/[^A-Za-z0-9_-]/g, '-');
 
 /** Hauptnavigation mit Gruppen-Dropdowns (Disclosure), gesperrten Einträgen und mobilem Hamburger-Menü. */
 export function AppNav({
@@ -55,6 +58,7 @@ export function AppNav({
   menuLabel = 'Menü',
   context,
   renderLink,
+  contained = false,
   className,
 }: AppNavProps) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -118,8 +122,13 @@ export function AppNav({
     <nav
       ref={rootRef}
       aria-label={ariaLabel}
-      className={cn('dss-appnav', `dss-appnav--${tone}`, menuOpen && 'is-open', className)}
+      className={cn('dss-appnav', `dss-appnav--${tone}`, contained && 'dss-appnav--contained', menuOpen && 'is-open', className)}
       onKeyDown={onKeyDown}
+      onBlur={(event) => {
+        // Nur schließen, wenn der Fokus auf ein Element außerhalb wandert (relatedTarget null = z. B. Safari-Klick, nicht schließen).
+        const next = event.relatedTarget as Node | null;
+        if (openGroup && next && !event.currentTarget.contains(next)) setOpenGroup(null);
+      }}
     >
       <div className="dss-appnav-bar">
         <button
@@ -143,7 +152,7 @@ export function AppNav({
               );
             }
             const open = openGroup === item.id;
-            const panelId = `${baseId}-${item.id}`;
+            const panelId = `${baseId}-${slug(item.id)}`;
             return (
               <li key={item.id} className="dss-appnav-item">
                 <button

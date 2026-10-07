@@ -108,4 +108,19 @@ describe('js/appnav.js', () => {
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
     expect(root).not.toHaveClass('is-open');
   });
+
+  it('schließt eine Gruppe, wenn der Fokus die Navigation verlässt', () => {
+    const { groups, panel } = mount();
+    fireEvent.click(groups[0]);
+    fireEvent.focusOut(groups[0], { relatedTarget: document.getElementById('outside') });
+    expect(groups[0]).toHaveAttribute('aria-expanded', 'false');
+    expect(panel('n-g1').hidden).toBe(true);
+  });
+
+  it('lässt die Gruppe offen, wenn der Fokus innerhalb der Navigation bleibt', () => {
+    const { groups, panel } = mount();
+    fireEvent.click(groups[0]);
+    fireEvent.focusOut(groups[0], { relatedTarget: panel('n-g1').querySelector('a') });
+    expect(groups[0]).toHaveAttribute('aria-expanded', 'true');
+  });
 });

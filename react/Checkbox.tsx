@@ -10,7 +10,10 @@ export interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement
   density?: CheckboxDensity;
 }
 
-/** Natives Kontrollkästchen im DSS-Look; die Klickfläche ist das gesamte Label (≥ 44 px, kompakt 36 px). */
+/**
+ * Natives Kontrollkästchen im DSS-Look; die Klickfläche ist das gesamte Label (≥ 44 px, kompakt 36 px).
+ * `className` landet auf dem `<input>`, nicht auf dem Wrapper (Wrapper-Klassen sind nicht vorgesehen).
+ */
 export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(function Checkbox(
   { label, hint, density = 'default', className, id, disabled, 'aria-describedby': describedByProp, ...rest },
   ref,

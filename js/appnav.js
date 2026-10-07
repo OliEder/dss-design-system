@@ -2,7 +2,7 @@
  * DSS AppNav · Vanilla-Verhalten
  * --------------------------------------------------------------
  * Ergänzt das Markup der AppNav (css/components.css) um Verhalten, ohne Framework:
- * Hamburger-Menü, Gruppen-Dropdowns (Disclosure), Esc, Klick außerhalb.
+ * Hamburger-Menü, Gruppen-Dropdowns (Disclosure), Esc, Klick außerhalb, Fokusverlust.
  *
  * Markup-Vertrag (Klassen siehe components.css):
  *   <nav class="dss-appnav dss-appnav--light" data-dss-appnav aria-label="Hauptnavigation">
@@ -78,6 +78,11 @@ export function initAppNav(root) {
       setMenu(false);
       toggle.focus();
     }
+  }, { signal });
+
+  root.addEventListener('focusout', (event) => {
+    // relatedTarget null (z. B. Safari-Klick auf Button/Link) schließt bewusst nicht.
+    if (event.relatedTarget && !root.contains(event.relatedTarget)) closeGroups();
   }, { signal });
 
   const onOutside = (event) => {
