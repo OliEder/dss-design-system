@@ -13,7 +13,7 @@ const indexTs = readFileSync(new URL('react/index.ts', root), 'utf8');
 // Bestehende Svelte-Komponenten ohne React-Version. Diese Liste darf nur kürzer werden:
 // Jede NEUE Komponente muss ins Manifest (Svelte + CSS + React) — sonst schlägt der Test fehl.
 const PENDING_REACT = [
-  'PlayByPlay', 'BottomNav', 'Breadcrumbs',
+  'PlayByPlay', 'Breadcrumbs',
   'MatchCard', 'PlayerCard', 'Skeleton',
 ];
 

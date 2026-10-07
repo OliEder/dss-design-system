@@ -41,6 +41,8 @@ const REQUIRED = [
   // AppNav (v0.8)
   'dss-appnav', 'dss-appnav--dark', 'dss-appnav-bar', 'dss-appnav-list', 'dss-appnav-item', 'dss-appnav-link',
   'dss-appnav-group-btn', 'dss-appnav-chev', 'dss-appnav-panel', 'dss-appnav-toggle', 'dss-appnav-context',
+  // BottomNav (v0.9)
+  'dss-bnav', 'dss-bnav-item', 'dss-bnav-ic', 'dss-bnav-lbl', 'dss-bnav-badge', 'dss-bnav-fab',
   // Icon
   'dss-icon',
 ];

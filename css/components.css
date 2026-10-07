@@ -648,3 +648,43 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
   .dss-appnav-panel { position: static; min-width: 0; margin: 0; padding: 0 0 0 14px; border: 0; box-shadow: none; background: none; }
   .dss-appnav-context { margin-left: auto; }
 }
+
+/* ══════════════════════════════════════════════════════════════
+   v0.9 · BottomNav, Breadcrumbs, Skeleton, MatchCard, PlayerCard,
+   PlayByPlay (aus Svelte extrahiert), contained-Leisten
+   ══════════════════════════════════════════════════════════════ */
+
+/* ── BottomNav ──────────────────────────────────────────────── */
+.dss-bnav {
+  display: flex; align-items: stretch; justify-content: space-around; height: 64px;
+  background: var(--dss-surface); border-top: 1px solid var(--dss-line); font-family: var(--font-body);
+}
+.dss-bnav-item {
+  appearance: none; border: 0; background: transparent; cursor: pointer; flex: 1; min-width: 44px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  padding: 6px 4px; color: var(--dss-mute); position: relative; text-decoration: none; transition: color 0.12s;
+}
+.dss-bnav-ic { color: currentColor; }
+.dss-bnav-lbl { font-size: 11px; font-weight: 600; letter-spacing: 0.02em; }
+.dss-bnav-item:hover { color: var(--dss-fg-soft); }
+.dss-bnav-item.is-active { color: var(--dss-fg); }
+.dss-bnav-item.is-active::before {
+  content: ''; position: absolute; top: 0; left: 50%; width: 36px; height: 3px;
+  background: var(--amber-500); transform: translateX(-50%); border-radius: 0 0 3px 3px;
+}
+.dss-bnav-badge {
+  position: absolute; top: 6px; right: calc(50% - 22px); min-width: 18px; height: 18px; padding: 0 5px;
+  border-radius: 999px; background: var(--err-button); color: white;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700; line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.dss-bnav-fab {
+  appearance: none; border: 0; cursor: pointer; align-self: center; width: 56px; height: 56px; margin: 0 4px;
+  border-radius: 50%; background: var(--amber-500); color: var(--ink-1000); text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md);
+  transform: translateY(-12px); transition: background 0.12s, transform 0.12s;
+}
+.dss-bnav-fab:hover { background: var(--amber-400); transform: translateY(-14px); }
+.dss-bnav-item:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: -3px; }
+.dss-bnav-fab:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .dss-bnav-fab, .dss-bnav-fab:hover { transition: none; } }

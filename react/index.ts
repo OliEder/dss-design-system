@@ -20,3 +20,4 @@ export {
   type AppNavTone,
   type AppNavLinkRenderProps,
 } from './AppNav';
+export { BottomNav, type BottomNavProps, type BottomNavItem } from './BottomNav';
