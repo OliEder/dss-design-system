@@ -18,5 +18,6 @@
   "Skeleton": { "svelte": "svelte/Skeleton.svelte", "react": "react/Skeleton.tsx", "css": ["dss-skel", "dss-skel--line", "dss-skel--block", "dss-skel--circle", "dss-skel-row", "dss-skel-match"] },
   "MatchCard": { "svelte": "svelte/MatchCard.svelte", "react": "react/MatchCard.tsx", "css": ["dss-match", "dss-match--live", "dss-match-team", "dss-match-score"] },
   "PlayerCard": { "svelte": "svelte/PlayerCard.svelte", "react": "react/PlayerCard.tsx", "css": ["dss-pc-row", "dss-pc-card", "dss-pc-hero", "dss-pc-vitals", "dss-tn", "dss-pos"] },
-  "PlayByPlay": { "svelte": "svelte/PlayByPlay.svelte", "react": "react/PlayByPlay.tsx", "css": ["dss-pbp-frame", "dss-pbp-frame--dark", "dss-pbp-event", "dss-pbp-feed", "dss-pbp-score"] }
+  "PlayByPlay": { "svelte": "svelte/PlayByPlay.svelte", "react": "react/PlayByPlay.tsx", "css": ["dss-pbp-frame", "dss-pbp-frame--dark", "dss-pbp-event", "dss-pbp-feed", "dss-pbp-score"] },
+  "CourtLines": { "svelte": "svelte/CourtLines.svelte", "react": "react/CourtLines.tsx", "css": ["dss-courtbg", "dss-courtbg--absolute", "dss-courtlines"] }
 }

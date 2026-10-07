@@ -895,3 +895,24 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
 .dss-pbp-frame--dark .dss-pbp-event--timeout .dss-pbp-action { color: oklch(0.88 0.13 245); }
 .dss-pbp-event--score-3p .dss-pbp-action b { color: var(--dss-accent-text); }
 .dss-pbp-frame--dark .dss-pbp-event--score-3p .dss-pbp-action b { color: var(--amber-400); }
+
+/* ── CourtLines: Spielfeldlinien als Seitenhintergrund (FIBA 28 × 15 m, SVG als Maske) ── */
+:root { --dss-court-opacity: 0.6; }
+:root[data-theme="dark"] { --dss-court-opacity: 0.4; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --dss-court-opacity: 0.4; } }
+.dss-courtbg { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.dss-courtbg--absolute { position: absolute; }
+.dss-courtlines {
+  position: absolute; inset: 0;
+  /* hell genug, dass auch gedämpfter 13-px-Text über einer Linie den AAA-Kontrast (7:1) hält */
+  background: var(--dss-line); opacity: var(--dss-court-opacity);
+  -webkit-mask: url("courtlines/court.svg") center 8% / min(1500px, 170vw) auto no-repeat;
+  mask: url("courtlines/court.svg") center 8% / min(1500px, 170vw) auto no-repeat;
+}
+/* Handy: das ganze Feld im Hochformat statt eines Ausschnitts */
+@media (max-width: 700px) {
+  .dss-courtlines {
+    -webkit-mask: url("courtlines/court-portrait.svg") center 3% / 96% auto no-repeat;
+    mask: url("courtlines/court-portrait.svg") center 3% / 96% auto no-repeat;
+  }
+}

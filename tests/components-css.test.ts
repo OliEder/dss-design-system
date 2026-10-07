@@ -63,6 +63,8 @@ const REQUIRED = [
   'dss-pbp-feed', 'dss-pbp-event', 'dss-pbp-time', 'dss-pbp-q', 'dss-pbp-strip', 'dss-pbp-strip--heim', 'dss-pbp-strip--gast',
   'dss-pbp-strip--none', 'dss-pbp-body', 'dss-pbp-action', 'dss-pbp-detail', 'dss-pbp-score', 'dss-pbp-sep',
   'dss-pbp-event--foul', 'dss-pbp-event--timeout', 'dss-pbp-event--score-3p',
+  // CourtLines (v0.9)
+  'dss-courtbg', 'dss-courtbg--absolute', 'dss-courtlines',
 ];
 
 describe('css/components.css', () => {
