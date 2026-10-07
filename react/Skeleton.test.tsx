@@ -18,6 +18,17 @@ describe('Skeleton', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Spielplan wird geladen');
   });
 
+  it('rendert bei label="" keinen Status-Text', () => {
+    render(
+      <>
+        <Skeleton label="" />
+        <Skeleton variant="row" label="" />
+        <Skeleton variant="match" label="" />
+      </>,
+    );
+    expect(screen.queryByRole('status')).toBeNull();
+  });
+
   it('wiederholt einfache Varianten count-mal, aber kündigt nur einmal an', () => {
     const { container } = render(<Skeleton variant="block" count={3} />);
     expect(container.querySelectorAll('.dss-skel--block')).toHaveLength(3);

@@ -20,6 +20,8 @@ export interface BottomNavProps {
   value?: string;
   defaultValue?: string;
   onValueChange?: (id: string) => void;
+  /** Der FAB ändert die Auswahl nicht, er löst nur diese Aktion aus (mit der FAB-ID). */
+  onAction?: (id: string) => void;
   ariaLabel?: string;
   className?: string;
 }
@@ -30,6 +32,7 @@ export function BottomNav({
   value: valueProp,
   defaultValue,
   onValueChange,
+  onAction,
   ariaLabel = 'Hauptnavigation',
   className,
 }: BottomNavProps) {
@@ -47,11 +50,11 @@ export function BottomNav({
         if (item.fab) {
           const icon = <Icon name={item.icon ?? 'plus'} size={22} />;
           return item.href ? (
-            <a key={item.id} className="dss-bnav-fab" href={item.href} aria-label={item.label} onClick={() => pick(item)}>
+            <a key={item.id} className="dss-bnav-fab" href={item.href} aria-label={item.label} onClick={() => onAction?.(item.id)}>
               {icon}
             </a>
           ) : (
-            <button key={item.id} type="button" className="dss-bnav-fab" aria-label={item.label} onClick={() => pick(item)}>
+            <button key={item.id} type="button" className="dss-bnav-fab" aria-label={item.label} onClick={() => onAction?.(item.id)}>
               {icon}
             </button>
           );

@@ -63,4 +63,4 @@
     ></div>
   {/each}
 {/if}
-<span role="status" class="dss-sr-only">{label}</span>
+{#if label}<span role="status" class="dss-sr-only">{label}</span>{/if}

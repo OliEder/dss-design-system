@@ -77,7 +77,8 @@
       <span class="dss-pc-meta">{position}{role ? ` · ${role}` : ''}</span>
     {/if}
   </span>
-  {#if position}<span class={posClass}>{position}</span>{:else}<span></span>{/if}
+  <!-- Pill nur visuell: die Position steht schon in der Meta-Zeile. Leeres span = Platzhalter für die Grid-Spalte. -->
+  {#if position}<span class={posClass} aria-hidden="true">{position}</span>{:else}<span></span>{/if}
   {#if stat !== null}
     <span class="dss-pc-stat">
       {stat}

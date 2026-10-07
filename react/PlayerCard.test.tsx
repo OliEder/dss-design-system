@@ -20,6 +20,7 @@ describe('PlayerCard', () => {
     expect(screen.getByText('A. Seiferth (C)')).toBeInTheDocument();
     expect(container.querySelector('.dss-tn')).toHaveClass('heim', 'small', 'captain');
     expect(container.querySelector('.dss-pos')).toHaveClass('pg');
+    expect(container.querySelector('.dss-pos')).toHaveAttribute('aria-hidden', 'true');
     expect(screen.getByText('22')).toBeInTheDocument();
   });
 

@@ -68,7 +68,7 @@
           {/if}
         </div>
         {#if e.score}
-          <div class="dss-pbp-score" aria-label={`Spielstand ${e.score.heim} zu ${e.score.gast}`}>{e.score.heim}<span class="dss-pbp-sep" aria-hidden="true">:</span>{e.score.gast}</div>
+          <div class="dss-pbp-score"><span aria-hidden="true">{e.score.heim}<span class="dss-pbp-sep">:</span>{e.score.gast}</span><span class="dss-sr-only">{`Spielstand ${e.score.heim} zu ${e.score.gast}`}</span></div>
         {/if}
       </div>
     {/each}

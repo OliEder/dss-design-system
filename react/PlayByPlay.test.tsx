@@ -45,7 +45,9 @@ describe('PlayByPlay', () => {
 
   it('beschriftet den Spielstand zusammenhängend und lässt ihn ohne Score weg', () => {
     const { container } = render(<PlayByPlay events={EVENTS} />);
-    expect(screen.getByLabelText('Spielstand 87 zu 64')).toBeInTheDocument();
+    expect(screen.getByText('Spielstand 87 zu 64')).toHaveClass('dss-sr-only');
+    const visible = container.querySelector('.dss-pbp-score [aria-hidden="true"]');
+    expect(visible).toHaveTextContent('87:64');
     expect(container.querySelectorAll('.dss-pbp-score')).toHaveLength(2);
   });
 

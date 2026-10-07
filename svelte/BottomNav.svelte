@@ -22,11 +22,14 @@
     items,
     value = $bindable(''),
     onchange,
+    onaction,
     ariaLabel = 'Hauptnavigation',
   }: {
     items: Item[];
     value?: string;
     onchange?: (id: string) => void;
+    /** Der FAB ändert die Auswahl nicht, er löst nur diese Aktion aus (mit der FAB-ID). */
+    onaction?: (id: string) => void;
     ariaLabel?: string;
   } = $props();
 
@@ -60,9 +63,9 @@
   {#each items as it (it.id)}
     {#if it.fab}
       {#if it.href}
-        <a class="dss-bnav-fab" href={it.href} aria-label={it.label} onclick={() => pick(it)}>{@render fabIcon(it)}</a>
+        <a class="dss-bnav-fab" href={it.href} aria-label={it.label} onclick={() => onaction?.(it.id)}>{@render fabIcon(it)}</a>
       {:else}
-        <button type="button" class="dss-bnav-fab" aria-label={it.label} onclick={() => pick(it)}>{@render fabIcon(it)}</button>
+        <button type="button" class="dss-bnav-fab" aria-label={it.label} onclick={() => onaction?.(it.id)}>{@render fabIcon(it)}</button>
       {/if}
     {:else if it.href}
       <a

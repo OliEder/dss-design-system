@@ -34,6 +34,27 @@ describe('BottomNav', () => {
     expect(onValueChange).toHaveBeenCalledWith('roster');
   });
 
+  it('FAB-Klick lässt die Auswahl unverändert und meldet kein onValueChange', () => {
+    const onValueChange = vi.fn();
+    render(<BottomNav items={ITEMS} onValueChange={onValueChange} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Erfassen' }));
+    expect(screen.getByRole('button', { name: 'Übersicht' })).toHaveAttribute('aria-current', 'page');
+    expect(onValueChange).not.toHaveBeenCalled();
+  });
+
+  it('FAB meldet sich über onAction mit seiner ID (Button und Link)', () => {
+    const onAction = vi.fn();
+    const { rerender } = render(<BottomNav items={ITEMS} onAction={onAction} />);
+    fireEvent.click(screen.getByRole('button', { name: 'Erfassen' }));
+    expect(onAction).toHaveBeenCalledWith('score');
+    onAction.mockClear();
+    const withHref = ITEMS.map((item) => (item.fab ? { ...item, href: '#erfassen' } : item));
+    rerender(<BottomNav items={withHref} onAction={onAction} />);
+    fireEvent.click(screen.getByRole('link', { name: 'Erfassen' }));
+    expect(onAction).toHaveBeenCalledWith('score');
+    expect(screen.getByRole('button', { name: 'Übersicht' })).toHaveAttribute('aria-current', 'page');
+  });
+
   it('ist kontrolliert über value', () => {
     render(<BottomNav items={ITEMS} value="roster" />);
     fireEvent.click(screen.getByRole('button', { name: 'Übersicht' }));

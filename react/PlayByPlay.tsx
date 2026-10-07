@@ -79,12 +79,13 @@ export function PlayByPlay({
                 {event.detail ? <div className="dss-pbp-detail">{event.detail}</div> : null}
               </div>
               {event.score ? (
-                <div className="dss-pbp-score" aria-label={`Spielstand ${event.score.heim} zu ${event.score.gast}`}>
-                  {event.score.heim}
-                  <span className="dss-pbp-sep" aria-hidden="true">
-                    :
+                <div className="dss-pbp-score">
+                  <span aria-hidden="true">
+                    {event.score.heim}
+                    <span className="dss-pbp-sep">:</span>
+                    {event.score.gast}
                   </span>
-                  {event.score.gast}
+                  <span className="dss-sr-only">{`Spielstand ${event.score.heim} zu ${event.score.gast}`}</span>
                 </div>
               ) : null}
             </div>

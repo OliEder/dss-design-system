@@ -11,7 +11,7 @@ export interface SkeletonProps {
   rounded?: string;
   /** Anzahl der Wiederholungen (nicht bei `match`). */
   count?: number;
-  /** Text für Screenreader, wird einmal angesagt. */
+  /** Text für Screenreader, wird einmal angesagt; `""` lässt den Status-Text weg. */
   label?: string;
   className?: string;
 }
@@ -30,11 +30,12 @@ export function Skeleton({
   label = 'Lädt …',
   className,
 }: SkeletonProps) {
-  const status = (
+  // label="" lässt den Status-Text weg (mehrere Skeletons auf einer Seite)
+  const status = label ? (
     <span role="status" className="dss-sr-only">
       {label}
     </span>
-  );
+  ) : null;
 
   if (variant === 'row') {
     return (

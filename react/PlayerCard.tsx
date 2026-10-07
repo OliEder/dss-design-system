@@ -91,13 +91,15 @@ export function PlayerCard({
             </span>
           ) : null}
         </span>
-        {position ? <span className={posClass}>{position}</span> : <span />}
+        {/* Pill nur visuell: die Position steht schon in der Meta-Zeile. Leeres <span /> = Platzhalter für die Grid-Spalte. */}
+        {position ? <span className={posClass} aria-hidden="true">{position}</span> : <span />}
         {stat !== null ? (
           <span className="dss-pc-stat">
             {stat}
             {statLabel ? <span className="dss-pc-stat-l">{statLabel}</span> : null}
           </span>
         ) : (
+          // Platzhalter für die Grid-Spalte der Statistik
           <span />
         )}
       </>

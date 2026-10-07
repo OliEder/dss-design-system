@@ -39,11 +39,14 @@ Svelte-, Vanilla-CSS- und React-Fassung (die Paritätsliste `PENDING_REACT` ist 
 - Svelte `PlayByPlay`: Feed ist `role="log"` und fokussierbar, Innenklassen `dss-pbp-*` vollständig präfixiert,
   `PbpEvent` wird aus dem `module`-Skript exportiert.
 - `Table`: `columns` hat Vorrang vor `head` (kein doppeltes `<thead>`).
+- BottomNav: Der FAB ändert die Auswahl nicht mehr, er meldet sich über das neue `onAction` (React) bzw. `onaction` (Svelte).
+- PlayByPlay: Spielstand wird für Screenreader als „Spielstand 87 zu 64“ vorgelesen; PlayerCard (compact): Positionsmarke `aria-hidden`.
 
 ### Hinweise
 - React `PlayerCard`: Props heißen `heightCm` und `playerRole` (Svelte: `height_cm`, `role`).
 - Svelte-Komponenten haben weiterhin keine Unit-Tests; abgesichert sind sie durch den Screenshot-Vergleich
   (`npm run visual:before|after|compare`).
+- Skeleton: Mehrere Skeletons auf einer Seite erzeugen mehrere Status-Texte; bei Bedarf `label=""` übergeben (lässt den Status-Text weg) und den Container mit `aria-busy` kennzeichnen.
 
 ## [0.8.0] — Table, TopBar, EmptyState, Stepper, AppNav, Checkbox
 
