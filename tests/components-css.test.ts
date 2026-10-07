@@ -50,6 +50,10 @@ const REQUIRED = [
   'dss-skel-match', 'dss-skel-match-head', 'dss-skel-match-row',
   // Icon
   'dss-icon',
+  // MatchCard (v0.9)
+  'dss-match', 'dss-match--live', 'dss-match-head', 'dss-match-muted', 'dss-match-when', 'dss-match-final',
+  'dss-match-live', 'dss-match-pulse', 'dss-match-body', 'dss-match-team', 'dss-match-team--gast', 'dss-match-dot',
+  'dss-match-name', 'dss-match-score', 'dss-match-foot',
 ];
 
 describe('css/components.css', () => {

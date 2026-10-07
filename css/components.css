@@ -733,3 +733,45 @@ a.dss-crumbs-item:focus-visible, a.dss-crumbs-chip:focus-visible { outline: var(
 }
 .dss-skel-match-head { display: flex; justify-content: space-between; }
 .dss-skel-match-row { display: flex; gap: 14px; align-items: center; }
+
+/* ── MatchCard ──────────────────────────────────────────────── */
+.dss-match {
+  appearance: none; display: block; width: 100%; padding: 0; overflow: hidden; text-align: left;
+  background: var(--dss-surface); color: inherit; text-decoration: none; font: inherit; font-family: var(--font-body);
+  border: 1px solid var(--dss-line); border-radius: 14px; transition: border-color 0.12s, box-shadow 0.12s, transform 0.12s;
+}
+button.dss-match, a.dss-match { cursor: pointer; }
+button.dss-match:hover, a.dss-match:hover { border-color: var(--dss-line-strong); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+button.dss-match:focus-visible, a.dss-match:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
+.dss-match--live { border-color: var(--ok-fill); }
+.dss-match--live::before { content: ''; display: block; height: 3px; background: var(--ok-fill); }
+.dss-match-head {
+  display: flex; justify-content: space-between; align-items: center; padding: 14px 18px 8px;
+  font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--dss-mute); font-weight: 600;
+}
+.dss-match-muted { opacity: 0.6; margin-left: 4px; }
+.dss-match-when { color: var(--dss-fg-soft); }
+.dss-match-final { color: var(--dss-fg); }
+.dss-match-live { display: inline-flex; align-items: center; gap: 6px; color: var(--dss-chip-ok-fg); }
+.dss-match-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--ok-fill); animation: dss-mc-pulse 1.6s ease-in-out infinite; }
+@keyframes dss-mc-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@media (prefers-reduced-motion: reduce) { .dss-match-pulse { animation: none; } button.dss-match, a.dss-match { transition: none; } }
+.dss-match-body { display: flex; flex-direction: column; gap: 8px; padding: 6px 18px 16px; }
+.dss-match-team { display: grid; grid-template-columns: 16px 1fr auto; gap: 14px; align-items: center; }
+.dss-match-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--team-heim, oklch(0.55 0.20 27)); }
+.dss-match-team--gast .dss-match-dot { background: var(--team-gast, oklch(0.55 0.18 245)); }
+.dss-match-name {
+  font-family: var(--font-display); font-weight: 600; font-size: 17px; letter-spacing: -0.01em; color: var(--dss-fg);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.dss-match-score {
+  font-family: var(--font-mono); font-weight: 700; font-size: 22px; color: var(--dss-fg);
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+}
+.dss-match-team.is-loser .dss-match-name { color: var(--dss-mute); font-weight: 500; }
+.dss-match-team.is-loser .dss-match-score { color: var(--dss-mute); }
+.dss-match-foot {
+  display: flex; justify-content: space-between; padding: 10px 18px; background: var(--dss-hover-bg);
+  border-top: 1px solid var(--dss-line); font-family: var(--font-mono); font-size: 11px; color: var(--dss-mute); letter-spacing: 0.04em;
+}
