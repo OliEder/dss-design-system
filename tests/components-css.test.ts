@@ -54,6 +54,10 @@ const REQUIRED = [
   'dss-match', 'dss-match--live', 'dss-match-head', 'dss-match-muted', 'dss-match-when', 'dss-match-final',
   'dss-match-live', 'dss-match-pulse', 'dss-match-body', 'dss-match-team', 'dss-match-team--gast', 'dss-match-dot',
   'dss-match-name', 'dss-match-score', 'dss-match-foot',
+  // PlayerCard (v0.9)
+  'dss-pc-row', 'dss-pc-who', 'dss-pc-name', 'dss-pc-meta', 'dss-pc-stat', 'dss-pc-stat-l', 'dss-pc-card', 'dss-pc-head',
+  'dss-pc-nm', 'dss-pc-role', 'dss-pc-cap', 'dss-pc-vitals', 'dss-pc-v', 'dss-pc-v--amber', 'dss-pc-l', 'dss-pc-hero',
+  'dss-pc-hero-left', 'dss-pc-hero-right',
 ];
 
 describe('css/components.css', () => {

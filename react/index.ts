@@ -24,3 +24,4 @@ export { BottomNav, type BottomNavProps, type BottomNavItem } from './BottomNav'
 export { Breadcrumbs, type BreadcrumbsProps, type BreadcrumbItem, type BreadcrumbVariant } from './Breadcrumbs';
 export { Skeleton, type SkeletonProps, type SkeletonVariant } from './Skeleton';
 export { MatchCard, type MatchCardProps, type MatchState, type MatchTeam } from './MatchCard';
+export { PlayerCard, type PlayerCardProps, type PlayerCardSize, type PlayerTeam, type PlayerVital } from './PlayerCard';

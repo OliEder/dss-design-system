@@ -16,5 +16,6 @@
   "BottomNav": { "svelte": "svelte/BottomNav.svelte", "react": "react/BottomNav.tsx", "css": ["dss-bnav", "dss-bnav-item", "dss-bnav-fab", "dss-bnav-badge"] },
   "Breadcrumbs": { "svelte": "svelte/Breadcrumbs.svelte", "react": "react/Breadcrumbs.tsx", "css": ["dss-crumbs", "dss-crumbs--tagged", "dss-crumbs--chip", "dss-crumbs-item", "dss-crumbs-chip"] },
   "Skeleton": { "svelte": "svelte/Skeleton.svelte", "react": "react/Skeleton.tsx", "css": ["dss-skel", "dss-skel--line", "dss-skel--block", "dss-skel--circle", "dss-skel-row", "dss-skel-match"] },
-  "MatchCard": { "svelte": "svelte/MatchCard.svelte", "react": "react/MatchCard.tsx", "css": ["dss-match", "dss-match--live", "dss-match-team", "dss-match-score"] }
+  "MatchCard": { "svelte": "svelte/MatchCard.svelte", "react": "react/MatchCard.tsx", "css": ["dss-match", "dss-match--live", "dss-match-team", "dss-match-score"] },
+  "PlayerCard": { "svelte": "svelte/PlayerCard.svelte", "react": "react/PlayerCard.tsx", "css": ["dss-pc-row", "dss-pc-card", "dss-pc-hero", "dss-pc-vitals", "dss-tn", "dss-pos"] }
 }

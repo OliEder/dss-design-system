@@ -454,13 +454,15 @@
 .dss-tn {
   display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 10px;
   font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -0.02em;
-  background: var(--n-100); color: var(--ink-900); font-variant-numeric: tabular-nums;
+  background: var(--n-100); color: var(--ink-900); font-variant-numeric: tabular-nums; flex-shrink: 0;
 }
 .dss-frame--dark .dss-tn { background: var(--n-800); color: var(--n-50); }
 .dss-tn.heim { background: var(--team-heim, oklch(0.55 0.20 27)); color: white; }
 .dss-tn.gast { background: var(--team-gast, oklch(0.55 0.18 245)); color: white; }
 .dss-tn.captain { box-shadow: 0 0 0 2px var(--amber-500); }
 .dss-tn.small { width: 32px; height: 32px; font-size: 13.5px; border-radius: 7px; }
+.dss-tn.large { width: 64px; height: 64px; font-size: 26px; border-radius: 14px; }
+.dss-tn.hero { width: 110px; height: 110px; font-size: 48px; border-radius: 22px; }
 .dss-player { display: flex; align-items: center; gap: 12px; }
 .dss-player-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .dss-player-name { font-family: var(--font-body); font-weight: 600; font-size: 14px; color: var(--dss-fg); letter-spacing: -0.005em; line-height: 1.2; }
@@ -471,7 +473,7 @@
 .dss-frame--dark .dss-player.bench .dss-player-name { color: var(--n-300); }
 .dss-player.dnp .dss-player-name { color: var(--dss-mute); text-decoration: line-through; font-weight: 400; }
 .dss-pos {
-  display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 5px;
+  display: inline-flex; align-items: center; justify-content: center; min-width: 22px; padding: 0 5px; height: 22px; border-radius: 5px;
   font-family: var(--font-mono); font-weight: 700; font-size: 10px; background: var(--ink-100); color: var(--ink-700);
 }
 .dss-pos.pg { background: var(--sky-100); color: var(--sky-800); }
@@ -775,3 +777,54 @@ button.dss-match:focus-visible, a.dss-match:focus-visible { outline: var(--ring-
   display: flex; justify-content: space-between; padding: 10px 18px; background: var(--dss-hover-bg);
   border-top: 1px solid var(--dss-line); font-family: var(--font-mono); font-size: 11px; color: var(--dss-mute); letter-spacing: 0.04em;
 }
+
+/* ── PlayerCard ─────────────────────────────────────────────── */
+.dss-pc-row {
+  appearance: none; display: grid; grid-template-columns: 32px 1fr auto auto; gap: 14px; align-items: center;
+  width: 100%; padding: 12px 16px; text-align: left; font: inherit; font-family: var(--font-body); color: inherit;
+  background: var(--dss-surface); border: 1px solid var(--dss-line); border-radius: 12px; transition: border-color 0.12s, background 0.12s;
+}
+button.dss-pc-row { cursor: pointer; }
+button.dss-pc-row:hover { border-color: var(--dss-line-strong); background: var(--dss-hover-bg); }
+button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
+.dss-pc-who { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.dss-pc-name { font-weight: 600; font-size: 14.5px; color: var(--dss-fg); letter-spacing: -0.005em; line-height: 1.2; }
+.dss-pc-meta { font-family: var(--font-mono); font-size: 10.5px; color: var(--dss-mute); letter-spacing: 0.06em; text-transform: uppercase; }
+.dss-pc-stat { text-align: right; font-family: var(--font-mono); font-weight: 700; font-size: 14px; color: var(--dss-fg); font-variant-numeric: tabular-nums; }
+.dss-pc-stat-l { display: block; font-weight: 500; font-size: 10px; color: var(--dss-mute); letter-spacing: 0.06em; text-transform: uppercase; }
+
+.dss-pc-card {
+  display: flex; flex-direction: column; overflow: hidden; font-family: var(--font-body);
+  background: var(--dss-surface); border: 1px solid var(--dss-line); border-radius: 14px;
+}
+.dss-pc-head { display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: center; padding: 22px; border-bottom: 1px solid var(--dss-line); }
+.dss-pc-card .dss-pc-who { gap: 4px; }
+.dss-pc-nm { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 19px; letter-spacing: -0.01em; color: var(--dss-fg); }
+.dss-pc-role {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-family: var(--font-mono); font-size: 10.5px;
+  color: var(--dss-mute); letter-spacing: 0.06em; text-transform: uppercase;
+}
+.dss-pc-cap { padding: 2px 6px; border-radius: 4px; background: var(--dss-chip-amber-bg); color: var(--dss-chip-amber-fg); font-weight: 700; }
+.dss-pc-vitals { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; padding: 18px 22px; }
+.dss-pc-v { font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -0.02em; color: var(--dss-fg); font-variant-numeric: tabular-nums; }
+.dss-pc-v--amber { color: var(--dss-accent-text); }
+.dss-pc-l { margin-top: 2px; font-family: var(--font-mono); font-size: 10px; color: var(--dss-mute); letter-spacing: 0.08em; text-transform: uppercase; }
+
+.dss-pc-hero {
+  position: relative; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; overflow: hidden;
+  padding: 32px; background: var(--ink-1000); color: white; border-radius: 18px; font-family: var(--font-body);
+}
+.dss-pc-hero::before {
+  content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; border-radius: 50%;
+  background: var(--amber-400); opacity: 0.16; filter: blur(20px);
+}
+.dss-pc-hero-left, .dss-pc-hero-right { position: relative; z-index: 1; }
+.dss-pc-hero-right { display: flex; flex-direction: column; gap: 18px; }
+.dss-pc-hero .dss-pc-nm { font-weight: 700; font-size: 32px; letter-spacing: -0.025em; line-height: 1.05; color: white; }
+.dss-pc-hero .dss-pc-role { gap: 10px; font-size: 11px; color: rgba(255, 255, 255, 0.65); }
+.dss-pc-hero .dss-pc-cap { background: var(--amber-100); color: var(--amber-800); }
+.dss-pc-hero .dss-pos { background: rgba(255, 255, 255, 0.12); color: white; }
+.dss-pc-hero .dss-pc-vitals { gap: 24px; padding: 8px 0 0; border-top: 1px solid rgba(255, 255, 255, 0.12); }
+.dss-pc-hero .dss-pc-v { color: white; }
+.dss-pc-hero .dss-pc-v--amber { color: var(--amber-400); }
+.dss-pc-hero .dss-pc-l { color: rgba(255, 255, 255, 0.55); }
