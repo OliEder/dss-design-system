@@ -58,6 +58,11 @@ const REQUIRED = [
   'dss-pc-row', 'dss-pc-who', 'dss-pc-name', 'dss-pc-meta', 'dss-pc-stat', 'dss-pc-stat-l', 'dss-pc-card', 'dss-pc-head',
   'dss-pc-nm', 'dss-pc-role', 'dss-pc-cap', 'dss-pc-vitals', 'dss-pc-v', 'dss-pc-v--amber', 'dss-pc-l', 'dss-pc-hero',
   'dss-pc-hero-left', 'dss-pc-hero-right',
+  // PlayByPlay (v0.9)
+  'dss-pbp-frame', 'dss-pbp-frame--dark', 'dss-pbp-head', 'dss-pbp-title', 'dss-pbp-meta', 'dss-pbp-live', 'dss-pbp-dot',
+  'dss-pbp-feed', 'dss-pbp-event', 'dss-pbp-time', 'dss-pbp-q', 'dss-pbp-strip', 'dss-pbp-strip--heim', 'dss-pbp-strip--gast',
+  'dss-pbp-strip--none', 'dss-pbp-body', 'dss-pbp-action', 'dss-pbp-detail', 'dss-pbp-score', 'dss-pbp-sep',
+  'dss-pbp-event--foul', 'dss-pbp-event--timeout', 'dss-pbp-event--score-3p',
 ];
 
 describe('css/components.css', () => {

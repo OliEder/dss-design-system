@@ -25,3 +25,4 @@ export { Breadcrumbs, type BreadcrumbsProps, type BreadcrumbItem, type Breadcrum
 export { Skeleton, type SkeletonProps, type SkeletonVariant } from './Skeleton';
 export { MatchCard, type MatchCardProps, type MatchState, type MatchTeam } from './MatchCard';
 export { PlayerCard, type PlayerCardProps, type PlayerCardSize, type PlayerTeam, type PlayerVital } from './PlayerCard';
+export { PlayByPlay, type PlayByPlayProps, type PbpEvent, type PbpTeam, type PbpKind } from './PlayByPlay';
