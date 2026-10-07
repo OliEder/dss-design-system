@@ -688,3 +688,26 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
 .dss-bnav-item:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: -3px; }
 .dss-bnav-fab:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .dss-bnav-fab, .dss-bnav-fab:hover { transition: none; } }
+
+/* ── Breadcrumbs ────────────────────────────────────────────── */
+.dss-crumbs {
+  display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  font-family: var(--font-body); font-size: 13px; color: var(--dss-mute);
+}
+.dss-crumbs-item { display: inline-flex; align-items: center; gap: 6px; padding: 2px 0; color: var(--dss-mute); text-decoration: none; }
+a.dss-crumbs-item:hover { color: var(--dss-fg); }
+.dss-crumbs-item.is-current { color: var(--dss-fg); font-weight: 600; }
+.dss-crumbs-sep { flex-shrink: 0; color: var(--dss-mute); opacity: 0.7; }
+.dss-crumbs-tag {
+  font-family: var(--font-mono); font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 2px 6px; border-radius: 4px; background: var(--dss-surface-2); color: var(--dss-fg-soft);
+}
+.dss-crumbs--tagged .is-current .dss-crumbs-tag { background: var(--dss-btn-bg); color: var(--dss-btn-fg); }
+.dss-crumbs--chip { gap: 4px; }
+.dss-crumbs-chip {
+  display: inline-flex; align-items: center; padding: 5px 10px; border-radius: 999px;
+  background: var(--dss-surface-2); color: var(--dss-fg-soft); text-decoration: none; font-size: 12px; font-weight: 500;
+}
+a.dss-crumbs-chip:hover { background: var(--dss-line); color: var(--dss-fg); }
+.dss-crumbs-chip.is-current { background: var(--dss-btn-bg); color: var(--dss-btn-fg); font-weight: 600; }
+a.dss-crumbs-item:focus-visible, a.dss-crumbs-chip:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }

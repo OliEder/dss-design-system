@@ -43,6 +43,8 @@ const REQUIRED = [
   'dss-appnav-group-btn', 'dss-appnav-chev', 'dss-appnav-panel', 'dss-appnav-toggle', 'dss-appnav-context',
   // BottomNav (v0.9)
   'dss-bnav', 'dss-bnav-item', 'dss-bnav-ic', 'dss-bnav-lbl', 'dss-bnav-badge', 'dss-bnav-fab',
+  // Breadcrumbs (v0.9)
+  'dss-crumbs', 'dss-crumbs--tagged', 'dss-crumbs--chip', 'dss-crumbs-item', 'dss-crumbs-sep', 'dss-crumbs-tag', 'dss-crumbs-chip',
   // Icon
   'dss-icon',
 ];

@@ -21,3 +21,4 @@ export {
   type AppNavLinkRenderProps,
 } from './AppNav';
 export { BottomNav, type BottomNavProps, type BottomNavItem } from './BottomNav';
+export { Breadcrumbs, type BreadcrumbsProps, type BreadcrumbItem, type BreadcrumbVariant } from './Breadcrumbs';
