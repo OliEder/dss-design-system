@@ -46,6 +46,8 @@
   const tag = $derived(href ? 'a' : onclick ? 'button' : 'div');
 </script>
 
+<!-- Der Handler hängt nur an <a>/<button> (nie am <div>); Svelte kann das bei svelte:element nicht erkennen. -->
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <svelte:element
   this={tag}
   class={`dss-match dss-match--${state}`}
