@@ -7,7 +7,7 @@
    * DSS AppNav · Svelte 5
    * --------------------------------------------------------------
    * Hauptnavigation mit Gruppen-Dropdowns (Disclosure), gesperrten
-   * Einträgen und mobilem Hamburger-Menü (< 720 px). Nutzt nur Klassen
+   * Einträgen (Links und ganze Gruppen) und mobilem Hamburger-Menü (< 720 px). Nutzt nur Klassen
    * aus css/components.css. Aktiv ist der Link, dessen href `currentHref`
    * entspricht (aria-current="page").
    */
@@ -15,7 +15,7 @@
   import Icon from './Icon.svelte';
 
   type Link = { id: string; label: string; href: string; disabled?: boolean; hint?: string };
-  type Group = { id: string; label: string; items: Link[] };
+  type Group = { id: string; label: string; items: Link[]; disabled?: boolean; hint?: string };
   type Item = Link | Group;
 
   let {
@@ -119,7 +119,13 @@
     </button>
     <ul id="{baseId}-list" class="dss-appnav-list">
       {#each items as item (item.id)}
-        {#if isGroup(item)}
+        {#if isGroup(item) && item.disabled}
+          <li class="dss-appnav-item">
+            <button type="button" class="dss-appnav-group-btn is-disabled" disabled title={item.hint}>
+              {item.label}{#if item.hint}<span class="dss-sr-only"> – {item.hint}</span>{/if}
+            </button>
+          </li>
+        {:else if isGroup(item)}
           <li class="dss-appnav-item">
             <button
               bind:this={triggers[item.id]}

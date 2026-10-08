@@ -92,6 +92,24 @@ describe('AppNav', () => {
     expect(within(locked).getByText(/Erst nach dem Zeitplan verfügbar/)).toHaveClass('dss-sr-only');
   });
 
+  it('rendert eine gesperrte Gruppe als deaktivierten Button ohne Dropdown', () => {
+    render(
+      <AppNav
+        items={[
+          { id: 'report', label: 'Auswertung', disabled: true, hint: 'Erst nach Turnierende verfügbar', items: [] },
+          { id: 'help', label: 'Hilfe', href: '/hilfe' },
+        ]}
+      />,
+    );
+    const group = screen.getByRole('button', { name: /Auswertung/ });
+    expect(group).toBeDisabled();
+    expect(group).toHaveClass('is-disabled');
+    expect(group).not.toHaveAttribute('aria-expanded');
+    expect(group).toHaveAttribute('title', 'Erst nach Turnierende verfügbar');
+    expect(within(group).getByText(/Erst nach Turnierende verfügbar/)).toHaveClass('dss-sr-only');
+    expect(document.querySelector('.dss-appnav-panel')).toBeNull();
+  });
+
   it('nutzt renderLink für Router-Links', () => {
     const renderLink = vi.fn(({ item, className, ariaCurrent, onNavigate, children }) => (
       <a data-router href={item.href} className={className} aria-current={ariaCurrent} onClick={onNavigate}>

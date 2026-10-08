@@ -6,6 +6,13 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 ## [Unveröffentlicht] — Marken-Rollen und DBB-Marke
 
 ### Neu
+- **Storybook: Zustände fest sichtbar.** `Docs/Button` zeigt unter *States* eine Matrix Variante × Zustand (Default, Hover, Focus,
+  Active, Disabled) und den Fokus-Ring auf hellem und dunklem Grund. Neue Story `Foundation/Focus & Hover` mit Button, Link,
+  Eingabefeld, Select, Tabs, Karte und Checkbox. Dafür legt `.storybook/pseudo-states.ts` Kopien aller `:hover`-,
+  `:focus-visible`-, `:focus-within`- und `:active`-Regeln als Klassen `.pseudo-*` an (nur Storybook, nicht im Paket).
+- **Schriften selbst gehostet:** `fonts/fonts.css` (Export `@bbv/dss-design-system/fonts.css`) mit Sora, Manrope, JetBrains Mono,
+  Rubik und Barlow Condensed als woff2 (latin, latin-ext, SIL OFL, Lizenztexte in `fonts/licenses/`). Das Storybook lädt sie
+  daraus und nichts mehr von Google; ein Test prüft Dateien, Lizenzen und Export.
 - **DBB-Marke** (nach basketball-bund.de: Schwarz · Weiß · Anthrazit `#191919` · Gold `#c9ae64` · Orange `#ff9900`) als
   zweite Farbwelt neben BBV (Ink · Amber · Sky). Aktivierung mit `<html data-brand="dbb">`; Skalen `--gold-*` und
   `--orange-*` in `tokens/tokens.css`. Die DBB-Marke hat kein Blau.
@@ -24,6 +31,14 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 - Storybook: Toolbar-Umschalter für Marke und Schrift; Schriften werden über `.storybook/preview-head.html` geladen.
 
 ### Geändert
+- **AppNav: gesperrter Zustand sichtbar.** Gesperrte Einträge waren kaum von normalen zu unterscheiden (nur ein etwas helleres
+  Grau). Jetzt sind sie abgedunkelt (55 %), tragen ein Schloss-Symbol und reagieren nicht auf Hover; im dunklen Ton ebenso.
+  Neu: auch eine ganze Gruppe lässt sich sperren (`disabled` und `hint` an der Gruppe, Svelte und React); sie erscheint als
+  deaktivierter Button ohne Dropdown. Vanilla: `is-disabled` auf Link oder Gruppen-Button.
+- **AppNav-Bugfix:** Die Links im Dropdown-Panel und in der mobilen Navigation waren mit `width: 100%` plus Padding 24 px zu
+  breit (ohne `box-sizing: border-box`) und ragten bei Hover und aktivem Zustand über das Panel hinaus. Ein Test sichert das ab.
+- **Fokus-Ring** erreicht jetzt 3:1 (vorher 1.7:1 auf Weiß): `--ring-color` ist ein mittlerer Ton (BBV `oklch(0.62 0.15 244)`,
+  DBB dunkles Orange), gemessen mindestens 3.3:1 auf Weiß, Grau, Anthrazit und Schwarz in Hell und Dunkel.
 - **Svelte nutzt wie React und Vanilla nur noch `css/components.css`:** `Button`, `Card`, `Modal`, `Tabs`, `TextInput` und `Icon`
   hatten eigene Scoped-Styles, die von der gemeinsamen CSS abwichen (kein Dark Mode: Text blieb dunkel auf dunkler Fläche;
   Primärbutton eine Stufe dunkler). Die Blöcke sind gelöscht; ein Test sorgt dafür, dass keine neue Svelte-Komponente einen

@@ -15,6 +15,9 @@ export interface AppNavGroup {
   id: string;
   label: string;
   items: AppNavLink[];
+  /** Gesperrt: die ganze Gruppe ist nicht verfügbar (kein Dropdown, Hinweis wie bei Links). */
+  disabled?: boolean;
+  hint?: string;
 }
 
 export type AppNavItem = AppNavLink | AppNavGroup;
@@ -148,6 +151,16 @@ export function AppNav({
               return (
                 <li key={item.id} className="dss-appnav-item">
                   {renderItemLink(item)}
+                </li>
+              );
+            }
+            if (item.disabled) {
+              return (
+                <li key={item.id} className="dss-appnav-item">
+                  <button type="button" className="dss-appnav-group-btn is-disabled" disabled title={item.hint}>
+                    {item.label}
+                    {item.hint ? <span className="dss-sr-only"> – {item.hint}</span> : null}
+                  </button>
                 </li>
               );
             }

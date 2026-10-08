@@ -10,6 +10,7 @@
     "./tokens.json": "./tokens/tokens.json",
     "./tailwind": "./tokens/tailwind.preset.js",
     "./components.css": "./css/components.css",
+    "./fonts.css": "./fonts/fonts.css",
     "./react": {
       "types": "./dist/react/index.d.ts",
       "import": "./dist/react/index.js"
@@ -40,6 +41,7 @@
   "files": [
     "tokens/",
     "css/",
+    "fonts/",
     "icons/",
     "js/",
     "svelte/",

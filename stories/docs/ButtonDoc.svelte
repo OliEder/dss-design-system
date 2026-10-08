@@ -1,6 +1,7 @@
 <script>
   import SpecPage from './_SpecPage.svelte';
   import Button from '../../svelte/Button.svelte';
+  const variants = ['primary', 'amber', 'secondary', 'danger', 'ghost'];
 </script>
 
 <SpecPage
@@ -138,22 +139,38 @@
       <div class="spec-title">
         <h2>Hover, Focus, Disabled.</h2>
         <p>
-          Jede Variante hat sichtbare Hover- und Focus-Indikatoren mit <b>WCAG 2.1 AAA</b>
-          Kontrast. Disabled reduziert auf 45 % Opacity und schaltet den Pointer ab.
+          Jede Variante hat einen Hover-Zustand (eine Stufe dunkler bzw. heller), einen Fokus-Ring mit mindestens
+          <b>3:1</b> Kontrast auf hellem und dunklem Grund und einen Active-Zustand (leicht verkleinert).
+          Disabled reduziert auf 50 % Opacity und schaltet den Pointer ab.
         </p>
       </div>
     </div>
     <div class="spec-body">
       <div>
-        <div class="spec-cap">Disabled · alle Varianten</div>
-        <div class="spec-frame">
-          <div class="spec-row">
-            <Button variant="primary"   disabled>Primary</Button>
-            <Button variant="amber"     disabled>Amber</Button>
-            <Button variant="secondary" disabled>Secondary</Button>
-            <Button variant="danger"    disabled>Danger</Button>
-            <Button variant="ghost"     disabled>Ghost</Button>
-          </div>
+        <div class="spec-cap">Zustände · Variante × Zustand</div>
+        <div class="spec-frame states">
+          <div class="st-head"></div>
+          {#each ['Default', 'Hover', 'Focus', 'Active', 'Disabled'] as s}<div class="st-head">{s}</div>{/each}
+          {#each variants as v}
+            <div class="st-rowlabel">{v}</div>
+            <div><button class="dss-btn dss-btn--{v} dss-btn--md">{v}</button></div>
+            <div><button class="dss-btn dss-btn--{v} dss-btn--md pseudo-hover">{v}</button></div>
+            <div><button class="dss-btn dss-btn--{v} dss-btn--md pseudo-focus-visible">{v}</button></div>
+            <div><button class="dss-btn dss-btn--{v} dss-btn--md pseudo-hover pseudo-active">{v}</button></div>
+            <div><button class="dss-btn dss-btn--{v} dss-btn--md" disabled>{v}</button></div>
+          {/each}
+        </div>
+        <p class="st-note">
+          Die Zustände sind fest gesetzt (Klassen <code>pseudo-hover</code>, <code>pseudo-focus-visible</code>,
+          <code>pseudo-active</code>, nur im Storybook). Live: mit der Maus darüberfahren, mit Tab hineinspringen.
+          Marke und Light/Dark in der Toolbar umschalten.
+        </p>
+      </div>
+      <div>
+        <div class="spec-cap">Fokus-Ring auf hellem und dunklem Grund</div>
+        <div class="spec-row">
+          <div class="st-surface st-light"><button class="dss-btn dss-btn--secondary dss-btn--md pseudo-focus-visible">Auf hell</button></div>
+          <div class="st-surface st-dark"><button class="dss-btn dss-btn--secondary dss-btn--md pseudo-focus-visible">Auf dunkel</button></div>
         </div>
       </div>
     </div>
@@ -195,3 +212,13 @@
     </div>
   </section>
 </SpecPage>
+
+<style>
+  .states { display: grid; grid-template-columns: 90px repeat(5, max-content); gap: 14px 24px; align-items: center; padding: 22px 24px; overflow-x: auto; }
+  .st-head { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); }
+  .st-rowlabel { font-family: var(--font-mono); font-size: var(--fs-caption); color: var(--page-mute); }
+  .st-note { margin: 10px 0 0; font-size: var(--fs-body-sm); color: var(--page-mute); max-width: 70ch; }
+  .st-surface { padding: 28px 36px; border-radius: var(--radius-lg); border: 1px solid var(--page-line); }
+  .st-light { background: var(--n-0); }
+  .st-dark { background: var(--base-1000); }
+</style>

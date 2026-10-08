@@ -72,3 +72,28 @@ describe('css/components.css', () => {
     expect(hasClass(name)).toBe(true);
   });
 });
+
+describe('AppNav · Untermenü-Links bleiben im Panel', () => {
+  // width: 100% plus Padding ragt ohne box-sizing: border-box über das Panel hinaus
+  it('Links im Dropdown-Panel haben box-sizing: border-box', () => {
+    const rule = css.match(/\.dss-appnav-panel \.dss-appnav-link \{([^}]*)\}/)?.[1] ?? '';
+    expect(rule).toContain('width: 100%');
+    expect(rule).toContain('box-sizing: border-box');
+  });
+
+  it('Links und Gruppen-Buttons in der mobilen Navigation haben box-sizing: border-box', () => {
+    const rule = css.match(/\.dss-appnav-link, \.dss-appnav-group-btn \{([^}]*width: 100%[^}]*)\}/)?.[1] ?? '';
+    expect(rule).toContain('box-sizing: border-box');
+  });
+});
+
+describe('AppNav · gesperrter Zustand ist sichtbar', () => {
+  it('gesperrte Links und Gruppen sind abgedunkelt, haben ein Schloss und keinen Hover', () => {
+    const rule = css.match(/\.dss-appnav-link\.is-disabled, \.dss-appnav-group-btn\.is-disabled \{([^}]*)\}/)?.[1] ?? '';
+    expect(rule).toContain('opacity');
+    expect(rule).toContain('not-allowed');
+    expect(css).toMatch(/\.dss-appnav-link\.is-disabled::after[^{]*\{[^}]*mask/);
+    expect(css).toMatch(/\.dss-appnav-group-btn\.is-disabled:hover/);
+  });
+});
+

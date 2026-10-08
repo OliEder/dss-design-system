@@ -612,7 +612,15 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
 }
 .dss-appnav-link:hover, .dss-appnav-group-btn:hover, .dss-appnav-toggle:hover { color: var(--dss-fg); background: var(--dss-hover-bg); }
 .dss-appnav-link.is-active, .dss-appnav-group-btn.is-active { color: var(--dss-fg); border-bottom-color: var(--indicator); }
-.dss-appnav-link.is-disabled { color: var(--dss-mute); cursor: not-allowed; background: none; }
+/* Gesperrt (noch nicht verfügbar): abgedunkelt, Schloss, kein Hover. Gilt für Links und ganze Gruppen. */
+.dss-appnav-link.is-disabled, .dss-appnav-group-btn.is-disabled { color: var(--dss-mute); opacity: 0.55; cursor: not-allowed; background: none; }
+.dss-appnav-link.is-disabled:hover, .dss-appnav-group-btn.is-disabled:hover { color: var(--dss-mute); background: none; }
+.dss-appnav-link.is-disabled::after, .dss-appnav-group-btn.is-disabled::after {
+  content: ""; flex-shrink: 0; width: 14px; height: 14px; background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='1.5'/%3E%3Cpath d='M8 11V8a4 4 0 1 1 8 0v3'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='9' rx='1.5'/%3E%3Cpath d='M8 11V8a4 4 0 1 1 8 0v3'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.dss-appnav-group-btn.is-disabled .dss-appnav-chev { display: none; }
 .dss-appnav-link:focus-visible, .dss-appnav-group-btn:focus-visible, .dss-appnav-toggle:focus-visible {
   outline: var(--ring-w) solid var(--ring-color); outline-offset: -3px;
 }
@@ -625,7 +633,7 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
 }
 .dss-appnav-panel[hidden] { display: none; }
 .dss-appnav-panel .dss-appnav-link {
-  display: flex; width: 100%; min-height: 44px; margin: 0; border-bottom: 0; border-radius: var(--radius-md);
+  display: flex; box-sizing: border-box; width: 100%; min-height: 44px; margin: 0; border-bottom: 0; border-radius: var(--radius-md);
 }
 .dss-appnav-panel .dss-appnav-link.is-active { background: var(--dss-selected-bg); box-shadow: inset 3px 0 0 var(--indicator); }
 .dss-appnav-toggle { display: none; }
@@ -634,7 +642,8 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
 .dss-appnav--dark .dss-appnav-link, .dss-appnav--dark .dss-appnav-group-btn, .dss-appnav--dark .dss-appnav-toggle { color: var(--n-300); }
 .dss-appnav--dark .dss-appnav-link:hover, .dss-appnav--dark .dss-appnav-group-btn:hover, .dss-appnav--dark .dss-appnav-toggle:hover { color: white; background: var(--n-900); }
 .dss-appnav--dark .dss-appnav-link.is-active, .dss-appnav--dark .dss-appnav-group-btn.is-active { color: white; }
-.dss-appnav--dark .dss-appnav-link.is-disabled { color: var(--n-500); background: none; }
+.dss-appnav--dark .dss-appnav-link.is-disabled, .dss-appnav--dark .dss-appnav-group-btn.is-disabled,
+.dss-appnav--dark .dss-appnav-link.is-disabled:hover, .dss-appnav--dark .dss-appnav-group-btn.is-disabled:hover { color: var(--n-400); background: none; }
 .dss-appnav--dark .dss-appnav-link:focus-visible, .dss-appnav--dark .dss-appnav-group-btn:focus-visible, .dss-appnav--dark .dss-appnav-toggle:focus-visible { outline-color: var(--signal-300); }
 .dss-appnav--dark .dss-appnav-panel { background: var(--n-950); border-color: var(--n-800); }
 .dss-appnav--dark .dss-appnav-panel .dss-appnav-link.is-active { background: var(--n-900); }
@@ -644,7 +653,7 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
   .dss-appnav-toggle { display: inline-flex; margin-bottom: 0; border-bottom: 0; }
   .dss-appnav-list { display: none; flex-direction: column; align-items: stretch; width: 100%; gap: 0; padding-bottom: 8px; }
   .dss-appnav.is-open .dss-appnav-list { display: flex; }
-  .dss-appnav-link, .dss-appnav-group-btn { width: 100%; justify-content: space-between; border-bottom: 0; margin-bottom: 0; border-radius: var(--radius-md); }
+  .dss-appnav-link, .dss-appnav-group-btn { box-sizing: border-box; width: 100%; justify-content: space-between; border-bottom: 0; margin-bottom: 0; border-radius: var(--radius-md); }
   .dss-appnav-link.is-active, .dss-appnav-group-btn.is-active { background: var(--dss-selected-bg); box-shadow: inset 3px 0 0 var(--indicator); }
   .dss-appnav--dark .dss-appnav-link.is-active, .dss-appnav--dark .dss-appnav-group-btn.is-active { background: var(--n-900); }
   .dss-appnav-panel { position: static; min-width: 0; margin: 0; padding: 0 0 0 14px; border: 0; box-shadow: none; background: none; }

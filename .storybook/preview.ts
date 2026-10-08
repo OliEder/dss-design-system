@@ -3,9 +3,12 @@ import { withThemeByDataAttribute } from '@storybook/addon-themes';
 
 // Pull in design-system tokens so every story renders with the real
 // color, type, spacing scale.
+import '../fonts/fonts.css';
 import '../tokens/tokens.css';
 import '../css/components.css';
 import './storybook.css';
+import { installPseudoStates } from './pseudo-states';
+
 
 const preview: Preview = {
   globalTypes: {
@@ -64,6 +67,7 @@ const preview: Preview = {
   },
   decorators: [
     (story, context) => {
+      installPseudoStates(); // idempotent: Kopien der Hover-/Fokus-/Active-Regeln für feste Zustands-Vorschauen
       const brand = context.globals.brand;
       if (brand === 'dbb') document.documentElement.setAttribute('data-brand', 'dbb');
       else document.documentElement.removeAttribute('data-brand');

@@ -17,6 +17,7 @@
       { id: 'overview', label: 'Turnierübersicht', href: '/uebersicht' },
     ] },
     { id: 'export', label: 'Export', href: '/export' },
+    { id: 'report', label: 'Auswertung', disabled: true, hint: 'Erst nach Turnierende verfügbar', items: [] },
     { id: 'help', label: 'Hilfe', items: [
       { id: 'manual', label: 'Anleitung', href: '/anleitung' },
       { id: 'demos', label: 'Demo-Turniere', href: '/demos' },
