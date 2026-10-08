@@ -1010,16 +1010,21 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
 .dss-sch-none { font-family: var(--font-mono); color: var(--dss-mute); }
 .dss-sch-res small { margin-left: 8px; font-size: var(--fs-body-sm); color: var(--dss-mute); }
 .dss-sch-field { max-width: 14ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: middle; }
-.dss-tbl--schedule td.dss-sch-notice { width: 1%; white-space: nowrap; }
+.dss-tbl--schedule td.dss-sch-notice { max-width: 24ch; white-space: normal; }
 .dss-tbl--schedule tr.is-own td:first-child { box-shadow: inset 3px 0 0 var(--indicator); }
-.dss-tbl--schedule tr.is-cancelled td { color: var(--dss-mute); }
+.dss-tbl--schedule tr.is-cancelled td,
+.dss-tbl--schedule tr.is-cancelled .dss-sch-date,
+.dss-tbl--schedule tr.is-cancelled .dss-sch-time { color: var(--dss-mute); }
 .dss-tbl--schedule tr.is-cancelled .dss-sch-team,
 .dss-tbl--schedule tr.is-cancelled .dss-sch-date,
 .dss-tbl--schedule tr.is-cancelled .dss-sch-time { text-decoration: line-through; }
-.dss-tbl--schedule tr.is-postponed td { color: var(--dss-mute); }
+.dss-tbl--schedule tr.is-postponed td,
+.dss-tbl--schedule tr.is-postponed .dss-sch-date,
+.dss-tbl--schedule tr.is-postponed .dss-sch-time { color: var(--dss-mute); }
 .dss-tbl--schedule tr.is-bye td, .dss-tbl--schedule td.dss-sch-bye { color: var(--dss-mute); font-style: italic; }
 
-/* Handy: jede Zeile wird zur Karte (Tabellensemantik über role-Attribute im Markup) */
+/* Handy: jede Zeile wird zur Karte (Tabellensemantik über role-Attribute im Markup).
+   Zellen werden über benannte Grid-Bereiche platziert; fehlende Zellen lassen leere Spuren (0 Höhe). */
 @media (max-width: 640px) {
   .dss-tbl--schedule, .dss-tbl--schedule tbody { display: block; }
   .dss-sch--columns thead {
@@ -1028,13 +1033,32 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
   }
   .dss-tbl--schedule tr.dss-sch-group, .dss-tbl--schedule tr.dss-sch-group th { display: block; }
   .dss-tbl--schedule tr.dss-sch-row {
-    display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 12px 14px;
+    display: grid; grid-template-columns: 1fr auto; column-gap: 12px; row-gap: 0; padding: 12px 14px;
     border-bottom: 1px solid var(--dss-line);
   }
-  .dss-tbl--schedule tr.dss-sch-row td { display: block; height: auto; padding: 0; border: 0; width: auto; }
-  .dss-tbl--schedule td.dss-sch-nr, .dss-tbl--schedule td.dss-sch-when { grid-column: 1; width: auto; }
-  .dss-tbl--schedule td.dss-sch-ha, .dss-tbl--schedule td.dss-sch-field-cell, .dss-tbl--schedule td.dss-sch-venue-cell { grid-column: 2; text-align: right; width: auto; padding: 0; }
-  .dss-tbl--schedule td.dss-sch-match, .dss-tbl--schedule td.dss-sch-heim, .dss-tbl--schedule td.dss-sch-gast { grid-column: 1; }
-  .dss-tbl--schedule td.dss-sch-res { grid-column: 2; grid-row: 2 / span 2; align-self: center; width: auto; text-align: right; }
-  .dss-tbl--schedule td.dss-sch-notice, .dss-tbl--schedule td.dss-sch-bye { grid-column: 1 / -1; width: auto; }
+  .dss-tbl--schedule tr.dss-sch-row:last-child { border-bottom: 0; }
+  .dss-sch--versus tr.dss-sch-row { grid-template-areas: "when when" "match res"; }
+  .dss-sch--opponent tr.dss-sch-row { grid-template-areas: "when ha" "match res"; }
+  .dss-sch--columns tr.dss-sch-row { grid-template-areas: "nr field" "when venue" "heim res" "gast res" "notice notice"; }
+
+  .dss-tbl.dss-tbl--schedule tbody tr.dss-sch-row td {
+    display: block; height: auto; width: auto; margin-top: 4px; padding: 0; border: 0; background: transparent;
+  }
+  .dss-tbl.dss-tbl--schedule tbody tr.dss-sch-row td:first-child { margin-top: 0; }
+  .dss-tbl--schedule td.dss-sch-nr { grid-area: nr; }
+  .dss-tbl--schedule td.dss-sch-when { grid-area: when; }
+  .dss-tbl--schedule td.dss-sch-ha { grid-area: ha; text-align: right; }
+  .dss-tbl--schedule td.dss-sch-match { grid-area: match; }
+  .dss-tbl--schedule td.dss-sch-heim { grid-area: heim; }
+  .dss-tbl--schedule td.dss-sch-gast { grid-area: gast; }
+  .dss-tbl--schedule td.dss-sch-field-cell { grid-area: field; text-align: right; }
+  .dss-tbl--schedule td.dss-sch-venue-cell { grid-area: venue; text-align: right; }
+  .dss-tbl--schedule td.dss-sch-res { grid-area: res; align-self: center; text-align: right; }
+  .dss-tbl--schedule td.dss-sch-notice { grid-area: notice; max-width: none; }
+  .dss-tbl--schedule td.dss-sch-bye { grid-area: auto / 1 / auto / -1; max-width: none; }
+
+  /* Hervorhebung und Hover gehören an die Karte (Zeile), nicht an die einzelnen Zellen */
+  .dss-tbl--schedule tr.dss-sch-row.is-own { background: var(--dss-selected-bg); box-shadow: inset 3px 0 0 var(--indicator); }
+  .dss-tbl--schedule tr.is-own td:first-child { box-shadow: none; }
+  .dss-tbl--schedule tr.dss-sch-row:hover { background: var(--dss-hover-bg); }
 }

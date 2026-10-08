@@ -97,7 +97,6 @@ describe('AppNav · gesperrter Zustand ist sichtbar', () => {
   });
 });
 
-
 describe('Spielplan · ScheduleTable (Variante A)', () => {
   const CLASSES = [
     'dss-tbl--schedule', 'dss-sch-group', 'dss-sch-nr', 'dss-sch-when', 'dss-sch-date', 'dss-sch-time', 'dss-sch-live',
@@ -116,5 +115,50 @@ describe('Spielplan · ScheduleTable (Variante A)', () => {
 
   it('Handy: Zeilen werden zu Karten', () => {
     expect(css).toMatch(/@media \(max-width: 640px\) \{[^@]*\.dss-tbl--schedule tr\.dss-sch-row[^{]*\{[^}]*display: grid/);
+  });
+
+  const mobile = css.slice(css.indexOf('Handy: jede Zeile wird zur Karte'));
+  const ruleOf = (src: string, selector: string) => {
+    const i = src.indexOf(selector + ' {');
+    return i < 0 ? '' : src.slice(i, src.indexOf('}', i));
+  };
+
+  it.each([
+    ['dss-sch-nr', 'nr'], ['dss-sch-when', 'when'], ['dss-sch-ha', 'ha'], ['dss-sch-match', 'match'],
+    ['dss-sch-res', 'res'], ['dss-sch-heim', 'heim'], ['dss-sch-gast', 'gast'],
+    ['dss-sch-field-cell', 'field'], ['dss-sch-venue-cell', 'venue'], ['dss-sch-notice', 'notice'],
+  ])('Handy: .%s liegt im Bereich "%s"', (cls, area) => {
+    expect(ruleOf(mobile, `.dss-tbl--schedule td.${cls}`)).toContain(`grid-area: ${area};`);
+  });
+
+  it.each([
+    ['versus', '"when when" "match res"'],
+    ['opponent', '"when ha" "match res"'],
+    ['columns', '"nr field" "when venue" "heim res" "gast res" "notice notice"'],
+  ])('Handy: Layout %s hat explizite grid-template-areas', (layout, areas) => {
+    expect(ruleOf(mobile, `.dss-sch--${layout} tr.dss-sch-row`)).toContain(`grid-template-areas: ${areas};`);
+  });
+
+  it('Ergebnis bricht nicht um', () => {
+    expect(ruleOf(css, '.dss-tbl--schedule td.dss-sch-res')).toContain('white-space: nowrap');
+  });
+
+  it('Abgesagt: Durchstreichung nur für Team, Datum und Zeit', () => {
+    const rule = css.match(/([^{}]*)\{\s*text-decoration: line-through;\s*\}/)?.[1] ?? '';
+    const selectors = rule.split(',').map((x) => x.trim().replace('.dss-tbl--schedule tr.is-cancelled ', ''));
+    expect(selectors).toEqual(['.dss-sch-team', '.dss-sch-date', '.dss-sch-time']);
+  });
+
+  it('Abgesagt und verschoben: Datum und Zeit gedämpft', () => {
+    for (const state of ['is-cancelled', 'is-postponed']) {
+      const m = css.match(new RegExp(`\\.dss-tbl--schedule tr\\.${state} \\.dss-sch-time \\{([^}]*)\\}`));
+      expect(m?.[1]).toContain('color: var(--dss-mute)');
+      expect(css).toContain(`.dss-tbl--schedule tr.${state} .dss-sch-date`);
+    }
+  });
+
+  it('Handy: Hervorhebung und Hover liegen an der Zeile', () => {
+    expect(ruleOf(mobile, '.dss-tbl--schedule tr.dss-sch-row.is-own')).toContain('background: var(--dss-selected-bg)');
+    expect(ruleOf(mobile, '.dss-tbl--schedule tr.dss-sch-row:hover')).toContain('background: var(--dss-hover-bg)');
   });
 });
