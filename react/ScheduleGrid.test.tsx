@@ -297,3 +297,27 @@ describe('ScheduleGrid · weitere Fälle', () => {
     await expectNoA11yViolations(container);
   });
 });
+
+describe('ScheduleGrid · Scrollbereich', () => {
+  it('ist eine fokussierbare Region, benannt nach caption', () => {
+    render(<ScheduleGrid games={GAMES} columns={COLUMNS} caption="Zeitraster Samstag" title="Titel" />);
+    const region = screen.getByRole('region', { name: 'Zeitraster Samstag' });
+    expect(region).toHaveClass('dss-table-scroll');
+    expect(region).toHaveAttribute('tabindex', '0');
+  });
+
+  it('nutzt ohne caption den Titel als Namen', () => {
+    render(<ScheduleGrid games={GAMES} columns={COLUMNS} title="Hallenbelegung" />);
+    expect(screen.getByRole('region', { name: 'Hallenbelegung' })).toHaveAttribute('tabindex', '0');
+  });
+
+  it('nutzt ohne caption und mit nicht-textuellem Titel den Standardnamen', () => {
+    render(<ScheduleGrid games={GAMES} columns={COLUMNS} title={<em>Titel</em>} />);
+    expect(screen.getByRole('region', { name: 'Zeitraster' })).toBeInTheDocument();
+  });
+
+  it('nutzt ohne caption und Titel den Standardnamen', () => {
+    render(<ScheduleGrid games={GAMES} columns={COLUMNS} />);
+    expect(screen.getByRole('region', { name: 'Zeitraster' })).toBeInTheDocument();
+  });
+});

@@ -174,7 +174,8 @@
       <div class="dss-frame-meta">{#if meta}<span>{meta}</span>{/if}</div>
     </div>
   {/if}
-  <div class="dss-table-scroll">
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -- Fokussierbar mit Absicht: Tastaturnutzer müssen den scrollbaren Bereich erreichen (WCAG 2.1.1) -->
+  <div class="dss-table-scroll" role="region" tabindex="0" aria-label={caption || title || 'Spielplan'}>
     <!-- svelte-ignore a11y_no_redundant_roles -->
     <table role="table" class="dss-tbl dss-tbl--schedule dss-tbl--{dens} dss-sch--{mode}">
       {#if caption}<caption class="dss-sr-only">{caption}</caption>{/if}

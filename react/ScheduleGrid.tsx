@@ -94,7 +94,8 @@ export function ScheduleGrid({
           <div className="dss-frame-meta">{meta ? <span>{meta}</span> : null}</div>
         </div>
       ) : null}
-      <div className="dss-table-scroll">
+      {/* Scrollbereich ist fokussierbar, damit Tastaturnutzer ihn scrollen können (WCAG 2.1.1) */}
+      <div className="dss-table-scroll" role="region" tabIndex={0} aria-label={caption || (typeof title === 'string' && title) || 'Zeitraster'}>
         <table role="table" className={cn('dss-tbl dss-sgrid', `dss-tbl--${density}`)}>
           {caption ? <caption className="dss-sr-only">{caption}</caption> : null}
           <thead role="rowgroup">

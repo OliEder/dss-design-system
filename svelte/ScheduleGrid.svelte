@@ -97,7 +97,8 @@
       <div class="dss-frame-meta">{#if meta}<span>{meta}</span>{/if}</div>
     </div>
   {/if}
-  <div class="dss-table-scroll">
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -- Fokussierbar mit Absicht: Tastaturnutzer müssen den scrollbaren Bereich erreichen (WCAG 2.1.1) -->
+  <div class="dss-table-scroll" role="region" tabindex="0" aria-label={caption || title || 'Zeitraster'}>
     <!-- Die expliziten role-Attribute sind Absicht: Sie erhalten die Tabellensemantik, wenn das Mobil-CSS
          display: block/grid setzt. Nicht entfernen, um die Svelte-Warnung zu unterdrücken. -->
     <!-- svelte-ignore a11y_no_redundant_roles -->

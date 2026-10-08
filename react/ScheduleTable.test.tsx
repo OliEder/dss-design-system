@@ -380,3 +380,29 @@ describe('ScheduleTable · Zustand als Text', () => {
     expect(srTexts(container)).not.toContain('verschoben');
   });
 });
+
+describe('ScheduleTable · Scrollbereich', () => {
+  const g: ScheduleGame[] = [{ id: 'x', state: 'scheduled', time: '10:00', heim: { name: 'A' }, gast: { name: 'B' } }];
+
+  it('ist eine fokussierbare Region, benannt nach caption', () => {
+    render(<ScheduleTable games={g} caption="Spielplan Herren" title="Titel" />);
+    const region = screen.getByRole('region', { name: 'Spielplan Herren' });
+    expect(region).toHaveClass('dss-table-scroll');
+    expect(region).toHaveAttribute('tabindex', '0');
+  });
+
+  it('nutzt ohne caption den Titel als Namen', () => {
+    render(<ScheduleTable games={g} title="Saison 2026" />);
+    expect(screen.getByRole('region', { name: 'Saison 2026' })).toHaveAttribute('tabindex', '0');
+  });
+
+  it('nutzt ohne caption und mit nicht-textuellem Titel den Standardnamen', () => {
+    render(<ScheduleTable games={g} title={<em>Titel</em>} />);
+    expect(screen.getByRole('region', { name: 'Spielplan' })).toBeInTheDocument();
+  });
+
+  it('nutzt ohne caption und Titel den Standardnamen', () => {
+    render(<ScheduleTable games={g} />);
+    expect(screen.getByRole('region', { name: 'Spielplan' })).toBeInTheDocument();
+  });
+});
