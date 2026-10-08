@@ -40,3 +40,6 @@ coverage/
 
 # Visueller Vergleich (Task 1/8)
 .visual/
+
+# Git worktrees
+.worktrees/
