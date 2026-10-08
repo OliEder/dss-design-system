@@ -97,3 +97,24 @@ describe('AppNav · gesperrter Zustand ist sichtbar', () => {
   });
 });
 
+
+describe('Spielplan · ScheduleTable (Variante A)', () => {
+  const CLASSES = [
+    'dss-tbl--schedule', 'dss-sch-group', 'dss-sch-nr', 'dss-sch-when', 'dss-sch-date', 'dss-sch-time', 'dss-sch-live',
+    'dss-sch-venue', 'dss-sch-ha', 'dss-sch-match', 'dss-sch-opp', 'dss-sch-logo', 'dss-sch-sub', 'dss-sch-team',
+    'dss-sch-ph', 'dss-sch-sep', 'dss-sch-note', 'dss-sch-res', 'dss-sch-score', 'dss-sch-none', 'dss-sch-field',
+    'dss-sch-bye', 'dss-sch-notice', 'dss-sch--columns',
+  ];
+  it.each(CLASSES)('definiert .%s', (name) => {
+    expect(hasClass(name)).toBe(true);
+  });
+
+  it('Gruppenzeilen heben das Sticky-Verhalten der Kopfzellen auf', () => {
+    const rule = css.match(/\.dss-tbl--schedule tr\.dss-sch-group th \{([^}]*)\}/)?.[1] ?? '';
+    expect(rule).toContain('position: static');
+  });
+
+  it('Handy: Zeilen werden zu Karten', () => {
+    expect(css).toMatch(/@media \(max-width: 640px\) \{[^@]*\.dss-tbl--schedule tr\.dss-sch-row[^{]*\{[^}]*display: grid/);
+  });
+});
