@@ -162,3 +162,57 @@ describe('Spielplan · ScheduleTable (Variante A)', () => {
     expect(ruleOf(mobile, '.dss-tbl--schedule tr.dss-sch-row:hover')).toContain('background: var(--dss-hover-bg)');
   });
 });
+
+describe('Spielplan · ScheduleGrid (Variante B)', () => {
+  const CLASSES = [
+    'dss-sgrid', 'dss-sg-time', 'dss-sg-cell', 'dss-sg-game', 'dss-sg-teams', 'dss-sg-result', 'dss-sg-meta',
+    'dss-sg-empty', 'dss-sg-break', 'dss-sg-bye',
+  ];
+  it.each(CLASSES)('definiert .%s', (name) => {
+    expect(hasClass(name)).toBe(true);
+  });
+
+  it('die Zeitspalte bleibt beim seitlichen Scrollen stehen', () => {
+    const rule = css.match(/\.dss-sgrid tbody th\.dss-sg-time \{([^}]*)\}/)?.[1] ?? '';
+    expect(rule).toContain('position: sticky');
+    expect(rule).toContain('left: 0');
+  });
+
+  it('Handy: jede Zeitzeile wird ein Block mit Spalten-Beschriftung', () => {
+    expect(css).toMatch(/@media \(max-width: 640px\) \{[^@]*\.dss-sgrid td\.dss-sg-cell::before[^{]*\{[^}]*attr\(data-label\)/);
+  });
+  const grid = css.slice(css.indexOf('Spielplan · ScheduleGrid (Variante B'));
+  const gridMobile = grid.slice(grid.indexOf('@media (max-width: 640px)'));
+  const gridRule = (src: string, selector: string) => {
+    const at = src.indexOf(`${selector} {`);
+    return at < 0 ? '' : src.slice(at, src.indexOf('}', at));
+  };
+
+  it('Zeitspalte im Kopf wird nicht sticky und die im Rumpf ist deckend', () => {
+    expect(gridRule(grid, '.dss-sgrid th.dss-sg-time')).toContain('position: static');
+    expect(gridRule(grid, '.dss-sgrid tbody th.dss-sg-time')).toContain('background: var(--dss-surface)');
+  });
+
+  it('sr-only-Texte bleiben im Scroll-Container (kein Seiten-Overflow)', () => {
+    expect(gridRule(grid, '.dss-sg-game')).toContain('position: relative');
+  });
+
+  it('Hover färbt auch die Zeitzelle (deckend, wegen sticky)', () => {
+    expect(gridRule(grid, '.dss-sgrid tbody tr:hover th.dss-sg-time')).toContain('background: var(--dss-hover-bg)');
+  });
+
+  it('Handy: leere Zellen sind ausgeblendet, Kopfzeile nur für Screenreader', () => {
+    expect(gridRule(gridMobile, '.dss-sgrid td.dss-sg-cell.is-empty')).toContain('display: none');
+    expect(gridRule(gridMobile, '.dss-sgrid thead')).toContain('clip: rect(0, 0, 0, 0)');
+  });
+
+  it('Handy: Zeitzelle nicht sticky, Hover liegt an der Zeile', () => {
+    expect(gridMobile).toMatch(/\.dss-sgrid tbody th\.dss-sg-time[^{]*\{[^}]*position: static/);
+    expect(gridRule(gridMobile, '.dss-sgrid tbody tr:hover')).toContain('background: var(--dss-hover-bg)');
+    expect(gridRule(gridMobile, '.dss-sgrid tbody tr:hover td')).toContain('background: none');
+  });
+
+  it('Handy: Pause und Freilos laufen über die volle Breite', () => {
+    expect(gridRule(gridMobile, '.dss-sgrid tr.dss-sg-break td, .dss-sgrid tr.dss-sg-bye td')).toContain('display: block');
+  });
+});

@@ -1062,3 +1062,55 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
   .dss-tbl--schedule tr.is-own td:first-child { box-shadow: none; }
   .dss-tbl--schedule tr.dss-sch-row:hover { background: var(--dss-hover-bg); }
 }
+
+/* ── Spielplan · ScheduleGrid (Variante B, Zeitraster) ─────── */
+.dss-sgrid th, .dss-sgrid td { white-space: normal; vertical-align: top; }
+.dss-sgrid thead th { text-align: left; }
+.dss-sgrid td.dss-sg-cell { height: auto; padding: 8px 10px; min-width: 180px; }
+.dss-sgrid th.dss-sg-time {
+  position: static; width: 96px; min-width: 96px; text-transform: none; letter-spacing: 0;
+  font-family: var(--font-mono); font-size: var(--fs-body-md); font-weight: 600; color: var(--dss-fg);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.dss-sgrid tbody th.dss-sg-time {
+  position: sticky; left: 0; top: auto; z-index: 1; height: auto; padding: 12px 14px;
+  background: var(--dss-surface); border-bottom: 1px solid var(--dss-line);
+}
+.dss-sgrid tbody tr:last-child th.dss-sg-time { border-bottom: 0; }
+.dss-sgrid tbody tr:hover th.dss-sg-time { background: var(--dss-hover-bg); }
+/* position: relative, damit die absolut positionierten dss-sr-only-Texte im Scroll-Container bleiben
+   (sonst entsteht durch sie seitliches Scrollen der ganzen Seite). */
+.dss-sg-game {
+  position: relative; display: flex; flex-direction: column; gap: 4px; padding: 8px 10px; min-height: 56px;
+  border: 1px solid var(--dss-line); border-radius: var(--radius-md); background: var(--dss-surface);
+  font-size: var(--fs-body-md); color: var(--dss-fg);
+}
+.dss-sg-game.is-own { background: var(--dss-selected-bg); box-shadow: inset 3px 0 0 var(--indicator); font-weight: 600; }
+.dss-sg-game.is-cancelled { color: var(--dss-mute); }
+.dss-sg-game.is-cancelled .dss-sch-team { text-decoration: line-through; }
+.dss-sg-game.is-postponed { color: var(--dss-mute); }
+.dss-sg-teams { line-height: 1.35; }
+.dss-sg-result { display: flex; align-items: baseline; gap: 6px; }
+.dss-sg-result .dss-sch-score { font-size: var(--fs-body); }
+.dss-sg-meta { font-family: var(--font-mono); font-size: var(--fs-caption); color: var(--dss-mute); }
+.dss-sg-empty { display: block; padding: 8px 0; color: var(--dss-mute); font-style: italic; }
+.dss-sgrid tr.dss-sg-break td, .dss-sgrid tr.dss-sg-bye td { height: auto; padding: 10px 14px; color: var(--dss-mute); font-style: italic; background: var(--dss-surface-2); }
+
+@media (max-width: 640px) {
+  .dss-sgrid, .dss-sgrid tbody { display: block; }
+  .dss-sgrid thead {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+  .dss-sgrid tr { display: block; border-bottom: 1px solid var(--dss-line); padding-bottom: 8px; }
+  .dss-sgrid tbody th.dss-sg-time, .dss-sgrid tbody tr:hover th.dss-sg-time { position: static; display: block; width: auto; padding: 12px 14px 4px; border: 0; background: none; }
+  .dss-sgrid tbody tr:hover td { background: none; }
+  .dss-sgrid tbody tr:hover { background: var(--dss-hover-bg); }
+  .dss-sgrid td.dss-sg-cell { display: block; min-width: 0; padding: 4px 14px; border: 0; }
+  .dss-sgrid td.dss-sg-cell.is-empty { display: none; }
+  .dss-sgrid td.dss-sg-cell::before {
+    content: attr(data-label); display: block; margin-bottom: 4px; font-family: var(--font-mono);
+    font-size: var(--fs-caption); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dss-mute);
+  }
+  .dss-sgrid tr.dss-sg-break td, .dss-sgrid tr.dss-sg-bye td { display: block; }
+}
