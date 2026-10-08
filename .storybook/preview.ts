@@ -21,8 +21,20 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    type: {
+      description: 'Schrift',
+      toolbar: {
+        title: 'Schrift',
+        icon: 'edit',
+        items: [
+          { value: 'standard', title: 'Standard (Sora · Manrope)' },
+          { value: 'dbb', title: 'DBB-Original (Rubik · Sucrose*)' },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
-  initialGlobals: { brand: 'bbv' },
+  initialGlobals: { brand: 'bbv', type: 'standard' },
   parameters: {
     controls: {
       matchers: { color: /(background|color)$/i, date: /Date$/i },
@@ -55,6 +67,8 @@ const preview: Preview = {
       const brand = context.globals.brand;
       if (brand === 'dbb') document.documentElement.setAttribute('data-brand', 'dbb');
       else document.documentElement.removeAttribute('data-brand');
+      if (context.globals.type === 'dbb') document.documentElement.setAttribute('data-type', 'dbb');
+      else document.documentElement.removeAttribute('data-type');
       return story();
     },
     withThemeByDataAttribute({

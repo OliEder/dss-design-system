@@ -198,6 +198,7 @@ Vanilla:
 ```
 
 Der Seiteninhalt braucht `position: relative; z-index: 1`, damit er über dem Hintergrund liegt.
+Die Linienfarbe kommt aus `--dss-court-color` (BBV: schwaches Amber, DBB: Gold).
 
 ## Identitäts-Achsen
 
@@ -233,6 +234,71 @@ Gold und Orange haben pro Stufe ähnliche Helligkeit wie Amber, die AAA-Slots (`
 gleich. Gold und `#ff9900` taugen nicht als Text auf Weiß (je etwa 2.1:1); Text nutzt `signal-800` (≈ 8.5:1). Der Indikator nutzt auf hellem Grund das dunklere `orange-600`, damit er 3:1 erreicht.
 Neue Komponenten verwenden nur die Rollen-Tokens und `--dss-*`, keine Farbfamilien direkt. Im Storybook schaltet die
 Toolbar zwischen beiden Marken um.
+
+### Schrift (`data-type`)
+
+Die Schrift ist unabhängig von der Farbmarke. Marke (`data-brand`) und Schrift (`data-type`) lassen sich frei kombinieren,
+beide stehen auf `<html>`:
+
+| `data-type` | Body | Display / Headings |
+|---|---|---|
+| *(leer)* | Manrope | Sora |
+| `dbb` | Rubik (SIL OFL, frei) | Sucrose, Fallback Barlow Condensed |
+
+`Sucrose` (Yellow Design Studio) ist lizenzpflichtig und deshalb **nicht** im Paket. Der DBB oder wer eine Lizenz hat, bindet
+die Dateien selbst ein:
+
+```css
+@font-face { font-family: 'Sucrose'; font-weight: 700; font-display: swap; src: url('/fonts/Sucrose-Bold.woff2') format('woff2'); }
+```
+
+Ohne diese Datei greift der freie Fallback Barlow Condensed (OFL). Das Paket liefert keine Schriftdateien aus. Für
+Auslieferung in Deutschland empfiehlt sich, Rubik und Barlow Condensed selbst zu hosten statt über Google Fonts zu laden.
+
+### Type scale
+
+13 Stufen, als CSS-Variablen (`--fs-*`, `--lh-*`, `--ls-*`, `--fw-*`) und als Klassen (`.dss-t-*`):
+
+| Stufe | Größe / Zeilenhöhe | Verwendung |
+|---|---|---|
+| `display` | 88 / 0.9 · 800 | Spielstand-Anzeige, Trikotnummer groß |
+| `clock` | 64 / 1 · 700 · Mono | Spielzeit, 24-s-Uhr |
+| `h1` · `hero` · `h2` · `h3` | 44 · 32 · 28 · 20 | Seitentitel, Name in Hero-Karten, Abschnitte, Karten-Titel |
+| `stat` | 22 / 1.1 · 800 | Kennzahlen in Karten |
+| `body-lg` · `body` | 18 · 15 | Einleitung, Standard-Fließtext |
+| `body-md` | 14 | Kompakte UI: Tabellen, Listen |
+| `body-sm` | 13 | Hilfetexte, Fußnoten |
+| `label` | 12 · 600 · Versalien | Feld-Beschriftung, Tabellenkopf |
+| `caption` | 11 · 600 · Mono · Versalien | Chips, Meta |
+
+Auf dem Handy (≤ 640 px) nutzen die Klassen `.dss-t-display`, `-clock`, `-h1` und `-h2` die kleineren Größen `--fs-display-sm` (56), `--fs-clock-sm` (48), `--fs-h1-sm` (32) und `--fs-h2-sm` (24). Komponenten mit fester Kachelgröße bleiben bei `--fs-*`. Alle Komponenten in `css/components.css` und `svelte/` setzen `font-size` ausschließlich über `--fs-*`. Zahlen in Spalten (Spielstand, Uhr,
+Statistik) setzen `font-variant-numeric: tabular-nums` (`.dss-tnum`, bei `display` und `clock` eingebaut). Fließtext begrenzt
+`--measure` (65ch, `.dss-measure`). Die DBB-Schrift setzt Display, H1 und H2 in Versalien und ohne negatives Tracking.
+Das Storybook (`Foundation/Typography`) zeigt Skala, Familien, Zahlen und einen Seiten-Ausschnitt; der Reiter *Audit* zählt die
+Schriftgrößen in den Komponenten gegen die Skala.
+
+### Eigene Marke für einen anderen Verein
+
+Das Design System ist darauf ausgelegt, dass Vereine eine eigene Marke ergänzen, ohne Komponenten anzufassen. Komponenten
+lesen nur die Rollen-Tokens; eine Marke ist ein Block, der sie überschreibt (Vorlage: der DBB-Block in `tokens/tokens.css`):
+
+```css
+:root[data-brand="mein-verein"] {
+  /* Skalen mit gleicher Helligkeits-Staffelung wie die Standard-Skalen (AAA-Slots bleiben gleich):
+     50–900 für signal und cool, 0–1000 für base */
+  --base-0: …;  /* … bis --base-1000 */
+  --signal-50: …;  /* … bis --signal-900 · CTA, Highlight, Uhr */
+  --cool-50: …;    /* … bis --cool-900 · Links, Heim-Team, Info */
+  --action-bg: …;  --action-bg-2: …;  --action-bg-hover: …;  /* primäre Buttons */
+  --indicator: …;  /* aktiver Tab / Nav-Unterstrich, auf Weiß ≥ 3:1 */
+  --h-cool: …;  --h-signal: …;  --c-cool: …;  /* Hue/Chroma für Chips und Fokus-Ring */
+  --ring-color: …;
+  --dss-court-color: …;  --dss-court-opacity: …;  /* Courtlines, Text darüber ≥ 7:1 */
+}
+```
+
+Dazu optional ein `data-type`-Block mit `--font-display`, `--font-heading` und `--font-body`. Nach dem Anlegen:
+Kontraste messen (Text ≥ 7:1, UI-Elemente ≥ 3:1) und im Storybook alle Stories in der neuen Marke durchsehen.
 
 ---
 

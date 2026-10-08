@@ -81,7 +81,7 @@
     border: 1px solid var(--page-line);
     border-radius: var(--radius-md);
     padding: 10px 6px;
-    color: var(--base-800);
+    color: var(--dss-fg-soft);
   }
   .lbl {
     font-family: var(--font-mono); font-size: 10.5px;

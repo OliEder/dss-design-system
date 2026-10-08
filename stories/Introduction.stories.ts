@@ -14,7 +14,7 @@ const meta: Meta<typeof Introduction> = {
 Komponenten-Bibliothek für den **Digitalen Spielbericht** des Bayerischen Basketball Verbands
 und Schwester-Apps (Scoreboard, Vereinsregister, Live-Scoring).
 
-- **Identität:** Standalone (Ink · Amber · Sky), 1-Hue-Swap auf DBB-Kompat.
+- **Identität:** BBV (Ink · Amber · Sky) und DBB (Schwarz · Gold · Orange), umschaltbar per \`data-brand\`; Schrift per \`data-type\`.
 - **A11y:** WCAG 2.1 AAA für alle Text-Paare validiert.
 - **Touch:** 44 / 56 / 64 px Stufung — bis Hallen-Tisch-Bedienung.
 - **Tokens:** \`tokens.css\` · \`tokens.json\` · \`tailwind.preset.js\`.

@@ -12,9 +12,26 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 - **Rollen-Tokens** `--base-*`, `--signal-*`, `--cool-*`, `--action-bg*` und `--indicator` als Schicht zwischen
   Marken-Skalen und Komponenten. Hue-Variablen `--h-cool` und `--h-signal` für Chips und Fokus-Ring, `--c-cool` für
   die Chroma der cool-Chips im Dark Mode.
-- Storybook: Toolbar-Umschalter für die Marke.
+- CourtLines: Token `--dss-court-color`; in BBV schwaches Amber (hell `amber-200`, dunkel `amber-700`), in der DBB-Marke golden (hell `gold-200`, dunkel `gold-700`,
+  gedämpfter Text darüber bleibt ≥ 7:1).
+- **Schrift-Achse** `data-type="dbb"`, unabhängig von `data-brand`: Rubik (Body) und Sucrose (Display) wie auf
+  basketball-bund.de. Sucrose ist lizenzpflichtig und nicht im Paket; Fallback ist Barlow Condensed.
+- **Type scale** als CSS-Variablen und Klassen: `--fs-*`, `--lh-*`, `--ls-*`, `--fw-*`, `.dss-t-*`, `.dss-tnum`,
+  `.dss-measure`. Neu gegenüber `tokens.json` bisher: `body-md` (14 px, kompakte UI), `caption` (11 px, Mono),
+  `stat` (22 px, Kennzahlen) und `hero` (32 px, Name in Hero-Karten); Handy-Größen `--fs-*-sm` (≤ 640 px).
+- Storybook: `Foundation/Typography` (Skala, Familien und Gewichte, Zahlen und Mono, Im Einsatz, Audit).
+- README: Anleitung, eine eigene Marke für einen anderen Verein anzulegen.
+- Storybook: Toolbar-Umschalter für Marke und Schrift; Schriften werden über `.storybook/preview-head.html` geladen.
 
 ### Geändert
+- **Svelte nutzt wie React und Vanilla nur noch `css/components.css`:** `Button`, `Card`, `Modal`, `Tabs`, `TextInput` und `Icon`
+  hatten eigene Scoped-Styles, die von der gemeinsamen CSS abwichen (kein Dark Mode: Text blieb dunkel auf dunkler Fläche;
+  Primärbutton eine Stufe dunkler). Die Blöcke sind gelöscht; ein Test sorgt dafür, dass keine neue Svelte-Komponente einen
+  `<style>`-Block bekommt. `TextInput` verwendet jetzt die `dss-*`-Klassen und die Struktur der React-Fassung und hat neue
+  Props `density` (touch · default · compact), `id` und `name`; das Label ist mit dem Feld verknüpft (`for`), `required` und
+  `aria-invalid`/`aria-describedby` werden gesetzt.
+- **Alle Schriftgrößen** in `css/components.css` und `svelte/` laufen über `--fs-*` (108 Angaben). Abweichungen zur Skala wurden
+  gerundet: 10 und 10,5 → 11; 12,5 → 13; 13,5 → 14; 14,5 und 16 → 15; 17 und 19 → 18; 26 → 28; 48 → 44.
 - `css/components.css`, alle Svelte-Komponenten und Stories nutzen die Rollen-Tokens statt `ink-*`, `amber-*`, `sky-*`.
   Aktive Tab-/Nav-Unterstriche laufen über `--indicator` (DBB: `orange-600` auf hell, `orange-500` auf dunkel). BBV sieht unverändert aus (visueller Vergleich aller Stories:
   keine Abweichungen).

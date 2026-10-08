@@ -190,6 +190,26 @@
   --font-body:    'Manrope', system-ui, sans-serif;
   --font-mono:    'JetBrains Mono', ui-monospace, monospace;
 
+  /* ── Type scale · size / line-height / tracking / weight ──────
+     display & clock sind Zahlen-Stile (tabular-nums), label & caption
+     werden in Großbuchstaben gesetzt. Schriftfamilie siehe --font-*. */
+  --fs-display: 88px;  --lh-display: 0.9;   --ls-display: -0.04em;  --fw-display: 800;
+  --fs-clock:   64px;  --lh-clock:   1;     --ls-clock:   -0.02em;  --fw-clock:   700;
+  --fs-h1:      44px;  --lh-h1:      1.05;  --ls-h1:      -0.025em; --fw-h1:      700;
+  --fs-hero:    32px;  --lh-hero:    1.05;  --ls-hero:    -0.025em; --fw-hero:    700;  /* Name in Hero-Karten */
+  --fs-h2:      28px;  --lh-h2:      1.15;  --ls-h2:      -0.015em; --fw-h2:      600;
+  --fs-stat:    22px;  --lh-stat:    1.1;   --ls-stat:    -0.02em;  --fw-stat:    800;  /* Kennzahlen in Karten */
+  --fs-h3:      20px;  --lh-h3:      1.25;  --ls-h3:      -0.01em;  --fw-h3:      600;
+  --fs-body-lg: 18px;  --lh-body-lg: 1.55;  --ls-body-lg: 0;        --fw-body-lg: 400;
+  --fs-body:    15px;  --lh-body:    1.55;  --ls-body:    0;        --fw-body:    400;
+  --fs-body-md: 14px;  --lh-body-md: 1.5;   --ls-body-md: 0;        --fw-body-md: 400;  /* kompakte UI: Tabellen, Listen */
+  --fs-body-sm: 13px;  --lh-body-sm: 1.5;   --ls-body-sm: 0;        --fw-body-sm: 400;
+  --fs-label:   12px;  --lh-label:   1.5;   --ls-label:   0.04em;   --fw-label:   600;
+  --fs-caption: 11px;  --lh-caption: 1.4;   --ls-caption: 0.06em;   --fw-caption: 600;  /* Mono-Beschriftung, Chips */
+
+  --tt-display: none;  /* DBB-Schrift setzt Display/H1/H2 in Versalien */
+  --measure:    65ch;  /* maximale Zeilenlänge für Fließtext */
+
   /* ── Spacing scale · 4 px base ──────────────────────────────── */
   --space-0:  0;
   --space-1:  4px;
@@ -326,6 +346,36 @@
   :root[data-brand="dbb"]:not([data-theme="light"]) { --indicator: var(--orange-500); }
 }
 :root[data-brand="dbb"][data-theme="dark"] { --indicator: var(--orange-500); }
+
+/* Type scale · Handy (≤ 640px): Die Klassen .dss-t-display/-clock/-h1/-h2 nutzen diese Größen.
+   Komponenten mit fester Kachelgröße (Trikotnummer, Kennzahl) bleiben bei --fs-*. */
+:root {
+  --fs-display-sm: 56px;
+  --fs-clock-sm:   48px;
+  --fs-h1-sm:      32px;
+  --fs-h2-sm:      24px;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Typografie · unabhängig von der Marke (data-type auf <html>)
+   Standard:  Sora (Display/Heading) · Manrope (Body) · JetBrains Mono
+   dbb:       Schriften von basketball-bund.de
+              Body    Rubik (SIL OFL, frei)
+              Display Sucrose (Yellow Design Studio, lizenzpflichtig, NICHT
+                      im Paket). Wer eine Lizenz hat, bindet sie selbst per
+                      @font-face unter dem Namen "Sucrose" ein; sonst greift
+                      der freie Fallback Barlow Condensed.
+   Die Schriftdateien liefert die Anwendung aus (siehe README).
+   ──────────────────────────────────────────────────────────────── */
+:root[data-type="dbb"] {
+  --font-display: 'Sucrose', 'Barlow Condensed', 'Rubik', system-ui, sans-serif;
+  --font-heading: 'Sucrose', 'Barlow Condensed', 'Rubik', system-ui, sans-serif;
+  --font-body:    'Rubik', system-ui, sans-serif;
+
+  /* Kondensierte Versalien-Headlines: kein negatives Tracking */
+  --ls-display: 0;  --ls-h1: 0;  --ls-h2: 0;  --ls-h3: 0;  --ls-hero: 0;
+  --tt-display: uppercase;
+}
 
 /* ────────────────────────────────────────────────────────────────
    Dark theme · auto via media query OR explicit data-theme="dark"

@@ -64,12 +64,3 @@
   {#if title}<title>{title}</title>{/if}
   <use href={`#i-${name}`}></use>
 </svg>
-
-<style>
-  .dss-icon {
-    display: inline-block;
-    vertical-align: -0.15em;
-    color: currentColor;
-    flex-shrink: 0;
-  }
-</style>

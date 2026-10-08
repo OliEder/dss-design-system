@@ -3,7 +3,8 @@
    * DSS Button · Svelte 5 example
    * --------------------------------------------------------------
    * Wraps the design-system button variants in a single component.
-   * Reads tokens from tokens.css (must be imported at app root).
+   * Nutzt ausschließlich die Klassen aus css/components.css (kein eigener Scoped-Style);
+   * tokens.css und components.css müssen im App-Root importiert sein.
    *
    * Variants:  primary · amber · secondary · danger · ghost
    * Sizes:     sm · md · lg
@@ -42,53 +43,3 @@
 >
   {@render children()}
 </button>
-
-<style>
-  .dss-btn {
-    appearance: none;
-    border: 0;
-    font-family: var(--font-body);
-    font-weight: 600;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-2);
-    transition: transform 0.08s, background 0.12s, box-shadow 0.12s;
-    outline: 0;
-  }
-  .dss-btn:active   { transform: scale(0.98); }
-  .dss-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-  .dss-btn:focus-visible {
-    box-shadow: 0 0 0 var(--ring-w) var(--ring-color);
-  }
-
-  /* Variants */
-  .dss-btn--primary   { background: var(--action-bg);    color: white;            border-radius: var(--radius-md); }
-  .dss-btn--primary:hover:not(:disabled)   { background: var(--action-bg-hover); }
-
-  .dss-btn--amber     { background: var(--signal-400); color: var(--base-1000);  border-radius: var(--radius-md); }
-  .dss-btn--amber:hover:not(:disabled)     { background: var(--signal-500); }
-
-  .dss-btn--secondary { background: var(--n-100);     color: var(--base-900);   border-radius: var(--radius-md);
-                        box-shadow: inset 0 0 0 1px var(--n-200); }
-  .dss-btn--secondary:hover:not(:disabled) { background: var(--n-200); }
-
-  .dss-btn--danger    { background: var(--err-button); color: white;           border-radius: var(--radius-md); }
-  .dss-btn--danger:hover:not(:disabled)    { filter: brightness(1.08); }
-
-  .dss-btn--ghost     { background: transparent;     color: var(--base-800);   border-radius: var(--radius-md);
-                        box-shadow: inset 0 0 0 1px var(--n-300); }
-  .dss-btn--ghost:hover:not(:disabled)     { background: var(--base-50); }
-
-  /* Sizes */
-  .dss-btn--sm { height: var(--touch-sm); padding: 0 14px; font-size: 13px; }
-  .dss-btn--md { height: var(--touch-sm); padding: 0 18px; font-size: 14px; }
-  .dss-btn--lg { height: var(--touch-md); padding: 0 22px; font-size: 15px; border-radius: var(--radius-lg); }
-
-  .dss-btn.is-touch {
-    height: var(--touch-lg);
-    padding: 0 24px;
-    font-size: 16px;
-    border-radius: var(--radius-lg);
-  }
-</style>

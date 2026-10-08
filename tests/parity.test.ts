@@ -34,3 +34,12 @@ describe('Parität: Vollständigkeit', () => {
     expect(svelteComponents.filter((name) => !(name in manifest))).toEqual([]);
   });
 });
+
+describe('Parität: eine CSS-Quelle', () => {
+  it('keine Svelte-Komponente hat einen eigenen <style>-Block (alles liegt in css/components.css)', () => {
+    const withStyle = readdirSync(new URL('svelte/', root))
+      .filter((file) => file.endsWith('.svelte'))
+      .filter((file) => /<style[\s>]/.test(readFileSync(new URL(`svelte/${file}`, root), 'utf8')));
+    expect(withStyle).toEqual([]);
+  });
+});

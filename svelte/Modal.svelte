@@ -3,7 +3,8 @@
    * DSS Modal · Svelte 5 example
    * --------------------------------------------------------------
    * Modal with backdrop, optional icon header, body, and footer slot.
-   * Closes on Escape and on backdrop click.
+   * Closes on Escape and on backdrop click. Nutzt ausschließlich die Klassen aus
+   * css/components.css (kein eigener Scoped-Style).
    */
   import type { Snippet } from 'svelte';
 
@@ -83,87 +84,3 @@
     </div>
   </div>
 {/if}
-
-<style>
-  .dss-backdrop {
-    position: fixed; inset: 0; z-index: 100;
-    background: var(--backdrop);
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-  }
-  .dss-modal-wrap {
-    position: fixed; inset: 0; z-index: 101;
-    display: flex; align-items: center; justify-content: center;
-    padding: 24px;
-    pointer-events: none;
-  }
-  .dss-modal {
-    pointer-events: auto;
-    background: var(--n-0);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-xl);
-    display: flex; flex-direction: column;
-    max-height: calc(100vh - 48px);
-    overflow: hidden;
-    width: 480px;
-    max-width: 100%;
-  }
-  .dss-modal--sm    { width: 380px; }
-  .dss-modal--wide  { width: 560px; }
-  .dss-modal--xwide { width: 720px; }
-
-  .dss-m-head {
-    display: flex; align-items: flex-start; gap: 16px;
-    padding: 22px 24px 12px;
-  }
-  .dss-m-head-icon {
-    width: 36px; height: 36px;
-    border-radius: var(--radius-md);
-    flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .dss-m-head-icon svg { width: 16px; height: 16px; }
-  .dss-m-head-icon--danger { background: var(--err-soft);  color: var(--err-text); }
-  .dss-m-head-icon--warn   { background: var(--warn-soft); color: var(--warn-text); }
-  .dss-m-head-icon--ok     { background: var(--ok-soft);   color: var(--ok-text); }
-  .dss-m-head-icon--info   { background: var(--info-soft); color: var(--info-text); }
-
-  .dss-m-head-text { flex: 1; min-width: 0; }
-  .dss-m-title {
-    margin: 0;
-    font-family: var(--font-display); font-weight: 700; font-size: 20px;
-    color: var(--base-900);
-  }
-  .dss-m-subtitle {
-    margin: 4px 0 0;
-    font-family: var(--font-mono); font-size: 11px;
-    color: var(--page-mute);
-    text-transform: uppercase; letter-spacing: 0.06em;
-    font-weight: 600;
-  }
-  .dss-m-close {
-    appearance: none; border: 0;
-    background: var(--n-100); color: var(--base-700);
-    width: 32px; height: 32px;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .dss-m-close:hover { background: var(--n-200); }
-
-  .dss-m-body {
-    padding: 4px 24px 20px;
-    overflow-y: auto;
-    flex: 1; min-height: 0;
-    color: var(--base-700);
-    font-size: 14.5px;
-    line-height: 1.55;
-  }
-  .dss-m-footer {
-    display: flex; align-items: center; justify-content: flex-end;
-    gap: 8px;
-    padding: 16px 24px 20px;
-    border-top: 1px solid var(--page-line);
-    background: var(--n-50);
-  }
-</style>
