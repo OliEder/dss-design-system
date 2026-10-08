@@ -126,7 +126,7 @@ export function ScheduleGrid({
                 return (
                   <tr key={`y-${index}`} role="row" className="dss-sg-bye">
                     <th scope="row" role="rowheader" className="dss-sg-time">
-                      {row.time ?? ''}
+                      {row.time ? row.time : <span className="dss-sr-only">Zeit offen</span>}
                     </th>
                     <td role="cell" colSpan={columns.length}>
                       {row.game.heim ? `${row.game.heim.name} hat Freilos` : (row.game.note ?? 'Spielfrei')}

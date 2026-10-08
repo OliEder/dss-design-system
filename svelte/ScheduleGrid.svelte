@@ -120,7 +120,7 @@
           {:else if row.kind === 'bye'}
             <!-- svelte-ignore a11y_no_redundant_roles -->
             <tr role="row" class="dss-sg-bye">
-              <th scope="row" role="rowheader" class="dss-sg-time">{row.time ?? ''}</th>
+              <th scope="row" role="rowheader" class="dss-sg-time">{#if row.time}{row.time}{:else}<span class="dss-sr-only">Zeit offen</span>{/if}</th>
               <td role="cell" colspan={columns.length}>{row.game.heim ? `${row.game.heim.name} hat Freilos` : (row.game.note ?? 'Spielfrei')}</td>
             </tr>
           {:else}
