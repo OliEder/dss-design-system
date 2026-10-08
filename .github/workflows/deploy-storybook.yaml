@@ -31,7 +31,10 @@ jobs:
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 
-      - name: Install dependencies
+      - name: Install dependencies 1
+        run: npm install
+
+      - name: Install dependencies 2
         run: npm ci
 
       - name: Build Storybook
