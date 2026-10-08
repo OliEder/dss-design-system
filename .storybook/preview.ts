@@ -36,10 +36,24 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    framework: {
+      description: 'Fassung der Code-Beispiele',
+      toolbar: {
+        title: 'Fassung',
+        icon: 'code',
+        items: [
+          { value: 'vanilla', title: 'Vanilla (HTML + CSS)' },
+          { value: 'svelte', title: 'Svelte' },
+          { value: 'react', title: 'React' },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
   initialGlobals: {
     brand: 'bbv',
     type: 'standard',
+    framework: 'svelte',
 
     backgrounds: {
       value: 'page'
@@ -79,6 +93,8 @@ const preview: Preview = {
       else document.documentElement.removeAttribute('data-brand');
       if (context.globals.type === 'dbb') document.documentElement.setAttribute('data-type', 'dbb');
       else document.documentElement.removeAttribute('data-type');
+      // Code-Beispiele der Spec-Seiten folgen dem Umschalter "Fassung" (reines CSS, siehe stories/docs/_CodeSwitch.svelte)
+      document.documentElement.dataset.framework = context.globals.framework ?? 'svelte';
       return story();
     },
     withThemeByDataAttribute({

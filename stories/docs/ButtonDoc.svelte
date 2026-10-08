@@ -1,7 +1,35 @@
 <script>
   import SpecPage from './_SpecPage.svelte';
   import Button from '../../svelte/Button.svelte';
+  import CodeSwitch from './_CodeSwitch.svelte';
   const variants = ['primary', 'amber', 'secondary', 'danger', 'ghost'];
+
+  const vanilla = `<!-- Einmal im App-Root einbinden -->
+<link rel="stylesheet" href="tokens/tokens.css" />
+<link rel="stylesheet" href="css/components.css" />
+<!-- optional: <link rel="stylesheet" href="fonts/fonts.css" /> -->
+
+<button type="button" class="dss-btn dss-btn--primary dss-btn--md">Spielbericht freigeben</button>
+<button type="button" class="dss-btn dss-btn--amber dss-btn--md is-touch">Live-Scoring starten</button>
+<button type="button" class="dss-btn dss-btn--danger dss-btn--md">Verwerfen</button>
+<button type="button" class="dss-btn dss-btn--ghost dss-btn--sm">Mehr…</button>
+<button type="button" class="dss-btn dss-btn--primary dss-btn--md" disabled>Gesperrt</button>`;
+
+  const svelte = `import Button from '@bbv/dss-design-system/svelte/Button';
+
+<Button>Spielbericht freigeben</Button>
+<Button variant="amber" touch>Live-Scoring starten</Button>
+<Button variant="danger">Verwerfen</Button>
+<Button variant="ghost" size="sm">Mehr…</Button>
+<Button disabled>Gesperrt</Button>`;
+
+  const react = `import { Button } from '@bbv/dss-design-system/react';
+
+<Button>Spielbericht freigeben</Button>
+<Button variant="amber" touch>Live-Scoring starten</Button>
+<Button variant="danger">Verwerfen</Button>
+<Button variant="ghost" size="sm">Mehr…</Button>
+<Button disabled>Gesperrt</Button>`;
 </script>
 
 <SpecPage
@@ -153,11 +181,11 @@
           {#each ['Default', 'Hover', 'Focus', 'Active', 'Disabled'] as s}<div class="st-head">{s}</div>{/each}
           {#each variants as v}
             <div class="st-rowlabel">{v}</div>
-            <div><button class="dss-btn dss-btn--{v} dss-btn--md">{v}</button></div>
-            <div><button class="dss-btn dss-btn--{v} dss-btn--md pseudo-hover">{v}</button></div>
-            <div><button class="dss-btn dss-btn--{v} dss-btn--md pseudo-focus-visible">{v}</button></div>
-            <div><button class="dss-btn dss-btn--{v} dss-btn--md pseudo-hover pseudo-active">{v}</button></div>
-            <div><button class="dss-btn dss-btn--{v} dss-btn--md" disabled>{v}</button></div>
+            <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md">{v}</button></div>
+            <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md pseudo-hover">{v}</button></div>
+            <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md pseudo-focus-visible">{v}</button></div>
+            <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md pseudo-hover pseudo-active">{v}</button></div>
+            <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md" disabled>{v}</button></div>
           {/each}
         </div>
         <p class="st-note">
@@ -169,8 +197,8 @@
       <div>
         <div class="spec-cap">Fokus-Ring auf hellem und dunklem Grund</div>
         <div class="spec-row">
-          <div class="st-surface st-light"><button class="dss-btn dss-btn--secondary dss-btn--md pseudo-focus-visible">Auf hell</button></div>
-          <div class="st-surface st-dark"><button class="dss-btn dss-btn--secondary dss-btn--md pseudo-focus-visible">Auf dunkel</button></div>
+          <div class="st-surface st-light"><button type="button" class="dss-btn dss-btn--secondary dss-btn--md pseudo-focus-visible">Auf hell</button></div>
+          <div class="st-surface st-dark"><button type="button" class="dss-btn dss-btn--secondary dss-btn--md pseudo-focus-visible">Auf dunkel</button></div>
         </div>
       </div>
     </div>
@@ -184,19 +212,12 @@
         <h2>Import & Props.</h2>
         <p>
           Importiere den Button via Path-Export und reiche bei Bedarf <code>variant</code>,
-          <code>size</code> oder <code>touch</code> rein.
+          <code>size</code> oder <code>touch</code> rein. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
         </p>
       </div>
     </div>
     <div class="spec-body">
-      <div class="spec-frame" style="background: var(--base-1000); color: var(--n-100); padding: 22px 24px;">
-        <pre style="margin: 0; font-family: var(--font-mono); font-size: 13px; line-height: 1.6; color: var(--n-100);">{`import Button from '@bbv/dss/svelte/Button';
-
-<Button>Spielbericht freigeben</Button>
-<Button variant="amber" touch>Live-Scoring starten</Button>
-<Button variant="danger">Verwerfen</Button>
-<Button variant="ghost" size="sm">Mehr…</Button>`}</pre>
-      </div>
+      <CodeSwitch {vanilla} {svelte} {react} />
 
       <div>
         <table class="spec-tokens">
