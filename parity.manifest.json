@@ -10,6 +10,7 @@
   "Checkbox":  { "svelte": "svelte/Checkbox.svelte",  "react": "react/Checkbox.tsx",  "css": ["dss-check", "dss-check--compact", "dss-check-input", "dss-check-label", "dss-check-hint"] },
   "Table":     { "svelte": "svelte/Table.svelte",     "react": "react/Table.tsx",     "css": ["dss-frame", "dss-frame--dark", "dss-frame-head", "dss-crumb", "dss-tbl", "dss-tbl--dense", "dss-tbl--striped"] },
   "ScheduleTable": { "svelte": "svelte/ScheduleTable.svelte", "react": "react/ScheduleTable.tsx", "css": ["dss-tbl--schedule", "dss-sch-group", "dss-sch-when", "dss-sch-match", "dss-sch-res", "dss-sch-score"] },
+  "ScheduleGrid": { "svelte": "svelte/ScheduleGrid.svelte", "react": "react/ScheduleGrid.tsx", "css": ["dss-sgrid", "dss-sg-time", "dss-sg-cell", "dss-sg-game", "dss-sg-empty"] },
   "TopBar":    { "svelte": "svelte/TopBar.svelte",    "react": "react/TopBar.tsx",    "css": ["dss-topbar", "dss-topbar--dark", "dss-topbar-brand", "dss-topbar-mark", "dss-topbar-user"] },
   "EmptyState": { "svelte": "svelte/EmptyState.svelte", "react": "react/EmptyState.tsx", "css": ["dss-empty", "dss-empty--neutral", "dss-empty--action", "dss-empty--error", "dss-empty-icon", "dss-empty-title"] },
   "Stepper":   { "svelte": "svelte/Stepper.svelte",   "react": "react/Stepper.tsx",   "css": ["dss-step", "dss-step--h", "dss-step--c", "dss-step--v", "dss-step-item", "dss-step-dot"] },

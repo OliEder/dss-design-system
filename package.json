@@ -25,6 +25,7 @@
     "./svelte/Banner": "./svelte/Banner.svelte",
     "./svelte/Table": "./svelte/Table.svelte",
     "./svelte/ScheduleTable": "./svelte/ScheduleTable.svelte",
+    "./svelte/ScheduleGrid": "./svelte/ScheduleGrid.svelte",
     "./svelte/PlayByPlay": "./svelte/PlayByPlay.svelte",
     "./svelte/TopBar": "./svelte/TopBar.svelte",
     "./svelte/BottomNav": "./svelte/BottomNav.svelte",
