@@ -2,6 +2,7 @@
   import SpecPage from './_SpecPage.svelte';
   import Table from '../../svelte/Table.svelte';
   import PlayByPlay from '../../svelte/PlayByPlay.svelte';
+  import ScheduleTable from '../../svelte/ScheduleTable.svelte';
 
   const boxscore = [
     { num: '4',  name: 'A. Seiferth', pos: 'pg', min: '32:14', pts: 22, p2: '6/11', p3: '3/6',  ft: '1/2', reb: 4, ast: 8, foul: 2, pm: '+18' },
@@ -169,6 +170,34 @@
     </div>
     <div class="spec-body">
       <PlayByPlay title="Play-by-Play · neueste oben" meta="4 Events" events={events} />
+    </div>
+  </section>
+
+  <!-- Spielpläne -->
+  <section class="spec-s">
+    <div class="spec-s-head">
+      <div class="spec-num">Spielpläne</div>
+      <div class="spec-title">
+        <h2>Eine Zeile pro Spiel.</h2>
+        <p>
+          <b>ScheduleTable</b> setzt Spielpläne aus den vorhandenen Bausteinen zusammen: Dichte aus der Tabelle,
+          Chips, Live-Grün und Ergebnis in Mono. Drei Spiel-Zellen: <code>versus</code> (Liga, Halle),
+          <code>opponent</code> (Mannschaft mit vs./@) und <code>columns</code> (Turnier). Das Zeitraster
+          <b>ScheduleGrid</b> zeigt parallele Spiele auf mehreren Hallen oder Feldern.
+        </p>
+      </div>
+    </div>
+    <div class="spec-body">
+      <div>
+        <div class="spec-cap">Mannschafts-Spielplan · opponent</div>
+        <ScheduleTable
+          caption="Beispiel Mannschafts-Spielplan"
+          games={[
+            { id: 'd1', state: 'finished', date: 'Sa, 26.09.2026', time: '17:30', at: 'heim', opponent: { name: 'TSV Jahn Freising', href: '#', score: 108 }, ownScore: 65 },
+            { id: 'd2', state: 'scheduled', date: 'Sa, 10.10.2026', time: '19:30', at: 'gast', opponent: { name: 'Nürnberger Basketball Club', href: '#' } },
+          ]}
+        />
+      </div>
     </div>
   </section>
 </SpecPage>
