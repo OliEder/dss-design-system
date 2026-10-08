@@ -157,6 +157,15 @@ describe('Spielplan · ScheduleTable (Variante A)', () => {
     }
   });
 
+  it('sr-only-Texte in Zellen bleiben in der Tabelle (td ist positioniert)', () => {
+    const rule = css.match(/\.dss-tbl--schedule td \{ position: relative; \}/);
+    expect(rule).not.toBeNull();
+  });
+
+  it('Handy: leere Zellen (z. B. Hinweis ohne Inhalt) nehmen keinen Platz', () => {
+    expect(ruleOf(mobile, '.dss-tbl.dss-tbl--schedule tbody tr.dss-sch-row td:empty')).toContain('display: none');
+  });
+
   it('Handy: Hervorhebung und Hover liegen an der Zeile', () => {
     expect(ruleOf(mobile, '.dss-tbl--schedule tr.dss-sch-row.is-own')).toContain('background: var(--dss-selected-bg)');
     expect(ruleOf(mobile, '.dss-tbl--schedule tr.dss-sch-row:hover')).toContain('background: var(--dss-hover-bg)');
@@ -195,6 +204,14 @@ describe('Spielplan · ScheduleGrid (Variante B)', () => {
 
   it('sr-only-Texte bleiben im Scroll-Container (kein Seiten-Overflow)', () => {
     expect(gridRule(grid, '.dss-sg-game')).toContain('position: relative');
+  });
+
+  it('mehrere Spiele in einer Zelle haben Abstand', () => {
+    expect(gridRule(grid, '.dss-sg-game + .dss-sg-game')).toContain('margin-top: 6px');
+  });
+
+  it('Kopfzellen liegen über der sticky Zeitzelle im Rumpf', () => {
+    expect(gridRule(grid, '.dss-sgrid thead th')).toContain('z-index: 2');
   });
 
   it('Hover färbt auch die Zeitzelle (deckend, wegen sticky)', () => {

@@ -973,6 +973,9 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
 
 /* ── Spielplan · ScheduleTable (Variante A) ─────────────────── */
 .dss-tbl--schedule td { white-space: normal; }
+/* Positionierter Vorfahre für die absolut positionierten dss-sr-only-Texte, sonst verbreitern sie bei
+   breiten Tabellen (Layout columns) die ganze Seite. */
+.dss-tbl--schedule td { position: relative; }
 .dss-tbl--schedule tr.dss-sch-group th {
   position: static; text-align: left; height: 32px; padding: 0 14px;
   background: var(--dss-surface-2); color: var(--dss-fg-soft); border-bottom: 1px solid var(--dss-line);
@@ -1056,6 +1059,8 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
   .dss-tbl--schedule td.dss-sch-res { grid-area: res; align-self: center; text-align: right; }
   .dss-tbl--schedule td.dss-sch-notice { grid-area: notice; max-width: none; }
   .dss-tbl--schedule td.dss-sch-bye { grid-area: auto / 1 / auto / -1; max-width: none; }
+  /* Leere Zelle (z. B. Hinweis ohne Inhalt) bräuchte sonst Rand und Zeilenhöhe; Selektor so stark wie die display:block-Regel oben */
+  .dss-tbl.dss-tbl--schedule tbody tr.dss-sch-row td:empty { display: none; }
 
   /* Hervorhebung und Hover gehören an die Karte (Zeile), nicht an die einzelnen Zellen */
   .dss-tbl--schedule tr.dss-sch-row.is-own { background: var(--dss-selected-bg); box-shadow: inset 3px 0 0 var(--indicator); }
@@ -1065,7 +1070,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
 
 /* ── Spielplan · ScheduleGrid (Variante B, Zeitraster) ─────── */
 .dss-sgrid th, .dss-sgrid td { white-space: normal; vertical-align: top; }
-.dss-sgrid thead th { text-align: left; }
+.dss-sgrid thead th { text-align: left; z-index: 2; } /* über der sticky Zeitzelle im Rumpf (z-index 1) */
 .dss-sgrid td.dss-sg-cell { height: auto; padding: 8px 10px; min-width: 180px; }
 .dss-sgrid th.dss-sg-time {
   position: static; width: 96px; min-width: 96px; text-transform: none; letter-spacing: 0;
@@ -1092,6 +1097,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
 .dss-sg-teams { line-height: 1.35; }
 .dss-sg-result { display: flex; align-items: baseline; gap: 6px; }
 .dss-sg-result .dss-sch-score { font-size: var(--fs-body); }
+.dss-sg-game + .dss-sg-game { margin-top: 6px; }
 .dss-sg-meta { font-family: var(--font-mono); font-size: var(--fs-caption); color: var(--dss-mute); }
 .dss-sg-empty { display: block; padding: 8px 0; color: var(--dss-mute); font-style: italic; }
 .dss-sgrid tr.dss-sg-break td, .dss-sgrid tr.dss-sg-bye td { height: auto; padding: 10px 14px; color: var(--dss-mute); font-style: italic; background: var(--dss-surface-2); }
