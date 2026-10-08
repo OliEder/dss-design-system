@@ -8,6 +8,21 @@ import '../css/components.css';
 import './storybook.css';
 
 const preview: Preview = {
+  globalTypes: {
+    brand: {
+      description: 'Marke',
+      toolbar: {
+        title: 'Marke',
+        icon: 'paintbrush',
+        items: [
+          { value: 'bbv', title: 'BBV (Ink · Amber · Sky)' },
+          { value: 'dbb', title: 'DBB (Schwarz · Gold · Orange)' },
+        ],
+        dynamicTitle: true,
+      },
+    },
+  },
+  initialGlobals: { brand: 'bbv' },
   parameters: {
     controls: {
       matchers: { color: /(background|color)$/i, date: /Date$/i },
@@ -36,11 +51,12 @@ const preview: Preview = {
     },
   },
   decorators: [
-    withThemeByDataAttribute({
-      themes: { 'BBV (Ink · Amber · Sky)': '', 'DBB (Blau · Orange)': 'dbb' },
-      defaultTheme: 'BBV (Ink · Amber · Sky)',
-      attributeName: 'data-brand',
-    }),
+    (story, context) => {
+      const brand = context.globals.brand;
+      if (brand === 'dbb') document.documentElement.setAttribute('data-brand', 'dbb');
+      else document.documentElement.removeAttribute('data-brand');
+      return story();
+    },
     withThemeByDataAttribute({
       themes: { Light: 'light', Dark: 'dark' },
       defaultTheme: 'Light',
