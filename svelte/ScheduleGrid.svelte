@@ -5,7 +5,9 @@
    * Zeitraster: Anwurfzeiten als Zeilen, Hallen oder Felder als Spalten
    * (empfohlen: höchstens drei). Nutzt ausschließlich die Klassen aus
    * css/components.css (kein eigener Scoped-Style); gleiche Struktur wie
-   * die React-Fassung. Slot `notice`: zusätzlicher Inhalt in der Spielzelle.
+   * die React-Fassung. Snippet `notice`: zusätzlicher Inhalt in der Spielzelle.
+   * `title` und `meta` sind reine Strings; `renderLink` und `titleAs` gibt es
+   * in Svelte nicht (Überschrift immer h3, Links als einfache <a>).
    */
   import type { Snippet } from 'svelte';
   import { ariaForResult, buildGrid, hasScore, stateLabel, winnerSide } from '../js/schedule.js';
@@ -40,6 +42,7 @@
   const rows = $derived(buildGrid({ games, columns, slots, breaks }));
 </script>
 
+<!-- team-Snippet: synchron halten mit ScheduleTable/ScheduleGrid -->
 {#snippet team(t: ScheduleTeam | undefined, loser: boolean)}
   {@const current = t ?? { name: '?' }}
   <span class="dss-sch-team" class:is-loser={loser}>
@@ -95,6 +98,8 @@
     </div>
   {/if}
   <div class="dss-table-scroll">
+    <!-- Die expliziten role-Attribute sind Absicht: Sie erhalten die Tabellensemantik, wenn das Mobil-CSS
+         display: block/grid setzt. Nicht entfernen, um die Svelte-Warnung zu unterdrücken. -->
     <!-- svelte-ignore a11y_no_redundant_roles -->
     <table role="table" class="dss-tbl dss-sgrid dss-tbl--{density}">
       {#if caption}<caption class="dss-sr-only">{caption}</caption>{/if}
@@ -110,6 +115,7 @@
       </thead>
       <!-- svelte-ignore a11y_no_redundant_roles -->
       <tbody role="rowgroup">
+        <!-- Schlüssel mit Index ist Absicht: Zeitzeile, Pause und Freilos können dieselbe Startzeit haben. -->
         {#each rows as row, index (`${row.kind}-${row.time ?? ''}-${index}`)}
           {#if row.kind === 'break'}
             <!-- svelte-ignore a11y_no_redundant_roles -->

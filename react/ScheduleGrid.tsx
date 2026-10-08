@@ -14,6 +14,7 @@ export interface ScheduleGridProps {
   /** Pausen und Sperrzeiten als Zeile über alle Spalten. */
   breaks?: ScheduleBreak[];
   emptyLabel?: string;
+  /** Zeilenhöhe; Standard: `default` (anders als ScheduleTable wird sie nicht aus den Spielen abgeleitet). */
   density?: ScheduleDensity;
   title?: ReactNode;
   titleAs?: 'h2' | 'h3' | 'h4';
@@ -109,6 +110,7 @@ export function ScheduleGrid({
             </tr>
           </thead>
           <tbody role="rowgroup">
+            {/* Schlüssel mit Index ist Absicht: Zeitzeile, Pause und Freilos können dieselbe Startzeit haben. */}
             {rows.map((row, index) => {
               if (row.kind === 'break') {
                 return (

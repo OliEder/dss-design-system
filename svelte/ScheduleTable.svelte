@@ -7,8 +7,10 @@
    * ausschließlich die Klassen aus css/components.css (kein eigener
    * Scoped-Style); gleiche Struktur wie die React-Fassung.
    *
-   * Slots: `time` (ersetzt die Uhrzeit) und `notice` (zusätzliche Zelle am
-   * Zeilenende), jeweils mit dem Spiel als Argument.
+   * Snippets: `time` (ersetzt die Uhrzeit) und `notice` (zusätzliche Zelle am
+   * Zeilenende), jeweils mit dem Spiel als Argument. `title` und `meta` sind
+   * reine Strings; `renderLink` und `titleAs` gibt es in Svelte nicht
+   * (Überschrift immer h3, Links als einfache <a>).
    */
   import type { Snippet } from 'svelte';
   import {
@@ -54,6 +56,7 @@
   const OUTCOME_CHIP = { S: 'dss-chip--ok', N: 'dss-chip--err', U: '' } as const;
 </script>
 
+<!-- team-Snippet: synchron halten mit ScheduleTable/ScheduleGrid -->
 {#snippet team(t: ScheduleTeam | undefined, loser: boolean)}
   {@const current = t ?? { name: '?' }}
   <span class="dss-sch-team" class:is-loser={loser}>
@@ -75,6 +78,8 @@
   {@const own = game.heim?.own || game.gast?.own}
   {@const winner = winnerSide(game)}
   {#if game.state === 'bye'}
+    <!-- Die expliziten role-Attribute sind Absicht: Sie erhalten die Tabellensemantik, wenn das Mobil-CSS
+         display: block/grid setzt. Nicht entfernen, um die Svelte-Warnung zu unterdrücken. -->
     <!-- svelte-ignore a11y_no_redundant_roles -->
     <tr role="row" class="dss-sch-row is-bye">
       <td role="cell" class="dss-sch-bye" colspan={cols.length}>
