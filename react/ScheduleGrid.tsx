@@ -1,0 +1,159 @@
+import type { ReactNode } from 'react';
+import { cn } from './cn';
+import { ariaForResult, buildGrid, hasScore, winnerSide } from '../js/schedule.js';
+import { LiveTag, ResultText, TeamName, type ScheduleRenderLink } from './ScheduleParts';
+import type { ScheduleBreak, ScheduleDensity, ScheduleGame, ScheduleGridColumn } from './schedule-types';
+
+export interface ScheduleGridProps {
+  /** Jedes Spiel braucht `time` und `column` (passt zu einer `columns[].id`). */
+  games: ScheduleGame[];
+  /** Spalten (Hallen oder Felder) in Anzeige-Reihenfolge; `label` ist freier Text. */
+  columns: ScheduleGridColumn[];
+  /** Anwurfzeiten als Zeilen; ohne Angabe aus `games` abgeleitet. */
+  slots?: string[];
+  /** Pausen und Sperrzeiten als Zeile über alle Spalten. */
+  breaks?: ScheduleBreak[];
+  emptyLabel?: string;
+  density?: ScheduleDensity;
+  title?: ReactNode;
+  titleAs?: 'h2' | 'h3' | 'h4';
+  meta?: ReactNode;
+  caption?: string;
+  className?: string;
+  renderLink?: ScheduleRenderLink;
+  /** Zusätzlicher Inhalt in der Spielzelle, z. B. Konflikt-Badge. */
+  renderNotice?: (game: ScheduleGame) => ReactNode;
+}
+
+/** Zeitraster: Anwurfzeiten als Zeilen, Hallen oder Felder als Spalten (empfohlen: höchstens drei). */
+export function ScheduleGrid({
+  games,
+  columns,
+  slots,
+  breaks,
+  emptyLabel = 'frei',
+  density = 'default',
+  title,
+  titleAs: Heading = 'h3',
+  meta,
+  caption,
+  className,
+  renderLink,
+  renderNotice,
+}: ScheduleGridProps) {
+  const rows = buildGrid({ games, columns, slots, breaks });
+  const hasHead = Boolean(title || meta);
+
+  const gameBlock = (game: ScheduleGame): ReactNode => {
+    const winner = winnerSide(game);
+    const own = game.heim?.own || game.gast?.own;
+    const metaText = [game.nr, game.section].filter(Boolean).join(' · ');
+    return (
+      <div
+        key={game.id}
+        className={cn(
+          'dss-sg-game',
+          own && 'is-own',
+          game.state === 'live' && 'is-live',
+          game.state === 'cancelled' && 'is-cancelled',
+          game.state === 'postponed' && 'is-postponed',
+        )}
+      >
+        <div className="dss-sg-teams">
+          <TeamName team={game.heim} loser={winner === 'gast'} renderLink={renderLink} />
+          <span className="dss-sch-sep" aria-hidden="true">
+            {' – '}
+          </span>
+          <span className="dss-sr-only"> gegen </span>
+          <TeamName team={game.gast} loser={winner === 'heim'} renderLink={renderLink} />
+        </div>
+        {game.state === 'live' ? <LiveTag /> : null}
+        {(game.state === 'finished' || game.state === 'live') && hasScore(game, 'versus') ? (
+          <div className="dss-sg-result">
+            <ResultText
+              visible={`${game.heim?.score} : ${game.gast?.score}`}
+              spoken={ariaForResult(game, 'versus')}
+              provisional={game.provisional}
+            />
+          </div>
+        ) : null}
+        {metaText ? <div className="dss-sg-meta">{metaText}</div> : null}
+        {game.note ? <div className="dss-sch-note">{game.note}</div> : null}
+        {renderNotice ? renderNotice(game) : null}
+      </div>
+    );
+  };
+
+  return (
+    <div className={cn('dss-frame', className)}>
+      {hasHead ? (
+        <div className="dss-frame-head">
+          {title ? <Heading className="dss-frame-title">{title}</Heading> : <span />}
+          <div className="dss-frame-meta">{meta ? <span>{meta}</span> : null}</div>
+        </div>
+      ) : null}
+      <div className="dss-table-scroll">
+        <table role="table" className={cn('dss-tbl dss-sgrid', `dss-tbl--${density}`)}>
+          {caption ? <caption className="dss-sr-only">{caption}</caption> : null}
+          <thead role="rowgroup">
+            <tr role="row">
+              <th scope="col" role="columnheader" className="dss-sg-time">
+                Zeit
+              </th>
+              {columns.map((column) => (
+                <th key={column.id} scope="col" role="columnheader">
+                  {column.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody role="rowgroup">
+            {rows.map((row, index) => {
+              if (row.kind === 'break') {
+                return (
+                  <tr key={`b-${index}`} role="row" className="dss-sg-break">
+                    <th scope="row" role="rowheader" className="dss-sg-time">
+                      {row.time}
+                    </th>
+                    <td role="cell" colSpan={columns.length}>
+                      {row.label}
+                    </td>
+                  </tr>
+                );
+              }
+              if (row.kind === 'bye') {
+                return (
+                  <tr key={`y-${index}`} role="row" className="dss-sg-bye">
+                    <th scope="row" role="rowheader" className="dss-sg-time">
+                      {row.time ?? ''}
+                    </th>
+                    <td role="cell" colSpan={columns.length}>
+                      {row.game.heim ? `${row.game.heim.name} hat Freilos` : (row.game.note ?? 'Spielfrei')}
+                    </td>
+                  </tr>
+                );
+              }
+              return (
+                <tr key={`s-${row.time}-${index}`} role="row">
+                  <th scope="row" role="rowheader" className="dss-sg-time">
+                    {row.time}
+                  </th>
+                  {row.cells.map((cell, columnIndex) => (
+                    <td
+                      key={columns[columnIndex].id}
+                      role="cell"
+                      className={cn('dss-sg-cell', cell.length === 0 && 'is-empty')}
+                      data-label={columns[columnIndex].label}
+                    >
+                      {cell.length === 0 ? <span className="dss-sg-empty">{emptyLabel}</span> : cell.map(gameBlock)}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

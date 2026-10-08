@@ -9,6 +9,7 @@ export { Icon, ICON_NAMES, ensureSprite, type IconProps, type IconName } from '.
 export { Checkbox, type CheckboxProps, type CheckboxDensity } from './Checkbox';
 export { Table, type TableProps, type TableColumn, type TableDensity } from './Table';
 export { ScheduleTable, type ScheduleTableProps, type ScheduleLinkProps } from './ScheduleTable';
+export { ScheduleGrid, type ScheduleGridProps } from './ScheduleGrid';
 export type {
   ScheduleBreak,
   ScheduleDensity,
