@@ -53,7 +53,7 @@
     "visual:compare": "node scripts/visual-compare.mjs compare",
     "test": "vitest run",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build -o storybook-static",
+    "build-storybook": "storybook build",
     "build:react": "tsup",
     "typecheck": "tsc -p react/tsconfig.json --noEmit",
     "prepare": "npm run build:react"
