@@ -13,9 +13,10 @@
   ]);
 </script>
 
-<div class="cs">
+<div>
   {#if label}<div class="spec-cap">{label}</div>{/if}
   {#each blocks as b (b.key)}
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -- Fokussierbar mit Absicht: Tastaturnutzer müssen scrollbare Bereiche erreichen -->
     <div class="code code-{b.key}" tabindex="0" role="region" aria-label="Code-Beispiel {b.name}">
       <span class="chip">{b.name}</span>
       {#if b.code}

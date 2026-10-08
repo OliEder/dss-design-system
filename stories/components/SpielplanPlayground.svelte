@@ -61,9 +61,6 @@
   const league = { name: 'Bayernliga Herren Mitte' };
 
   const tableGames = $derived.by<ScheduleGame[]>(() => {
-    const flags = {
-      ...(showLeague ? { league } : {}),
-    };
     const test: ScheduleGame = {
       id: 'test',
       state,
@@ -73,14 +70,16 @@
       time: '17:30',
       ...(showVenue ? { venue: 'Sporthalle Breitengüßbach' } : {}),
       ...(showField ? { field: 'F1' } : {}),
-      ...flags,
+      ...(showLeague ? { league } : {}),
       ...(provisional ? { provisional: true } : {}),
       ...(noteText ? { note: noteText } : {}),
     };
     if (layout === 'opponent') {
-      Object.assign(test, { at: 'heim', ownScore: scoreHeim, opponent: { name: OPP, score: scoreGast, placeholder } as ScheduleTeam });
+      test.at = 'heim';
+      test.ownScore = scoreHeim;
+      test.opponent = { name: OPP, score: scoreGast, placeholder };
       if (outcome !== 'auto') test.outcome = outcome;
-      if (state === 'bye') Object.assign(test, { heim: { name: TEAM } });
+      if (state === 'bye') test.heim = { name: TEAM };
     } else {
       test.heim = { name: TEAM, score: scoreHeim, own };
       if (state !== 'bye') test.gast = { name: OPP, score: scoreGast, placeholder };
@@ -96,15 +95,15 @@
       ...(showField && o.field ? { field: o.field } : {}),
       ...(showLeague ? { league } : {}),
       ...c,
-    } as ScheduleGame);
+    });
 
-    const mk = (id: string, state: ScheduleState, at: 'heim' | 'gast', name: string, a: number, b: number, extra: Partial<ScheduleGame>, o: Parameters<typeof ctx>[2]): ScheduleGame => {
+    const mk = (id: string, gameState: ScheduleState, at: 'heim' | 'gast', name: string, a: number, b: number, extra: Partial<ScheduleGame>, o: Parameters<typeof ctx>[2]): ScheduleGame => {
       if (layout === 'opponent') {
-        return ctx(id, { state, at, ownScore: a, opponent: { name, score: b }, ...extra }, o);
+        return ctx(id, { state: gameState, at, ownScore: a, opponent: { name, score: b }, ...extra }, o);
       }
       const you: ScheduleTeam = { name: TEAM, score: a };
       const them: ScheduleTeam = { name, score: b };
-      return ctx(id, { state, heim: at === 'heim' ? you : them, gast: at === 'heim' ? them : you, ...extra }, o);
+      return ctx(id, { state: gameState, heim: at === 'heim' ? you : them, gast: at === 'heim' ? them : you, ...extra }, o);
     };
 
     return [

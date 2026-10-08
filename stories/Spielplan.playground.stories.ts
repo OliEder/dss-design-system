@@ -4,7 +4,7 @@ const cat = (category: string) => ({ category });
 const bool = (description: string, category: string) => ({ control: 'boolean', description, table: cat(category) });
 
 // Spielwiese: alle Werte lassen sich im Controls-Reiter schalten, gezeigt werden die echten Komponenten.
-const testgame = {
+const testgame = (withLayout: boolean) => ({
   state: {
     control: 'select',
     options: ['scheduled', 'live', 'finished', 'cancelled', 'postponed', 'bye'],
@@ -15,9 +15,12 @@ const testgame = {
   scoreHeim: { control: { type: 'number', min: 0, max: 200, step: 1 }, description: 'Punkte Heim (bei Mannschaft: eigene)', table: cat('Testspiel') },
   scoreGast: { control: { type: 'number', min: 0, max: 200, step: 1 }, description: 'Punkte Gast (bei Mannschaft: Gegner)', table: cat('Testspiel') },
   note: { control: 'text', description: 'Notiz zum Spiel', table: cat('Testspiel') },
-  own: bool('Eigene Mannschaft hervorheben (ohne Wirkung im Layout Mannschaft)', 'Testspiel'),
+  own: {
+    ...bool('Eigene Mannschaft hervorheben', 'Testspiel'),
+    ...(withLayout ? { if: { arg: 'layout', neq: 'opponent' } } : {}),
+  },
   placeholder: bool('Gegner ist ein Platzhalter („Erster Gruppe A“)', 'Testspiel'),
-};
+});
 
 export default {
   title: 'Components/Spielplan Spielwiese',
@@ -52,17 +55,18 @@ export const Tabelle = {
     showEmptyCell: { table: { disable: true } },
     layout: { control: 'inline-radio', options: ['versus', 'opponent', 'columns'], description: 'versus: Liga/Halle, opponent: Mannschaft, columns: Turnier', table: cat('Layout') },
     density: { control: 'inline-radio', options: ['auto', 'touch', 'default', 'compact'], description: 'auto: Standard des Layouts', table: cat('Layout') },
-    ...testgame,
-    showLeague: bool('Liga-Unterzeile anzeigen', 'Optionen'),
+    ...testgame(true),
+    showLeague: { ...bool('Liga-Unterzeile anzeigen', 'Optionen'), if: { arg: 'layout', neq: 'columns' } },
     showVenue: bool('Halle anzeigen', 'Optionen'),
-    showField: bool('Feld anzeigen (Spalte im Layout Turnier)', 'Optionen'),
+    showField: { ...bool('Feld anzeigen (Spalte)', 'Optionen'), if: { arg: 'layout', eq: 'columns' } },
     outcome: {
       control: 'inline-radio',
       options: ['auto', 'S', 'N', 'U'],
-      description: 'Bewertung erzwingen (nur Layout Mannschaft, Zustand beendet)',
+      description: 'Bewertung erzwingen (Zustand beendet)',
       table: cat('Testspiel'),
+      if: { arg: 'layout', eq: 'opponent' },
     },
-    showNotice: bool('Snippet notice: Chip „Sperrzeit“', 'Optionen'),
+    showNotice: { ...bool('Snippet notice: Chip „Sperrzeit“ (Spalte Hinweis)', 'Optionen'), if: { arg: 'layout', eq: 'columns' } },
     editableTime: bool('Snippet time: Eingabefeld für die Zeit des Testspiels', 'Optionen'),
   },
 };
@@ -97,6 +101,6 @@ export const Zeitraster = {
     showBreak: bool('Pause zeigen', 'Optionen'),
     showBye: bool('Freilos zeigen', 'Optionen'),
     showEmptyCell: bool('Eine Zelle ohne Spiel', 'Optionen'),
-    ...testgame,
+    ...testgame(false),
   },
 };

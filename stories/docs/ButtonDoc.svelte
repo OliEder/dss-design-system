@@ -219,7 +219,8 @@
     <div class="spec-body">
       <CodeSwitch {vanilla} {svelte} {react} />
 
-      <div>
+      <!-- svelte-ignore a11y_no_noninteractive_tabindex -- Fokussierbar mit Absicht: Tastaturnutzer müssen scrollbare Bereiche erreichen -->
+      <div class="tbl-wrap" tabindex="0" role="region" aria-label="Tabelle der Props, seitlich scrollbar">
         <table class="spec-tokens">
           <thead><tr><th>Prop</th><th>Type</th><th>Default</th><th>Beschreibung</th></tr></thead>
           <tbody>
@@ -235,6 +236,8 @@
 </SpecPage>
 
 <style>
+  .tbl-wrap { overflow-x: auto; }
+  .tbl-wrap :global(.spec-tokens) { min-width: 560px; }
   .states { display: grid; grid-template-columns: 90px repeat(5, max-content); gap: 14px 24px; align-items: center; padding: 22px 24px; overflow-x: auto; }
   .st-head { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); }
   .st-rowlabel { font-family: var(--font-mono); font-size: var(--fs-caption); color: var(--page-mute); }

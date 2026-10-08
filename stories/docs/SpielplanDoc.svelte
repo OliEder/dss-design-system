@@ -82,10 +82,10 @@
 
   type StateEx = { key: string; label: string; text: string; games: ScheduleGame[]; layout?: 'versus' | 'opponent' | 'columns'; extra?: 'notice' | 'time' };
   const states: StateEx[] = [
-    { key: 'scheduled', label: 'Geplant', games: [ft('s1', {})], text: 'Datum und Zeit, das Ergebnis zeigt einen Strich. Der Screenreader liest nur die Zellen, ein Ergebnis gibt es nicht.' },
+    { key: 'scheduled', label: 'Geplant', games: [ft('s1', {})], text: 'Datum und Zeit, das Ergebnis zeigt einen Strich. Die Ergebniszelle enthält nur den Strich, den der Screenreader als Text liest; ein Ergebnis wird nicht angesagt.' },
     { key: 'live', label: 'Live', games: [ft('s2', { state: 'live', heim: { name: 'TuSpo Heroldsberg', score: 52 }, gast: { name: 'TSV Breitengüßbach 2', score: 48 } })], text: 'Ein grünes „Live“-Tag mit Puls hinter der Zeit; das Ergebnis steht schon. Zusätzlich sprechen Screenreader „läuft“ hinter dem Ergebnis.' },
     { key: 'finished', label: 'Beendet', games: [ft('s3', { state: 'finished', heim: { name: 'TuSpo Heroldsberg', score: 64 }, gast: { name: 'TSV Breitengüßbach 2', score: 90 } })], text: 'Ergebnis in Mono, der Verlierer ist abgeblendet. Gelesen wird „Heim 64, Gast 90“.' },
-    { key: 'provisional', label: 'Vorläufig', games: [ft('s4', { state: 'finished', provisional: true, heim: { name: 'TuSpo Heroldsberg', score: 64 }, gast: { name: 'TSV Breitengüßbach 2', score: 90 } })], text: 'Beendet mit Kennzeichen „provisional“: unter dem Ergebnis steht „vorläufig“, gelesen wird es hinter dem Ergebnis mit.' },
+    { key: 'provisional', label: 'Vorläufig', games: [ft('s4', { state: 'finished', provisional: true, heim: { name: 'TuSpo Heroldsberg', score: 64 }, gast: { name: 'TSV Breitengüßbach 2', score: 90 } })], text: 'Beendet mit Kennzeichen „provisional“: hinter dem Ergebnis steht „vorläufig“, gelesen wird es hinter dem Ergebnis mit.' },
     { key: 'cancelled', label: 'Abgesagt', games: [ft('s5', { state: 'cancelled', note: 'Abgesagt: Halle gesperrt' })], text: 'Zeile abgeblendet, Teams, Datum und Zeit durchgestrichen; die Notiz steht unter dem Spiel. Der Screenreader hört zusätzlich „abgesagt“.' },
     { key: 'postponed', label: 'Verlegt', games: [ft('s6', { state: 'postponed', note: 'Verlegt auf Sa, 14.11.2026, 19:00' })], text: 'Wie abgesagt gedämpft, aber ohne Durchstreichung. Der Screenreader hört „verschoben“.' },
     { key: 'bye', label: 'Freilos', games: [{ id: 's7', state: 'bye', time: '09:30', heim: { name: 'TSV Tröster' } }], layout: 'columns', text: 'Eine einzige, gedämpfte Zeile über alle Spalten: „TSV Tröster hat Freilos“. Ohne Mannschaft steht dort die Notiz oder „Spielfrei“.' },
@@ -95,7 +95,7 @@
     { key: 'loss', label: 'Niederlage (N)', games: [opp('s11', { opponent: { name: 'TSV Jahn Freising', score: 108 }, ownScore: 65 })], layout: 'opponent', text: 'Roter Chip „N“. Gelesen wird „Eigene 65, Gegner 108, Niederlage“.' },
     { key: 'draw', label: 'Unentschieden (U)', games: [opp('s12', { opponent: { name: 'TSV Jahn Freising', score: 70 }, ownScore: 70 })], layout: 'opponent', text: 'Neutraler Chip „U“. Gelesen wird „Eigene 70, Gegner 70, Unentschieden“.' },
     { key: 'forfeit', label: 'Forfait über outcome', games: [opp('s13', { opponent: { name: 'Dukes Dingolfing', score: 0 }, ownScore: 20, outcome: 'S' })], layout: 'opponent', text: 'Mit „outcome“ wird die Bewertung gesetzt, statt aus den Punkten berechnet zu werden (hier zum Beispiel ein Forfait mit 20 : 0). Wirkt nur im Layout opponent bei beendeten Spielen.' },
-    { key: 'notice', label: 'Konflikt-Hinweis', games: [{ id: 's14', state: 'scheduled', nr: '#6', time: '10:00–10:20', field: 'F1', heim: { name: 'BG Zirndorf' }, gast: { name: 'TSV Tröster', own: true } }], layout: 'columns', extra: 'notice', text: 'Das Snippet „notice“ liefert eine zusätzliche Spalte „Hinweis“ am Zeilenende, hier ein Warn-Chip „Sperrzeit“. Die Spalte gibt es nur, wenn das Snippet übergeben wird.' },
+    { key: 'notice', label: 'Konflikt-Hinweis', games: [{ id: 's14', state: 'scheduled', nr: '#6', time: '10:00–10:20', field: 'F1', heim: { name: 'BG Zirndorf' }, gast: { name: 'TSV Tröster', own: true } }], layout: 'columns', extra: 'notice', text: 'Das Snippet „notice“ liefert eine zusätzliche Spalte „Hinweis“ am Zeilenende, hier ein Warn-Chip „Sperrzeit“. Die Spalte gibt es nur im Layout „columns“ und nur, wenn das Snippet übergeben wird; in „versus“ und „opponent“ wird es ignoriert.' },
     { key: 'time', label: 'Bearbeitbare Zeit', games: [{ id: 's15', state: 'scheduled', nr: '#9', time: '11:00', field: 'F1', heim: { name: 'Erster Gruppe A', placeholder: true }, gast: { name: 'Zweiter Gruppe B', placeholder: true } }], layout: 'columns', extra: 'time', text: 'Das Snippet „time“ ersetzt die Uhrzeit, hier durch ein Eingabefeld mit eigener Beschriftung („Anwurfzeit Spiel #9“), damit Screenreader das Feld benennen können.' },
   ];
 
@@ -390,7 +390,7 @@ ${gridData}
         </div>
         <ul class="bullets">
           <li><b>Wann:</b> Spielplan einer Mannschaft, alles aus ihrer Sicht.</li>
-          <li><b>Felder:</b> Chip <i>vs.</i> (Heim) oder <i>@</i> (Auswärts), Logo (<code>logo</code>) oder sonst die Initialen, Gegner als Link, S-/N-/U-Chip, Ergebnis eigene : Gegner und „vorläufig“.</li>
+          <li><b>Felder:</b> Chip <i>vs.</i> (Heim) oder <i>@</i> (Auswärts), Logo (<code>logo</code>) oder sonst die Initialen, Gegner als Link, S-/N-/U-Chip, Ergebnis eigene : Gegner und dahinter „vorläufig“.</li>
           <li><b>Hinweis:</b> <code>ownScore</code> sind die Punkte der eigenen Mannschaft, <code>opponent.score</code> die des Gegners.</li>
         </ul>
       </div>
@@ -412,7 +412,8 @@ ${gridData}
         <ul class="bullets">
           <li><b>Wann:</b> Turnierliste mit Spielnummer, Feld und Halle.</li>
           <li><b>Spalten:</b> Nr, Zeit, Feld, Halle, Heim, Ergebnis, Gast. Nr, Feld und Halle erscheinen nur, wenn mindestens ein Spiel den Wert hat.</li>
-          <li><b>Hinweis-Spalte:</b> kommt nur dazu, wenn ein <code>notice</code>-Snippet (Svelte) bzw. <code>renderNotice</code> (React) übergeben wird, siehe Abschnitt 04 und 06.</li>
+          <li><b>Hinweis-Spalte:</b> kommt nur in diesem Layout dazu, wenn ein <code>notice</code>-Snippet (Svelte) bzw. <code>renderNotice</code> (React) übergeben wird, siehe Abschnitt 04 und 06.</li>
+          <li><b>Zeilenhöhe:</b> 48 px gilt nur ohne Liga; sobald irgendein Spiel eine <code>league</code> hat, wählt <code>ScheduleTable</code> <code>touch</code>, auch hier, wo die Liga gar nicht angezeigt wird. Mit <code>density</code> lässt sich das überschreiben.</li>
         </ul>
       </div>
     </div>
@@ -528,6 +529,7 @@ ${gridData}
           {#each previews as p (p.id)}
             <div class="phone">
               <div class="spec-cap">{p.cap}</div>
+              <!-- svelte-ignore a11y_no_noninteractive_tabindex -- Fokussierbar mit Absicht: Tastaturnutzer müssen scrollbare Bereiche erreichen -->
               <div class="phone-scroll" tabindex="0" role="region" aria-label={`Scrollbereich: ${p.cap}`}>
                 <iframe title={p.title} src={mobileBase + p.id} loading="lazy"></iframe>
               </div>
@@ -553,6 +555,7 @@ ${gridData}
     <div class="spec-body">
       <div>
         <div class="spec-cap">ScheduleGame</div>
+        <!-- svelte-ignore a11y_no_noninteractive_tabindex -- Fokussierbar mit Absicht: Tastaturnutzer müssen scrollbare Bereiche erreichen -->
         <div class="tbl-wrap" tabindex="0" role="region" aria-label="Tabelle ScheduleGame, seitlich scrollbar">
           <table class="spec-tokens">
             <thead><tr><th>Feld</th><th>Typ</th><th>Beschreibung</th></tr></thead>
@@ -581,6 +584,7 @@ ${gridData}
 
       <div>
         <div class="spec-cap">ScheduleTeam</div>
+        <!-- svelte-ignore a11y_no_noninteractive_tabindex -- Fokussierbar mit Absicht: Tastaturnutzer müssen scrollbare Bereiche erreichen -->
         <div class="tbl-wrap" tabindex="0" role="region" aria-label="Tabelle ScheduleTeam, seitlich scrollbar">
           <table class="spec-tokens">
             <thead><tr><th>Feld</th><th>Typ</th><th>Beschreibung</th></tr></thead>
@@ -598,6 +602,7 @@ ${gridData}
 
       <div>
         <div class="spec-cap">Props · ScheduleTable und ScheduleGrid</div>
+        <!-- svelte-ignore a11y_no_noninteractive_tabindex -- Fokussierbar mit Absicht: Tastaturnutzer müssen scrollbare Bereiche erreichen -->
         <div class="tbl-wrap" tabindex="0" role="region" aria-label="Tabelle Props, seitlich scrollbar">
           <table class="spec-tokens">
             <thead><tr><th>Prop</th><th>Für</th><th>Beschreibung</th></tr></thead>
@@ -613,8 +618,8 @@ ${gridData}
               <tr><td class="k">class / className</td><td class="v">beide</td><td class="d">Zusätzliche Klasse am Rahmen (Svelte <code>class</code>, React <code>className</code>).</td></tr>
               <tr><td class="k">titleAs</td><td class="v">React</td><td class="d">Überschriftenebene 'h2' | 'h3' | 'h4'. Svelte: immer h3.</td></tr>
               <tr><td class="k">renderLink</td><td class="v">React</td><td class="d">Router-Links für Teamnamen und Liga. Svelte: einfache <code>&lt;a&gt;</code>.</td></tr>
-              <tr><td class="k">renderTime / time</td><td class="v">Table</td><td class="d">Ersetzt die Uhrzeit (React: Funktion, Svelte: Snippet <code>time</code>).</td></tr>
-              <tr><td class="k">renderNotice / notice</td><td class="v">beide</td><td class="d">Table: zusätzliche Spalte „Hinweis“. Grid: zusätzlicher Inhalt in der Spielzelle.</td></tr>
+              <tr><td class="k">renderTime / time</td><td class="v">Table</td><td class="d">Ersetzt die Uhrzeit in allen Layouts (React: Funktion, Svelte: Snippet <code>time</code>).</td></tr>
+              <tr><td class="k">renderNotice / notice</td><td class="v">beide</td><td class="d">Table: zusätzliche Spalte „Hinweis“, nur im Layout <code>columns</code> (in <code>versus</code> und <code>opponent</code> ohne Wirkung). Grid: zusätzlicher Inhalt in der Spielzelle.</td></tr>
             </tbody>
           </table>
         </div>
@@ -625,6 +630,7 @@ ${gridData}
       <CodeSwitch label="ScheduleGrid, Zeitraster" vanilla={gridVanilla} svelte={gridSvelte} react={gridReact} />
       <div>
         <div class="spec-cap">Ein Spiel (Mannschaftssicht), für alle Fassungen gleich</div>
+        <!-- svelte-ignore a11y_no_noninteractive_tabindex -- Fokussierbar mit Absicht: Tastaturnutzer müssen scrollbare Bereiche erreichen -->
         <div class="spec-frame code" tabindex="0" role="region" aria-label="Codebeispiel Ein Spiel (Mannschaftssicht)"><pre>{codeGame}</pre></div>
       </div>
     </div>
@@ -657,7 +663,7 @@ ${gridData}
           <tr><td class="k">Handy-Karten</td><td class="d">Die <code>role</code>-Attribute im Markup bleiben bewusst, damit die Tabellensemantik erhalten bleibt, wenn das Handy-CSS Zeilen zu Karten macht.</td></tr>
           <tr><td class="k">Farbe</td><td class="d">Kein Zustand nur über Farbe: Live hat ein Wort-Tag, abgesagt und verlegt tragen Text, vorläufig steht im Klartext, S/N/U sind Buchstaben.</td></tr>
           <tr><td class="k">Fokus</td><td class="d">Links und Eingaben zeigen den DSS-Fokusring.</td></tr>
-          <tr><td class="k">Dunkel</td><td class="d">Der seitenweite Dark Mode wirkt über die <code>--dss-*</code>-Variablen. Der dunkle Rahmen <code>dss-frame--dark</code> wird nicht unterstützt.</td></tr>
+          <tr><td class="k">Dunkel</td><td class="d">Der seitenweite Dark Mode wirkt über die <code>--dss-*</code>-Variablen. Der dunkle Rahmen <code>dss-frame--dark</code> ist für Spielpläne nicht vorgesehen.</td></tr>
         </tbody>
       </table>
     </div>
