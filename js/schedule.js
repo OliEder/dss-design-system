@@ -119,7 +119,7 @@ export function initials(name) {
     .join('');
 }
 
-/** Text des Ergebnisses für Screenreader; nur sinnvoll, wenn hasScore(game) gilt. */
+/** Text des Ergebnisses für Screenreader; nur sinnvoll, wenn hasScore(game, layout) gilt. */
 export function ariaForResult(game, layout) {
   const parts = [];
   if (layout === 'opponent' && game.opponent) {
