@@ -114,7 +114,7 @@ describe('Spielplan · ScheduleTable (Variante A)', () => {
   });
 
   it('Tabellenzellen haben vertikalen Innenabstand, die Handy-Karten setzen ihn zurück', () => {
-    expect(css).toMatch(/\.dss-tbl--schedule td \{ padding-block: 8px; \}/);
+    expect(css).toMatch(/\.dss-tbl--schedule td \{ box-sizing: border-box; padding-block: 8px; \}/);
     expect(css).toMatch(/\.dss-tbl\.dss-tbl--schedule tbody tr\.dss-sch-row td \{[^}]*padding: 0;/);
   });
 

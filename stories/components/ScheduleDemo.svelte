@@ -3,7 +3,10 @@
   import ScheduleGrid from '../../svelte/ScheduleGrid.svelte';
   import type { ScheduleGame } from '../../js/schedule.js';
 
-  let { preset = 'mannschaft', density = undefined }: { preset?: string; density?: 'touch' | 'default' | 'compact' } = $props();
+  let { preset = 'mannschaft', density = undefined }: { preset?: string; density?: 'touch' | 'default' | 'compact' | 'auto' } = $props();
+
+  // 'auto' (Story-Steuerelement) = Standard-Dichte des Layouts
+  const dens = $derived(density === 'auto' ? undefined : density);
 
   const mannschaft: ScheduleGame[] = [
     { id: 'm1', state: 'finished', date: 'Sa, 26.09.2026', time: '17:30', at: 'heim', opponent: { name: 'TSV Jahn Freising', href: '#', score: 108 }, ownScore: 65 },
@@ -14,14 +17,14 @@
   ];
 
   const liga: ScheduleGame[] = [
-    { id: 'l1', state: 'finished', section: 'Spieltag 5', date: 'So, 04.10.2026', time: '17:00', heim: { name: 'TuSpo Heroldsberg', href: '#', score: 64 }, gast: { name: 'TSV Breitengüßbach 2', href: '#', score: 90 }, league: { name: 'Bayernliga Herren Mitte', href: '#' } },
-    { id: 'l2', state: 'live', section: 'Spieltag 5', date: 'So, 04.10.2026', time: '15:45', heim: { name: 'TG 48 Würzburg 2', href: '#', score: 52 }, gast: { name: 'CVJM Erlangen', href: '#', score: 48 }, league: { name: 'Bayernliga Herren Mitte', href: '#' } },
-    { id: 'l3', state: 'scheduled', section: 'Spieltag 6', date: 'Sa, 10.10.2026', time: '15:00', heim: { name: 'Fibalon Baskets Neumarkt', href: '#', own: true }, gast: { name: 'FC Tegernheim', href: '#' }, league: { name: 'U18 männlich Bezirksoberliga', href: '#' } },
+    { id: 'l1', state: 'finished', section: 'Spieltag 5', date: 'So, 04.10.2026', time: '17:00', heim: { name: 'TuSpo Heroldsberg', href: '#', score: 64 }, gast: { name: 'TSV Breitengüßbach 2', href: '#', score: 90 }, league: { name: 'Bayernliga Herren Mitte', href: '#' }, venue: 'Sporthalle Heroldsberg' },
+    { id: 'l2', state: 'live', section: 'Spieltag 5', date: 'So, 04.10.2026', time: '15:45', heim: { name: 'TG 48 Würzburg 2', href: '#', score: 52 }, gast: { name: 'CVJM Erlangen', href: '#', score: 48 }, league: { name: 'Bayernliga Herren Mitte', href: '#' }, venue: 'Mainfranken-Halle Würzburg' },
+    { id: 'l3', state: 'scheduled', section: 'Spieltag 6', date: 'Sa, 10.10.2026', time: '15:00', heim: { name: 'Fibalon Baskets Neumarkt', href: '#', own: true }, gast: { name: 'FC Tegernheim', href: '#' }, league: { name: 'U18 männlich Bezirksoberliga', href: '#' }, venue: 'Halle am Stadtpark Neumarkt' },
     { id: 'l4', state: 'cancelled', section: 'Spieltag 6', date: 'Sa, 10.10.2026', time: '17:30', heim: { name: 'TB Weiden', href: '#' }, gast: { name: 'SV Oberdürrbach 1959', href: '#' }, league: { name: 'Bayernliga Herren Mitte', href: '#' }, note: 'Abgesagt: Halle gesperrt' },
   ];
 
   const turnier: ScheduleGame[] = [
-    { id: 't1', state: 'finished', nr: '#1', section: 'Runde 1 · Gruppe A', time: '09:00–09:20', field: 'F1', heim: { name: 'TSV Tröster', score: 42, own: true }, gast: { name: 'USC Heidelberg', score: 31 } },
+    { id: 't1', state: 'finished', nr: '#1', section: 'Runde 1 · Gruppe A', time: '09:00–09:20', field: 'F1', venue: 'Halle 1', heim: { name: 'TSV Tröster', score: 42, own: true }, gast: { name: 'USC Heidelberg', score: 31 } },
     { id: 't2', state: 'finished', nr: '#2', section: 'Runde 1 · Gruppe A', time: '09:00–09:20', field: 'F2', heim: { name: 'BG Zirndorf', score: 28 }, gast: { name: 'TV Lich', score: 35 } },
     { id: 't3', state: 'live', nr: '#3', section: 'Runde 2 · Gruppe A', time: '09:30–09:50', field: 'F1', heim: { name: 'TSV Tröster', score: 18, own: true }, gast: { name: 'TV Lich', score: 20 } },
     { id: 't4', state: 'cancelled', nr: '#4', section: 'Runde 2 · Gruppe A', time: '09:30–09:50', field: 'F2', heim: { name: 'USC Heidelberg' }, gast: { name: 'SV Aschaffenburg' }, note: 'Rückzug SV Aschaffenburg' },
@@ -48,11 +51,16 @@
 
 <div style="padding: 24px; max-width: 1100px;">
   {#if preset === 'mannschaft'}
-    <ScheduleTable games={mannschaft} {density} title="Spielplan" meta="5 Spiele" caption="Spielplan der Mannschaft" />
+    <ScheduleTable games={mannschaft} density={dens} title="Spielplan" meta="5 Spiele" caption="Spielplan der Mannschaft" />
   {:else if preset === 'liga'}
-    <ScheduleTable games={liga} {density} caption="Spielplan der Liga" />
+    <ScheduleTable games={liga} density={dens} caption="Spielplan der Liga" />
   {:else if preset === 'turnier'}
-    <ScheduleTable games={turnier} layout="columns" {density} title="Spielplan" meta="7 Spiele · Ende ca. 12:10" caption="Turnier-Spielplan">
+    <ScheduleTable games={turnier} layout="columns" density={dens} title="Spielplan" meta="7 Spiele · Ende ca. 12:10" caption="Turnier-Spielplan">
+      {#snippet time(game)}
+        {#if game.id === 't9'}
+          <input type="text" value={game.time?.slice(0, 5)} aria-label="Anwurfzeit Spiel {game.nr}" style="width: 7ch; font: inherit; padding: 2px 6px; border: 1px solid var(--dss-line); border-radius: 6px; background: var(--dss-surface); color: var(--dss-fg);" />
+        {:else}{game.time}{/if}
+      {/snippet}
       {#snippet notice(game)}
         {#if game.id === 't6'}<span class="dss-chip dss-chip--warn">Sperrzeit</span>{/if}
       {/snippet}
@@ -62,7 +70,7 @@
       games={rasterGames}
       columns={hallen}
       breaks={[{ time: '10:15', label: 'Mittagspause' }]}
-      {density}
+      density={dens}
       title="Zeitraster"
       meta="Samstag, 10.10.2026"
       caption="Turnier-Tagesplan"

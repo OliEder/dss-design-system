@@ -977,8 +977,9 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
    breiten Tabellen (Layout columns) die ganze Seite. */
 .dss-tbl--schedule td { position: relative; }
 /* Vertikaler Innenabstand, damit zweite und dritte Zeilen (Liga, Hinweis) nicht am Zeilenrand kleben.
+   border-box, damit einzeilige Zeilen exakt die Dichte-Höhe (60/48/40 px) behalten und nur mehrzeilige wachsen.
    Die Handy-Karten setzen padding: 0 mit höherer Spezifität zurück. */
-.dss-tbl--schedule td { padding-block: 8px; }
+.dss-tbl--schedule td { box-sizing: border-box; padding-block: 8px; }
 .dss-tbl--schedule tr.dss-sch-group th {
   position: static; text-align: left; height: 32px; padding: 0 14px;
   background: var(--dss-surface-2); color: var(--dss-fg-soft); border-bottom: 1px solid var(--dss-line);

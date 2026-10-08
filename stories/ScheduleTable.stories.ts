@@ -22,9 +22,9 @@ export default {
   },
   argTypes: {
     preset: { control: 'inline-radio', options: ['mannschaft', 'liga', 'turnier'] },
-    density: { control: 'inline-radio', options: [undefined, 'touch', 'default', 'compact'] },
+    density: { control: 'inline-radio', options: ['auto', 'touch', 'default', 'compact'] },
   },
-  args: { preset: 'mannschaft' },
+  args: { preset: 'mannschaft', density: 'auto' },
 };
 
 export const Mannschaft = { args: { preset: 'mannschaft' } };

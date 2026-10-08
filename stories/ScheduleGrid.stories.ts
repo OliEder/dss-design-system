@@ -19,7 +19,10 @@ export default {
       },
     },
   },
-  args: { preset: 'raster' },
+  argTypes: {
+    density: { control: 'inline-radio', options: ['default', 'compact', 'touch'] },
+  },
+  args: { preset: 'raster', density: 'default' },
 };
 
 export const Zeitraster = { args: { preset: 'raster' } };
