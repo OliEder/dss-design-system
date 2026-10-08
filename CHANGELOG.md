@@ -6,6 +6,12 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 ## [Unveröffentlicht] — Marken-Rollen und DBB-Marke
 
 ### Neu
+- **Spielplan:** `ScheduleTable` (Tabelle mit den Layouts `versus`, `opponent`, `columns`) und `ScheduleGrid` (Zeitraster) in
+  Vanilla-CSS, Svelte und React, mit gemeinsamem Datenmodell `ScheduleGame` und Hilfsfunktionen in `js/schedule.js`.
+  Zustände geplant, live, beendet, abgesagt, verlegt, Freilos; Handy-Karten; Ergebnis für Screenreader als unsichtbarer
+  Text, abgesagte und verschobene Spiele mit zusätzlichem Text „abgesagt“/„verschoben“. Erweiterung für bearbeitbare Zeit
+  und Konflikt-Hinweis: Svelte über die Snippets `time` und `notice`, React über `renderTime`, `renderNotice`, `renderLink`.
+  Stories unter `Components/ScheduleTable` und `Components/ScheduleGrid`.
 - **Storybook: Zustände fest sichtbar.** `Docs/Button` zeigt unter *States* eine Matrix Variante × Zustand (Default, Hover, Focus,
   Active, Disabled) und den Fokus-Ring auf hellem und dunklem Grund. Neue Story `Foundation/Focus & Hover` mit Button, Link,
   Eingabefeld, Select, Tabs, Karte und Checkbox. Dafür legt `.storybook/pseudo-states.ts` Kopien aller `:hover`-,

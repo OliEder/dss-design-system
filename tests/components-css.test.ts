@@ -97,3 +97,168 @@ describe('AppNav · gesperrter Zustand ist sichtbar', () => {
   });
 });
 
+describe('Spielplan · ScheduleTable (Variante A)', () => {
+  const CLASSES = [
+    'dss-tbl--schedule', 'dss-sch-group', 'dss-sch-nr', 'dss-sch-when', 'dss-sch-date', 'dss-sch-time', 'dss-sch-live',
+    'dss-sch-venue', 'dss-sch-ha', 'dss-sch-match', 'dss-sch-opp', 'dss-sch-logo', 'dss-sch-sub', 'dss-sch-team',
+    'dss-sch-ph', 'dss-sch-sep', 'dss-sch-note', 'dss-sch-res', 'dss-sch-score', 'dss-sch-none', 'dss-sch-field',
+    'dss-sch-bye', 'dss-sch-notice', 'dss-sch--columns',
+  ];
+  it.each(CLASSES)('definiert .%s', (name) => {
+    expect(hasClass(name)).toBe(true);
+  });
+
+  it('Gruppenzeilen heben das Sticky-Verhalten der Kopfzellen auf', () => {
+    const rule = css.match(/\.dss-tbl--schedule tr\.dss-sch-group th \{([^}]*)\}/)?.[1] ?? '';
+    expect(rule).toContain('position: static');
+  });
+
+  it('Tabellenzellen haben vertikalen Innenabstand, die Handy-Karten setzen ihn zurück', () => {
+    expect(css).toMatch(/\.dss-tbl--schedule td \{ box-sizing: border-box; padding-block: 8px; \}/);
+    expect(css).toMatch(/\.dss-tbl\.dss-tbl--schedule tbody tr\.dss-sch-row td \{[^}]*padding: 0;/);
+  });
+
+  it('Hinweise nutzen die Dark-Mode-fähige Chip-Warnfarbe statt der festen warn-text', () => {
+    const rule = css.match(/\.dss-sch-note \{([^}]*)\}/)?.[1] ?? '';
+    expect(rule).toContain('color: var(--dss-chip-warn-fg)');
+    expect(rule).not.toContain('--warn-text');
+  });
+
+  it('Handy: Zeilen werden zu Karten', () => {
+    expect(css).toMatch(/@media \(max-width: 640px\) \{[^@]*\.dss-tbl--schedule tr\.dss-sch-row[^{]*\{[^}]*display: grid/);
+  });
+
+  const mobile = css.slice(css.indexOf('Handy: jede Zeile wird zur Karte'));
+  const ruleOf = (src: string, selector: string) => {
+    const i = src.indexOf(selector + ' {');
+    return i < 0 ? '' : src.slice(i, src.indexOf('}', i));
+  };
+
+  it.each([
+    ['dss-sch-nr', 'nr'], ['dss-sch-when', 'when'], ['dss-sch-ha', 'ha'], ['dss-sch-match', 'match'],
+    ['dss-sch-res', 'res'], ['dss-sch-heim', 'heim'], ['dss-sch-gast', 'gast'],
+    ['dss-sch-field-cell', 'field'], ['dss-sch-venue-cell', 'venue'], ['dss-sch-notice', 'notice'],
+  ])('Handy: .%s liegt im Bereich "%s"', (cls, area) => {
+    expect(ruleOf(mobile, `.dss-tbl--schedule td.${cls}`)).toContain(`grid-area: ${area};`);
+  });
+
+  it.each([
+    ['versus', '"when when" "match res"'],
+    ['opponent', '"when ha" "match res"'],
+    ['columns', '"nr field" "when venue" "heim res" "gast res" "notice notice"'],
+  ])('Handy: Layout %s hat explizite grid-template-areas', (layout, areas) => {
+    expect(ruleOf(mobile, `.dss-sch--${layout} tr.dss-sch-row`)).toContain(`grid-template-areas: ${areas};`);
+  });
+
+  it('Ergebnis bricht nicht um', () => {
+    expect(ruleOf(css, '.dss-tbl--schedule td.dss-sch-res')).toContain('white-space: nowrap');
+  });
+
+  it('Abgesagt: Durchstreichung nur für Team, Datum und Zeit', () => {
+    const rule = css.match(/([^{}]*)\{\s*text-decoration: line-through;\s*\}/)?.[1] ?? '';
+    const selectors = rule.split(',').map((x) => x.trim().replace('.dss-tbl--schedule tr.is-cancelled ', ''));
+    expect(selectors).toEqual(['.dss-sch-team', '.dss-sch-date', '.dss-sch-time']);
+  });
+
+  it('Abgesagt und verschoben: Datum und Zeit gedämpft', () => {
+    for (const state of ['is-cancelled', 'is-postponed']) {
+      const m = css.match(new RegExp(`\\.dss-tbl--schedule tr\\.${state} \\.dss-sch-time \\{([^}]*)\\}`));
+      expect(m?.[1]).toContain('color: var(--dss-mute)');
+      expect(css).toContain(`.dss-tbl--schedule tr.${state} .dss-sch-date`);
+    }
+  });
+
+  it('sr-only-Texte in Zellen bleiben in der Tabelle (td ist positioniert)', () => {
+    const rule = css.match(/\.dss-tbl--schedule td \{ position: relative; \}/);
+    expect(rule).not.toBeNull();
+  });
+
+  it('Handy: leere Zellen (z. B. Hinweis ohne Inhalt) nehmen keinen Platz', () => {
+    expect(ruleOf(mobile, '.dss-tbl.dss-tbl--schedule tbody tr.dss-sch-row td:empty')).toContain('display: none');
+  });
+
+  it('Handy: Hervorhebung und Hover liegen an der Zeile', () => {
+    expect(ruleOf(mobile, '.dss-tbl--schedule tr.dss-sch-row.is-own')).toContain('background: var(--dss-selected-bg)');
+    expect(ruleOf(mobile, '.dss-tbl--schedule tr.dss-sch-row:hover')).toContain('background: var(--dss-hover-bg)');
+  });
+});
+
+describe('Spielplan · ScheduleGrid (Variante B)', () => {
+  const CLASSES = [
+    'dss-sgrid', 'dss-sg-time', 'dss-sg-cell', 'dss-sg-game', 'dss-sg-teams', 'dss-sg-result', 'dss-sg-meta',
+    'dss-sg-empty', 'dss-sg-break', 'dss-sg-bye',
+  ];
+  it.each(CLASSES)('definiert .%s', (name) => {
+    expect(hasClass(name)).toBe(true);
+  });
+
+  it('die Zeitspalte bleibt beim seitlichen Scrollen stehen', () => {
+    const rule = css.match(/\.dss-sgrid tbody th\.dss-sg-time \{([^}]*)\}/)?.[1] ?? '';
+    expect(rule).toContain('position: sticky');
+    expect(rule).toContain('left: 0');
+  });
+
+  it('Handy: jede Zeitzeile wird ein Block mit Spalten-Beschriftung', () => {
+    expect(css).toMatch(/@media \(max-width: 640px\) \{[^@]*\.dss-sgrid td\.dss-sg-cell::before[^{]*\{[^}]*attr\(data-label\)/);
+  });
+  const grid = css.slice(css.indexOf('Spielplan · ScheduleGrid (Variante B'));
+  const gridMobile = grid.slice(grid.indexOf('@media (max-width: 640px)'));
+  const gridRule = (src: string, selector: string) => {
+    const at = src.indexOf(`${selector} {`);
+    return at < 0 ? '' : src.slice(at, src.indexOf('}', at));
+  };
+
+  it('Zeitspalte im Kopf wird nicht sticky und die im Rumpf ist deckend', () => {
+    expect(gridRule(grid, '.dss-sgrid th.dss-sg-time')).toContain('position: static');
+    expect(gridRule(grid, '.dss-sgrid tbody th.dss-sg-time')).toContain('background: var(--dss-surface)');
+  });
+
+  it('die Kopfzelle "Zeit" behält den Kopfzellen-Stil, die Schriftregeln gelten nur im Rumpf', () => {
+    const head = gridRule(grid, '.dss-sgrid th.dss-sg-time');
+    expect(head).toContain('width: 96px');
+    expect(head).toContain('min-width: 96px');
+    for (const prop of ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'text-transform']) {
+      expect(head).not.toContain(prop);
+    }
+    const body = gridRule(grid, '.dss-sgrid tbody th.dss-sg-time');
+    expect(body).toContain('text-transform: none');
+    expect(body).toContain('font-family: var(--font-mono)');
+  });
+
+  it('kompaktes Raster: engere Karten und Zellen', () => {
+    expect(gridRule(grid, '.dss-tbl--compact .dss-sg-game')).toMatch(/min-height: 0;[^}]*padding: 4px 8px/);
+    expect(grid).toMatch(/@media \(min-width: 641px\) \{[^@]*\.dss-sgrid\.dss-tbl--compact td\.dss-sg-cell \{[^}]*padding: 4px 8px/);
+    expect(grid).toMatch(/\.dss-sgrid\.dss-tbl--compact tbody th\.dss-sg-time \{[^}]*padding: 6px 12px/);
+  });
+
+  it('sr-only-Texte bleiben im Scroll-Container (kein Seiten-Overflow)', () => {
+    expect(gridRule(grid, '.dss-sg-game')).toContain('position: relative');
+  });
+
+  it('mehrere Spiele in einer Zelle haben Abstand', () => {
+    expect(gridRule(grid, '.dss-sg-game + .dss-sg-game')).toContain('margin-top: 6px');
+  });
+
+  it('Kopfzellen liegen über der sticky Zeitzelle im Rumpf', () => {
+    expect(gridRule(grid, '.dss-sgrid thead th')).toContain('z-index: 2');
+  });
+
+  it('Hover färbt auch die Zeitzelle (deckend, wegen sticky)', () => {
+    expect(gridRule(grid, '.dss-sgrid tbody tr:hover th.dss-sg-time')).toContain('background: var(--dss-hover-bg)');
+  });
+
+  it('Handy: leere Zellen sind ausgeblendet, Kopfzeile nur für Screenreader', () => {
+    expect(gridRule(gridMobile, '.dss-sgrid td.dss-sg-cell.is-empty')).toContain('display: none');
+    expect(gridRule(gridMobile, '.dss-sgrid thead')).toContain('clip: rect(0, 0, 0, 0)');
+  });
+
+  it('Handy: Zeitzelle nicht sticky, Hover liegt an der Zeile', () => {
+    expect(gridMobile).toMatch(/\.dss-sgrid tbody th\.dss-sg-time[^{]*\{[^}]*position: static/);
+    expect(gridRule(gridMobile, '.dss-sgrid tbody tr:hover')).toContain('background: var(--dss-hover-bg)');
+    expect(gridRule(gridMobile, '.dss-sgrid tbody tr:hover td')).toContain('background: none');
+  });
+
+  it('Handy: Pause und Freilos laufen über die volle Breite', () => {
+    expect(gridRule(gridMobile, '.dss-sgrid tr.dss-sg-break td, .dss-sgrid tr.dss-sg-bye td')).toContain('display: block');
+  });
+});

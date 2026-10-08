@@ -307,6 +307,41 @@ Kontraste messen (Text ≥ 7:1, UI-Elemente ≥ 3:1) und im Storybook alle Stori
 
 ---
 
+## Spielplan
+
+Zwei Bausteine für Spielpläne (Vanilla-Klassen, Svelte, React), gemeinsames Datenmodell `ScheduleGame`
+(Typen in `js/schedule.d.ts`, Hilfsfunktionen in `js/schedule.js`, Export `@bbv/dss-design-system/schedule.js`).
+
+- **`ScheduleTable`:** Tabelle, eine Zeile pro Spiel, nach `section` gruppiert. Layouts: `versus` (Heim – Gast, Liga,
+  Halle), `opponent` (Perspektive einer Mannschaft mit Chip vs./@, Logo, S/N-Chip, Ergebnis *eigene : Gegner*),
+  `columns` (Turnier mit Nr, Zeit, Feld, Heim, Ergebnis, Gast). `columns` und `versus` brauchen `heim` und `gast`;
+  ein Spiel nur mit `opponent` zeigt dort „?“ und kein Ergebnis. Dichten wie bei `Table`: `touch` 60 px (Standard bei
+  `opponent` oder mit `league`-Unterzeile), `default` 48 px (sonst), `compact` 40 px.
+  Erweiterung: Svelte über die Snippets `time` und `notice`, React über `renderTime`, `renderNotice` und `renderLink`.
+- **`ScheduleGrid`:** Zeitraster, Anwurfzeiten als Zeilen, Hallen oder Felder als Spalten; nur die Gegenüberstellung
+  (`heim`/`gast`), keine Perspektive. Empfohlen höchstens drei Spalten je Raster; `column` eines Spiels muss zu einer
+  `columns[].id` passen, sonst (und ohne `time`) erscheint das Spiel nicht. `breaks` für Pausen; Snippet bzw. Prop
+  `notice` je Spiel.
+- Zustände: `scheduled`, `live` (grüner Puls hinter der Uhrzeit), `finished`, `cancelled`, `postponed`, `bye`;
+  `provisional` für vorläufige Ergebnisse. Texte (Datum, Zeit) kommen fertig formatiert von der App.
+- Screenreader: Das Ergebnis wird als unsichtbarer Text gesprochen; abgesagte und verschobene Spiele tragen zusätzlich
+  den Text „abgesagt“ bzw. „verschoben“ (nicht nur über Farbe oder Durchstreichung erkennbar).
+- Unter 640 px werden Zeilen zu Karten (Tabelle) bzw. Anwurfzeiten zu Blöcken (Raster).
+- Kein dunkler Rahmen (`dss-frame--dark`); der seitenweite Dark Mode wirkt über die `--dss-*`-Variablen.
+
+```tsx
+<ScheduleTable
+  games={[{ id: '1', state: 'finished', date: 'Sa, 26.09.2026', time: '17:30', at: 'heim',
+            opponent: { name: 'TSV Jahn Freising', href: '/teams/freising', score: 108 }, ownScore: 65 }]}
+/>
+```
+
+Zuordnung Turnier-Manager: `Game` wird zu `ScheduleGame` mit `nr: '#' + gameNumber`, `time: scheduledStart + '–' + scheduledEnd`,
+`field: 'F' + field`, `heim`/`gast` aus den Teams (Platzhalter über `homeLabel`/`awayLabel` mit `placeholder: true`),
+`state: 'bye'` bei `byeTeamId`, `state: 'cancelled'` bei `cancelledReason`.
+
+---
+
 ## Accessibility
 
 - **WCAG 2.1 AAA** durchgehend validiert (siehe Identity Overview · Section 01 · Audit-Tabelle).

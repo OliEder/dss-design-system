@@ -8,6 +8,18 @@ export { Tabs, type TabsProps, type TabItem, type TabsVariant, type TabsSize } f
 export { Icon, ICON_NAMES, ensureSprite, type IconProps, type IconName } from './Icon';
 export { Checkbox, type CheckboxProps, type CheckboxDensity } from './Checkbox';
 export { Table, type TableProps, type TableColumn, type TableDensity } from './Table';
+export { ScheduleTable, type ScheduleTableProps, type ScheduleLinkProps } from './ScheduleTable';
+export { ScheduleGrid, type ScheduleGridProps } from './ScheduleGrid';
+export type {
+  ScheduleBreak,
+  ScheduleDensity,
+  ScheduleGame,
+  ScheduleGridColumn,
+  ScheduleLayout,
+  ScheduleOutcome,
+  ScheduleState,
+  ScheduleTeam,
+} from './schedule-types';
 export { TopBar, type TopBarProps, type TopBarContext } from './TopBar';
 export { EmptyState, type EmptyStateProps, type EmptyStateTone } from './EmptyState';
 export { Stepper, type StepperProps, type StepItem, type StepState, type StepperVariant } from './Stepper';

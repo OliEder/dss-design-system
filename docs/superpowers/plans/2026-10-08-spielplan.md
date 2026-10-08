@@ -17,6 +17,15 @@
 3. **`ScheduleGrid` nutzt nur die Gegenüberstellung** (`heim` und `gast`), nicht die Perspektive (`opponent`).
 4. **Spiele mit unbekannter `column`** erscheinen im Raster nicht. Die Doku sagt, dass `column` zu einer Spalten-`id` passen muss.
 
+## Stand der Umsetzung (Abweichungen während der Ausführung)
+
+- `hasScore(game, layout?)` ist layout-fähig (Review-Ergebnis zu Task 4): Die Perspektive (`ownScore`, `opponent.score`) zählt nur bei `layout === 'opponent'`
+  und vorhandenem `opponent`, sonst heim/gast. Maßgeblich ist der Code in `js/schedule.js`; die Snippets in Task 1 zeigen noch die erste Fassung.
+  Die Tabelle ruft `hasScore(game, mode)`, das Raster `hasScore(game, 'versus')`.
+- Die CSS-Fassung von Task 3 wurde nach dem Review erweitert (explizite `grid-template-areas` je Layout, Hervorhebung auf Zeilenebene, abgedunkeltes Datum
+  in abgesagten Zeilen); maßgeblich ist `css/components.css`.
+- Entscheidung: Die Spielplan-Komponenten unterstützen keinen dunklen Rahmen (`dss-frame--dark`); der seitenweite Dark Mode wirkt über die `--dss-*`-Variablen.
+
 ## Dateistruktur
 
 | Datei | Aufgabe |
@@ -513,7 +522,7 @@ export function initials(name) {
     .join('');
 }
 
-/** Text des Ergebnisses für Screenreader; nur sinnvoll, wenn hasScore(game) gilt. */
+/** Text des Ergebnisses für Screenreader; nur sinnvoll, wenn hasScore(game, layout) gilt. */
 export function ariaForResult(game, layout) {
   const parts = [];
   if (layout === 'opponent' && game.opponent) {
@@ -1197,7 +1206,7 @@ export function ScheduleTable({
           </td>
         );
       case 'res': {
-        const scored = (game.state === 'finished' || game.state === 'live') && hasScore(game);
+        const scored = (game.state === 'finished' || game.state === 'live') && hasScore(game, mode);
         if (!scored) {
           return (
             <td key={key} role="cell" className="dss-sch-res">
@@ -1491,7 +1500,7 @@ Create `svelte/ScheduleTable.svelte`:
         {:else if col.key === 'venue'}
           <td role="cell" class="dss-sch-venue-cell">{game.venue}</td>
         {:else if col.key === 'res'}
-          {@const scored = (game.state === 'finished' || game.state === 'live') && hasScore(game)}
+          {@const scored = (game.state === 'finished' || game.state === 'live') && hasScore(game, mode)}
           {@const result = mode === 'opponent' ? resolveOutcome(game) : undefined}
           <td role="cell" class="dss-sch-res">
             {#if !scored}
@@ -1882,7 +1891,7 @@ export function ScheduleGrid({
           <TeamName team={game.gast} loser={winner === 'heim'} renderLink={renderLink} />
         </div>
         {game.state === 'live' ? <LiveTag /> : null}
-        {(game.state === 'finished' || game.state === 'live') && hasScore(game) ? (
+        {(game.state === 'finished' || game.state === 'live') && hasScore(game, 'versus') ? (
           <div className="dss-sg-result">
             <ResultText
               visible={`${game.heim?.score} : ${game.gast?.score}`}
@@ -2087,7 +2096,7 @@ Create `svelte/ScheduleGrid.svelte`:
     {#if game.state === 'live'}
       <span class="dss-match-live dss-sch-live"><span class="dss-match-pulse" aria-hidden="true"></span> Live</span>
     {/if}
-    {#if (game.state === 'finished' || game.state === 'live') && hasScore(game)}
+    {#if (game.state === 'finished' || game.state === 'live') && hasScore(game, 'versus')}
       <div class="dss-sg-result">
         <span class="dss-sch-score" aria-hidden="true">{game.heim?.score} : {game.gast?.score}</span>
         <span class="dss-sr-only">{ariaForResult(game, 'versus')}</span>
