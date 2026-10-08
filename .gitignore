@@ -43,3 +43,6 @@ coverage/
 
 # Git worktrees
 .worktrees/
+
+# Stock-Fotos (Originale, lokal; zu groß fürs Repository)
+images/
