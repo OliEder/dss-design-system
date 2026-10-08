@@ -98,9 +98,20 @@ describe('ScheduleGrid', () => {
   it('druckt kein "undefined" bei beendetem Spiel mit nur opponent und ownScore', () => {
     const perspective: ScheduleGame = {
       id: 'p', state: 'finished', time: '09:00', column: 'f1',
-      opponent: { name: 'USC Heidelberg' }, ownScore: 42,
+      opponent: { name: 'USC Heidelberg', score: 31 }, ownScore: 42,
     };
     const { container } = render(<ScheduleGrid games={[perspective]} columns={COLUMNS} />);
+    expect(container.textContent).not.toContain('undefined');
+    expect(container.querySelector('.dss-sg-result')).toBeNull();
+  });
+
+  it('druckt kein "undefined" bei gemischtem Spiel (heim/gast ohne Ergebnis plus Perspektive)', () => {
+    const mixed: ScheduleGame = {
+      id: 'm', state: 'finished', time: '09:00', column: 'f1',
+      heim: { name: 'A' }, gast: { name: 'B' },
+      opponent: { name: 'C', score: 31 }, ownScore: 42,
+    };
+    const { container } = render(<ScheduleGrid games={[mixed]} columns={COLUMNS} />);
     expect(container.textContent).not.toContain('undefined');
     expect(container.querySelector('.dss-sg-result')).toBeNull();
   });
