@@ -62,7 +62,7 @@ const preview: Preview = {
           'Introduction',
           'Docs', ['Button', 'Forms', 'Cards & Lists', 'Navigation', 'Tables & Live-Scoring'],
           'Foundation', ['Colors', 'Typography', 'Spacing', 'Shadows'],
-          'Components', ['Button', 'TextInput', 'Select', 'Checkbox', 'Modal', 'Banner', 'Card', 'Card Library', 'Tabs', 'Navigation', 'AppNav', 'Table', 'EmptyState', 'CourtLines', 'PlayByPlay', 'Icon'],
+          'Components', ['Button', 'TextInput', 'Select', 'Checkbox', 'Modal', 'Banner', 'Card', 'Card Library', 'Tabs', 'Navigation', 'AppNav', 'Table', 'ScheduleTable', 'ScheduleGrid', 'Spielplan Spielwiese', 'EmptyState', 'CourtLines', 'PlayByPlay', 'Icon'],
         ],
       },
     },
