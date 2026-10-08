@@ -60,7 +60,7 @@
     width: 56px; height: 56px;
     display: grid; place-items: center;
     font-family: var(--font-display); font-weight: 800; font-size: 32px;
-    background: var(--ink-900); color: var(--n-0);
+    background: var(--base-900); color: var(--n-0);
     border-radius: var(--radius-md);
   }
   h1 { font-family: var(--font-display); font-size: 36px; margin: 0; letter-spacing: -0.02em; }
@@ -78,7 +78,7 @@
     font-family: var(--font-display);
     font-size: 44px; line-height: 1;
     font-weight: 800;
-    color: var(--ink-900);
+    color: var(--base-900);
     letter-spacing: -0.03em;
   }
   .kpi span { font-size: 18px; color: var(--page-mute); font-weight: 600; margin-left: 2px; }
@@ -88,9 +88,9 @@
     color: var(--page-mute); font-weight: 600;
     margin: 6px 0 8px;
   }
-  .tile p { color: var(--ink-700); font-size: 14px; }
+  .tile p { color: var(--base-700); font-size: 14px; }
 
   ul { padding-left: 18px; }
   li { padding: 4px 0; }
-  strong { color: var(--ink-900); }
+  strong { color: var(--base-900); }
 </style>

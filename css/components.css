@@ -15,25 +15,25 @@
 
 /* ── Semantische Aliase · Light ─────────────────────────────── */
 :root {
-  --dss-fg:          var(--ink-900);   /* starker Text */
-  --dss-fg-soft:     var(--ink-700);   /* Fließtext */
+  --dss-fg:          var(--base-900);   /* starker Text */
+  --dss-fg-soft:     var(--base-700);   /* Fließtext */
   --dss-mute:        var(--n-600);     /* Sekundärtext, AAA auf Surface */
   --dss-line:        var(--n-200);
   --dss-line-strong: var(--n-300);
   --dss-surface:     var(--n-0);       /* Karten */
   --dss-surface-2:   var(--n-100);     /* Eingabefelder, flache Flächen */
-  --dss-link:        var(--sky-800);
-  --dss-accent-text: var(--amber-800);
-  --dss-btn-bg:      var(--ink-800);
-  --dss-btn-bg-hover: var(--ink-700);
-  --dss-btn-fg:      var(--ink-0);
-  --dss-cta-bg:      var(--amber-400);
-  --dss-cta-bg-hover: var(--amber-500);
-  --dss-cta-fg:      var(--ink-1000);
-  --dss-hover-bg:    var(--ink-50);
-  --dss-selected-bg: var(--amber-50);
-  --dss-chip-sky-bg: var(--sky-100);   --dss-chip-sky-fg: var(--sky-800);
-  --dss-chip-amber-bg: var(--amber-100); --dss-chip-amber-fg: var(--amber-900);
+  --dss-link:        var(--cool-800);
+  --dss-accent-text: var(--signal-800);
+  --dss-btn-bg:      var(--action-bg-2);
+  --dss-btn-bg-hover: var(--action-bg-hover);
+  --dss-btn-fg:      var(--action-fg);
+  --dss-cta-bg:      var(--signal-400);
+  --dss-cta-bg-hover: var(--signal-500);
+  --dss-cta-fg:      var(--base-1000);
+  --dss-hover-bg:    var(--base-50);
+  --dss-selected-bg: var(--signal-50);
+  --dss-chip-sky-bg: var(--cool-100);   --dss-chip-sky-fg: var(--cool-800);
+  --dss-chip-amber-bg: var(--signal-100); --dss-chip-amber-fg: var(--signal-900);
   --dss-chip-ok-bg:  var(--ok-soft);   --dss-chip-ok-fg:  var(--ok-text);
   --dss-chip-err-bg: var(--err-soft);  --dss-chip-err-fg: var(--err-text);
   --dss-chip-warn-bg: var(--warn-soft); --dss-chip-warn-fg: var(--warn-text);
@@ -52,11 +52,11 @@
     --dss-mute: var(--n-400);
     --dss-line: var(--n-800);     --dss-line-strong: var(--n-700);
     --dss-surface: var(--n-950);  --dss-surface-2: var(--n-900);
-    --dss-link: var(--sky-300);   --dss-accent-text: var(--amber-300);
-    --dss-btn-bg: var(--n-100);   --dss-btn-bg-hover: var(--n-300);  --dss-btn-fg: var(--ink-1000);
-    --dss-hover-bg: var(--n-900); --dss-selected-bg: oklch(0.28 0.05 var(--h-amber));
-    --dss-chip-sky-bg: oklch(0.30 0.07 var(--h-sky));   --dss-chip-sky-fg: var(--sky-200);
-    --dss-chip-amber-bg: oklch(0.30 0.06 var(--h-amber)); --dss-chip-amber-fg: var(--amber-200);
+    --dss-link: var(--cool-300);   --dss-accent-text: var(--signal-300);
+    --dss-btn-bg: var(--n-100);   --dss-btn-bg-hover: var(--n-300);  --dss-btn-fg: var(--base-1000);
+    --dss-hover-bg: var(--n-900); --dss-selected-bg: oklch(0.28 0.05 var(--h-signal));
+    --dss-chip-sky-bg: oklch(0.30 var(--c-cool) var(--h-cool));   --dss-chip-sky-fg: var(--cool-200);
+    --dss-chip-amber-bg: oklch(0.30 0.06 var(--h-signal)); --dss-chip-amber-fg: var(--signal-200);
     --dss-chip-ok-bg: oklch(0.30 0.06 150);  --dss-chip-ok-fg: oklch(0.85 0.12 150);
     --dss-chip-err-bg: oklch(0.30 0.08 27);  --dss-chip-err-fg: oklch(0.88 0.09 27);
     --dss-chip-warn-bg: oklch(0.32 0.06 75); --dss-chip-warn-fg: oklch(0.90 0.10 80);
@@ -67,11 +67,11 @@
   --dss-mute: var(--n-400);
   --dss-line: var(--n-800);     --dss-line-strong: var(--n-700);
   --dss-surface: var(--n-950);  --dss-surface-2: var(--n-900);
-  --dss-link: var(--sky-300);   --dss-accent-text: var(--amber-300);
-  --dss-btn-bg: var(--n-100);   --dss-btn-bg-hover: var(--n-300);  --dss-btn-fg: var(--ink-1000);
-  --dss-hover-bg: var(--n-900); --dss-selected-bg: oklch(0.28 0.05 var(--h-amber));
-  --dss-chip-sky-bg: oklch(0.30 0.07 var(--h-sky));   --dss-chip-sky-fg: var(--sky-200);
-  --dss-chip-amber-bg: oklch(0.30 0.06 var(--h-amber)); --dss-chip-amber-fg: var(--amber-200);
+  --dss-link: var(--cool-300);   --dss-accent-text: var(--signal-300);
+  --dss-btn-bg: var(--n-100);   --dss-btn-bg-hover: var(--n-300);  --dss-btn-fg: var(--base-1000);
+  --dss-hover-bg: var(--n-900); --dss-selected-bg: oklch(0.28 0.05 var(--h-signal));
+  --dss-chip-sky-bg: oklch(0.30 var(--c-cool) var(--h-cool));   --dss-chip-sky-fg: var(--cool-200);
+  --dss-chip-amber-bg: oklch(0.30 0.06 var(--h-signal)); --dss-chip-amber-fg: var(--signal-200);
   --dss-chip-ok-bg: oklch(0.30 0.06 150);  --dss-chip-ok-fg: oklch(0.85 0.12 150);
   --dss-chip-err-bg: oklch(0.30 0.08 27);  --dss-chip-err-fg: oklch(0.88 0.09 27);
   --dss-chip-warn-bg: oklch(0.32 0.06 75); --dss-chip-warn-fg: oklch(0.90 0.10 80);
@@ -179,7 +179,7 @@
 .dss-tabs--underline .dss-tab:hover { color: var(--dss-fg); }
 .dss-tabs--underline .dss-tab.is-active,
 .dss-tabs--underline .dss-tab[aria-pressed="true"],
-.dss-tabs--underline .dss-tab[aria-selected="true"] { color: var(--dss-fg); border-bottom-color: var(--amber-400); }
+.dss-tabs--underline .dss-tab[aria-selected="true"] { color: var(--dss-fg); border-bottom-color: var(--indicator); }
 .dss-tabs--segmented { display: inline-flex; padding: 3px; background: var(--dss-surface-2); border-radius: var(--radius-md); gap: 2px; }
 .dss-tabs--segmented .dss-tab { border-radius: calc(var(--radius-md) - 2px); }
 .dss-tabs--segmented .dss-tab:hover:not(.is-active):not([aria-pressed="true"]) { background: var(--dss-line); }
@@ -257,7 +257,7 @@
    ══════════════════════════════════════════════════════════════ */
 
 /* ── Button · danger + Hallen-Touch ─────────────────────────── */
-.dss-btn--danger { background: var(--err-button); color: var(--ink-0); border-radius: var(--radius-md); }
+.dss-btn--danger { background: var(--err-button); color: var(--base-0); border-radius: var(--radius-md); }
 .dss-btn--danger:hover:not(:disabled) { filter: brightness(1.08); }
 .dss-btn.is-touch { height: var(--touch-lg); padding: 0 24px; font-size: 16px; border-radius: var(--radius-lg); }
 
@@ -363,7 +363,7 @@
 .dss-tabs--vertical .dss-tab { justify-content: flex-start; padding: 10px 14px; border-radius: var(--radius-md); }
 .dss-tabs--vertical .dss-tab:hover:not(.is-active):not(.is-disabled) { background: var(--dss-surface-2); }
 .dss-tabs--vertical .dss-tab.is-active, .dss-tabs--vertical .dss-tab[aria-selected="true"] {
-  background: var(--dss-surface-2); color: var(--dss-fg); box-shadow: inset 3px 0 0 var(--amber-400);
+  background: var(--dss-surface-2); color: var(--dss-fg); box-shadow: inset 3px 0 0 var(--indicator);
 }
 
 /* ── Icon ───────────────────────────────────────────────────── */
@@ -454,12 +454,12 @@
 .dss-tn {
   display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 10px;
   font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -0.02em;
-  background: var(--n-100); color: var(--ink-900); font-variant-numeric: tabular-nums; flex-shrink: 0;
+  background: var(--n-100); color: var(--base-900); font-variant-numeric: tabular-nums; flex-shrink: 0;
 }
 .dss-frame--dark .dss-tn { background: var(--n-800); color: var(--n-50); }
 .dss-tn.heim { background: var(--team-heim, oklch(0.55 0.20 27)); color: white; }
 .dss-tn.gast { background: var(--team-gast, oklch(0.55 0.18 245)); color: white; }
-.dss-tn.captain { box-shadow: 0 0 0 2px var(--amber-500); }
+.dss-tn.captain { box-shadow: 0 0 0 2px var(--signal-500); }
 .dss-tn.small { width: 32px; height: 32px; font-size: 13.5px; border-radius: 7px; }
 .dss-tn.large { width: 64px; height: 64px; font-size: 26px; border-radius: 14px; }
 .dss-tn.hero { width: 110px; height: 110px; font-size: 48px; border-radius: 22px; }
@@ -474,11 +474,11 @@
 .dss-player.dnp .dss-player-name { color: var(--dss-mute); text-decoration: line-through; font-weight: 400; }
 .dss-pos {
   display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-width: 22px; padding: 0 4px; height: 22px; border-radius: 5px;
-  font-family: var(--font-mono); font-weight: 700; font-size: 10px; background: var(--ink-100); color: var(--ink-700);
+  font-family: var(--font-mono); font-weight: 700; font-size: 10px; background: var(--base-100); color: var(--base-700);
 }
-.dss-pos.pg { background: var(--sky-100); color: var(--sky-800); }
+.dss-pos.pg { background: var(--cool-100); color: var(--cool-800); }
 .dss-pos.sg { background: var(--info-soft); color: var(--info-text); }
-.dss-pos.sf { background: var(--amber-100); color: var(--amber-800); }
+.dss-pos.sf { background: var(--signal-100); color: var(--signal-800); }
 .dss-pos.pf { background: var(--warn-soft); color: var(--warn-text); }
 .dss-pos.c { background: var(--err-soft); color: var(--err-text); }
 .dss-pill-s {
@@ -486,13 +486,13 @@
   padding: 3px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.06em; background: var(--n-100); color: var(--n-700);
 }
 .dss-pill-s.on { background: var(--ok-soft); color: var(--ok-text); }
-.dss-pill-s.cap { background: var(--amber-100); color: var(--amber-800); }
+.dss-pill-s.cap { background: var(--signal-100); color: var(--signal-800); }
 .dss-pill-s.dnp { background: var(--err-soft); color: var(--err-text); }
 
 /* ── TopBar · dunkle App-Leiste (Modifier, die helle Vereinsregister-Leiste bleibt) ── */
 .dss-topbar.dss-topbar--dark {
   display: flex; align-items: center; height: 56px; padding: 0 20px; gap: 20px;
-  background: var(--ink-1000); color: var(--n-100); border-bottom: 1px solid var(--n-900);
+  background: var(--base-1000); color: var(--n-100); border-bottom: 1px solid var(--n-900);
   font-family: var(--font-body);
 }
 .dss-topbar-brand {
@@ -500,7 +500,7 @@
   font-size: 15px; letter-spacing: -0.01em; color: white;
 }
 .dss-topbar-mark {
-  width: 26px; height: 26px; border-radius: 6px; background: var(--amber-400); color: var(--ink-1000);
+  width: 26px; height: 26px; border-radius: 6px; background: var(--signal-400); color: var(--base-1000);
   display: inline-flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px;
 }
 .dss-topbar-ctx {
@@ -518,7 +518,7 @@
 @keyframes dss-tb-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 @media (prefers-reduced-motion: reduce) { .dss-topbar-live::before { animation: none; } }
 .dss-topbar-score { font-weight: 700; font-size: 14px; color: white; letter-spacing: -0.01em; }
-.dss-topbar-clock { color: var(--amber-300); font-weight: 700; }
+.dss-topbar-clock { color: var(--signal-300); font-weight: 700; }
 .dss-topbar-center { flex: 1; display: flex; justify-content: center; }
 .dss-topbar-spacer { flex: 1; }
 .dss-topbar-user {
@@ -526,7 +526,7 @@
   background: var(--n-900); color: var(--n-100); font-size: 12.5px; font-weight: 500;
 }
 .dss-topbar-av {
-  width: 28px; height: 28px; border-radius: 50%; background: var(--sky-600); color: white;
+  width: 28px; height: 28px; border-radius: 50%; background: var(--cool-600); color: white;
   display: inline-flex; align-items: center; justify-content: center;
   font-family: var(--font-display); font-weight: 700; font-size: 12px;
 }
@@ -537,7 +537,7 @@
   padding: 40px 32px; border: 1px dashed var(--dss-line-strong); border-radius: 14px;
   background: var(--dss-surface); color: var(--dss-fg-soft); font-family: var(--font-body);
 }
-.dss-empty--action { border-color: var(--amber-400); background: var(--dss-chip-amber-bg); }
+.dss-empty--action { border-color: var(--signal-400); background: var(--dss-chip-amber-bg); }
 .dss-empty--error { border-color: var(--err-fill); background: var(--dss-chip-err-bg); }
 .dss-empty-icon {
   width: 60px; height: 60px; border-radius: 50%; margin-bottom: 14px;
@@ -564,7 +564,7 @@ button.dss-step-dot { cursor: pointer; }
 button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
 .dss-step-item.is-done .dss-step-dot { background: var(--ok-fill); border-color: var(--ok-fill); color: white; }
 .dss-step-item.is-current .dss-step-dot {
-  border-color: var(--amber-500); background: var(--amber-500); color: var(--ink-1000);
+  border-color: var(--signal-500); background: var(--signal-500); color: var(--base-1000);
   box-shadow: 0 0 0 4px var(--dss-chip-amber-bg);
 }
 .dss-step-label { font-weight: 600; color: var(--dss-fg-soft); }
@@ -611,7 +611,7 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
   font: inherit; font-size: 14px; font-weight: 600; color: var(--dss-fg-soft); text-decoration: none; cursor: pointer;
 }
 .dss-appnav-link:hover, .dss-appnav-group-btn:hover, .dss-appnav-toggle:hover { color: var(--dss-fg); background: var(--dss-hover-bg); }
-.dss-appnav-link.is-active, .dss-appnav-group-btn.is-active { color: var(--dss-fg); border-bottom-color: var(--amber-400); }
+.dss-appnav-link.is-active, .dss-appnav-group-btn.is-active { color: var(--dss-fg); border-bottom-color: var(--indicator); }
 .dss-appnav-link.is-disabled { color: var(--dss-mute); cursor: not-allowed; background: none; }
 .dss-appnav-link:focus-visible, .dss-appnav-group-btn:focus-visible, .dss-appnav-toggle:focus-visible {
   outline: var(--ring-w) solid var(--ring-color); outline-offset: -3px;
@@ -627,15 +627,15 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
 .dss-appnav-panel .dss-appnav-link {
   display: flex; width: 100%; min-height: 44px; margin: 0; border-bottom: 0; border-radius: var(--radius-md);
 }
-.dss-appnav-panel .dss-appnav-link.is-active { background: var(--dss-selected-bg); box-shadow: inset 3px 0 0 var(--amber-400); }
+.dss-appnav-panel .dss-appnav-link.is-active { background: var(--dss-selected-bg); box-shadow: inset 3px 0 0 var(--indicator); }
 .dss-appnav-toggle { display: none; }
 
-.dss-appnav--dark { background: var(--ink-1000); border-bottom-color: var(--n-900); color: var(--n-100); }
+.dss-appnav--dark { background: var(--base-1000); border-bottom-color: var(--n-900); color: var(--n-100); }
 .dss-appnav--dark .dss-appnav-link, .dss-appnav--dark .dss-appnav-group-btn, .dss-appnav--dark .dss-appnav-toggle { color: var(--n-300); }
 .dss-appnav--dark .dss-appnav-link:hover, .dss-appnav--dark .dss-appnav-group-btn:hover, .dss-appnav--dark .dss-appnav-toggle:hover { color: white; background: var(--n-900); }
 .dss-appnav--dark .dss-appnav-link.is-active, .dss-appnav--dark .dss-appnav-group-btn.is-active { color: white; }
 .dss-appnav--dark .dss-appnav-link.is-disabled { color: var(--n-500); background: none; }
-.dss-appnav--dark .dss-appnav-link:focus-visible, .dss-appnav--dark .dss-appnav-group-btn:focus-visible, .dss-appnav--dark .dss-appnav-toggle:focus-visible { outline-color: var(--amber-300); }
+.dss-appnav--dark .dss-appnav-link:focus-visible, .dss-appnav--dark .dss-appnav-group-btn:focus-visible, .dss-appnav--dark .dss-appnav-toggle:focus-visible { outline-color: var(--signal-300); }
 .dss-appnav--dark .dss-appnav-panel { background: var(--n-950); border-color: var(--n-800); }
 .dss-appnav--dark .dss-appnav-panel .dss-appnav-link.is-active { background: var(--n-900); }
 
@@ -645,7 +645,7 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
   .dss-appnav-list { display: none; flex-direction: column; align-items: stretch; width: 100%; gap: 0; padding-bottom: 8px; }
   .dss-appnav.is-open .dss-appnav-list { display: flex; }
   .dss-appnav-link, .dss-appnav-group-btn { width: 100%; justify-content: space-between; border-bottom: 0; margin-bottom: 0; border-radius: var(--radius-md); }
-  .dss-appnav-link.is-active, .dss-appnav-group-btn.is-active { background: var(--dss-selected-bg); box-shadow: inset 3px 0 0 var(--amber-400); }
+  .dss-appnav-link.is-active, .dss-appnav-group-btn.is-active { background: var(--dss-selected-bg); box-shadow: inset 3px 0 0 var(--indicator); }
   .dss-appnav--dark .dss-appnav-link.is-active, .dss-appnav--dark .dss-appnav-group-btn.is-active { background: var(--n-900); }
   .dss-appnav-panel { position: static; min-width: 0; margin: 0; padding: 0 0 0 14px; border: 0; box-shadow: none; background: none; }
   .dss-appnav-context { margin-left: auto; }
@@ -672,7 +672,7 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
 .dss-bnav-item.is-active { color: var(--dss-fg); }
 .dss-bnav-item.is-active::before {
   content: ''; position: absolute; top: 0; left: 50%; width: 36px; height: 3px;
-  background: var(--amber-500); transform: translateX(-50%); border-radius: 0 0 3px 3px;
+  background: var(--signal-500); transform: translateX(-50%); border-radius: 0 0 3px 3px;
 }
 .dss-bnav-badge {
   position: absolute; top: 6px; right: calc(50% - 22px); min-width: 18px; height: 18px; padding: 0 5px;
@@ -682,11 +682,11 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
 }
 .dss-bnav-fab {
   appearance: none; border: 0; cursor: pointer; align-self: center; width: 56px; height: 56px; margin: 0 4px;
-  border-radius: 50%; background: var(--amber-500); color: var(--ink-1000); text-decoration: none;
+  border-radius: 50%; background: var(--signal-500); color: var(--base-1000); text-decoration: none;
   display: inline-flex; align-items: center; justify-content: center; box-shadow: var(--shadow-md);
   transform: translateY(-12px); transition: background 0.12s, transform 0.12s;
 }
-.dss-bnav-fab:hover { background: var(--amber-400); transform: translateY(-14px); }
+.dss-bnav-fab:hover { background: var(--signal-400); transform: translateY(-14px); }
 .dss-bnav-item:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: -3px; }
 .dss-bnav-fab:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .dss-bnav-fab, .dss-bnav-fab:hover { transition: none; } }
@@ -812,23 +812,23 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
 
 .dss-pc-hero {
   position: relative; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; overflow: hidden;
-  padding: 32px; background: var(--ink-1000); color: white; border-radius: 18px; font-family: var(--font-body);
+  padding: 32px; background: var(--base-1000); color: white; border-radius: 18px; font-family: var(--font-body);
 }
 .dss-pc-hero::before {
   content: ''; position: absolute; top: -60px; right: -60px; width: 220px; height: 220px; border-radius: 50%;
-  background: var(--amber-400); opacity: 0.16; filter: blur(20px);
+  background: var(--signal-400); opacity: 0.16; filter: blur(20px);
 }
 .dss-pc-hero-left, .dss-pc-hero-right { position: relative; z-index: 1; }
 .dss-pc-hero-right { display: flex; flex-direction: column; gap: 18px; }
 .dss-pc-hero .dss-pc-nm { font-weight: 700; font-size: 32px; letter-spacing: -0.025em; line-height: 1.05; color: white; }
 .dss-pc-hero .dss-pc-role { gap: 10px; font-size: 11px; color: rgba(255, 255, 255, 0.65); }
-.dss-pc-hero .dss-pc-cap { background: var(--amber-100); color: var(--amber-800); }
+.dss-pc-hero .dss-pc-cap { background: var(--signal-100); color: var(--signal-800); }
 /* PlayerCard behält die etwas größere Positionsmarke (Table nutzt die kompakte Basis) */
 .dss-pc-row .dss-pos, .dss-pc-card .dss-pos, .dss-pc-hero .dss-pos { min-width: 26px; padding: 0 6px; font-size: 10.5px; letter-spacing: 0.06em; }
 .dss-pc-hero .dss-pos { background: rgba(255, 255, 255, 0.12); color: white; }
 .dss-pc-hero .dss-pc-vitals { gap: 24px; padding: 8px 0 0; border-top: 1px solid rgba(255, 255, 255, 0.12); }
 .dss-pc-hero .dss-pc-v { color: white; }
-.dss-pc-hero .dss-pc-v--amber { color: var(--amber-400); }
+.dss-pc-hero .dss-pc-v--amber { color: var(--signal-400); }
 .dss-pc-hero .dss-pc-l { color: rgba(255, 255, 255, 0.55); }
 
 /* ── PlayByPlay ─────────────────────────────────────────────── */
@@ -896,7 +896,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
 .dss-pbp-event--timeout .dss-pbp-action { color: var(--dss-chip-sky-fg); }
 .dss-pbp-frame--dark .dss-pbp-event--timeout .dss-pbp-action { color: oklch(0.88 0.13 245); }
 .dss-pbp-event--score-3p .dss-pbp-action b { color: var(--dss-accent-text); }
-.dss-pbp-frame--dark .dss-pbp-event--score-3p .dss-pbp-action b { color: var(--amber-400); }
+.dss-pbp-frame--dark .dss-pbp-event--score-3p .dss-pbp-action b { color: var(--signal-400); }
 
 /* ── CourtLines: Spielfeldlinien als Seitenhintergrund (FIBA 28 × 15 m, SVG als Maske) ── */
 :root { --dss-court-opacity: 0.6; }

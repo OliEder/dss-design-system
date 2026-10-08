@@ -30,10 +30,10 @@
 
   {:else if view === 'tint'}
     <div class="row">
-      <span style="display:inline-flex;align-items:center;gap:6px;color:var(--amber-700);"><Icon name="live" /> Live</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;color:var(--signal-700);"><Icon name="live" /> Live</span>
       <span style="display:inline-flex;align-items:center;gap:6px;color:var(--err-text);"><Icon name="foul-d" /> Disqualifiziert</span>
       <span style="display:inline-flex;align-items:center;gap:6px;color:var(--ok-text);"><Icon name="valid" /> Validiert</span>
-      <span style="display:inline-flex;align-items:center;gap:6px;color:var(--sky-700);"><Icon name="whistle" /> Schiri</span>
+      <span style="display:inline-flex;align-items:center;gap:6px;color:var(--cool-700);"><Icon name="whistle" /> Schiri</span>
     </div>
 
   {:else if view === 'actions'}
@@ -81,7 +81,7 @@
     border: 1px solid var(--page-line);
     border-radius: var(--radius-md);
     padding: 10px 6px;
-    color: var(--ink-800);
+    color: var(--base-800);
   }
   .lbl {
     font-family: var(--font-mono); font-size: 10.5px;

@@ -84,16 +84,16 @@
   .ctl {
     appearance: none; cursor: pointer;
     border: 1px solid var(--page-line);
-    background: var(--surface-0); color: var(--ink-900);
+    background: var(--surface-0); color: var(--base-900);
     font-family: var(--font-body); font-weight: 600; font-size: 13px;
     padding: 8px 14px;
     border-radius: var(--radius-md);
     transition: background 0.12s, border-color 0.12s;
   }
-  .ctl:hover:not(:disabled) { background: var(--n-100); border-color: var(--ink-300); }
+  .ctl:hover:not(:disabled) { background: var(--n-100); border-color: var(--base-300); }
   .ctl:disabled { opacity: 0.4; cursor: not-allowed; }
   .ctl--p {
-    background: var(--ink-900); color: var(--n-0); border-color: var(--ink-900);
+    background: var(--action-bg); color: var(--n-0); border-color: var(--action-bg);
   }
-  .ctl--p:hover:not(:disabled) { background: var(--ink-800); border-color: var(--ink-800); }
+  .ctl--p:hover:not(:disabled) { background: var(--action-bg-2); border-color: var(--action-bg-2); }
 </style>

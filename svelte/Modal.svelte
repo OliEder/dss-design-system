@@ -132,7 +132,7 @@
   .dss-m-title {
     margin: 0;
     font-family: var(--font-display); font-weight: 700; font-size: 20px;
-    color: var(--ink-900);
+    color: var(--base-900);
   }
   .dss-m-subtitle {
     margin: 4px 0 0;
@@ -143,7 +143,7 @@
   }
   .dss-m-close {
     appearance: none; border: 0;
-    background: var(--n-100); color: var(--ink-700);
+    background: var(--n-100); color: var(--base-700);
     width: 32px; height: 32px;
     border-radius: var(--radius-md);
     cursor: pointer;
@@ -155,7 +155,7 @@
     padding: 4px 24px 20px;
     overflow-y: auto;
     flex: 1; min-height: 0;
-    color: var(--ink-700);
+    color: var(--base-700);
     font-size: 14.5px;
     line-height: 1.55;
   }

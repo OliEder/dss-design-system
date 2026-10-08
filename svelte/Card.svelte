@@ -71,7 +71,7 @@
     flex-direction: column;
     background: var(--surface-0);
     border-radius: var(--radius-lg);
-    color: var(--ink-900);
+    color: var(--base-900);
     text-decoration: none;
     overflow: hidden;
     transition: transform 0.12s, box-shadow 0.12s, border-color 0.12s;
@@ -94,7 +94,7 @@
     cursor: pointer;
   }
   .dss-card--hoverable:hover {
-    border-color: var(--ink-300);
+    border-color: var(--base-300);
     box-shadow: var(--shadow-md);
     transform: translateY(-1px);
   }
@@ -108,7 +108,7 @@
     padding: 14px 18px 0;
     font-family: var(--font-display);
     font-weight: 600;
-    color: var(--ink-900);
+    color: var(--base-900);
   }
   .dss-card-body {
     flex: 1;

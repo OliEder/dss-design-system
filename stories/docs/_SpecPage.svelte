@@ -35,7 +35,7 @@
 <style>
   :global(.spec) {
     font-family: var(--font-body);
-    color: var(--ink-900);
+    color: var(--base-900);
     background: var(--page-bg);
     min-height: 100vh;
     padding: 56px 64px 80px;
@@ -53,7 +53,7 @@
     font-weight: 700;
     font-size: 56px; letter-spacing: -0.025em;
     line-height: 1.02;
-    color: var(--ink-900);
+    color: var(--base-900);
     margin: 0 0 14px;
   }
   :global(.spec-hero .lede) {
@@ -79,7 +79,7 @@
   :global(.spec-num) {
     font-family: var(--font-mono);
     font-size: 12px; letter-spacing: 0.06em;
-    color: var(--amber-800);
+    color: var(--signal-800);
     padding-top: 6px;
     font-weight: 600;
   }
@@ -88,7 +88,7 @@
     font-weight: 700; font-size: 34px;
     letter-spacing: -0.02em; line-height: 1.08;
     margin: 0 0 10px;
-    color: var(--ink-900);
+    color: var(--base-900);
   }
   :global(.spec-title p) {
     margin: 0;
@@ -99,10 +99,10 @@
     text-wrap: pretty;
   }
   :global(.spec-title p + p) { margin-top: 8px; }
-  :global(.spec-title b) { color: var(--ink-900); }
+  :global(.spec-title b) { color: var(--base-900); }
   :global(.spec-title code) {
     font-family: var(--font-mono); font-size: 13px;
-    background: var(--n-100); color: var(--ink-900);
+    background: var(--n-100); color: var(--base-900);
     padding: 1px 6px; border-radius: 4px;
   }
 
@@ -124,13 +124,13 @@
     content: ''; flex: 1; height: 1px; background: var(--page-line);
   }
   :global(.spec-cap .pill) {
-    background: var(--ink-100); color: var(--ink-700);
+    background: var(--base-100); color: var(--base-700);
     padding: 2px 8px; border-radius: 4px;
     font-size: 9.5px; letter-spacing: 0.08em;
     text-transform: uppercase;
   }
-  :global(.spec-cap .pill.dark)  { background: var(--ink-900); color: var(--n-50); }
-  :global(.spec-cap .pill.amber) { background: var(--amber-100); color: var(--amber-800); }
+  :global(.spec-cap .pill.dark)  { background: var(--base-900); color: var(--n-50); }
+  :global(.spec-cap .pill.amber) { background: var(--signal-100); color: var(--signal-800); }
   :global(.spec-cap .pill.ok)    { background: var(--ok-soft);   color: var(--ok-text); }
 
   /* Framed demo container */
@@ -180,7 +180,7 @@
     color: var(--page-mute);
     font-weight: 600;
   }
-  :global(.spec-tokens td.k) { color: var(--ink-900); font-weight: 600; }
+  :global(.spec-tokens td.k) { color: var(--base-900); font-weight: 600; }
   :global(.spec-tokens td.v) { color: var(--n-700); }
   :global(.spec-tokens td.d) { color: var(--n-700); font-family: var(--font-body); font-size: 13px; }
 

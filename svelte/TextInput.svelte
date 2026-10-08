@@ -83,7 +83,7 @@
   .field-label {
     font-family: var(--font-body); font-weight: 600;
     font-size: 12.5px;
-    color: var(--ink-800);
+    color: var(--base-800);
     display: flex; align-items: baseline; gap: 6px;
   }
   .field-label .req { color: var(--err-text); font-weight: 700; }
@@ -107,7 +107,7 @@
     transition: border-color 0.14s, box-shadow 0.14s;
   }
   .input-group:focus-within {
-    border-color: var(--ink-800);
+    border-color: var(--base-800);
     box-shadow: 0 0 0 var(--ring-w) var(--ring-color);
   }
 
@@ -118,7 +118,7 @@
     height: var(--fld-h-default);
     padding: 0 14px;
     font-family: var(--font-body); font-size: 15px;
-    color: var(--ink-900);
+    color: var(--base-900);
   }
   .input::placeholder { color: var(--n-500); }
   .input:disabled { color: var(--n-500); cursor: not-allowed; }
@@ -127,7 +127,7 @@
     display: inline-flex; align-items: center;
     padding: 0 14px;
     background: var(--n-100);
-    color: var(--ink-700);
+    color: var(--base-700);
     font-family: var(--font-mono); font-size: 13px; font-weight: 600;
     border-right: 1px solid var(--n-200);
   }

@@ -207,19 +207,32 @@ Der Seiteninhalt braucht `position: relative; z-index: 1`, damit er über dem Hi
 | **Amber** (Hue 83°) | Signal · CTA · Spieluhr | `amber-400` |
 | **Sky** (Hue 244°) | Atmosphäre · Heim · Info | `sky-400` |
 
-### DBB-Compat-Preset
+### Marken-Rollen und DBB-Marke
 
-Falls Vertrag mit dem DBB entsteht, schalten **drei Hue-Werte** auf das offizielle DBB-Branding:
+Komponenten greifen nicht auf `ink-*`, `amber-*` oder `sky-*` zu, sondern auf Rollen-Tokens:
 
-```css
-:root {
-  --h-ink:   0;     /* echtes Schwarz */
-  --h-amber: 90;    /* DBB-Gold */
-  --h-sky:   225;   /* DBB-Hellblau */
-}
+| Rolle | BBV (Standard) | DBB (`data-brand="dbb"`) |
+|---|---|---|
+| `--base-*` · Text, Flächen | `ink` | reine Grautöne; `base-900` = `#000`, `base-1000` = Anthrazit `#191919` |
+| `--signal-*` · CTA, Highlight, Uhr | `amber` | `gold` (`gold-400` ≈ `#c9ae64`) |
+| `--cool-*` · Links, Heim, Info | `sky` | Grautöne (kein Blau, Links erben die Textfarbe) |
+| `--action-bg`, `--action-bg-2`, `--action-bg-hover` · primäre Buttons | `ink-900`, `ink-800`, `ink-700` | Anthrazit, Anthrazit, `n-700` |
+| `--indicator` · aktiver Tab, Nav-Unterstrich | `amber-400` | `orange-600` ≈ `#eb6909` (3.2:1 auf Weiß); im Dark Mode `orange-500` ≈ `#ff9900` |
+
+Die DBB-Werte stammen von basketball-bund.de (Theme `dbb21`, Stand 2026-10-08): Schwarz, Weiß, Anthrazit, Gold als
+Markenfarbe, Orange für aktive Zustände.
+
+Umschalten über ein Attribut auf `<html>`:
+
+```html
+<html data-brand="dbb">
 ```
 
-Strukturen, Kontraste und Komponenten bleiben unverändert.
+Das Attribut muss auf `<html>` stehen, weil abgeleitete Tokens (`--team-heim`, `--page-fg`) am Root aufgelöst werden.
+Gold und Orange haben pro Stufe ähnliche Helligkeit wie Amber, die AAA-Slots (`fill` / `text` / `deep`) bleiben daher
+gleich. Gold und `#ff9900` taugen nicht als Text auf Weiß (je etwa 2.1:1); Text nutzt `signal-800` (≈ 8.5:1). Der Indikator nutzt auf hellem Grund das dunklere `orange-600`, damit er 3:1 erreicht.
+Neue Komponenten verwenden nur die Rollen-Tokens und `--dss-*`, keine Farbfamilien direkt. Im Storybook schaltet die
+Toolbar zwischen beiden Marken um.
 
 ---
 

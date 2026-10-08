@@ -37,6 +37,11 @@ const preview: Preview = {
   },
   decorators: [
     withThemeByDataAttribute({
+      themes: { 'BBV (Ink · Amber · Sky)': '', 'DBB (Blau · Orange)': 'dbb' },
+      defaultTheme: 'BBV (Ink · Amber · Sky)',
+      attributeName: 'data-brand',
+    }),
+    withThemeByDataAttribute({
       themes: { Light: 'light', Dark: 'dark' },
       defaultTheme: 'Light',
       attributeName: 'data-theme',

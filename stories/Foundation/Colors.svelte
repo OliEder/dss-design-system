@@ -19,7 +19,7 @@
 <div class="wrap">
   {#if mode === 'hues'}
     <h2>Hue Ramps · Ink · Amber · Sky · Neutral</h2>
-    <p class="muted">Drei-Achsen-Identität. Hue-Tokens umschaltbar für DBB-Compat.</p>
+    <p class="muted">Drei-Achsen-Identität. Rollen-Tokens (base, signal, cool) schalten per data-brand="dbb" auf die DBB-Marke.</p>
     {#each ramps as ramp}
       <div class="ramp">
         <div class="ramp-h">{ramp.name}</div>

@@ -138,7 +138,7 @@
     appearance: none;
     border: 0;
     background: transparent;
-    color: var(--ink-700);
+    color: var(--base-700);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -170,7 +170,7 @@
     background: var(--n-100);
     border-radius: var(--radius-full);
   }
-  .dss-tab.is-active .dss-tab-count { background: var(--ink-900); color: var(--n-0); }
+  .dss-tab.is-active .dss-tab-count { background: var(--action-bg); color: var(--n-0); }
 
   /* ── Sizes ────────────────────────────────────────────────── */
   .dss-tabs--sm .dss-tab { height: 36px; padding: 0 10px; font-size: 13px; }
@@ -187,10 +187,10 @@
     border-bottom: 2px solid transparent;
     margin-bottom: -1px;
   }
-  .dss-tabs--underline .dss-tab:hover:not(.is-disabled) { color: var(--ink-900); }
+  .dss-tabs--underline .dss-tab:hover:not(.is-disabled) { color: var(--base-900); }
   .dss-tabs--underline .dss-tab.is-active {
-    color: var(--ink-900);
-    border-bottom-color: var(--amber-400);
+    color: var(--base-900);
+    border-bottom-color: var(--indicator);
   }
 
   /* ── Variant: segmented ──────────────────────────────────── */
@@ -205,7 +205,7 @@
     height: auto;
     padding: 8px 14px;
     border-radius: calc(var(--radius-md) - 2px);
-    color: var(--ink-700);
+    color: var(--base-700);
   }
   .dss-tabs--segmented.dss-tabs--lg .dss-tab { padding: 12px 20px; }
   .dss-tabs--segmented .dss-tab:hover:not(.is-active):not(.is-disabled) {
@@ -213,7 +213,7 @@
   }
   .dss-tabs--segmented .dss-tab.is-active {
     background: var(--surface-0);
-    color: var(--ink-900);
+    color: var(--base-900);
     box-shadow: var(--shadow-sm);
   }
 
@@ -226,23 +226,23 @@
     border-radius: var(--radius-full);
     border: 1px solid var(--page-line);
     background: var(--surface-0);
-    color: var(--ink-700);
+    color: var(--base-700);
     height: 36px;
     padding: 0 14px;
     font-size: 13px;
   }
   .dss-tabs--pills .dss-tab:hover:not(.is-active):not(.is-disabled) {
-    border-color: var(--ink-300);
-    color: var(--ink-900);
+    border-color: var(--base-300);
+    color: var(--base-900);
   }
   .dss-tabs--pills .dss-tab.is-active {
-    background: var(--ink-900);
-    border-color: var(--ink-900);
+    background: var(--action-bg);
+    border-color: var(--action-bg);
     color: var(--n-0);
   }
   .dss-tabs--pills .dss-tab.is-active .dss-tab-count {
     background: var(--n-0);
-    color: var(--ink-900);
+    color: var(--base-900);
   }
 
   /* ── Variant: vertical ───────────────────────────────────── */
@@ -257,14 +257,14 @@
     justify-content: flex-start;
     padding: 10px 14px;
     border-radius: var(--radius-md);
-    color: var(--ink-700);
+    color: var(--base-700);
   }
   .dss-tabs--vertical .dss-tab:hover:not(.is-active):not(.is-disabled) {
     background: var(--n-100);
   }
   .dss-tabs--vertical .dss-tab.is-active {
     background: var(--n-100);
-    color: var(--ink-900);
-    box-shadow: inset 3px 0 0 var(--amber-400);
+    color: var(--base-900);
+    box-shadow: inset 3px 0 0 var(--indicator);
   }
 </style>

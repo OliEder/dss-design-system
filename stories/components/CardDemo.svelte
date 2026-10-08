@@ -31,7 +31,7 @@
             <span style="font-family:var(--font-mono);font-size:11px;color:var(--page-mute);">12 Spieler</span>
           </div>
         {/snippet}
-        <ul style="margin:0;padding:0;list-style:none;font-size:14px;line-height:2;color:var(--ink-800);">
+        <ul style="margin:0;padding:0;list-style:none;font-size:14px;line-height:2;color:var(--base-800);">
           <li>4 · Sandro Mauer</li>
           <li>7 · Lukas König</li>
           <li>14 · Daniel Reiß (C)</li>

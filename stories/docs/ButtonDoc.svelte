@@ -172,7 +172,7 @@
       </div>
     </div>
     <div class="spec-body">
-      <div class="spec-frame" style="background: var(--ink-1000); color: var(--n-100); padding: 22px 24px;">
+      <div class="spec-frame" style="background: var(--base-1000); color: var(--n-100); padding: 22px 24px;">
         <pre style="margin: 0; font-family: var(--font-mono); font-size: 13px; line-height: 1.6; color: var(--n-100);">{`import Button from '@bbv/dss/svelte/Button';
 
 <Button>Spielbericht freigeben</Button>

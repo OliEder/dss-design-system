@@ -58,7 +58,7 @@
       <Tabs {items} {variant} {size} {value} />
       <div style="flex:1;background:var(--surface-0);border:1px solid var(--page-line);border-radius:var(--radius-lg);padding:24px;min-height:240px;max-width:480px;">
         <h3 style="margin:0 0 8px;font-family:var(--font-display);">Settings-Section</h3>
-        <p style="margin:0;color:var(--ink-700);font-size:14px;">Inhalt der gewählten Section.</p>
+        <p style="margin:0;color:var(--base-700);font-size:14px;">Inhalt der gewählten Section.</p>
       </div>
     </div>
   {:else}
