@@ -7,15 +7,16 @@ const config: StorybookConfig = {
     '../stories/**/*.stories.@(js|ts|svelte)',
     '../stories/**/*.spec.stories.ts',
   ],
+
   addons: [
     '@storybook/addon-a11y',
     '@storybook/addon-themes',
   ],
+
   framework: {
     name: '@storybook/svelte-vite',
     options: {},
   },
-  docs: { autodocs: 'tag' },
 
   // Storybook 10's svelte-vite ships a docgen plugin that runs BEFORE
   // vite-plugin-svelte and tries to parse raw .svelte source as JS — which
@@ -31,6 +32,6 @@ const config: StorybookConfig = {
     return mergeConfig(viteConfig, {
       plugins: [svelte()],
     });
-  },
+  }
 };
 export default config;

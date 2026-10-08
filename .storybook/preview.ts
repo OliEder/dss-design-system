@@ -37,18 +37,24 @@ const preview: Preview = {
       },
     },
   },
-  initialGlobals: { brand: 'bbv', type: 'standard' },
+  initialGlobals: {
+    brand: 'bbv',
+    type: 'standard',
+
+    backgrounds: {
+      value: 'page'
+    }
+  },
   parameters: {
     controls: {
       matchers: { color: /(background|color)$/i, date: /Date$/i },
     },
     backgrounds: {
-      default: 'page',
-      values: [
-        { name: 'page',     value: 'var(--page-bg)' },
-        { name: 'surface',  value: 'var(--surface-0)' },
-        { name: 'kampf',    value: 'var(--n-1000)' },
-      ],
+      options: {
+        page: { name: 'page',     value: 'var(--page-bg)' },
+        surface: { name: 'surface',  value: 'var(--surface-0)' },
+        kampf: { name: 'kampf',    value: 'var(--n-1000)' }
+      }
     },
     options: {
       storySort: {
