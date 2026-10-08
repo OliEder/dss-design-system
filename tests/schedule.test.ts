@@ -77,6 +77,14 @@ describe('hasScore', () => {
     expect(hasScore(persp())).toBe(true);
     expect(hasScore(persp({ ownScore: undefined }))).toBe(false);
   });
+  it('beachtet die Art: Perspektive nur bei opponent, sonst heim/gast', () => {
+    expect(hasScore(persp(), 'opponent')).toBe(true);
+    expect(hasScore(persp(), 'columns')).toBe(false);
+    expect(hasScore(persp(), 'versus')).toBe(false);
+    expect(hasScore(versus(), 'versus')).toBe(true);
+    expect(hasScore(versus(), 'columns')).toBe(true);
+    expect(hasScore(versus(), 'opponent')).toBe(true);
+  });
 });
 
 describe('layoutFor und densityFor', () => {

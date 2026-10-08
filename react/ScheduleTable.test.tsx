@@ -197,3 +197,161 @@ describe('ScheduleTable · columns (Turnier)', () => {
     await expectNoA11yViolations(container);
   });
 });
+
+describe('ScheduleTable · Ergebnis und Zustände', () => {
+  const base: ScheduleGame = {
+    id: 'b', state: 'finished', time: '18:00',
+    heim: { name: 'A', score: 80 }, gast: { name: 'B', score: 70 },
+  };
+  const resText = (c: HTMLElement) => c.querySelector('td.dss-sch-res')?.textContent;
+
+  it('zeigt für Perspektiv-Spiele außerhalb von opponent "–" statt "undefined"', () => {
+    const game: ScheduleGame = {
+      id: 'o', state: 'finished', time: '10:00', at: 'heim', ownScore: 50, opponent: { name: 'Gegner', score: 40 },
+    };
+    for (const layout of ['columns', 'versus'] as const) {
+      const { container, unmount } = render(<ScheduleTable games={[game]} layout={layout} />);
+      expect(container.querySelector('td.dss-sch-res')).toHaveTextContent('–');
+      expect(container.textContent).not.toContain('undefined');
+      unmount();
+    }
+  });
+
+  it('markiert verschobene Spiele und zeigt "–"', () => {
+    const { container } = render(<ScheduleTable games={[{ ...base, state: 'postponed' }]} />);
+    expect(container.querySelector('tr.dss-sch-row')).toHaveClass('is-postponed');
+    expect(container.querySelector('td.dss-sch-res')).toHaveTextContent('–');
+  });
+
+  it('zeigt bei abgesagt und angesetzt trotz Stand nur "–"', () => {
+    for (const state of ['cancelled', 'scheduled'] as const) {
+      const { container, unmount } = render(<ScheduleTable games={[{ ...base, state }]} />);
+      expect(container.querySelector('td.dss-sch-res')).toHaveTextContent('–');
+      expect(container.querySelector('.dss-sch-score')).toBeNull();
+      unmount();
+    }
+  });
+
+  it('zeigt 0 : 0 als Ergebnis', () => {
+    const { container } = render(
+      <ScheduleTable games={[{ ...base, heim: { name: 'A', score: 0 }, gast: { name: 'B', score: 0 } }]} />,
+    );
+    expect(container.querySelector('.dss-sch-score')).toHaveTextContent('0 : 0');
+    expect(resText(container)).not.toBe('–');
+  });
+
+  it('zeigt Unentschieden (outcome U) ohne Farbe', () => {
+    const game: ScheduleGame = {
+      id: 'u', state: 'finished', time: '10:00', at: 'heim', ownScore: 80, opponent: { name: 'G', score: 80 }, outcome: 'U',
+    };
+    const { container } = render(<ScheduleTable games={[game]} />);
+    const chip = container.querySelector('td.dss-sch-res .dss-chip') as HTMLElement;
+    expect(chip).toHaveTextContent('U');
+    expect(chip).not.toHaveClass('dss-chip--ok');
+    expect(chip).not.toHaveClass('dss-chip--err');
+    expect(screen.getByText('Eigene 80, Gegner 80, Unentschieden')).toBeInTheDocument();
+  });
+
+  it('fällt bei unbekanntem state nicht um', () => {
+    const { container } = render(<ScheduleTable games={[{ ...base, state: 'kaputt' as never }]} />);
+    expect(container.querySelectorAll('tr.dss-sch-row')).toHaveLength(1);
+  });
+});
+
+describe('ScheduleTable · Rahmen und Optionen', () => {
+  const one: ScheduleGame[] = [
+    { id: 'x', state: 'scheduled', time: '18:00', heim: { name: 'A' }, gast: { name: 'B' } },
+  ];
+
+  it('setzt density explizit', () => {
+    const { container, rerender } = render(<ScheduleTable games={one} density="touch" />);
+    expect(container.querySelector('table')).toHaveClass('dss-tbl--touch');
+    rerender(<ScheduleTable games={one} density="default" />);
+    expect(container.querySelector('table')).toHaveClass('dss-tbl--default');
+  });
+
+  it('rendert Kopf mit Titelebene und Meta, sonst keinen Kopf', () => {
+    const { container, rerender } = render(<ScheduleTable games={one} title="Titel" titleAs="h2" meta="Saison 26" />);
+    expect(container.querySelector('.dss-frame-head')).not.toBeNull();
+    expect(screen.getByRole('heading', { level: 2, name: 'Titel' })).toHaveClass('dss-frame-title');
+    expect(container.querySelector('.dss-frame-meta')).toHaveTextContent('Saison 26');
+    rerender(<ScheduleTable games={one} />);
+    expect(container.querySelector('.dss-frame-head')).toBeNull();
+  });
+
+  it('nutzt h3 als Standard-Titelebene', () => {
+    render(<ScheduleTable games={one} title="Titel" />);
+    expect(screen.getByRole('heading', { level: 3, name: 'Titel' })).toBeInTheDocument();
+  });
+
+  it('rendert die Caption für Screenreader', () => {
+    const { container } = render(<ScheduleTable games={one} caption="Spielplan Herren" />);
+    const cap = container.querySelector('caption') as HTMLElement;
+    expect(cap).toHaveClass('dss-sr-only');
+    expect(cap).toHaveTextContent('Spielplan Herren');
+  });
+
+  it('rendert ohne Spiele Kopf und leeren Körper', () => {
+    const { container } = render(<ScheduleTable games={[]} />);
+    expect(container.querySelector('thead')).not.toBeNull();
+    const body = container.querySelector('tbody') as HTMLElement;
+    expect(body).not.toBeNull();
+    expect(body.children).toHaveLength(0);
+  });
+
+  it('zeigt Liga ohne href als Text und mit href über renderLink', () => {
+    const plain: ScheduleGame[] = [{ ...one[0], league: { name: 'Kreisliga' } }];
+    const { container, rerender } = render(<ScheduleTable games={plain} />);
+    expect(container.querySelector('.dss-sch-sub')).toHaveTextContent('Kreisliga');
+    expect(container.querySelector('.dss-sch-sub a')).toBeNull();
+    const linked: ScheduleGame[] = [{ ...one[0], league: { name: 'Kreisliga', href: '/l/1' } }];
+    rerender(
+      <ScheduleTable
+        games={linked}
+        renderLink={({ href, className, children }) => (
+          <a data-router className={className} href={href}>
+            {children}
+          </a>
+        )}
+      />,
+    );
+    expect(container.querySelector('.dss-sch-sub a[data-router]')).toHaveAttribute('href', '/l/1');
+  });
+
+  it('lässt Datum und Zeit weg, wenn sie fehlen', () => {
+    const { container } = render(<ScheduleTable games={[{ ...one[0], time: undefined }]} />);
+    expect(container.querySelector('.dss-sch-date')).toBeNull();
+    expect(container.querySelector('.dss-sch-time')).toBeNull();
+  });
+
+  it('zeigt "?" für fehlende Teams in der Gegenüberstellung', () => {
+    const { container } = render(<ScheduleTable games={[{ id: 'n', state: 'scheduled', time: '10:00' }]} layout="versus" />);
+    const teams = container.querySelectorAll('.dss-sch-team');
+    expect([...teams].map((t) => t.textContent)).toEqual(['?', '?']);
+  });
+});
+
+describe('ScheduleTable · Freilos', () => {
+  const bye: ScheduleGame = { id: 'by', state: 'bye', time: '09:00', heim: { name: 'BG Zirndorf' } };
+  const persp: ScheduleGame = {
+    id: 'pp', state: 'scheduled', time: '10:00', at: 'heim', opponent: { name: 'G' },
+  };
+  const versus: ScheduleGame = { id: 'vv', state: 'scheduled', time: '10:00', heim: { name: 'A' }, gast: { name: 'B' } };
+
+  it('füllt 3 Spalten in der Gegenüberstellung und 4 in der Perspektive', () => {
+    const a = render(<ScheduleTable games={[versus, bye]} />);
+    expect(a.container.querySelector('tr.is-bye td')).toHaveAttribute('colspan', '3');
+    a.unmount();
+    const b = render(<ScheduleTable games={[persp, bye]} />);
+    expect(b.container.querySelector('tr.is-bye td')).toHaveAttribute('colspan', '4');
+  });
+
+  it('zeigt ohne heim den Hinweis oder "Spielfrei"', () => {
+    const noTeam: ScheduleGame = { id: 'nt', state: 'bye', time: '09:00' };
+    const a = render(<ScheduleTable games={[versus, { ...noTeam, note: 'Pause Halle' }]} />);
+    expect(a.container.querySelector('tr.is-bye td')).toHaveTextContent('Pause Halle');
+    a.unmount();
+    const b = render(<ScheduleTable games={[versus, noTeam]} />);
+    expect(b.container.querySelector('tr.is-bye td')).toHaveTextContent('Spielfrei');
+  });
+});

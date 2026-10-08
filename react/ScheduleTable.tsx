@@ -18,15 +18,23 @@ export type { ScheduleLinkProps } from './ScheduleParts';
 
 export interface ScheduleTableProps {
   games: ScheduleGame[];
-  /** Art der Spiel-Zelle; Standard: `opponent`, sobald ein Spiel `opponent` hat, sonst `versus`. */
+  /**
+   * Art der Spiel-Zelle; Standard: `opponent`, sobald ein Spiel `opponent` hat, sonst `versus`.
+   * `columns` und `versus` brauchen `heim`/`gast`; Spiele, die nur `opponent` haben, zeigen dort "?" für die
+   * fehlenden Teams und kein Ergebnis.
+   */
   layout?: ScheduleLayout;
   /** Zeilenhöhe; Standard: `touch` bei `opponent` oder Liga-Unterzeile, sonst `default`. */
   density?: ScheduleDensity;
+  /** Titel im Rahmenkopf. */
   title?: ReactNode;
+  /** Überschriftenebene des Titels; Standard: `h3`. */
   titleAs?: 'h2' | 'h3' | 'h4';
+  /** Angaben rechts im Rahmenkopf, z. B. Saison oder Stand. */
   meta?: ReactNode;
   /** Unsichtbare Tabellenbeschriftung für Screenreader. */
   caption?: string;
+  /** Zusätzliche Klasse am äußeren Rahmen. */
   className?: string;
   /** Router-Links für Teamnamen und Liga. */
   renderLink?: ScheduleRenderLink;
@@ -157,7 +165,7 @@ export function ScheduleTable({
           </td>
         );
       case 'res': {
-        const scored = (game.state === 'finished' || game.state === 'live') && hasScore(game);
+        const scored = (game.state === 'finished' || game.state === 'live') && hasScore(game, mode);
         if (!scored) {
           return (
             <td key={key} role="cell" className="dss-sch-res">
@@ -223,6 +231,7 @@ export function ScheduleTable({
     <div className={cn('dss-frame', className)}>
       {hasHead ? (
         <div className="dss-frame-head">
+          {/* Platzhalter, damit die Meta-Angaben rechts stehen */}
           {title ? <Heading className="dss-frame-title">{title}</Heading> : <span />}
           <div className="dss-frame-meta">{meta ? <span>{meta}</span> : null}</div>
         </div>

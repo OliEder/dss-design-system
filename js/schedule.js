@@ -31,9 +31,14 @@ export function winnerSide(game) {
   return null;
 }
 
-/** Gibt es einen vollständigen Stand (beide Seiten)? */
-export function hasScore(game) {
-  if (game.opponent) return isNum(game.ownScore) && isNum(game.opponent.score);
+/**
+ * Gibt es einen vollständigen Stand (beide Seiten)?
+ * Mit `layout` zählt die Perspektive (ownScore, opponent.score) nur bei `opponent`; sonst heim/gast.
+ * Ohne `layout` gilt die Perspektive, sobald `game.opponent` existiert.
+ */
+export function hasScore(game, layout) {
+  const perspective = layout === undefined ? Boolean(game.opponent) : layout === 'opponent' && Boolean(game.opponent);
+  if (perspective) return isNum(game.ownScore) && isNum(game.opponent.score);
   return isNum(game.heim?.score) && isNum(game.gast?.score);
 }
 

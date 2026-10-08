@@ -80,7 +80,8 @@ export type ScheduleGridRow =
 export function outcome(own: number | undefined, opp: number | undefined): ScheduleOutcome | undefined;
 export function resolveOutcome(game: ScheduleGame): ScheduleOutcome | undefined;
 export function winnerSide(game: ScheduleGame): 'heim' | 'gast' | null;
-export function hasScore(game: ScheduleGame): boolean;
+/** Mit `layout`: Perspektive nur bei `opponent`, sonst heim/gast. Ohne: Perspektive, wenn `game.opponent` existiert. */
+export function hasScore(game: ScheduleGame, layout?: ScheduleLayout): boolean;
 export function layoutFor(games: ScheduleGame[]): ScheduleLayout;
 export function densityFor(games: ScheduleGame[], layout: ScheduleLayout): ScheduleDensity;
 export function columnsFor(layout: ScheduleLayout, games: ScheduleGame[], hasNotice?: boolean): ScheduleColumn[];
