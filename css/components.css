@@ -976,6 +976,9 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
 /* Positionierter Vorfahre für die absolut positionierten dss-sr-only-Texte, sonst verbreitern sie bei
    breiten Tabellen (Layout columns) die ganze Seite. */
 .dss-tbl--schedule td { position: relative; }
+/* Vertikaler Innenabstand, damit zweite und dritte Zeilen (Liga, Hinweis) nicht am Zeilenrand kleben.
+   Die Handy-Karten setzen padding: 0 mit höherer Spezifität zurück. */
+.dss-tbl--schedule td { padding-block: 8px; }
 .dss-tbl--schedule tr.dss-sch-group th {
   position: static; text-align: left; height: 32px; padding: 0 14px;
   background: var(--dss-surface-2); color: var(--dss-fg-soft); border-bottom: 1px solid var(--dss-line);
@@ -995,7 +998,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
 .dss-sch-sep { color: var(--dss-mute); }
 .dss-sch-team.is-loser, .dss-sch-team.is-loser .dss-link { color: var(--dss-mute); }
 .dss-sch-ph { color: var(--dss-mute); font-style: italic; }
-.dss-sch-note { display: block; margin-top: 2px; font-size: var(--fs-body-sm); font-weight: 600; color: var(--warn-text); }
+.dss-sch-note { display: block; margin-top: 2px; font-size: var(--fs-body-sm); font-weight: 600; color: var(--dss-chip-warn-fg); }
 .dss-sch-opp { display: flex; align-items: center; gap: 12px; }
 .dss-sch-logo {
   flex: none; display: grid; place-items: center; width: 36px; height: 36px; overflow: hidden;
@@ -1072,17 +1075,20 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
 .dss-sgrid th, .dss-sgrid td { white-space: normal; vertical-align: top; }
 .dss-sgrid thead th { text-align: left; z-index: 2; } /* über der sticky Zeitzelle im Rumpf (z-index 1) */
 .dss-sgrid td.dss-sg-cell { height: auto; padding: 8px 10px; min-width: 180px; }
-.dss-sgrid th.dss-sg-time {
-  position: static; width: 96px; min-width: 96px; text-transform: none; letter-spacing: 0;
-  font-family: var(--font-mono); font-size: var(--fs-body-md); font-weight: 600; color: var(--dss-fg);
-  font-variant-numeric: tabular-nums; white-space: nowrap;
-}
+.dss-sgrid th.dss-sg-time { position: static; width: 96px; min-width: 96px; }
 .dss-sgrid tbody th.dss-sg-time {
   position: sticky; left: 0; top: auto; z-index: 1; height: auto; padding: 12px 14px;
+  text-transform: none; letter-spacing: 0; font-family: var(--font-mono); font-size: var(--fs-body-md); font-weight: 600;
+  color: var(--dss-fg); font-variant-numeric: tabular-nums; white-space: nowrap;
   background: var(--dss-surface); border-bottom: 1px solid var(--dss-line);
 }
 .dss-sgrid tbody tr:last-child th.dss-sg-time { border-bottom: 0; }
 .dss-sgrid tbody tr:hover th.dss-sg-time { background: var(--dss-hover-bg); }
+/* Kompakt: Karten und Zellen deutlich enger (sonst bestimmt min-height der Karte die Zeilenhöhe) */
+@media (min-width: 641px) {
+  .dss-sgrid.dss-tbl--compact td.dss-sg-cell { padding: 4px 8px; }
+  .dss-sgrid.dss-tbl--compact tbody th.dss-sg-time { padding: 6px 12px; font-size: var(--fs-body-sm); }
+}
 /* position: relative, damit die absolut positionierten dss-sr-only-Texte im Scroll-Container bleiben
    (sonst entsteht durch sie seitliches Scrollen der ganzen Seite). */
 .dss-sg-game {
@@ -1098,6 +1104,8 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
 .dss-sg-result { display: flex; align-items: baseline; gap: 6px; }
 .dss-sg-result .dss-sch-score { font-size: var(--fs-body); }
 .dss-sg-game + .dss-sg-game { margin-top: 6px; }
+.dss-tbl--compact .dss-sg-game { min-height: 0; padding: 4px 8px; gap: 2px; }
+.dss-tbl--compact .dss-sg-game + .dss-sg-game { margin-top: 4px; }
 .dss-sg-meta { font-family: var(--font-mono); font-size: var(--fs-caption); color: var(--dss-mute); }
 .dss-sg-empty { display: block; padding: 8px 0; color: var(--dss-mute); font-style: italic; }
 .dss-sgrid tr.dss-sg-break td, .dss-sgrid tr.dss-sg-bye td { height: auto; padding: 10px 14px; color: var(--dss-mute); font-style: italic; background: var(--dss-surface-2); }

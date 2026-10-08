@@ -113,6 +113,17 @@ describe('Spielplan · ScheduleTable (Variante A)', () => {
     expect(rule).toContain('position: static');
   });
 
+  it('Tabellenzellen haben vertikalen Innenabstand, die Handy-Karten setzen ihn zurück', () => {
+    expect(css).toMatch(/\.dss-tbl--schedule td \{ padding-block: 8px; \}/);
+    expect(css).toMatch(/\.dss-tbl\.dss-tbl--schedule tbody tr\.dss-sch-row td \{[^}]*padding: 0;/);
+  });
+
+  it('Hinweise nutzen die Dark-Mode-fähige Chip-Warnfarbe statt der festen warn-text', () => {
+    const rule = css.match(/\.dss-sch-note \{([^}]*)\}/)?.[1] ?? '';
+    expect(rule).toContain('color: var(--dss-chip-warn-fg)');
+    expect(rule).not.toContain('--warn-text');
+  });
+
   it('Handy: Zeilen werden zu Karten', () => {
     expect(css).toMatch(/@media \(max-width: 640px\) \{[^@]*\.dss-tbl--schedule tr\.dss-sch-row[^{]*\{[^}]*display: grid/);
   });
@@ -200,6 +211,24 @@ describe('Spielplan · ScheduleGrid (Variante B)', () => {
   it('Zeitspalte im Kopf wird nicht sticky und die im Rumpf ist deckend', () => {
     expect(gridRule(grid, '.dss-sgrid th.dss-sg-time')).toContain('position: static');
     expect(gridRule(grid, '.dss-sgrid tbody th.dss-sg-time')).toContain('background: var(--dss-surface)');
+  });
+
+  it('die Kopfzelle "Zeit" behält den Kopfzellen-Stil, die Schriftregeln gelten nur im Rumpf', () => {
+    const head = gridRule(grid, '.dss-sgrid th.dss-sg-time');
+    expect(head).toContain('width: 96px');
+    expect(head).toContain('min-width: 96px');
+    for (const prop of ['font-family', 'font-size', 'font-weight', 'letter-spacing', 'text-transform']) {
+      expect(head).not.toContain(prop);
+    }
+    const body = gridRule(grid, '.dss-sgrid tbody th.dss-sg-time');
+    expect(body).toContain('text-transform: none');
+    expect(body).toContain('font-family: var(--font-mono)');
+  });
+
+  it('kompaktes Raster: engere Karten und Zellen', () => {
+    expect(gridRule(grid, '.dss-tbl--compact .dss-sg-game')).toMatch(/min-height: 0;[^}]*padding: 4px 8px/);
+    expect(grid).toMatch(/@media \(min-width: 641px\) \{[^@]*\.dss-sgrid\.dss-tbl--compact td\.dss-sg-cell \{[^}]*padding: 4px 8px/);
+    expect(grid).toMatch(/\.dss-sgrid\.dss-tbl--compact tbody th\.dss-sg-time \{[^}]*padding: 6px 12px/);
   });
 
   it('sr-only-Texte bleiben im Scroll-Container (kein Seiten-Overflow)', () => {
