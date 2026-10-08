@@ -9,6 +9,7 @@ import {
   initials,
   layoutFor,
   resolveOutcome,
+  stateLabel,
   winnerSide,
 } from '../js/schedule.js';
 import { LiveTag, ResultText, TeamName, type ScheduleRenderLink } from './ScheduleParts';
@@ -99,6 +100,7 @@ export function ScheduleTable({
           <td key={key} role="cell" className="dss-sch-when">
             {game.date ? <span className="dss-sch-date">{game.date}</span> : null}
             {renderTime || game.time ? <span className="dss-sch-time">{renderTime ? renderTime(game) : game.time}</span> : null}
+            {stateLabel(game.state) ? <span className="dss-sr-only">{` ${stateLabel(game.state)}`}</span> : null}
             {game.state === 'live' ? <LiveTag /> : null}
             {mode !== 'columns' && game.venue ? <span className="dss-sch-venue">{game.venue}</span> : null}
           </td>

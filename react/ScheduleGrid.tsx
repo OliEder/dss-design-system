@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { cn } from './cn';
-import { ariaForResult, buildGrid, hasScore, winnerSide } from '../js/schedule.js';
+import { ariaForResult, buildGrid, hasScore, stateLabel, winnerSide } from '../js/schedule.js';
 import { LiveTag, ResultText, TeamName, type ScheduleRenderLink } from './ScheduleParts';
 import type { ScheduleBreak, ScheduleDensity, ScheduleGame, ScheduleGridColumn } from './schedule-types';
 
@@ -60,6 +60,7 @@ export function ScheduleGrid({
         )}
       >
         <div className="dss-sg-teams">
+          {stateLabel(game.state) ? <span className="dss-sr-only">{`${stateLabel(game.state)} `}</span> : null}
           <TeamName team={game.heim} loser={winner === 'gast'} renderLink={renderLink} />
           <span className="dss-sch-sep" aria-hidden="true">
             {' – '}

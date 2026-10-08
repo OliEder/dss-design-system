@@ -79,6 +79,7 @@ export type ScheduleGridRow =
 
 export function outcome(own: number | undefined, opp: number | undefined): ScheduleOutcome | undefined;
 export function resolveOutcome(game: ScheduleGame): ScheduleOutcome | undefined;
+export function stateLabel(state: ScheduleState | undefined): 'abgesagt' | 'verschoben' | undefined;
 export function winnerSide(game: ScheduleGame): 'heim' | 'gast' | null;
 /** Mit `layout`: Perspektive nur bei `opponent`, sonst heim/gast. Ohne: Perspektive, wenn `game.opponent` existiert. */
 export function hasScore(game: ScheduleGame, layout?: ScheduleLayout): boolean;

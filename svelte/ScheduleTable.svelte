@@ -20,6 +20,7 @@
     initials,
     layoutFor,
     resolveOutcome,
+    stateLabel,
     winnerSide,
   } from '../js/schedule.js';
   import type { ScheduleDensity, ScheduleGame, ScheduleLayout, ScheduleTeam } from '../js/schedule.js';
@@ -98,6 +99,7 @@
           <td role="cell" class="dss-sch-when">
             {#if game.date}<span class="dss-sch-date">{game.date}</span>{/if}
             {#if time || game.time}<span class="dss-sch-time">{#if time}{@render time(game)}{:else}{game.time}{/if}</span>{/if}
+            {#if stateLabel(game.state)}<span class="dss-sr-only">{` ${stateLabel(game.state)}`}</span>{/if}
             {#if game.state === 'live'}
               <span class="dss-match-live dss-sch-live"><span class="dss-match-pulse" aria-hidden="true"></span> Live</span>
             {/if}

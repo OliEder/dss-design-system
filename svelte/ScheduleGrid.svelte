@@ -8,7 +8,7 @@
    * die React-Fassung. Slot `notice`: zusätzlicher Inhalt in der Spielzelle.
    */
   import type { Snippet } from 'svelte';
-  import { ariaForResult, buildGrid, hasScore, winnerSide } from '../js/schedule.js';
+  import { ariaForResult, buildGrid, hasScore, stateLabel, winnerSide } from '../js/schedule.js';
   import type { ScheduleBreak, ScheduleDensity, ScheduleGame, ScheduleGridColumn, ScheduleTeam } from '../js/schedule.js';
 
   let {
@@ -65,6 +65,7 @@
     class:is-postponed={game.state === 'postponed'}
   >
     <div class="dss-sg-teams">
+      {#if stateLabel(game.state)}<span class="dss-sr-only">{`${stateLabel(game.state)} `}</span>{/if}
       {@render team(game.heim, winner === 'gast')}
       <span class="dss-sch-sep" aria-hidden="true"> – </span>
       <span class="dss-sr-only"> gegen </span>

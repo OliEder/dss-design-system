@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
+  stateLabel,
   ariaForResult,
   buildGrid,
   columnsFor,
@@ -211,5 +212,18 @@ describe('buildGrid', () => {
     const slots = rows.filter((r) => r.kind === 'slot');
     expect(slots.map((r) => r.time)).toEqual(['09:00', '10:00']);
     expect(slots[1].cells.map((c) => c.length)).toEqual([0, 0]);
+  });
+});
+
+describe('stateLabel', () => {
+  it('benennt abgesagte und verschobene Spiele', () => {
+    expect(stateLabel('cancelled')).toBe('abgesagt');
+    expect(stateLabel('postponed')).toBe('verschoben');
+  });
+
+  it('liefert für alle anderen Zustände nichts', () => {
+    for (const state of ['scheduled', 'live', 'finished', 'bye', undefined]) {
+      expect(stateLabel(state as never)).toBeUndefined();
+    }
   });
 });

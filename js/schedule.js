@@ -9,6 +9,13 @@ const OUTCOME_TEXT = { S: 'Sieg', N: 'Niederlage', U: 'Unentschieden' };
 
 const isNum = (value) => typeof value === 'number' && Number.isFinite(value);
 
+/** Text für Zustände, die sonst nur Farbe und Durchstreichung zeigen (WCAG 1.4.1); sonst undefined. */
+export function stateLabel(state) {
+  if (state === 'cancelled') return 'abgesagt';
+  if (state === 'postponed') return 'verschoben';
+  return undefined;
+}
+
 /** Sieg, Niederlage oder Unentschieden aus Sicht der eigenen Mannschaft. */
 export function outcome(own, opp) {
   if (!isNum(own) || !isNum(opp)) return undefined;

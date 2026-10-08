@@ -121,3 +121,32 @@ describe('ScheduleGrid', () => {
     await expectNoA11yViolations(container);
   });
 });
+
+describe('ScheduleGrid · Zustand als Text', () => {
+  const base: ScheduleGame = {
+    id: 's', state: 'scheduled', time: '09:00', column: 'f1', heim: { name: 'A' }, gast: { name: 'B' },
+  };
+  const srTexts = (container: HTMLElement) =>
+    [...container.querySelectorAll('.dss-sr-only')].map((el) => el.textContent?.trim());
+
+  it('macht abgesagte Spiele hörbar, als erstes Kind von dss-sg-teams', () => {
+    const { container } = render(<ScheduleGrid games={[{ ...base, state: 'cancelled' }]} columns={COLUMNS} />);
+    const span = container.querySelector('.dss-sg-teams > .dss-sr-only') as HTMLElement;
+    expect(span).toHaveTextContent('abgesagt');
+    expect(span).toBe(container.querySelector('.dss-sg-teams')?.firstElementChild);
+  });
+
+  it('macht verschobene Spiele hörbar', () => {
+    const { container } = render(<ScheduleGrid games={[{ ...base, state: 'postponed' }]} columns={COLUMNS} />);
+    expect(container.querySelector('.dss-sg-teams > .dss-sr-only')).toHaveTextContent('verschoben');
+  });
+
+  it('sagt bei angesetzten und beendeten Spielen nichts', () => {
+    const finished: ScheduleGame = {
+      ...base, id: 'f', state: 'finished', heim: { name: 'A', score: 1 }, gast: { name: 'B', score: 2 },
+    };
+    const { container } = render(<ScheduleGrid games={[base, finished]} columns={COLUMNS} />);
+    expect(srTexts(container)).not.toContain('abgesagt');
+    expect(srTexts(container)).not.toContain('verschoben');
+  });
+});

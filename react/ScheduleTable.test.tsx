@@ -355,3 +355,28 @@ describe('ScheduleTable · Freilos', () => {
     expect(b.container.querySelector('tr.is-bye td')).toHaveTextContent('Spielfrei');
   });
 });
+
+describe('ScheduleTable · Zustand als Text', () => {
+  const base: ScheduleGame = { id: 's', state: 'scheduled', time: '10:00', heim: { name: 'A' }, gast: { name: 'B' } };
+  const srTexts = (container: HTMLElement) =>
+    [...container.querySelectorAll('.dss-sr-only')].map((el) => el.textContent?.trim());
+
+  it('macht abgesagte Spiele für Screenreader hörbar', () => {
+    const { container } = render(<ScheduleTable games={[{ ...base, state: 'cancelled' }]} />);
+    const span = container.querySelector('td.dss-sch-when .dss-sr-only') as HTMLElement;
+    expect(span).toHaveTextContent('abgesagt');
+    expect(span.previousElementSibling).toHaveClass('dss-sch-time');
+  });
+
+  it('macht verschobene Spiele hörbar', () => {
+    const { container } = render(<ScheduleTable games={[{ ...base, state: 'postponed' }]} />);
+    expect(container.querySelector('td.dss-sch-when .dss-sr-only')).toHaveTextContent('verschoben');
+  });
+
+  it('sagt bei angesetzten und beendeten Spielen nichts', () => {
+    const finished: ScheduleGame = { ...base, id: 'f', state: 'finished', heim: { name: 'A', score: 1 }, gast: { name: 'B', score: 2 } };
+    const { container } = render(<ScheduleTable games={[base, finished]} />);
+    expect(srTexts(container)).not.toContain('abgesagt');
+    expect(srTexts(container)).not.toContain('verschoben');
+  });
+});
