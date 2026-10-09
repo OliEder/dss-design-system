@@ -44,26 +44,12 @@
 {:else if example === 'zustaende'}
   <!-- data-fixed-states: die Werkzeugleiste "Zustand" lässt diese Matrix in Ruhe -->
   <div class="matrix" data-fixed-states>
-    <div class="surface light">
+    <div class="surface">
       <div class="states">
         <div class="head"></div>
         {#each stateNames as s}<div class="head">{s}</div>{/each}
         {#each variants as v}
           <div class="rowlabel">{v}</div>
-          <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md">{v}</button></div>
-          <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md pseudo-hover">{v}</button></div>
-          <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md pseudo-focus-visible">{v}</button></div>
-          <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md pseudo-hover pseudo-active">{v}</button></div>
-          <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md" disabled>{v}</button></div>
-        {/each}
-      </div>
-    </div>
-    <div class="surface dark">
-      <div class="states">
-        <div class="head dark-head">Auf dunklem Grund</div>
-        {#each stateNames as s}<div class="head dark-head">{s}</div>{/each}
-        {#each ['secondary'] as v}
-          <div class="rowlabel dark-head">{v}</div>
           <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md">{v}</button></div>
           <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md pseudo-hover">{v}</button></div>
           <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md pseudo-focus-visible">{v}</button></div>
@@ -107,10 +93,7 @@
   .cap, .head, .rowlabel { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); }
   .cap { margin-bottom: 8px; }
   .matrix { display: flex; flex-direction: column; gap: 16px; }
-  .surface { border: 1px solid var(--page-line); border-radius: var(--radius-lg); padding: 22px 24px; overflow-x: auto; }
-  .light { background: var(--n-0); }
-  .dark { background: var(--base-1000); }
-  .dark-head { color: var(--n-400); }
+  .surface { background: var(--page-bg); border: 1px solid var(--page-line); border-radius: var(--radius-lg); padding: 22px 24px; overflow-x: auto; }
   .states { display: grid; grid-template-columns: 110px repeat(5, max-content); gap: 14px 24px; align-items: center; }
   .reason { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
   .hint { margin: 0; font-size: var(--fs-body-sm); color: var(--page-mute); }
