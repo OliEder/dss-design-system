@@ -45,3 +45,10 @@ describe('Modal-Fuß', () => {
     expect(block).toContain('flex-wrap: wrap');
   });
 });
+
+describe('Modal: Klick auf den Hintergrund', () => {
+  it('Svelte: schließt nur mit dismissOnBackdrop (Standard false)', () => {
+    expect(modal).toMatch(/dismissOnBackdrop\s*=\s*false/);
+    expect(modal).toMatch(/class="dss-backdrop"[^>]*onclick=\{closable && dismissOnBackdrop \? handleClose : null\}/);
+  });
+});

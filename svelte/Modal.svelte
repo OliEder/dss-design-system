@@ -3,7 +3,7 @@
    * DSS Modal · Svelte 5 example
    * --------------------------------------------------------------
    * Modal with backdrop, optional icon header, body, and footer slot.
-   * Closes on Escape and on backdrop click. Nutzt ausschließlich die Klassen aus
+   * Closes on Escape; a click on the backdrop closes only with dismissOnBackdrop. Nutzt ausschließlich die Klassen aus
    * css/components.css (kein eigener Scoped-Style).
    */
   import type { Snippet } from 'svelte';
@@ -18,6 +18,7 @@
     severity = 'default',
     size = 'md',
     closable = true,
+    dismissOnBackdrop = false,
     children,
     footer,
     onclose,
@@ -28,6 +29,8 @@
     severity?: Severity;
     size?: Size;
     closable?: boolean;
+    /** Schließen per Klick auf den Hintergrund (Standard: false). */
+    dismissOnBackdrop?: boolean;
     children: Snippet;
     footer?: Snippet;
     onclose?: () => void;
@@ -49,7 +52,7 @@
 <svelte:window onkeydown={handleKey} />
 
 {#if open}
-  <div class="dss-backdrop" onclick={closable ? handleClose : null} role="presentation"></div>
+  <div class="dss-backdrop" onclick={closable && dismissOnBackdrop ? handleClose : null} role="presentation"></div>
   <div class="dss-modal-wrap" role="dialog" aria-modal="true" aria-labelledby={titleId}>
     <div class="dss-modal dss-modal--{size}">
       <div class="dss-m-head">

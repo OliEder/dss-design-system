@@ -121,7 +121,7 @@
 {:else if example === 'do-ausweg'}
   <ModalDemo size="sm" title="Verbindung verloren" subtitle="Offline" body="Aktionen werden lokal gespeichert und später hochgeladen." cancelLabel="Später" confirmLabel="Verstanden" />
 {:else if example === 'dont-ausweg'}
-  <!-- closable=false ohne Footer: kein Schließen-Button, kein Escape, kein Hintergrund-Klick, keine Aktion -->
+  <!-- closable=false ohne Footer: kein Schließen-Button, kein Escape, keine Aktion -->
   <ModalDemo size="sm" closable={false} footer={false} title="Verbindung verloren" subtitle="Offline" body="Aktionen werden lokal gespeichert und später hochgeladen." />
 {:else if example === 'do-schwere'}
   <ModalDemo size="sm" severity="info" title="Bonus-Status" subtitle="FIBA-Regel 35" body="Ab dem 5. Mannschafts-Foul eines Viertels gibt es 2 Freiwürfe." cancelLabel="Schließen" confirmLabel="Verstanden" />

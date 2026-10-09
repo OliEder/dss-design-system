@@ -63,17 +63,26 @@ describe('Modal', () => {
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
 
-  it('schließt standardmäßig bei Klick auf den Hintergrund', async () => {
+  it('schließt standardmäßig nicht bei Klick auf den Hintergrund', async () => {
     const onOpenChange = vi.fn();
     render(<Modal open onOpenChange={onOpenChange} title="T">x</Modal>);
+    await tick();
+    clickBackdrop();
+    expect(onOpenChange).not.toHaveBeenCalled();
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+
+  it('schließt mit dismissOnBackdrop bei Klick auf den Hintergrund', async () => {
+    const onOpenChange = vi.fn();
+    render(<Modal open onOpenChange={onOpenChange} title="T" dismissOnBackdrop>x</Modal>);
     await tick();
     clickBackdrop();
     expect(onOpenChange).toHaveBeenCalledWith(false);
   });
 
-  it('schließt bei dismissOnBackdrop={false} nicht per Hintergrund-Klick, aber per Button', async () => {
+  it('schließt per Button, auch ohne Hintergrund-Klick', async () => {
     const onOpenChange = vi.fn();
-    render(<Modal open onOpenChange={onOpenChange} title="T" dismissOnBackdrop={false}>x</Modal>);
+    render(<Modal open onOpenChange={onOpenChange} title="T">x</Modal>);
     await tick();
     clickBackdrop();
     expect(onOpenChange).not.toHaveBeenCalled();

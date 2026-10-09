@@ -57,7 +57,7 @@ Vier Breiten stehen zur Wahl. Auf schmalen Bildschirmen schrumpft das Modal auf 
 
 ## Bedienung: Öffnen, Schließen, Fokus
 
-Das Modal ist ein Dialog (`role="dialog"`, `aria-modal="true"`), der Titel benennt ihn. Probiere es aus: Der Button öffnet das Modal (hier in einer Svelte-Fassung), danach schließen es **Escape**, ein Klick auf den Hintergrund und der Schließen-Button.
+Das Modal ist ein Dialog (`role="dialog"`, `aria-modal="true"`), der Titel benennt ihn. Probiere es aus: Der Button öffnet das Modal (hier in einer Svelte-Fassung), danach schließen es **Escape** und der Schließen-Button. Ein Klick auf den Hintergrund schließt es nicht, damit am Kampfgericht ein Fehltipp keine Eingabe verwirft; mit `dismissOnBackdrop` lässt sich das einschalten.
 
 <Canvas of={ModalStories.Interaktiv} />
 
@@ -68,7 +68,7 @@ Wie viel Fokusverhalten die Komponente selbst übernimmt, hängt von der Fassung
   head={['Verhalten', 'Svelte', 'React (Radix Dialog)']}
   rows={[
     ['Escape schließt', 'Ja, nur mit closable', 'Ja, nur mit closable'],
-    ['Klick auf den Hintergrund schließt', 'Ja, nur mit closable', 'Ja, mit closable und dismissOnBackdrop (beides Standard)'],
+    ['Klick auf den Hintergrund schließt', 'Nein (Standard); mit closable und dismissOnBackdrop ja', 'Nein (Standard); mit closable und dismissOnBackdrop ja'],
     ['Fokus beim Öffnen', 'Nein: der Fokus bleibt auf dem Auslöser hinter dem Modal', 'Ja, in das Modal'],
     ['Tab bleibt im Modal', 'Nein: Tab erreicht auch die Seite dahinter', 'Ja (Fokusfalle)'],
     ['Fokus beim Schließen', 'Nein: du setzt ihn selbst zurück', 'Nein: die Komponente hat keinen Radix-Trigger, der Fokus fällt auf body, du setzt ihn selbst zurück'],
@@ -102,9 +102,9 @@ Zusätzlich gibt es je nach Fassung:
   head={['Prop', 'Fassung', 'Beschreibung']}
   rows={[
     ['open', 'Svelte, React', <>Sichtbarkeit. Svelte: <code>bind:open</code> (<code>$bindable</code>), React: Prop <code>open</code> mit <code>onOpenChange(open)</code>.</>],
-    ['onclose', 'Svelte', 'Wird nach dem Schließen aufgerufen (Escape, Hintergrund, Button).'],
-    ['onOpenChange', 'React', 'Wird bei jedem Wunsch zu schließen aufgerufen, auch für Escape und Hintergrund.'],
-    ['dismissOnBackdrop', 'React', <>Mit <code>false</code> schließt ein Klick neben das Modal nicht (Standard <code>true</code>).</>],
+    ['onclose', 'Svelte', 'Wird nach dem Schließen aufgerufen (Escape, Button, mit dismissOnBackdrop auch Hintergrund).'],
+    ['onOpenChange', 'React', 'Wird bei jedem Wunsch zu schließen aufgerufen: Escape, Button, mit dismissOnBackdrop auch Hintergrund.'],
+    ['dismissOnBackdrop', 'Svelte, React', <>Mit <code>true</code> schließt ein Klick neben das Modal es (Standard <code>false</code>). Wirkt nur mit <code>closable</code>.</>],
     ['closeLabel', 'React', <>Zugänglicher Name des Schließen-Buttons (Standard „Schließen“).</>],
     ['className', 'React', 'Zusätzliche Klasse an der Modal-Fläche.'],
   ]}
@@ -131,7 +131,7 @@ Zusätzlich gibt es je nach Fassung:
     {
       title: 'Immer einen Ausweg lassen',
       doText: 'Mit Schließen-Button (und Escape) oder wenigstens einer Aktion im Fuß kommt man aus dem Modal heraus.',
-      dontText: 'closable={false} ohne Fuß: kein Button, kein Escape, kein Klick daneben, das Modal lässt sich nicht beenden.',
+      dontText: 'closable={false} ohne Fuß: kein Button, kein Escape, das Modal lässt sich nicht beenden.',
       good: <Story of={ModalStories.DoAusweg} inline />,
       bad: <Story of={ModalStories.DontAusweg} inline />,
     },

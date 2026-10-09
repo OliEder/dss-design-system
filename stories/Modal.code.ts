@@ -4,7 +4,7 @@ export const vanilla = `<!-- Einmal im App-Root einbinden -->
 <!-- optional: <link rel="stylesheet" href="fonts/fonts.css" /> -->
 
 <!-- Größen: dss-modal--sm | (ohne = md) | dss-modal--wide | dss-modal--xwide.
-     Escape, Hintergrund-Klick, Fokus ins Modal, Fokusfalle und Fokus-Rückgabe musst du selbst ergänzen. -->
+     Escape, Fokus ins Modal, Fokusfalle und Fokus-Rückgabe musst du selbst ergänzen. -->
 <div class="dss-backdrop"></div>
 <div class="dss-modal-wrap">
   <div class="dss-modal dss-modal--sm" role="dialog" aria-modal="true" aria-labelledby="verwerfen-titel">
@@ -39,7 +39,7 @@ export const svelte = `<script>
 
 <Button onclick={() => (open = true)}>Spielbericht freigeben</Button>
 
-<!-- Escape und Hintergrund-Klick schließen, solange closable gilt (Standard) -->
+<!-- Escape schließt, solange closable gilt (Standard). Ein Klick auf den Hintergrund schließt nicht; mit dismissOnBackdrop schon. -->
 <Modal bind:open title="Spielbericht freigeben?" subtitle="BBL · 17. Spieltag" onclose={() => console.log('geschlossen')}>
   Nach Freigabe ist eine Korrektur nur noch über den Verband möglich.
   {#snippet footer()}
@@ -83,7 +83,7 @@ export function Freigabe() {
         Nach Freigabe ist eine Korrektur nur noch über den Verband möglich.
       </Modal>
 
-      {/* Zerstörerische Aktion; dismissOnBackdrop={false} verhindert das Schließen per Klick daneben */}
+      {/* Zerstörerische Aktion: Der Dialog endet nur über einen Button (ein Klick daneben schließt nicht, Standard) */}
       <Modal
         open={verwerfen}
         onOpenChange={setVerwerfen}
@@ -91,7 +91,6 @@ export function Freigabe() {
         subtitle="Nicht wiederherstellbar"
         severity="danger"
         size="sm"
-        dismissOnBackdrop={false}
         footer={<Button variant="danger" onClick={() => setVerwerfen(false)}>Verwerfen</Button>}
       >
         Alle erfassten Aktionen werden gelöscht.

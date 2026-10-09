@@ -13,7 +13,7 @@ export default {
     size:           { control: 'inline-radio', options: ['sm', 'md', 'wide', 'xwide'], description: 'Breite: 380, 480, 560 oder 720 px, nie breiter als der Bildschirm', table: { type: { summary: "'sm' | 'md' | 'wide' | 'xwide'" }, defaultValue: { summary: "'md'" } } },
     title:          { control: 'text', description: 'Titel im Kopf; benennt die Entscheidung, z. B. „Spielbericht senden?“', table: { type: { summary: 'string' }, defaultValue: { summary: "''" } } },
     subtitle:       { control: 'text', description: 'Kleine Zeile unter dem Titel (Kontext), in Großbuchstaben gesetzt', table: { type: { summary: 'string' }, defaultValue: { summary: "''" } } },
-    closable:       { control: 'boolean', description: 'Zeigt den Schließen-Button und erlaubt Escape und Klick auf den Hintergrund', table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } } },
+    closable:       { control: 'boolean', description: 'Zeigt den Schließen-Button und erlaubt Escape', table: { type: { summary: 'boolean' }, defaultValue: { summary: 'true' } } },
     body:           { control: 'text', description: 'Inhalt (Svelte: Kinder, React: `children`); scrollt bei viel Text, Kopf und Fuß bleiben stehen', table: { type: { summary: 'string' } } },
     cancelLabel:    { control: 'text', description: 'Beschriftung der sekundären Schaltfläche im Fuß (nur Demo)', table: { type: { summary: 'string' } } },
     confirmLabel:   { control: 'text', description: 'Beschriftung der Hauptaktion im Fuß, ein Verb (nur Demo)', table: { type: { summary: 'string' } } },
