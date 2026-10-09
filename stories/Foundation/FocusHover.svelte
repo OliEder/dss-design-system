@@ -61,7 +61,7 @@
 
     <div class="cell">
       <div class="cap">Tabs · underline · aktiv, Hover, Fokus</div>
-      <div class="dss-tabs dss-tabs--underline dss-tabs--md" role="tablist">
+      <div class="dss-tabs dss-tabs--underline dss-tabs--md tabrow" role="tablist">
         <button class="dss-tab is-active" role="tab" aria-selected="true">{tabs[0]}</button>
         <button class="dss-tab pseudo-hover" role="tab" aria-selected="false">{tabs[1]}</button>
         <button class="dss-tab pseudo-focus-visible" role="tab" aria-selected="false">{tabs[2]}</button>
@@ -101,6 +101,8 @@
   .cap { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); margin-bottom: 16px; }
   .cell.dark .cap { color: var(--n-400); }
   .cell { overflow: hidden; }
+  .tabrow { flex-wrap: wrap; }
   .states { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
   .states.col { flex-direction: column; align-items: stretch; gap: 14px; }
+  .states.col :global(.dss-field), .states.col :global(.dss-input-group), .states.col :global(.dss-input), .states.col :global(.dss-select) { min-width: 0; max-width: 100%; box-sizing: border-box; }
 </style>

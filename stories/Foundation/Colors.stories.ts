@@ -3,7 +3,7 @@ import Colors from './Colors.svelte';
 export default {
   title: 'Foundation/Colors',
   component: Colors,
-  parameters: { layout: 'padded' },
+  parameters: { layout: 'fullscreen' },
   argTypes: {
     mode: { control: 'inline-radio', options: ['hues', 'roles', 'semantic'], description: 'Anzeige: Farbfamilien, Rollen-Tokens oder semantische Farben' },
   },

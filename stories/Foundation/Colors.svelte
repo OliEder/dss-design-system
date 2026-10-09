@@ -70,7 +70,7 @@
 </div>
 
 <style>
-  .wrap { font-family: var(--font-body); color: var(--page-fg); }
+  .wrap { font-family: var(--font-body); color: var(--page-fg); padding: 12px; }
   .ramp { margin-bottom: 22px; }
   .ramp-h {
     font-family: var(--font-mono); font-size: 11px; font-weight: 600;

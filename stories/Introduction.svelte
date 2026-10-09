@@ -26,7 +26,7 @@
 </div>
 
 <style>
-  .grid { font-family: var(--font-body); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 14px; }
+  .grid { font-family: var(--font-body); display: grid; grid-template-columns: repeat(auto-fit, minmax(min(170px, 100%), 1fr)); gap: 14px; }
   .tile {
     background: var(--surface-0);
     border: 1px solid var(--page-line);
