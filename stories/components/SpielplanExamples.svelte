@@ -132,7 +132,7 @@
 {:else if example === 'dichte-default'}
   <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="default" caption="Dichte Standard · 48 px" />
 {:else if example === 'dichte-compact'}
-  <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="compact" caption="Dichte Kompakt · 40 px" />
+  <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="compact" caption="Dichte Kompakt · 45 px" />
 {/if}
 
 {#each states as s (s.key)}
