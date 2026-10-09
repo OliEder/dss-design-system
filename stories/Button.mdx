@@ -1,0 +1,100 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as ButtonStories from './Button.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './Button.code';
+
+<Meta of={ButtonStories} />
+
+# Button
+
+Die meistgenutzte Aktion im Spielbericht. Fünf Varianten decken alle Hierarchien ab, vom Live-Scoring-Trigger bis zum unauffälligen Ghost-Link. Drei Größen plus ein Hallen-Touch-Modus für den Kampfgerichts-Tisch.
+
+## Anatomie: eine Form, fünf Stimmen
+
+Buttons haben eine einheitliche Höhe je Größe, gleiche Padding-Geometrie und dieselbe Radius-Skala. Die **Variante** wechselt nur Farbe und Border, die Anatomie bleibt konstant. So bleibt das Vokabular klein, aber jedes Wort hat einen klaren Ton.
+
+<Canvas of={ButtonStories.Anatomie} />
+
+## Hierarchie: wann was
+
+**Primary** für die Hauptaktion einer Ansicht, **genau eine pro Screen**. **Amber** markiert Spielbericht-Aktionen mit Konsequenz (Live-Scoring starten, Aktionen abschließen). **Secondary** ist der Begleiter: Abbrechen, Zurück. **Danger** ist destruktiv und unwiderruflich. **Ghost** verschwindet fast und eignet sich für Toolbar-Aktionen.
+
+<Canvas of={ButtonStories.Hierarchie} />
+
+## Größen: drei Stufen plus Hallen-Touch
+
+`sm · md · lg` decken alle Screen-Kontexte ab. Der zusätzliche `touch`-Modus erzwingt **64 px Höhe** für den Kampfgerichts-Tisch, getestet bis Wollhandschuh-Bedienung.
+
+<Canvas of={ButtonStories.Groessen} />
+
+<table>
+  <thead>
+    <tr><th>Größe</th><th>Höhe</th><th>Padding-X</th><th>Einsatz</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>sm</code></td><td>44 px</td><td>14 px</td><td>Inline, Toolbar, kompakte Listen (gleiche Höhe wie <code>md</code>, schmaleres Padding und kleinere Schrift)</td></tr>
+    <tr><td><code>md</code></td><td>44 px</td><td>18 px</td><td>Standard, alle Screens</td></tr>
+    <tr><td><code>lg</code></td><td>56 px</td><td>22 px</td><td>Hero-CTA, Modal-Primary</td></tr>
+    <tr><td><code>touch</code></td><td>64 px</td><td>24 px</td><td>Kampfgericht, Halle, Tisch</td></tr>
+  </tbody>
+</table>
+
+## Zustände: Hover, Fokus, Aktiv, Gesperrt
+
+Jede Variante hat einen Hover-Zustand (eine Stufe dunkler bzw. heller), einen gestrichelten Gold/Amber-Fokus-Ring (im Dunkelmodus dezenter) mit mindestens **3:1** Kontrast auf hellem und dunklem Grund und einen Aktiv-Zustand (leicht verkleinert). „Gesperrt“ reduziert auf 50 % Opacity und schaltet den Pointer ab.
+
+<Canvas of={ButtonStories.Zustaende} />
+
+Die Matrix ist fest gesetzt. Jede andere Story lässt sich über die Werkzeugleiste **Zustand** auf Hover, Fokus oder Aktiv schalten; „Gesperrt“ steht als Steuerelement bereit. Live: mit der Maus darüberfahren, mit Tab hineinspringen. Marke und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Verwendung: Import und Props
+
+Importiere den Button über den Path-Export und reiche bei Bedarf `variant`, `size` oder `touch` hinein. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+<Controls of={ButtonStories.Primary} />
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Eine Haupt-Aktion pro Ansicht',
+      doText: 'Ein amber Button als Hauptaktion, daneben Secondary.',
+      dontText: 'Zwei amber Buttons konkurrieren, niemand weiß, was gemeint ist.',
+      good: <Story of={ButtonStories.DoHaupt} inline />,
+      bad: <Story of={ButtonStories.DontHaupt} inline />,
+    },
+    {
+      title: 'Label als Verb',
+      doText: 'Das Verb sagt, was passiert: „Spielbericht freigeben“.',
+      dontText: '„OK“ sagt nichts über die Folge.',
+      good: <Story of={ButtonStories.DoVerb} inline />,
+      bad: <Story of={ButtonStories.DontVerb} inline />,
+    },
+    {
+      title: 'Zerstörerisches in Rot',
+      doText: '„Spiel verwerfen“ als Danger-Variante.',
+      dontText: 'Dieselbe Aktion im schwarzen Primary-Stil sieht harmlos aus.',
+      good: <Story of={ButtonStories.DoDanger} inline />,
+      bad: <Story of={ButtonStories.DontDanger} inline />,
+    },
+    {
+      title: 'Touch-Größe am Kampfgericht-Tisch',
+      doText: 'Die Größe touch (64 px) für die Bedienung in der Halle.',
+      dontText: 'Die Standardgröße md (44 px) ist am Tisch mit Handschuhen zu knapp.',
+      good: <Story of={ButtonStories.DoTouch} inline />,
+      bad: <Story of={ButtonStories.DontTouch} inline />,
+    },
+    {
+      title: 'Gesperrt mit Grund',
+      doText: 'Der Hinweis darunter erklärt, was fehlt.',
+      dontText: 'Ein grauer Button ohne Erklärung lässt Nutzer raten.',
+      good: <Story of={ButtonStories.DoGrund} inline />,
+      bad: <Story of={ButtonStories.DontGrund} inline />,
+    },
+  ]}
+/>

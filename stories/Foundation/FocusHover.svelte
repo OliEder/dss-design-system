@@ -7,7 +7,8 @@
 <div class="wrap">
   <h2>Fokus und Hover</h2>
   <p class="muted">
-    Der Fokus-Ring (<code>--ring-color</code>, <code>--ring-w</code>) hat mindestens 3:1 Kontrast auf Weiß, Grau und Anthrazit.
+    Der Fokus-Ring (<code>--ring-color</code>, <code>--ring-w</code>, <code>--ring-style</code>) ist Gold/Amber und gestrichelt, im Dunkelmodus dezenter
+    (<code>--ring-color-on-dark</code>); mindestens 3:1 Kontrast auf Weiß, Grau und Anthrazit.
     Links: Ruhe · Hover · Fokus. Marke (BBV/DBB) und Light/Dark in der Toolbar umschalten.
   </p>
 

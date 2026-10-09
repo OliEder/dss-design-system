@@ -8,6 +8,7 @@ import '../tokens/tokens.css';
 import '../css/components.css';
 import './storybook.css';
 import { installPseudoStates } from './pseudo-states';
+import { setForcedState, type ForcedState } from './state-switch';
 
 
 const preview: Preview = {
@@ -49,11 +50,26 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    state: {
+      description: 'Zustand erzwingen (Hover, Fokus, Aktiv)',
+      toolbar: {
+        title: 'Zustand',
+        icon: 'lightning',
+        items: [
+          { value: 'normal', title: 'Normal' },
+          { value: 'hover', title: 'Hover' },
+          { value: 'focus', title: 'Fokus' },
+          { value: 'active', title: 'Aktiv' },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
   initialGlobals: {
     brand: 'bbv',
     type: 'standard',
     framework: 'svelte',
+    state: 'normal',
 
     backgrounds: {
       value: 'page'
@@ -74,7 +90,7 @@ const preview: Preview = {
       storySort: {
         order: [
           'Introduction',
-          'Docs', ['Button', 'Forms', 'Cards & Lists', 'Navigation', 'Tables & Live-Scoring', 'Spielplan'],
+          'Docs', ['Forms', 'Cards & Lists', 'Navigation', 'Tables & Live-Scoring', 'Spielplan'],
           'Foundation', ['Colors', 'Typography', 'Spacing', 'Shadows'],
           'Components', ['Button', 'TextInput', 'Select', 'Checkbox', 'Modal', 'Banner', 'Card', 'Card Library', 'Tabs', 'Navigation', 'AppNav', 'Table', 'ScheduleTable', 'ScheduleGrid', 'Spielplan Spielwiese', 'EmptyState', 'CourtLines', 'PlayByPlay', 'Icon'],
         ],
@@ -95,6 +111,7 @@ const preview: Preview = {
       else document.documentElement.removeAttribute('data-type');
       // Code-Beispiele der Spec-Seiten folgen dem Umschalter "Fassung" (reines CSS, siehe stories/docs/_CodeSwitch.svelte)
       document.documentElement.dataset.framework = context.globals.framework ?? 'svelte';
+      setForcedState((context.globals.state ?? 'normal') as ForcedState);
       return story();
     },
     withThemeByDataAttribute({

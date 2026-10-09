@@ -5,14 +5,20 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 
 ## [Unveröffentlicht] — Marken-Rollen und DBB-Marke
 
+### Geändert
+- **Fokus-Ring jetzt Gold/Amber und gestrichelt, im Dunkelmodus dezenter** (BBV Amber 600 → 700, DBB Gold 600 → 700). Neue Tokens
+  `--ring-style` (`dashed`) und `--ring-color-on-dark` (für immer dunkle Flächen wie AppNav dunkel, Frame dunkel, TopBar dunkel).
+  Die Eingabegruppe malt den Ring jetzt als Outline statt als `box-shadow`, damit er gestrichelt sein kann.
+
 ### Neu
+- **Storybook: Werkzeugleiste „Zustand“** (Normal, Hover, Fokus, Aktiv) erzwingt den Zustand auf allen bedienbaren Elementen der gezeigten Stories. **Button-Doku als MDX-Seite** (`Components/Button`) mit Zustands-Matrix, Code-Beispielen je Fassung und Dos und Don'ts; die alte Seite `Docs/Button` entfällt. Weitere Komponenten folgen.
 - **Spielplan:** `ScheduleTable` (Tabelle mit den Layouts `versus`, `opponent`, `columns`) und `ScheduleGrid` (Zeitraster) in
   Vanilla-CSS, Svelte und React, mit gemeinsamem Datenmodell `ScheduleGame` und Hilfsfunktionen in `js/schedule.js`.
   Zustände geplant, live, beendet, abgesagt, verlegt, Freilos; Handy-Karten; Ergebnis für Screenreader als unsichtbarer
   Text, abgesagte und verschobene Spiele mit zusätzlichem Text „abgesagt“/„verschoben“. Erweiterung für bearbeitbare Zeit
   und Konflikt-Hinweis: Svelte über die Snippets `time` und `notice`, React über `renderTime`, `renderNotice`, `renderLink`.
   Stories unter `Components/ScheduleTable` und `Components/ScheduleGrid`.
-- **Storybook: Zustände fest sichtbar.** `Docs/Button` zeigt unter *States* eine Matrix Variante × Zustand (Default, Hover, Focus,
+- **Storybook: Zustände fest sichtbar.** Die Button-Seite (`Components/Button`, Abschnitt *Zustände*) zeigt eine Matrix Variante × Zustand (Default, Hover, Focus,
   Active, Disabled) und den Fokus-Ring auf hellem und dunklem Grund. Neue Story `Foundation/Focus & Hover` mit Button, Link,
   Eingabefeld, Select, Tabs, Karte und Checkbox. Dafür legt `.storybook/pseudo-states.ts` Kopien aller `:hover`-,
   `:focus-visible`-, `:focus-within`- und `:active`-Regeln als Klassen `.pseudo-*` an (nur Storybook, nicht im Paket).
