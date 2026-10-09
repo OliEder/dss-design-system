@@ -64,3 +64,6 @@
 
 /* Überschrift als Beschriftung (Handy-Vorschau): Storybook färbt h4 fest dunkel, hier folgt sie dem Theme */
 .sbdocs h4.dss-doc-cap { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); margin: 0 0 8px; }
+
+/* Inline-Code in Tabellenzellen: Storybook färbt code fest dunkelgrau, im Dunkelmodus unlesbar */
+.sbdocs .dss-doc-table code { color: inherit; }
