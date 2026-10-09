@@ -1,0 +1,69 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as SelectStories from './Select.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './Select.code';
+
+<Meta of={SelectStories} />
+
+# Select
+
+Natives `<select>` im DSS-Look: Tastatur und Screenreader-Verhalten kommen vom Browser. Label, Hilfetext und die vier Status-Tonalitäten verhalten sich wie beim [TextInput](?path=/docs/components-textinput--docs); dort stehen auch die Regeln für Beschriftung, Hilfe- und Fehlertext.
+
+## Varianten und Tonalitäten
+
+Standardhöhe 44 px, kompakt 36 px. Der Rahmen färbt sich je Status (Fehler rot, OK grün, Warnung amber), der Hilfetext darunter trägt dieselbe Tonalität. Nur beim Fehler setzt der Select `aria-invalid`.
+
+<Canvas of={SelectStories.Varianten} />
+
+## Zustände: Fokus, Fehler, OK, Warnung, Gesperrt
+
+Der Fokus-Ring sitzt direkt am Select (`:focus-visible`). Hover und Aktiv haben beim Select keinen eigenen Stil, darum zeigt die Matrix Standard, Fokus und Gesperrt je Tonalität und Dichte. Gesperrt dämpft die Schrift (`--dss-mute`) und zeigt den Cursor `not-allowed`.
+
+<Canvas of={SelectStories.Zustaende} />
+
+Die Matrix ist fest gesetzt. Jede andere Story lässt sich über die Werkzeugleiste **Zustand** auf Fokus schalten. Live: mit Tab hineinspringen. Marke und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Verwendung: Import und Props
+
+Die Optionen kommen als Daten (`options`), in React alternativ als `<option>`-Kinder. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+<Controls of={SelectStories.Standard} />
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Label immer sichtbar',
+      doText: 'Das Label steht über dem Feld und ist per for mit dem Select verknüpft: ein Klick darauf öffnet die Auswahl.',
+      dontText: 'Ohne sichtbares Label bleibt offen, was gewählt wird, sobald ein Wert gesetzt ist.',
+      good: <Story of={SelectStories.DoLabel} inline />,
+      bad: <Story of={SelectStories.DontLabel} inline />,
+    },
+    {
+      title: 'Fehlertext zeigt den Weg',
+      doText: 'Der Text sagt, was zu tun ist: „Bitte einen Modus wählen.“',
+      dontText: 'Nur ein roter Rand sagt nicht, was falsch ist, und ist ohne Farbwahrnehmung nicht erkennbar.',
+      good: <Story of={SelectStories.DoFehler} inline />,
+      bad: <Story of={SelectStories.DontFehler} inline />,
+    },
+    {
+      title: 'Standardhöhe im Formular',
+      doText: 'Die Standardhöhe von 44 px trifft auch mit dem Daumen.',
+      dontText: 'Kompakt (36 px) bleibt dichten Ansichten wie Filterleisten vorbehalten.',
+      good: <Story of={SelectStories.DoDichte} inline />,
+      bad: <Story of={SelectStories.DontDichte} inline />,
+    },
+    {
+      title: 'Gesperrt mit Grund',
+      doText: 'Der Hilfetext erklärt, warum die Auswahl nicht änderbar ist.',
+      dontText: 'Ein gedämpftes Feld ohne Erklärung lässt Nutzer rätseln.',
+      good: <Story of={SelectStories.DoGesperrt} inline />,
+      bad: <Story of={SelectStories.DontGesperrt} inline />,
+    },
+  ]}
+/>

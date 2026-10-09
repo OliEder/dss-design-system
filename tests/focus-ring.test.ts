@@ -29,4 +29,11 @@ describe('Fokus-Ring: gestrichelt, Gold/Amber', () => {
   it('dunkle Flächen nutzen --ring-color-on-dark', () => {
     expect(css).toMatch(/\.dss-appnav--dark[^{]*:focus-visible[^{]*\{\s*outline-color:\s*var\(--ring-color-on-dark\)/);
   });
+
+  it('Eingabegruppe, Select und Checkbox haben einen gestrichelten Fokus-Ring', () => {
+    const ring = 'outline:\\s*var\\(--ring-w\\)\\s+var\\(--ring-style\\)\\s+var\\(--ring-color\\)';
+    expect(css).toMatch(new RegExp('\\.dss-input-group:focus-within\\s*\\{[^}]*' + ring));
+    expect(css).toMatch(new RegExp('\\.dss-select:focus-visible[^{]*\\{[^}]*' + ring));
+    expect(css).toMatch(new RegExp('\\.dss-check-input:focus-visible\\s*\\{[^}]*' + ring));
+  });
 });

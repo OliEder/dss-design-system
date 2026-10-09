@@ -9,9 +9,11 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 - **Fokus-Ring jetzt Gold/Amber und gestrichelt, im Dunkelmodus dezenter** (BBV Amber 600 → 700, DBB Gold 600 → 700). Neue Tokens
   `--ring-style` (`dashed`) und `--ring-color-on-dark` (für immer dunkle Flächen wie AppNav dunkel, Frame dunkel, TopBar dunkel).
   Die Eingabegruppe malt den Ring jetzt als Outline statt als `box-shadow`, damit er gestrichelt sein kann.
+- **Hilfetext und Pflicht-Sternchen der Eingabefelder im Dunkelmodus lesbar** (vorher 2,3:1 auf Schwarz): `.dss-field-help--err/--ok/--warn` und `.req` nutzen jetzt die Chip-Tokens `--dss-chip-*-fg`, die einen Dunkelmodus haben; im Hellmodus unverändert.
 - **Spielplan-Tabelle:** Dichte compact misst jetzt wirklich 40 px (vorher 45 px).
 
 ### Neu
+- **Eingabe-Doku als MDX-Seiten** `Components/TextInput`, `Components/Select` und `Components/Checkbox` mit Zustands-Matrix, Code-Beispielen je Fassung und Dos und Don'ts; die Seite `Docs/Forms` und die automatischen Doku-Seiten dieser drei Komponenten entfallen.
 - **Spielplan-Doku als MDX-Seite** `Components/Spielplan` (mit Auto-Docs-Texten von ScheduleTable/ScheduleGrid); die Seite `Docs/Spielplan` entfällt.
 - **Storybook: Werkzeugleiste „Zustand“** (Normal, Hover, Fokus, Aktiv) erzwingt den Zustand auf allen bedienbaren Elementen der gezeigten Stories. **Button-Doku als MDX-Seite** (`Components/Button`) mit Zustands-Matrix, Code-Beispielen je Fassung und Dos und Don'ts; die alte Seite `Docs/Button` entfällt. Weitere Komponenten folgen.
 - **Spielplan:** `ScheduleTable` (Tabelle mit den Layouts `versus`, `opponent`, `columns`) und `ScheduleGrid` (Zeitraster) in
