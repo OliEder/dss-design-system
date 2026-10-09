@@ -47,3 +47,6 @@
 .sbdocs .docblock-argstable.docblock-argstable label span { background: transparent; }
 .sbdocs .docblock-argstable.docblock-argstable td:nth-child(3) span,
 .sbdocs .docblock-argstable.docblock-argstable td:not(:first-child) div div > span { font-family: var(--font-mono); background: var(--surface-0); }
+
+/* Doku-Seiten: Vorschauen mit position:fixed (Modal) bleiben im Rahmen. transform macht den Rahmen zum Bezugsrahmen. */
+.docs-story:has(.dss-modal-wrap) { transform: translateZ(0); overflow: hidden; }

@@ -4,7 +4,10 @@ export default {
   title: 'Components/Modal',
   component: ModalDemo,
   tags: ['autodocs'],
-  parameters: { layout: 'fullscreen' },
+  // Das Modal ist position: fixed. Auf der Doku-Seite bekommt die Inline-Vorschau eine feste Höhe, und
+  // .storybook/storybook.css macht sie zum Bezugsrahmen für das Modal (sonst wird es in 64 px abgeschnitten).
+  // Inline statt iframe, damit Marke und Hell/Dunkel aus der Werkzeugleiste ankommen.
+  parameters: { layout: 'fullscreen', docs: { story: { height: '520px' } } },
   argTypes: {
     severity: { control: 'inline-radio', options: ['default', 'danger', 'warn', 'ok', 'info'] },
     size:     { control: 'inline-radio', options: ['sm', 'md', 'wide', 'xwide'] },
