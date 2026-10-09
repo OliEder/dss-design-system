@@ -90,7 +90,7 @@ const preview: Preview = {
       storySort: {
         order: [
           'Introduction',
-          'Docs', ['Cards & Lists', 'Navigation', 'Tables & Live-Scoring'],
+          'Docs', ['Cards & Lists', 'Tables & Live-Scoring'],
           'Foundation', ['Colors', 'Typography', 'Spacing', 'Shadows'],
           'Components', ['Button', 'TextInput', 'Select', 'Checkbox', 'Modal', 'Banner', 'Card', 'Card Library', 'Tabs', 'Navigation', 'AppNav', 'Table', 'Spielplan', 'ScheduleTable', 'ScheduleGrid', 'Spielplan Spielwiese', 'EmptyState', 'CourtLines', 'PlayByPlay', 'Icon'],
         ],
