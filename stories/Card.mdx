@@ -1,0 +1,114 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as CardStories from './Card.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import { DocTable } from './docs/blocks/DocTable';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './Card.code';
+
+<Meta of={CardStories} />
+
+# Card
+
+Karten sind die Container, in denen alles wohnt. Der generische Container `Card` ist die Basis; darauf bauen die fertigen Muster der [Card Library](?path=/docs/components-card-library--docs) (Spielkarte, Spielerkarte, Ladezustand) und der [EmptyState](?path=/docs/components-emptystate--docs) auf. Diese Seite beschreibt nur den Container: Varianten, Kopf und Fuß, Abstand und die klickbare Karte.
+
+## Vier Varianten, eine Grammatik
+
+Jede Karte besteht aus einem **Inhalt** (Body) und optional einem **Kopf** (Header) und **Fuß** (Footer). **Default** ist Rand (1 px) + Radius `lg` + Fläche 0 (`--dss-surface`). **Elevated** tauscht den Rand gegen `--shadow-md` (mit einem 1-px-Ring in der Linienfarbe). **Flat** sitzt auf Fläche 2 (`--dss-surface-2`) ohne Rand und Schatten. **Hoverable** wird interaktiv mit Zeiger und Lift.
+
+<Canvas of={CardStories.Varianten} />
+
+## Kopf und Fuß
+
+Der Kopf (`header`) steht oben in der Display-Schrift, der Fuß (`footer`) unten auf Fläche 2 mit Trennlinie, in Mono-Versalien. Der Inhalt füllt den Platz dazwischen. Bei Svelte sind beide Snippets, bei React Props.
+
+<Canvas of={CardStories.KopfFuss} />
+
+## Abstand
+
+`padding` bestimmt den Innenabstand des Inhalts. Kopf und Fuß haben einen festen eigenen Abstand und folgen `padding` nicht.
+
+<Canvas of={CardStories.Abstand} />
+
+<DocTable
+  label="Innenabstand des Inhalts"
+  head={['padding', 'oben und unten', 'seitlich']}
+  rows={[
+    ['sm', '12 px', '14 px'],
+    ['md (Standard)', '18 px', '20 px'],
+    ['lg', '24 px', '28 px'],
+  ]}
+/>
+
+## Klickbare Karten
+
+Mit `href` wird die Karte ein Link (`a`). Mit `onclick` (React: `onClick`) auf dem Standard-`div` wird sie zum Schalter: `role="button"`, `tabindex="0"`, und **Enter** oder **Leertaste** lösen aus. Mit `as` wählst du ein anderes Element (`article`, `section`, `a`, `button`), etwa für Listeneinträge. Nur `hoverable` zeigt Zeiger und Lift; nimm sie für Karten, die ein Ziel haben.
+
+<Canvas of={CardStories.Klickbar} />
+
+## Zustände: Hover, Fokus, Aktiv
+
+Bei `hoverable` wird der Rand kräftiger (`--dss-line-strong`), die Karte bekommt `--shadow-md` und hebt sich um 1 px. Den Lift löst auch `:focus-within` aus, also schon ein fokussiertes Element in der Karte. Der Fokus-Ring ist gestrichelt in Gold/Amber (3 px, 2 px Abstand, im Dunkelmodus dezenter) und erscheint an jeder Karte, die selbst fokussierbar ist (Link, Schalter, `button`). Die anderen Varianten reagieren auf Hover nicht. Einen eigenen Stil für Gedrückt (Aktiv) gibt es nicht, die Spalte zeigt denselben Hover. Gesperrt gibt es bei Karten nicht.
+
+<Canvas of={CardStories.Zustaende} />
+
+Die Matrix ist fest gesetzt. Jede andere Story lässt sich über die Werkzeugleiste **Zustand** auf Hover, Fokus oder Aktiv schalten. Marke und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Verwendung: Import und Props
+
+Importiere `Card` über den Path-Export (Svelte) bzw. aus dem React-Paket. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+Die Tabelle zeigt die Steuerelemente der Demo; `view` gehört nur zur Demo.
+
+<Controls of={CardStories.Default} />
+
+Dazu kommen Props, die sich nicht als Steuerelement zeigen lassen:
+
+<DocTable
+  label="Weitere Props"
+  head={['Prop', 'Typ', 'Beschreibung']}
+  rows={[
+    ['as', "'div' | 'article' | 'section' | 'a' | 'button'", "Element der Karte (Standard 'div'). Mit href immer 'a'."],
+    ['href', 'string', 'Macht die Karte zum Link.'],
+    ['onclick (React: onClick)', 'Funktion', 'Klick-Handler. Auf dem div kommen role="button" und tabindex 0 dazu, Enter und Leertaste lösen aus.'],
+    ['header, footer', 'Svelte: Snippet, React: ReactNode', 'Kopf und Fuß; ohne Angabe fehlen die Streifen.'],
+    ['class (React: className)', 'string', 'Zusätzliche Klasse an der Karte.'],
+  ]}
+/>
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Ganze Karte klickbar, dann ohne eigene Bedienelemente',
+      doText: 'Die Karte ist ein Link und hat sonst nichts Bedienbares: ein Ziel, ein Klick.',
+      dontText: 'Mit eigenen Buttons in der Karte gibt es zwei Ziele; hoverable zeigt den Zeiger über der ganzen Fläche, und schon der Fokus auf einen Button hebt die Karte (:focus-within).',
+      good: <Story of={CardStories.DoKlick} inline />,
+      bad: <Story of={CardStories.DontKlick} inline />,
+    },
+    {
+      title: 'Hoverable nur mit Ziel',
+      doText: 'Die klickbare Karte hat href oder onclick, Zeiger und Lift passen zur Wirkung.',
+      dontText: 'Ohne Ziel hebt sich die Karte beim Überfahren, bleibt aber wirkungslos (hier mit erzwungenem Hover).',
+      good: <Story of={CardStories.DoZiel} inline />,
+      bad: <Story of={CardStories.DontZiel} inline />,
+    },
+    {
+      title: 'Karten in Listen gleich hoch',
+      doText: 'In einem Grid strecken sich die Karten auf die Zeilenhöhe, und weil der Inhalt den Platz füllt, stehen die Füße auf einer Linie.',
+      dontText: 'Mit align-items: start (lokales CSS) behält jede Karte ihre eigene Höhe, die Füße springen.',
+      good: <Story of={CardStories.DoHoehe} inline />,
+      bad: <Story of={CardStories.DontHoehe} inline />,
+    },
+    {
+      title: 'Flat nicht auf Fläche 2',
+      doText: 'Flat hat weder Rand noch Schatten und braucht eine Seitenfläche (Fläche 0 oder Seite) als Grund.',
+      dontText: 'Auf einem Panel in Fläche 2 hat die Karte dieselbe Farbe und verschwindet.',
+      good: <Story of={CardStories.DoFlat} inline />,
+      bad: <Story of={CardStories.DontFlat} inline />,
+    },
+  ]}
+/>

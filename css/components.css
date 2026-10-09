@@ -153,6 +153,7 @@
 .dss-card--hoverable:hover, .dss-card--hoverable:focus-within {
   border-color: var(--dss-line-strong); box-shadow: var(--shadow-md); transform: translateY(-1px);
 }
+.dss-card:is(a, button, [role="button"]):focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
 .dss-card-head { padding: 14px 18px 0; font-family: var(--font-display); font-weight: 600; }
 .dss-card-body { flex: 1; min-width: 0; }
 .dss-card-foot {
@@ -557,6 +558,13 @@
 .dss-empty-body { margin: 0 0 16px; max-width: 360px; font-size: var(--fs-body-md); line-height: 1.55; color: var(--dss-fg-soft); text-wrap: pretty; }
 .dss-empty-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .dss-empty-extra { margin-top: 12px; font-size: var(--fs-body-sm); color: var(--dss-mute); }
+/* Der dezente Dunkel-Ring hat auf den getönten Flächen action/error nur 2,4 bis 2,7:1 (WCAG 1.4.11 verlangt 3:1): dort die Chip-Textfarbe */
+:root[data-theme="dark"] .dss-empty--action .dss-btn:focus-visible { outline-color: var(--dss-chip-amber-fg); }
+:root[data-theme="dark"] .dss-empty--error .dss-btn:focus-visible { outline-color: var(--dss-chip-err-fg); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .dss-empty--action .dss-btn:focus-visible { outline-color: var(--dss-chip-amber-fg); }
+  :root:not([data-theme="light"]) .dss-empty--error .dss-btn:focus-visible { outline-color: var(--dss-chip-err-fg); }
+}
 
 /* ── Stepper (horizontal · kompakt · vertikal) ──────────────── */
 .dss-step { font-family: var(--font-body); }
@@ -746,7 +754,7 @@ a.dss-crumbs-item:focus-visible, a.dss-crumbs-chip:focus-visible { outline: var(
 }
 .dss-skel-who { display: flex; flex-direction: column; min-width: 0; }
 .dss-skel-match {
-  display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; min-width: 320px;
+  box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; padding: 16px 18px; min-width: min(320px, 100%);
   background: var(--dss-surface); border: 1px solid var(--dss-line); border-radius: 14px;
 }
 .dss-skel-match-head { display: flex; justify-content: space-between; }
@@ -768,7 +776,8 @@ button.dss-match:focus-visible, a.dss-match:focus-visible { outline: var(--ring-
   font-family: var(--font-mono); font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: 0.08em;
   color: var(--dss-mute); font-weight: 600;
 }
-.dss-match-muted { opacity: 0.6; margin-left: 4px; }
+.dss-match-league { color: var(--dss-fg-soft); }
+.dss-match-muted { color: var(--dss-mute); margin-left: 4px; }
 .dss-match-when { color: var(--dss-fg-soft); }
 .dss-match-final { color: var(--dss-fg); }
 .dss-match-live { display: inline-flex; align-items: center; gap: 6px; color: var(--dss-chip-ok-fg); }
@@ -835,7 +844,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
   background: var(--signal-400); opacity: 0.16; filter: blur(20px);
 }
 .dss-pc-hero-left, .dss-pc-hero-right { position: relative; z-index: 1; }
-.dss-pc-hero-right { display: flex; flex-direction: column; gap: 18px; }
+.dss-pc-hero-right { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
 .dss-pc-hero .dss-pc-nm { font-weight: 700; font-size: var(--fs-hero); letter-spacing: -0.025em; line-height: 1.05; color: white; }
 .dss-pc-hero .dss-pc-role { gap: 10px; font-size: var(--fs-caption); color: rgba(255, 255, 255, 0.65); }
 .dss-pc-hero .dss-pc-cap { background: var(--signal-100); color: var(--signal-800); }
@@ -846,6 +855,13 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 .dss-pc-hero .dss-pc-v { color: white; }
 .dss-pc-hero .dss-pc-v--amber { color: var(--signal-400); }
 .dss-pc-hero .dss-pc-l { color: rgba(255, 255, 255, 0.55); }
+/* Schmale Bildschirme: Trikot über den Text, Kennzahlen schrumpfen statt die Seite zu verbreitern */
+@media (max-width: 560px) {
+  .dss-pc-hero { grid-template-columns: minmax(0, 1fr); gap: 20px; padding: 24px; }
+  .dss-pc-vitals { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; padding-inline: 16px; }
+  .dss-pc-hero .dss-pc-vitals { gap: 8px; padding-inline: 0; }
+  .dss-pc-v { font-size: var(--fs-body-lg); }
+}
 
 /* ── PlayByPlay ─────────────────────────────────────────────── */
 .dss-pbp-frame { border: 1px solid var(--dss-line); border-radius: 14px; background: var(--dss-surface); color: var(--dss-fg); overflow: hidden; }

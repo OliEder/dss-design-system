@@ -45,12 +45,22 @@
 
   // If href is set and as is 'div', auto-promote to anchor.
   const tag = href ? 'a' : as;
+
+  // Ein div mit onclick ist role="button": Enter und Leertaste lösen wie bei einem Button aus (wie in der React-Fassung).
+  function onkeydown(e: KeyboardEvent) {
+    if (tag !== 'div' || !onclick || e.target !== e.currentTarget) return;
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onclick(e as unknown as MouseEvent);
+    }
+  }
 </script>
 
 <svelte:element
   this={tag}
   href={href}
   {onclick}
+  {onkeydown}
   class={`dss-card dss-card--${variant} dss-card--pad-${padding} ${klass}`}
   role={tag === 'div' && onclick ? 'button' : undefined}
   tabindex={tag === 'div' && onclick ? 0 : undefined}
