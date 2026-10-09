@@ -9,6 +9,9 @@ export type ForcedState = 'normal' | 'hover' | 'focus' | 'active';
 export const INTERACTIVE = 'button, a[href], input, select, textarea, summary, [tabindex]:not([tabindex="-1"])';
 const ROOTS = '#storybook-root, .docs-story';
 const OWN = 'data-forced-by-toolbar';
+// Fokus-Ringe wie beim Eingabefeld liegen auf dem Elternteil (:focus-within), daher bekommen die Vorfahren
+// eines erzwungenen Fokus-Elements .pseudo-focus-within (wie im echten Browser).
+const WITHIN = 'data-forced-within';
 
 const CLASSES: Record<ForcedState, string[]> = {
   normal: [],
@@ -18,6 +21,10 @@ const CLASSES: Record<ForcedState, string[]> = {
 };
 
 export function applyState(root: ParentNode, state: ForcedState): void {
+  for (const el of Array.from(root.querySelectorAll<HTMLElement>(`[${WITHIN}]`))) {
+    el.classList.remove('pseudo-focus-within');
+    el.removeAttribute(WITHIN);
+  }
   for (const el of Array.from(root.querySelectorAll<HTMLElement>(INTERACTIVE))) {
     const added = (el.getAttribute(OWN) ?? '').split(' ').filter(Boolean);
     if (added.length) el.classList.remove(...added);
@@ -29,6 +36,13 @@ export function applyState(root: ParentNode, state: ForcedState): void {
     if (!wanted.length) continue;
     el.classList.add(...wanted);
     el.setAttribute(OWN, wanted.join(' '));
+    if (state === 'focus') {
+      for (let p = el.parentElement; p && p !== root; p = p.parentElement) {
+        if (p.classList.contains('pseudo-focus-within')) continue;
+        p.classList.add('pseudo-focus-within');
+        p.setAttribute(WITHIN, '');
+      }
+    }
   }
 }
 

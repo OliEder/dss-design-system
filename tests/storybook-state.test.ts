@@ -48,6 +48,20 @@ describe('applyState', () => {
   });
 });
 
+describe('Fokus: Vorfahren', () => {
+  it('Fokus setzt .pseudo-focus-within auf Vorfahren (Ring liegt auf .dss-input-group), Wechsel räumt auf', () => {
+    const root = mount('<div id="g" class="dss-input-group"><input id="i"></div>');
+    applyState(root, 'focus');
+    expect(root.querySelector('#g')!.classList.contains('pseudo-focus-within')).toBe(true);
+    applyState(root, 'hover');
+    expect(root.querySelector('#g')!.className).toBe('dss-input-group');
+    applyState(root, 'focus');
+    applyState(root, 'normal');
+    expect(root.querySelector('#g')!.className).toBe('dss-input-group');
+    expect(root.querySelector('#g')!.hasAttribute('data-forced-within')).toBe(false);
+  });
+});
+
 describe('setForcedState', () => {
   beforeEach(() => mount('<button id="b">x</button>'));
   afterEach(() => setForcedState('normal'));
