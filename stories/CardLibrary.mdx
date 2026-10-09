@@ -41,7 +41,7 @@ Shimmer-Platzhalter nehmen die Struktur der späteren Komponente ein, damit es b
 
 Der Glanz läuft als Animation (`dss-skel-shimmer`, 1,4 s); bei `prefers-reduced-motion: reduce` steht sie still. Die Platzhalter sind für Screenreader verborgen (`aria-hidden`), ein einzelner Status-Text (`role="status"`, Standard „Lädt …“) meldet das Laden. Mit `label=""` entfällt er, wenn mehrere Skeletons auf einer Seite stehen.
 
-Die Muster haben die Struktur der Zielkomponente, aber nicht ihre genaue Höhe: `match` ist 108 px hoch, eine Spielkarte mit Halle etwa 165 px; `row` ist 70 px hoch, die kompakte Spielerzeile 61 px. Reserviere bei Listen deshalb die Höhe des Containers. Die Bausteine `line`, `block` und `circle` brauchen `width` und `height`: mit dem Standard `auto` haben sie keine Höhe und bleiben unsichtbar.
+Die Muster haben die Struktur der Zielkomponente, aber nicht ihre genaue Höhe: `match` ist 108 px hoch, eine Spielkarte mit Halle etwa 164 px; `row` ist 70 px hoch, die kompakte Spielerzeile 60 px. Reserviere bei Listen deshalb die Höhe des Containers. Die Bausteine `line`, `block` und `circle` brauchen `width` und `height`: mit dem Standard `auto` haben sie keine Höhe und bleiben unsichtbar.
 
 ## Zustände: Hover, Fokus, Aktiv
 
@@ -99,7 +99,7 @@ Die Props zeigen drei Spielwiesen mit den echten Komponenten. Die Namen gelten f
     {
       title: 'Zeile für lange Listen',
       doText: 'Die kompakte Zeile braucht eine Zeile je Spieler, so passt ein ganzer Kader auf den Bildschirm.',
-      dontText: 'Die Standardkarte belegt je Spieler ein Mehrfaches an Höhe (192 px mit vier Kennzahlen gegen 61 px); sie gehört in die Übersicht, nicht in die Liste.',
+      dontText: 'Die Standardkarte belegt je Spieler ein Mehrfaches an Höhe (190 px mit vier Kennzahlen gegen 60 px); sie gehört in die Übersicht, nicht in die Liste.',
       good: <Story of={CardLibraryStories.DoZeile} inline />,
       bad: <Story of={CardLibraryStories.DontZeile} inline />,
     },
