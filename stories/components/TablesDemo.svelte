@@ -133,7 +133,7 @@
         <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--page-mute); margin-bottom: 8px;">
           Dichte · {d} · {d === 'touch' ? '60' : d === 'default' ? '48' : d === 'compact' ? '40' : '32'} px
         </div>
-        <Table density={d} {dark} columns={[
+        <Table density={d} {dark} caption={`Dichte ${d}`} columns={[
           { key: 'num', label: '#', width: '52px' },
           { key: 'name', label: 'Spieler' },
           { key: 'pts', label: 'PTS', width: '70px', align: 'right' },

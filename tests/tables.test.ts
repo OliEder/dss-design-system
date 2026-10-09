@@ -73,6 +73,10 @@ describe('Tabelle: Fokus', () => {
   it('fokussierbare Zeile hat den Ring innen', () => {
     expect(css).toMatch(new RegExp(':where\\(\\.dss-tbl tbody\\) tr:focus-visible\\s*\\{[^}]*' + ring + ';\\s*outline-offset:\\s*-3px'));
   });
+  it('eigene Zeile: Ring im Dunkelmodus in Chip-Textfarbe (Kontrast auf der Auswahlfläche)', () => {
+    expect(css).toMatch(/:root\[data-theme="dark"\] \.dss-tbl tr\.is-own :focus-visible\s*\{\s*outline-color:\s*var\(--dss-chip-amber-fg\)/);
+    expect(css).toMatch(/:root:not\(\[data-theme="light"\]\) \.dss-tbl tr\.is-own :focus-visible\s*\{\s*outline-color:\s*var\(--dss-chip-amber-fg\)/);
+  });
   it('Scrollbereich ist in Svelte und React eine benannte, fokussierbare Region', () => {
     const svelte = read('../svelte/Table.svelte');
     const react = read('../react/Table.tsx');

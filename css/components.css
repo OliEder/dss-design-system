@@ -228,6 +228,11 @@
 .dss-table-scroll:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: -3px; }
 :where(.dss-tbl td, .dss-tbl th) :is(a, button, input, select, textarea, [tabindex="0"]):focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
 :where(.dss-tbl tbody) tr:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: -3px; }
+/* Dunkelmodus: der Ring (2,5 bis 2,8:1) liegt auf der Auswahlfläche der eigenen Zeile zu schwach, daher der hellere Ton */
+:root[data-theme="dark"] .dss-tbl tr.is-own :focus-visible { outline-color: var(--dss-chip-amber-fg); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .dss-tbl tr.is-own :focus-visible { outline-color: var(--dss-chip-amber-fg); }
+}
 .dss-tbl { width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: var(--fs-body-md); color: inherit; }
 .dss-tbl th, .dss-tbl td { text-align: left; padding: 0 14px; vertical-align: middle; white-space: nowrap; }
 .dss-tbl th {

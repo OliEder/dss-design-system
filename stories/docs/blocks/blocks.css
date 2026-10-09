@@ -25,12 +25,12 @@
 .dss-dd-stage:has(.dss-modal-wrap) > .sb-story { flex: 1 1 100%; align-self: stretch; padding: 0; min-height: 420px; }
 
 /* Fließtext-Tabellen in MDX (z. B. Größen): Marke und Hell/Dunkel statt Storybook-Zebra */
-.sbdocs table:not(.docblock-argstable) { width: 100%; border-collapse: collapse; background: transparent; color: var(--page-fg); font-family: var(--font-body); }
-.sbdocs table:not(.docblock-argstable) tr,
-.sbdocs table:not(.docblock-argstable) tr:nth-of-type(2n) { background: transparent; border-top: 1px solid var(--page-line); }
-.sbdocs table:not(.docblock-argstable) th,
-.sbdocs table:not(.docblock-argstable) td { background: transparent; border: 0; color: var(--page-fg); padding: 8px 12px; text-align: left; }
-.sbdocs table:not(.docblock-argstable) th { color: var(--page-mute); }
+.sbdocs table:not(.docblock-argstable, .dss-tbl) { width: 100%; border-collapse: collapse; background: transparent; color: var(--page-fg); font-family: var(--font-body); }
+.sbdocs table:not(.docblock-argstable, .dss-tbl) tr,
+.sbdocs table:not(.docblock-argstable, .dss-tbl) tr:nth-of-type(2n) { background: transparent; border-top: 1px solid var(--page-line); }
+.sbdocs table:not(.docblock-argstable, .dss-tbl) th,
+.sbdocs table:not(.docblock-argstable, .dss-tbl) td { background: transparent; border: 0; color: var(--page-fg); padding: 8px 12px; text-align: left; }
+.sbdocs table:not(.docblock-argstable, .dss-tbl) th { color: var(--page-mute); }
 
 /* Schmale Viewports: Controls-Tabelle scrollt in sich, nicht die Seite */
 @media (max-width: 640px) {

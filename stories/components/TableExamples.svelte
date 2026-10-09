@@ -166,7 +166,7 @@
               {/if}
             </td>
             <td><button type="button" class={`dss-btn dss-btn--secondary dss-btn--sm ${c}`} disabled={s === 'Gesperrt'}>Öffnen</button></td>
-            <td class="center"><input type="checkbox" class={`dss-check-input ${c}`} checked disabled={s === 'Gesperrt'} aria-label={`Kontrollkästchen, ${s}`} /></td>
+            <td class="center"><input type="checkbox" class={`dss-check-input ${c}`} checked disabled={s === 'Gesperrt'} style={s === 'Gesperrt' ? 'opacity: 0.5; cursor: not-allowed;' : undefined} aria-label={`Kontrollkästchen, ${s}`} /></td>
           </tr>
         {/each}
       {/snippet}
