@@ -42,6 +42,10 @@ describe('Karten, Spielkarte, Spielerkarte, EmptyState, Skeleton im Dunkelmodus'
     expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.dss-skel\s*\{\s*animation:\s*none/);
   });
 
+  it('Skeleton-Spielkarte läuft auf schmalen Bildschirmen nicht über', () => {
+    expect(css).toMatch(/\.dss-skel-match\s*\{[^}]*box-sizing: border-box;[^}]*min-width: min\(320px, 100%\)/);
+  });
+
   it('Hero-Karte bricht auf schmalen Bildschirmen in eine Spalte', () => {
     expect(css).toMatch(/@media \(max-width: 560px\)\s*\{\s*\.dss-pc-hero\s*\{\s*grid-template-columns:\s*minmax\(0, 1fr\)/);
   });

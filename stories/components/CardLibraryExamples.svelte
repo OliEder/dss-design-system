@@ -83,7 +83,7 @@
         <div class="rowlabel">Spiel&shy;karte</div>
         {#each cols as c}
           <div class="cell" use:mark={stateClass[c]}>
-            <MatchCard state="scheduled" league="Bayernliga" date="Sa, 25. Mai" time="19:30" heim={{ name: 'TSV Tröster' }} gast={{ name: 'USC Heidelberg' }} onclick={noop} />
+            <MatchCard state="scheduled" league="BBL" date="Sa, 25. Mai" heim={{ name: 'TSV Tröster' }} gast={{ name: 'USC Heidelberg' }} onclick={noop} />
           </div>
         {/each}
         <div class="rowlabel">Spieler&shy;zeile</div>
@@ -143,6 +143,6 @@
   .cap { margin-bottom: 10px; }
   .matrix { display: flex; flex-direction: column; gap: 16px; }
   .surface { background: var(--page-bg); border: 1px solid var(--page-line); border-radius: var(--radius-lg); padding: 22px 24px; overflow-x: auto; }
-  .states { display: grid; grid-template-columns: 76px repeat(4, minmax(250px, 1fr)); gap: 16px 20px; align-items: center; }
+  .states { display: grid; grid-template-columns: 64px repeat(4, minmax(190px, 1fr)); gap: 16px 14px; align-items: center; }
   .cell { padding: 6px; }
 </style>
