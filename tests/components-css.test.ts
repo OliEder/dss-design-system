@@ -265,8 +265,8 @@ describe('Spielplan · ScheduleGrid (Variante B)', () => {
 
 describe('Button-Höhen', () => {
   const rule = (sel: string) => new RegExp(`\\${sel}\\s*\\{[^}]*\\}`).exec(css)?.[0] ?? '';
-  it('sm ist 36 px hoch (kompakt), md 44 px', () => {
-    expect(rule('.dss-btn--sm')).toContain('height: var(--fld-h-compact)');
+  it('sm und md sind 44 px hoch (WCAG 2.5.5, Zielgröße)', () => {
+    expect(rule('.dss-btn--sm')).toContain('height: var(--touch-sm)');
     expect(rule('.dss-btn--md')).toContain('height: var(--touch-sm)');
   });
 });

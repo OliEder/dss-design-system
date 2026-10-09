@@ -113,7 +113,7 @@
 .dss-btn--secondary:hover:not(:disabled) { background: var(--dss-line); }
 .dss-btn--ghost { background: transparent; color: var(--dss-fg); border-radius: var(--radius-md); box-shadow: inset 0 0 0 1px var(--dss-line-strong); }
 .dss-btn--ghost:hover:not(:disabled) { background: var(--dss-hover-bg); }
-.dss-btn--sm { height: var(--fld-h-compact); padding: 0 14px; font-size: var(--fs-body-sm); }
+.dss-btn--sm { height: var(--touch-sm); padding: 0 14px; font-size: var(--fs-body-sm); }
 .dss-btn--md { height: var(--touch-sm); padding: 0 18px; font-size: var(--fs-body-md); }
 .dss-btn--lg { height: var(--touch-md); padding: 0 22px; font-size: var(--fs-body); border-radius: var(--radius-lg); }
 .dss-btn--icon { width: var(--touch-sm); height: var(--touch-sm); padding: 0; }
