@@ -153,6 +153,7 @@
 .dss-card--hoverable:hover, .dss-card--hoverable:focus-within {
   border-color: var(--dss-line-strong); box-shadow: var(--shadow-md); transform: translateY(-1px);
 }
+.dss-card:is(a, button, [role="button"]):focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
 .dss-card-head { padding: 14px 18px 0; font-family: var(--font-display); font-weight: 600; }
 .dss-card-body { flex: 1; min-width: 0; }
 .dss-card-foot {

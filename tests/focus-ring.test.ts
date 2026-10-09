@@ -41,4 +41,11 @@ describe('Fokus-Ring: gestrichelt, Gold/Amber', () => {
     expect(css).toMatch(new RegExp('\\.dss-m-close:focus-visible\\s*\\{[^}]*' + ring));
     expect(css).toMatch(new RegExp('\\.dss-banner a:focus-visible\\s*\\{[^}]*' + ring));
   });
+
+  it('klickbare Karte (Link, Button, role=button), Spielkarte und Spielerzeile haben einen gestrichelten Fokus-Ring', () => {
+    const ring = 'outline:\\s*var\\(--ring-w\\)\\s+var\\(--ring-style\\)\\s+var\\(--ring-color\\)';
+    expect(css).toMatch(new RegExp('\\.dss-card:is\\(a, button, \\[role="button"\\]\\):focus-visible\\s*\\{[^}]*' + ring));
+    expect(css).toMatch(new RegExp('button\\.dss-match:focus-visible, a\\.dss-match:focus-visible\\s*\\{[^}]*' + ring));
+    expect(css).toMatch(new RegExp('button\\.dss-pc-row:focus-visible\\s*\\{[^}]*' + ring));
+  });
 });
