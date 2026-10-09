@@ -1,0 +1,102 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as IconStories from './Icon.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import { DocTable } from './docs/blocks/DocTable';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './Icon.code';
+
+<Meta of={IconStories} />
+
+# Icon
+
+Ein gemeinsamer Sprite mit 67 Symbolen in acht Gruppen: Spielaktionen, Court, Rollen, Status, System und die UI-Grundausstattung (Navigation, Aktionen, Inhalt). Jedes Symbol ist 24 × 24 groß und nutzt `currentColor`, nimmt also die Farbe des umgebenden Textes an. Die meisten sind Linienzeichnungen (Stärke 1,75); `foul-d`, `dq` und `more-h` sind gefüllt.
+
+<Canvas of={IconStories.Standard} />
+
+## Der Sprite
+
+Die Symbole liegen einmal als `<symbol id="i-…">` in einem versteckten SVG im Dokument. Jedes Icon ist ein `<svg>` mit `<use href="#i-name">`, das auf dieses Symbol zeigt. So kostet ein Icon, egal wie oft es vorkommt, nur ein kleines Element.
+
+Die Svelte- und die React-Komponente fügen den Sprite beim ersten Gebrauch selbst einmal in das Dokument ein (hinter `<body>`, mit `aria-hidden`). Ohne Framework legst du die `<symbol>`-Elemente selbst ins Dokument; sie stehen in `icons/sprite.ts`. Der Name ist die ID ohne das Präfix `i-`: `<Icon name="whistle" />` zeigt `#i-whistle`.
+
+## Größen
+
+`size` setzt Breite und Höhe in Pixeln (Standard 24). Das Symbol skaliert verlustfrei. Wähle die Größe passend zur Schrift: 16 px neben Fließtext, 24 px als Standard, größer nur für Kacheln und Leerzustände.
+
+<Canvas of={IconStories.Groessen} />
+
+## Farbe mit currentColor
+
+Die Linien und Flächen der Symbole nutzen `currentColor`, `.dss-icon` erbt die Textfarbe. Setze die Farbe am umgebenden Element, nicht am Icon: dann folgt es Marke, Hell und Dunkel mit dem Text. Für Bedeutungsfarben nimmst du die Chip-Tokens (`--dss-chip-ok-fg` und Verwandte), die im Dunkelmodus eigene Werte haben.
+
+<Canvas of={IconStories.Farbe} />
+
+## Barrierefreiheit
+
+Ohne `title` ist das Icon dekorativ: `aria-hidden="true"` und `role="presentation"`, Screenreader überspringen es. Das gilt, wenn daneben ein Text steht. Steht das Icon allein (Schalter, Statusanzeige), gib `title` an: Das Icon wird `role="img"` mit `aria-label`, und ein `<title>` im SVG liefert den Tooltip. Ein Schalter mit nur einem Icon braucht außerdem einen eigenen Namen am Schalter selbst.
+
+<Canvas of={IconStories.Barrierefreiheit} />
+
+## Alle Icons
+
+Alle 67 Symbole nach Gruppen, mit ihrem Namen (dem Wert für `name`).
+
+<Canvas of={IconStories.AlleFamilien} />
+
+## Verwendung: Import und Props
+
+Importiere `Icon` über den Path-Export (Svelte) bzw. aus dem React-Paket. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+Die Tabelle zeigt die Steuerelemente der Demo. Mit `title` siehst du, wie sich die Auszeichnung ändert.
+
+<Controls of={IconStories.Standard} />
+
+Dazu kommt ein Prop, der sich nicht als Steuerelement zeigen lässt:
+
+<DocTable
+  label="Weitere Props"
+  head={['Prop', 'Typ', 'Beschreibung']}
+  rows={[
+    ['class (React: className)', 'string', 'Zusätzliche Klasse am SVG, neben dss-icon. React nimmt außerdem alle weiteren SVG-Attribute an.'],
+  ]}
+/>
+
+Die Liste aller Namen steht in `ICON_NAMES`, der Typ heißt `IconName` (beides aus `Icon.svelte` bzw. dem React-Paket).
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Allein stehendes Icon beschriften',
+      doText: 'Mit title wird das Icon ein Bild mit Namen („Löschen“), Screenreader und Tooltip kennen die Bedeutung.',
+      dontText: 'Ohne title ist das Icon dekorativ und für Screenreader unsichtbar; steht es allein, fehlt die Bedeutung ganz.',
+      good: <Story of={IconStories.DoBeschriftung} inline />,
+      bad: <Story of={IconStories.DontBeschriftung} inline />,
+    },
+    {
+      title: 'Größe passend zur Schrift',
+      doText: '16 px neben Fließtext: das Icon steht auf der Höhe der Zeile.',
+      dontText: 'Ein 48-px-Icon neben 15-px-Text sprengt die Zeile und wirkt wie ein Bild, nicht wie ein Zeichen.',
+      good: <Story of={IconStories.DoGroesse} inline />,
+      bad: <Story of={IconStories.DontGroesse} inline />,
+    },
+    {
+      title: 'Farbe nie allein als Bedeutung',
+      doText: 'Verschiedene Symbole und ein Text tragen die Bedeutung; die Farbe unterstützt nur.',
+      dontText: 'Dasselbe Symbol in Grün und Rot ist für farbenblinde Nutzer und Screenreader nicht zu unterscheiden.',
+      good: <Story of={IconStories.DoFarbe} inline />,
+      bad: <Story of={IconStories.DontFarbe} inline />,
+    },
+    {
+      title: 'Farbe vom Text erben',
+      doText: 'Das Icon übernimmt die Textfarbe (currentColor) und passt sich dem Dunkelmodus an.',
+      dontText: 'Eine feste Farbe am Icon (hier #191919) bleibt im Dunkelmodus dunkel auf dunkel und ist nicht mehr zu sehen (Dunkelmodus in der Werkzeugleiste einschalten).',
+      good: <Story of={IconStories.DoCurrentcolor} inline />,
+      bad: <Story of={IconStories.DontCurrentcolor} inline />,
+    },
+  ]}
+/>
