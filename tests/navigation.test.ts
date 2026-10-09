@@ -59,7 +59,7 @@ describe('Navigation: Farben mit Dunkelmodus', () => {
 
   it('Live-Marker der TopBar: Text in hellem Rotton (--err-fill hat auf der dunklen Leiste nur 4,4:1)', () => {
     const live = css.match(/\.dss-topbar-live\s*\{[^}]*\}/)?.[0] ?? '';
-    expect(live).toMatch(/color:\s*oklch\(0\.66 0\.19 27\)/);
+    expect(live).toMatch(/color:\s*oklch\(0\.80 0\.19 27\)/);
     expect(live).not.toMatch(/color:\s*var\(--err-fill\)/);
   });
 });

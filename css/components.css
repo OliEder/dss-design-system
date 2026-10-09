@@ -30,6 +30,8 @@
   --dss-cta-bg:      var(--signal-400);
   --dss-cta-bg-hover: var(--signal-500);
   --dss-cta-fg:      var(--base-1000);
+  --dss-cta-fg-hover: var(--dss-cta-fg);   /* DBB: Schwarz, damit der dunklere Gold-Hover ≥ 7:1 hält */
+  --dss-mute-on-selected: var(--dss-mute);
   --dss-hover-bg:    var(--base-50);
   --dss-selected-bg: var(--signal-50);
   --dss-chip-sky-bg: var(--cool-100);   --dss-chip-sky-fg: var(--cool-800);
@@ -51,7 +53,7 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --dss-fg: var(--n-50);        --dss-fg-soft: var(--n-200);
-    --dss-mute: var(--n-400);
+    --dss-mute: var(--n-400);  --dss-mute-on-selected: var(--n-300);
     --dss-line: var(--n-800);     --dss-line-strong: var(--n-700);
     --dss-surface: var(--n-950);  --dss-surface-2: var(--n-900);
     --dss-link: var(--cool-300);   --dss-accent-text: var(--signal-300);
@@ -68,7 +70,7 @@
 }
 :root[data-theme="dark"] {
   --dss-fg: var(--n-50);        --dss-fg-soft: var(--n-200);
-  --dss-mute: var(--n-400);
+  --dss-mute: var(--n-400);  --dss-mute-on-selected: var(--n-300);
   --dss-line: var(--n-800);     --dss-line-strong: var(--n-700);
   --dss-surface: var(--n-950);  --dss-surface-2: var(--n-900);
   --dss-link: var(--cool-300);   --dss-accent-text: var(--signal-300);
@@ -114,7 +116,7 @@
 .dss-btn--primary { background: var(--dss-btn-bg); color: var(--dss-btn-fg); border-radius: var(--radius-md); }
 .dss-btn--primary:hover:not(:disabled) { background: var(--dss-btn-bg-hover); }
 .dss-btn--amber { background: var(--dss-cta-bg); color: var(--dss-cta-fg); border-radius: var(--radius-md); }
-.dss-btn--amber:hover:not(:disabled) { background: var(--dss-cta-bg-hover); }
+.dss-btn--amber:hover:not(:disabled) { background: var(--dss-cta-bg-hover); color: var(--dss-cta-fg-hover); }
 .dss-btn--secondary { background: var(--dss-surface-2); color: var(--dss-fg); border-radius: var(--radius-md); box-shadow: inset 0 0 0 1px var(--dss-line); }
 .dss-btn--secondary:hover:not(:disabled) { background: var(--dss-line); }
 .dss-btn--ghost { background: transparent; color: var(--dss-fg); border-radius: var(--radius-md); box-shadow: inset 0 0 0 1px var(--dss-line-strong); }
@@ -486,7 +488,8 @@
 }
 .dss-frame--dark .dss-tn { background: var(--n-800); color: var(--n-50); }
 .dss-tn.heim { background: var(--team-heim, oklch(0.55 0.20 27)); color: white; }
-.dss-tn.gast { background: var(--team-gast, oklch(0.55 0.18 245)); color: white; }
+/* 10 % Schwarz beigemischt: weißer Text hält auf dem Standard-Rot ≥ 7:1 (ohne Beimischung 6,0:1); die Marke bleibt Rot */
+.dss-tn.gast { background: color-mix(in oklab, var(--team-gast, oklch(0.55 0.18 245)) 90%, black); color: white; }
 .dss-tn.captain { box-shadow: 0 0 0 2px var(--signal-500); }
 .dss-tn.small { width: 32px; height: 32px; font-size: var(--fs-body-md); border-radius: 7px; }
 .dss-tn.large { width: 64px; height: 64px; font-size: var(--fs-h2); border-radius: 14px; }
@@ -535,9 +538,9 @@
   display: flex; align-items: center; gap: 14px; margin-left: 28px; font-family: var(--font-mono);
   font-size: var(--fs-caption); color: var(--n-300); letter-spacing: 0.04em;
 }
-/* Heller Rotton: --err-fill hat als Text auf der immer dunklen Leiste nur 4,4:1 (DBB 3,7:1), dieser Ton 6,2:1 bzw. 5,2:1 */
+/* Heller Rotton: --err-fill hat als Text auf der immer dunklen Leiste nur 4,4:1 (DBB 3,7:1), dieser Ton mindestens 7:1 (Schwarz 8,9:1, Anthrazit #191919 7,4:1) */
 .dss-topbar-live {
-  display: inline-flex; align-items: center; gap: 6px; color: oklch(0.66 0.19 27); font-weight: 700;
+  display: inline-flex; align-items: center; gap: 6px; color: oklch(0.80 0.19 27); font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.1em;
 }
 .dss-topbar-live::before {
@@ -555,7 +558,7 @@
   background: var(--n-900); color: var(--n-100); font-size: var(--fs-body-sm); font-weight: 500;
 }
 .dss-topbar-av {
-  width: 28px; height: 28px; border-radius: 50%; background: var(--cool-600); color: white;
+  width: 28px; height: 28px; border-radius: 50%; background: var(--cool-700); color: white;
   display: inline-flex; align-items: center; justify-content: center;
   font-family: var(--font-display); font-weight: 700; font-size: var(--fs-label);
 }
@@ -957,6 +960,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 :root[data-theme="dark"] { --dss-court-color: var(--signal-700); --dss-court-opacity: 0.15; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --dss-court-color: var(--signal-700); --dss-court-opacity: 0.15; } }
 /* DBB: Linien in Gold, dezent genug, dass gedämpfter Text darüber 7:1 hält (hell gold-200, dunkel gold-700) */
+:root[data-brand="dbb"] { --dss-cta-fg-hover: oklch(0 0 0); }
 :root[data-brand="dbb"] { --dss-court-color: var(--gold-200); --dss-court-opacity: 0.5; }
 :root[data-brand="dbb"][data-theme="dark"] { --dss-court-color: var(--gold-700); --dss-court-opacity: 0.15; }
 @media (prefers-color-scheme: dark) {
@@ -1066,6 +1070,8 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 .dss-sch-field { max-width: 14ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: middle; }
 .dss-tbl--schedule td.dss-sch-notice { max-width: 24ch; white-space: normal; }
 .dss-tbl--schedule tr.is-own td:first-child { box-shadow: inset 3px 0 0 var(--indicator); }
+/* Eigene Zeile: gedämpfter Text auf dem getönten Grund (Dunkelmodus 5,5:1 mit --dss-mute) auf ≥ 7:1 */
+.dss-tbl--schedule tr.is-own, .dss-sg-game.is-own { --dss-mute: var(--dss-mute-on-selected); }
 .dss-tbl--schedule tr.is-cancelled td,
 .dss-tbl--schedule tr.is-cancelled .dss-sch-date,
 .dss-tbl--schedule tr.is-cancelled .dss-sch-time { color: var(--dss-mute); }

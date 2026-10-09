@@ -99,7 +99,7 @@
   .cell { padding: 20px 22px 26px; border: 1px solid var(--page-line); border-radius: var(--radius-lg); background: var(--surface-0); }
   .cell.dark { background: var(--base-1000); color: var(--n-100); }
   .cap { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); margin-bottom: 16px; }
-  .cell.dark .cap { color: var(--n-400); }
+  .cell.dark .cap { color: var(--n-300); }
   .cell { overflow: hidden; }
   .tabrow { flex-wrap: wrap; }
   .states { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
