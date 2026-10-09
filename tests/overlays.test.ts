@@ -26,6 +26,10 @@ describe('Svelte-Modal: eindeutige Titel-id', () => {
     expect(modal).not.toMatch(/id="dss-modal-title"/);
     expect(modal).toMatch(/aria-labelledby=\{titleId\}/);
   });
+
+  it('Titel ist eine h2 wie in der React-Fassung (h4 sprang in der Gliederung)', () => {
+    expect(modal).toMatch(/<h2 class="dss-m-title"/);
+  });
 });
 
 describe('Banner-Link im Dunkelmodus', () => {

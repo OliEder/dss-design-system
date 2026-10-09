@@ -71,11 +71,11 @@ Wie viel Fokusverhalten die Komponente selbst übernimmt, hängt von der Fassung
     ['Klick auf den Hintergrund schließt', 'Ja, nur mit closable', 'Ja, mit closable und dismissOnBackdrop (beides Standard)'],
     ['Fokus beim Öffnen', 'Nein: der Fokus bleibt auf dem Auslöser hinter dem Modal', 'Ja, in das Modal'],
     ['Tab bleibt im Modal', 'Nein: Tab erreicht auch die Seite dahinter', 'Ja (Fokusfalle)'],
-    ['Fokus beim Schließen', 'Nein: du setzt ihn selbst zurück', 'Ja, zurück zum vorherigen Element'],
+    ['Fokus beim Schließen', 'Nein: du setzt ihn selbst zurück', 'Nein: die Komponente hat keinen Radix-Trigger, der Fokus fällt auf body, du setzt ihn selbst zurück'],
   ]}
 />
 
-In der Svelte-Fassung bist du für den Fokus selbst zuständig: setze ihn beim Öffnen in das Modal (z. B. auf die Hauptaktion) und gib ihn beim Schließen an den Auslöser zurück. In reinem HTML gilt dasselbe für alle Punkte der Tabelle.
+Den Fokus beim Schließen gibt keine der beiden Fassungen zurück: Merke dir den Auslöser und fokussiere ihn nach dem Schließen selbst. In der Svelte-Fassung setzt du außerdem den Fokus beim Öffnen in das Modal (z. B. auf die Hauptaktion). In reinem HTML gilt alles aus der Tabelle selbst.
 
 ## Zustände: Schließen und Aktionen
 

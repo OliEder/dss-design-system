@@ -67,7 +67,7 @@
           </div>
         {/if}
         <div class="dss-m-head-text">
-          <h4 class="dss-m-title" id={titleId}>{title}</h4>
+          <h2 class="dss-m-title" id={titleId}>{title}</h2>
           {#if subtitle}<div class="dss-m-subtitle">{subtitle}</div>{/if}
         </div>
         {#if closable}

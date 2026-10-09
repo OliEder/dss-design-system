@@ -15,7 +15,7 @@ Arbeitsanleitung: `2026-10-09-mdx-wellen-2-bis-7-brief.md`. Es gibt keine alte m
 - Banner: Schweregrade, Titel/Icon/Link, Rollen (alert/status), Zustaende (Link), Code, Controls, Dos und Don'ts.
 
 ## Geprüfte Fakten
-- Svelte-Modal: Escape und Hintergrund-Klick schließen nur mit `closable`; keine Fokusfalle, kein Fokus beim Öffnen, keine Fokus-Rückgabe. React (Radix): Fokusfalle, Escape, Rückgabe, `dismissOnBackdrop`, `closeLabel`.
+- Svelte-Modal: Escape und Hintergrund-Klick schließen nur mit `closable`; keine Fokusfalle, kein Fokus beim Öffnen, keine Fokus-Rückgabe. React (Radix, per jsdom-Test geprüft): Fokus ins Modal, Fokusfalle, Escape; keine Fokus-Rückgabe (kein Radix-Trigger, Fokus fällt auf body).
 - Größen: 380 / 480 / 560 / 720 px (`max-width: 100%`).
 - Banner: kein Schließen-Button; Link über Inhalt (`.dss-banner a`).
 - Fokus-Ring: `.dss-m-close` hat ihn, Banner-Link nicht (ergänzen, Test).

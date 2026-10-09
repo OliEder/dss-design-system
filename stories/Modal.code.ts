@@ -4,7 +4,7 @@ export const vanilla = `<!-- Einmal im App-Root einbinden -->
 <!-- optional: <link rel="stylesheet" href="fonts/fonts.css" /> -->
 
 <!-- Größen: dss-modal--sm | (ohne = md) | dss-modal--wide | dss-modal--xwide.
-     Escape, Hintergrund-Klick, Fokus ins Modal, Fokusfalle und Rückgabe musst du selbst ergänzen. -->
+     Escape, Hintergrund-Klick, Fokus ins Modal, Fokusfalle und Fokus-Rückgabe musst du selbst ergänzen. -->
 <div class="dss-backdrop"></div>
 <div class="dss-modal-wrap">
   <div class="dss-modal dss-modal--sm" role="dialog" aria-modal="true" aria-labelledby="verwerfen-titel">
@@ -67,7 +67,7 @@ export function Freigabe() {
     <>
       <Button onClick={() => setOpen(true)}>Spielbericht freigeben</Button>
 
-      {/* Radix Dialog: Fokusfalle, Escape, Fokus-Rückgabe an den Auslöser */}
+      {/* Radix Dialog: Fokus ins Modal, Fokusfalle, Escape. Den Fokus nach dem Schließen setzt du selbst zurück. */}
       <Modal
         open={open}
         onOpenChange={setOpen}
