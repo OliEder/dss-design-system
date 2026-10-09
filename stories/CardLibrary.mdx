@@ -1,0 +1,105 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as CardLibraryStories from './CardLibrary.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import { DocTable } from './docs/blocks/DocTable';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './CardLibrary.code';
+
+<Meta of={CardLibraryStories} />
+
+# Card Library
+
+**Domänen-spezifische Karten:** der Container [Card](?path=/docs/components-card--docs) ist die generische Basis. Diese Komponenten sind darauf aufgebaute, fertige Muster für das Spielberichts-Erlebnis, von der Roster-Liste bis zum Live-Spielstand:
+
+- **MatchCard**: Spielkarte in 3 Zuständen: `scheduled`, `live`, `finished`. Heim- und Gastpunkte, Liga, Halle, Live-Puls, Endstand-Styling.
+- **PlayerCard**: Spieler in 3 Maßstäben: `compact` (Roster-Zeile), `standard` (Übersicht mit 4 Kennzahlen), `hero` (dunkle Profilkarte).
+- **Skeleton**: Shimmer-Platzhalter für Ladezustände. Bausteine (`line`, `block`, `circle`) und fertige Muster (`row`, `match`).
+- **EmptyState**: 3 Tonalitäten: `neutral`, `action` (Amber), `error` (Rot), immer mit nächstem Schritt. Hat eine eigene Seite: [EmptyState](?path=/docs/components-emptystate--docs).
+
+## Drei Zustände eines Spiels
+
+**Scheduled** zeigt Anpfiff, Halle und die Teams ohne Punkte. **Live** öffnet sich ins Hauptlayout, zeigt den laufenden Spielstand, eine pulsierende Indikator-Lampe oben und Viertel plus Spieluhr. **Finished** hebt den Sieger fett hervor, der Verlierer wird gedimmt.
+
+<Canvas of={CardLibraryStories.Spielkarten} />
+
+Mit `href` ist die Karte ein Link, mit `onclick` (React: `onClick`) ein Button, sonst ein `div`. Die Pulsanimation der Live-Lampe stoppt bei `prefers-reduced-motion: reduce`.
+
+## Spieler in drei Maßstäben
+
+**Compact** für Roster-Listen und Bank-Anzeige (32 px Trikot, eine Zeile). **Standard** für die Spieltags-Übersicht mit 64 px Trikot, Positionsmarke und 4 Kennzahlen. **Hero** ist die dunkle Profilkarte mit 110 px Trikot und Amber-Glow für Detail-Screens. Die Hero-Karte ist unabhängig vom Theme immer dunkel.
+
+<Canvas of={CardLibraryStories.Spielerkarten} />
+
+Nur die Zeile `compact` ist klickbar (mit `onclick`, React: `onClick`, wird sie zum Button). Standard und Hero zeigen den Namen als Überschrift, standardmäßig `h3`; mit `titleAs` wählst du die Ebene, die in deine Gliederung passt.
+
+## Laden ohne Springen
+
+Shimmer-Platzhalter nehmen die Form der späteren Komponente ein, damit es beim Eintreffen der Daten keine Layout-Sprünge gibt. Bausteine für Text, Blöcke und Avatare, fertige Muster für die gängigsten Zeilen.
+
+<Canvas of={CardLibraryStories.Ladezustaende} />
+
+Der Glanz läuft als Animation (`dss-skel-shimmer`, 1,4 s); bei `prefers-reduced-motion: reduce` steht sie still. Die Platzhalter sind für Screenreader verborgen (`aria-hidden`), ein einzelner Status-Text (`role="status"`, Standard „Lädt …“) meldet das Laden. Mit `label=""` entfällt er, wenn mehrere Skeletons auf einer Seite stehen.
+
+## Zustände: Hover, Fokus, Aktiv
+
+Klickbare Spielkarten (`a` oder `button`) ändern bei Hover Rand (`--dss-line-strong`) und Schatten und heben sich um 1 px; klickbare Spielerzeilen (`button`) färben Rand und Hintergrund. Beide haben bei Tastaturfokus den gestrichelten Gold/Amber-Ring (3 px, 2 px Abstand, im Dunkelmodus dezenter). Nicht klickbare Karten (`div`), Standard- und Hero-Karte und Skeleton reagieren nicht. Einen eigenen Stil für Gedrückt gibt es nicht, die Spalte zeigt denselben Hover; Gesperrt gibt es nicht.
+
+<Canvas of={CardLibraryStories.Zustaende} />
+
+Die Matrix ist fest gesetzt. Jede andere Story lässt sich über die Werkzeugleiste **Zustand** auf Hover, Fokus oder Aktiv schalten. Marke und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Verwendung: Import und Props
+
+Importiere die Komponenten über die Path-Exporte (Svelte) bzw. aus dem React-Paket. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+Die Props zeigen drei Spielwiesen mit den echten Komponenten. Die Namen gelten für Svelte; in React heißen `onclick` `onClick`, `height_cm` `heightCm` und `role` `playerRole`.
+
+### MatchCard
+
+<Controls of={CardLibraryStories.SpielkarteSpielwiese} />
+
+### PlayerCard
+
+<Controls of={CardLibraryStories.SpielerkarteSpielwiese} />
+
+### Skeleton
+
+<Controls of={CardLibraryStories.LadezustandSpielwiese} />
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Platzhalter mit der Struktur der Karte',
+      doText: 'Das Muster match hat Kopfzeile und zwei Teamzeilen, wie die Spielkarte, die es ersetzt.',
+      dontText: 'Ein einzelner Block hat weder Kopf noch Teamzeilen; kommen die Daten, springt das Layout.',
+      good: <Story of={CardLibraryStories.DoSkeleton} inline />,
+      bad: <Story of={CardLibraryStories.DontSkeleton} inline />,
+    },
+    {
+      title: 'Platzhalter statt leerer Zahl',
+      doText: 'Fehlt eine Kennzahl, steht ein Strich („–“), die Spalte behält ihre Höhe und ist als fehlend lesbar.',
+      dontText: 'Ein leerer Wert fällt aus dem Layout: die Zeile ist kürzer und die Beschriftung rutscht nach oben.',
+      good: <Story of={CardLibraryStories.DoPlatzhalter} inline />,
+      bad: <Story of={CardLibraryStories.DontPlatzhalter} inline />,
+    },
+    {
+      title: 'Zustand nur nennen, wenn er stimmt',
+      doText: 'Ein beendetes Spiel ist finished: Endstand, Sieger fett, Verlierer gedimmt.',
+      dontText: 'Mit live trägt ein beendetes Spiel Puls, grünen Balken und „Live“, und der Verlierer wird nicht gedimmt.',
+      good: <Story of={CardLibraryStories.DoStatus} inline />,
+      bad: <Story of={CardLibraryStories.DontStatus} inline />,
+    },
+    {
+      title: 'Zeile für lange Listen',
+      doText: 'Die kompakte Zeile braucht eine Zeile je Spieler, so passt ein ganzer Kader auf den Bildschirm.',
+      dontText: 'Die Standardkarte belegt je Spieler ein Mehrfaches an Höhe; sie gehört in die Übersicht, nicht in die Liste.',
+      good: <Story of={CardLibraryStories.DoZeile} inline />,
+      bad: <Story of={CardLibraryStories.DontZeile} inline />,
+    },
+  ]}
+/>

@@ -1,0 +1,95 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as EmptyStateStories from './EmptyState.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import { DocTable } from './docs/blocks/DocTable';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './EmptyState.code';
+
+<Meta of={EmptyStateStories} />
+
+# EmptyState
+
+**EmptyState** zeigt Leer-, Hinweis- und Fehlerzustände mit klarem nächsten Schritt. Er gehört zu den fertigen Mustern der [Card Library](?path=/docs/components-card-library--docs); die Lade-Platzhalter dazu stehen dort als Skeleton.
+
+- **neutral**: keine Daten oder Erstnutzung
+- **action**: etwas fehlt, die Nutzerin kann es beheben (Amber)
+- **error**: Laden fehlgeschlagen, Wiederholen möglich (Rot)
+
+## Wenn nichts da ist, etwas erklären
+
+Drei Tonalitäten: **neutral** (keine Daten vorhanden), **action** (etwas fehlt, der User kann es beheben, Amber-Akzent) und **error** (Laden fehlgeschlagen, mit Wiederholen-Pfad). Leerzustände ohne nächsten Schritt sind verboten. Die Tonalität bestimmt Fläche, Rand und Symbol und auch die Variante des Buttons: `primary`, `amber` oder `danger`.
+
+<Canvas of={EmptyStateStories.Tonalitaeten} />
+
+## Nächster Schritt und weitere Aktionen
+
+Mit `cta` zeigt der EmptyState einen einfachen Button (Klick: `onclick`, React: `onCta`). Brauchst du mehrere oder andere Aktionen, nimm `actions` (Svelte: Snippet, React: Prop); der Zusatztext (`children`) steht darunter in kleiner Schrift.
+
+<Canvas of={EmptyStateStories.Aktionen} />
+
+## Eine Liste in vier Zuständen
+
+Beim Laden zeigt die Liste Platzhalter ([Skeleton](?path=/docs/components-card-library--docs)), ist sie leer, einen `neutral`-EmptyState mit dem Weg zum ersten Eintrag, schlägt das Laden fehl, einen `error`-EmptyState mit Wiederholen, und sonst die Einträge.
+
+<Canvas of={EmptyStateStories.Listenzustaende} />
+
+## Zustände: Hover, Fokus, Aktiv
+
+Der EmptyState selbst ist nicht bedienbar, nur sein Button. Die Matrix zeigt ihn auf der Fläche der jeweiligen Tonalität. Hover, Fokus (gestrichelter Gold/Amber-Ring, 3 px, 2 px Abstand, im Dunkelmodus dezenter) und Aktiv (Button schrumpft leicht) kommen von der [Button](?path=/docs/components-button--docs)-Komponente. Gesperrt gibt es hier nicht: Ohne nächsten Schritt entfällt der Button ganz.
+
+<Canvas of={EmptyStateStories.Zustaende} />
+
+Die Matrix ist fest gesetzt. Jede andere Story lässt sich über die Werkzeugleiste **Zustand** auf Hover, Fokus oder Aktiv schalten. Marke und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Verwendung: Import und Props
+
+Importiere `EmptyState` über den Path-Export (Svelte) bzw. aus dem React-Paket. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+Die Tabelle zeigt die Steuerelemente der Demo.
+
+<Controls of={EmptyStateStories.Neutral} />
+
+Dazu kommen Props, die sich nicht als Steuerelement zeigen lassen:
+
+<DocTable
+  label="Weitere Props"
+  head={['Prop', 'Typ', 'Beschreibung']}
+  rows={[
+    ['icon', 'Svelte: Sprite-ID, React: Icon-Name', 'Eigenes Symbol (Svelte z. B. i-calendar, React calendar). Ohne Angabe gibt es ein Standard-Symbol je Tonalität.'],
+    ['onclick (React: onCta)', 'Funktion', 'Klick auf den Button von cta.'],
+    ['actions', 'Svelte: Snippet, React: ReactNode', 'Eigene Aktionen neben oder statt cta.'],
+    ['children', 'Svelte: Snippet, React: ReactNode', 'Zusatzinhalt unter den Aktionen.'],
+    ['className (nur React)', 'string', 'Zusätzliche Klasse am Wurzelelement.'],
+  ]}
+/>
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Immer einen nächsten Schritt',
+      doText: 'Titel, Erklärung und ein Button führen weiter: „Spielplan öffnen“.',
+      dontText: '„Keine Daten“ lässt die Nutzerin ohne Erklärung und ohne Weg zurück.',
+      good: <Story of={EmptyStateStories.DoSchritt} inline />,
+      bad: <Story of={EmptyStateStories.DontSchritt} inline />,
+    },
+    {
+      title: 'Rot nur bei Fehlern',
+      doText: 'Eine leere Liste ist kein Fehler: neutral bleibt ruhig.',
+      dontText: 'error färbt die Fläche rot und den Button zur Gefahr-Aktion, obwohl nichts schiefgegangen ist.',
+      good: <Story of={EmptyStateStories.DoTon} inline />,
+      bad: <Story of={EmptyStateStories.DontTon} inline />,
+    },
+    {
+      title: 'Eine Hauptaktion',
+      doText: 'Der Hauptschritt ist primary, weitere Wege (Hilfe) sind ghost.',
+      dontText: 'Zwei primary-Buttons nebeneinander: Die Hauptaktion ist nicht mehr erkennbar (Button: genau eine pro Screen).',
+      good: <Story of={EmptyStateStories.DoAktion} inline />,
+      bad: <Story of={EmptyStateStories.DontAktion} inline />,
+    },
+  ]}
+/>
