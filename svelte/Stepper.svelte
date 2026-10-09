@@ -41,7 +41,7 @@
 
 {#snippet dot(s: Step, i: number)}
   {#if onstep && s.state !== 'pending'}
-    <button type="button" class="dss-step-dot" aria-label={s.label} onclick={() => onstep?.(s.id)}>
+    <button type="button" class="dss-step-dot" aria-label="{i + 1}. {s.label}" onclick={() => onstep?.(s.id)}>
       {#if s.state === 'done'}
         <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
       {:else}

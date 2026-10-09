@@ -11,7 +11,7 @@
    *
    * Usage:
    *   <Tabs bind:value={tab} variant="underline" items={[
-   *     { id: 'overview', label: 'Übersicht', icon: 'i-board' },
+   *     { id: 'overview', label: 'Übersicht', icon: 'i-calendar' },
    *     { id: 'roster',   label: 'Aufstellung', count: 12 },
    *     { id: 'box',      label: 'Boxscore' },
    *   ]} />
@@ -25,7 +25,7 @@
   type TabItem = {
     id: string;
     label: string;
-    icon?: string;     // sprite id, e.g. 'i-board'  (without the '#')
+    icon?: string;     // sprite id, e.g. 'i-calendar'  (without the '#')
     count?: number;    // optional badge
     disabled?: boolean;
   };
@@ -75,6 +75,7 @@
   }
 
   function onKey(e: KeyboardEvent, idx: number) {
+    if (multi) return; // Mehrfachauswahl: jeder Schalter ist per Tab erreichbar, keine Pfeiltasten
     const isHoriz = variant !== 'vertical';
     const nextKey = isHoriz ? 'ArrowRight' : 'ArrowDown';
     const prevKey = isHoriz ? 'ArrowLeft'  : 'ArrowUp';
@@ -98,7 +99,7 @@
   class="dss-tabs dss-tabs--{variant} dss-tabs--{size}"
   role={multi ? 'group' : 'tablist'}
   aria-label={ariaLabel}
-  aria-orientation={variant === 'vertical' ? 'vertical' : 'horizontal'}
+  aria-orientation={multi ? undefined : variant === 'vertical' ? 'vertical' : 'horizontal'}
 >
   {#each items as item, i (item.id)}
     <button
@@ -110,7 +111,7 @@
       aria-selected={multi ? undefined : isActive(item.id)}
       aria-pressed={multi ? isActive(item.id) : undefined}
       disabled={item.disabled}
-      tabindex={isActive(item.id) ? 0 : -1}
+      tabindex={multi ? undefined : isActive(item.id) ? 0 : -1}
       onclick={() => select(item)}
       onkeydown={(e) => onKey(e, i)}
     >

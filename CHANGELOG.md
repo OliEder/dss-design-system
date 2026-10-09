@@ -6,6 +6,10 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 ## [Unveröffentlicht] — Marken-Rollen und DBB-Marke
 
 ### Geändert
+- **Svelte-Tabs mit `multi` wie in React:** alle Schalter sind per Tab erreichbar (vorher war nur ein gewählter Schalter erreichbar, ohne Auswahl keiner), die Pfeiltasten tun bei `multi` nichts, und `aria-orientation` steht nicht mehr an der Gruppe.
+- **Stepper-Schaltfläche** (mit `onstep`/`onStep`) trägt die sichtbare Nummer im Namen („3. Kampfgericht“, WCAG 2.5.3); vorher las sie nur das Label.
+- **TopBar „Live“:** Text in hellerem Rotton (6,2:1 auf Schwarz, 5,2:1 auf Anthrazit; vorher `--err-fill` mit 4,4:1 bzw. 3,7:1). Der Puls-Punkt bleibt unverändert.
+- Beispiel-Icon `i-board` (gibt es im Sprite nicht) in Demo und Kommentar durch `i-edit`/`i-calendar` ersetzt.
 - **Modal-Fuß** (`.dss-m-footer`) bricht auf schmalen Bildschirmen um, statt Buttons abzuschneiden. Peer-Abhängigkeit `svelte` auf `^5.20.0` (das Svelte-Modal nutzt `$props.id()`).
 - **Fokus-Ring jetzt Gold/Amber und gestrichelt, im Dunkelmodus dezenter** (BBV Amber 600 → 700, DBB Gold 600 → 700). Neue Tokens
   `--ring-style` (`dashed`) und `--ring-color-on-dark` (für immer dunkle Flächen wie AppNav dunkel, Frame dunkel, TopBar dunkel).
@@ -16,6 +20,7 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 - **Svelte-Modal:** eindeutige Titel-id je Modal (vorher überall `dss-modal-title`, doppelt bei mehreren Modals) und der Titel ist eine `h2` (wie in der React-Fassung, vorher `h4`).
 
 ### Neu
+- **Navigations-Doku als MDX-Seiten** `Components/Tabs`, `Components/Navigation` (TopBar, BottomNav, Breadcrumbs, Stepper) und `Components/AppNav` mit Zustands-Matrizen, bedienbaren Beispielen, Tastatur-Tabellen (gegen den Code belegt), Mobil-Vorschau der AppNav, Code-Beispielen je Fassung und Dos und Don'ts; die Seite `Docs/Navigation` und die automatischen Doku-Seiten der drei Komponenten entfallen.
 - **Overlay-Doku als MDX-Seiten** `Components/Modal` und `Components/Banner` mit Anatomie, Schweregraden, Größen, bedienbarem Beispiel, Zustands-Matrix, Code-Beispielen je Fassung (Fokusverhalten von Svelte und React gegen den Code belegt) und Dos und Don'ts; die automatischen Doku-Seiten dieser beiden Komponenten entfallen.
 - **Eingabe-Doku als MDX-Seiten** `Components/TextInput`, `Components/Select` und `Components/Checkbox` mit Zustands-Matrix, Code-Beispielen je Fassung und Dos und Don'ts; die Seite `Docs/Forms` und die automatischen Doku-Seiten dieser drei Komponenten entfallen.
 - **Spielplan-Doku als MDX-Seite** `Components/Spielplan` (mit Auto-Docs-Texten von ScheduleTable/ScheduleGrid); die Seite `Docs/Spielplan` entfällt.

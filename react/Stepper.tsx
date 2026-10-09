@@ -32,7 +32,7 @@ export function Stepper({ steps, variant = 'horizontal', onStep, ariaLabel = 'Fo
     const content = step.state === 'done' ? <Icon name="check" size={14} /> : <span aria-hidden="true">{index + 1}</span>;
     if (onStep && step.state !== 'pending') {
       return (
-        <button type="button" className="dss-step-dot" aria-label={step.label} onClick={() => onStep(step.id)}>
+        <button type="button" className="dss-step-dot" aria-label={`${index + 1}. ${step.label}`} onClick={() => onStep(step.id)}>
           {content}
         </button>
       );

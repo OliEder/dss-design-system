@@ -1,0 +1,127 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as TabsStories from './Tabs.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import { DocTable } from './docs/blocks/DocTable';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './Tabs.code';
+
+<Meta of={TabsStories} />
+
+# Tabs
+
+Tabs wechseln zwischen gleichrangigen Ansichten derselben Daten, zum Beispiel Übersicht, Boxscore und Play-by-Play eines Spiels. Es gibt vier Stile und ein Vokabular; die Tastaturbedienung steht im Abschnitt „Bedienung“. Zur Navigation zwischen Seiten dienen die [AppNav](?path=/docs/components-appnav--docs) und die [Breadcrumbs](?path=/docs/components-navigation--docs).
+
+## Vier Stile, ein Vokabular
+
+**Underline** für hierarchische Seitenebenen, **Segmented** für Schaltflächen im Panel, **Pills** als umbruchfreundliche Filterleiste und **Vertical** für Einstellungen mit Seitenleiste. Der gewählte Tab trägt bei Underline den Marken-Indikator (`--indicator`) als 2-px-Linie, bei Vertical als 3-px-Balken links, bei Segmented eine Fläche mit Schatten und bei Pills die Farbe der primären Schaltfläche.
+
+<Canvas of={TabsStories.Varianten} />
+
+## Größen
+
+Die Höhe wählst du mit `size`: `sm` 36 px, `md` 44 px (Standard) und `lg` 56 px, jeweils als Mindesthöhe (`min-height`). Das gilt für `underline`, `segmented` und `pills`; im vertikalen Stil hat `sm` wegen des größeren Paddings 38 px.
+
+<Canvas of={TabsStories.Groessen} />
+
+<DocTable
+  label="Größen der Tabs"
+  head={['Größe', 'Höhe', 'Einsatz']}
+  rows={[
+    ['sm', '36 px', 'Dichte Werkzeugleisten (kleiner als die empfohlene Touch-Fläche von 44 px)'],
+    ['md', '44 px', 'Standard, alle Screens'],
+    ['lg', '56 px', 'Große Umschalter, z. B. die Viertel im Live-Scoring'],
+  ]}
+/>
+
+## Zähler, Symbole und gesperrte Tabs
+
+Ein Tab kann einen Zähler (`count`) hinter dem Label tragen, ein Symbol (`icon`) davor und gesperrt sein (`disabled`). Die Zähler stehen in einer Mono-Kapsel; beim gewählten Tab nehmen sie die Farben der primären Schaltfläche an. Ein gesperrter Tab ist auf 45 % abgeblendet, nicht klickbar und nicht fokussierbar. Die Pfeiltasten überspringen ihn.
+
+<Canvas of={TabsStories.Bausteine} />
+
+## Bedienung: Einzel- und Mehrfachauswahl
+
+Mit Einzelauswahl ist die Leiste eine Tab-Liste (`role="tablist"`, jeder Tab `role="tab"` mit `aria-selected`). Nur der gewählte Tab ist per **Tab**-Taste erreichbar (`tabindex="0"`, alle anderen `-1`); innerhalb der Leiste wechseln die Pfeiltasten. Mit `multi` (Pills als Filter) ist die Leiste eine Gruppe (`role="group"`), jeder Tab ein Schalter mit `aria-pressed`, alle sind per **Tab** erreichbar und ein Klick oder **Enter**/**Leertaste** schaltet ihn um.
+
+<Canvas of={TabsStories.Bedienung} />
+
+<DocTable
+  label="Tastaturbedienung"
+  head={['Taste', 'Einzelauswahl', 'Mehrfachauswahl (multi)']}
+  rows={[
+    ['Tab', 'Springt in die Leiste (auf den gewählten Tab) und wieder heraus', 'Springt von Schalter zu Schalter'],
+    ['Pfeil rechts / links', 'Wählt den nächsten bzw. vorherigen Tab und fokussiert ihn. Gesperrte werden übersprungen, am Rand geht es von vorn weiter. Bei vertical: Pfeil unten / oben.', 'Ohne Wirkung'],
+    ['Enter / Leertaste', 'Wählt den fokussierten Tab', 'Schaltet den fokussierten Tab um'],
+    ['Pos1 / Ende', 'Nicht belegt', 'Nicht belegt'],
+  ]}
+/>
+
+Die Pfeiltasten wählen sofort, sie aktivieren also schon beim Fokussieren. Die Komponente rendert nur die Leiste: Sie vergibt weder `id` noch `aria-controls`, und das Panel (Inhalt der gewählten Ansicht) zeigt deine App selbst. Der Name der Leiste (`ariaLabel`, Standard „Tabs“) sollte benennen, was sie umschaltet.
+
+## Zustände: Hover, Fokus, Gewählt, Gesperrt
+
+Hover färbt die Schrift dunkler (Underline), hinterlegt den Tab (Segmented, Vertical) oder verstärkt den Rand (Pills). Der Fokus-Ring ist gestrichelt in Gold/Amber (3 px, 2 px Abstand) und im Dunkelmodus dezenter. Einen eigenen Stil für die gehaltene Maustaste (Gedrückt) haben Tabs nicht: Die Spalte zeigt dort denselben Hover.
+
+<Canvas of={TabsStories.Zustaende} />
+
+Die Matrix ist fest gesetzt. Jede andere Story lässt sich über die Werkzeugleiste **Zustand** auf Hover, Fokus oder Aktiv schalten. Marke und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Verwendung: Import und Props
+
+Importiere `Tabs` über den Path-Export (Svelte) bzw. aus dem React-Paket und übergib die Tabs als `items`. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste. Das Vanilla-Beispiel enthält nur das Markup; Umschalten und Pfeiltasten brauchen dort eigenen Code.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+Die Tabelle zeigt die Steuerelemente der Demo; `preset` und `sidebar` gehören nur zur Demo.
+
+<Controls of={TabsStories.UnderlineSeitenTabs} />
+
+Zusätzlich gibt es in der React-Fassung:
+
+<DocTable
+  label="Weitere Props der React-Fassung"
+  head={['Prop', 'Typ', 'Beschreibung']}
+  rows={[
+    ['value, defaultValue', 'string', 'Gewählter Tab: kontrolliert (value) oder unkontrolliert (defaultValue, sonst der erste nicht gesperrte Tab).'],
+    ['onValueChange', '(id) => void', 'Wird bei jeder Auswahl mit der Tab-Id aufgerufen.'],
+    ['activeIds, defaultActiveIds', 'string[]', 'Gewählte Ids bei multi: kontrolliert oder unkontrolliert.'],
+    ['onActiveIdsChange', '(ids) => void', 'Wird bei jedem Umschalten mit allen gewählten Ids aufgerufen.'],
+    ['className', 'string', 'Zusätzliche Klasse an der Leiste.'],
+  ]}
+/>
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Ansichten derselben Daten',
+      doText: 'Tabs wechseln die Ansicht auf einer Seite: Übersicht, Boxscore und Play-by-Play desselben Spiels.',
+      dontText: 'Tabs sind Schaltflächen ohne Ziel-Adresse und ohne aria-current. Für Spielplan, Mannschaften und Einstellungen als eigene Seiten gehört eine AppNav mit Links hin.',
+      good: <Story of={TabsStories.DoAnsichten} inline />,
+      bad: <Story of={TabsStories.DontAnsichten} inline />,
+    },
+    {
+      title: 'Wenige Tabs, viele Optionen als Pills',
+      doText: 'Pills brechen um, eine längere Filterleiste bleibt vollständig sichtbar.',
+      dontText: 'Eine Underline-Leiste bricht nicht um und scrollt nicht: Was nicht in die Zeile passt, ragt über den Rand hinaus (hier vom Rahmen abgeschnitten).',
+      good: <Story of={TabsStories.DoWenige} inline />,
+      bad: <Story of={TabsStories.DontWenige} inline />,
+    },
+    {
+      title: 'Zahlen als Zähler',
+      doText: 'count setzt die Zahl in eine eigene Kapsel; sie bleibt vom Label getrennt und folgt dem gewählten Zustand.',
+      dontText: 'Eine Zahl im Label („Aufstellung (12)“) ist reiner Text, hat keine Kapsel und liest sich im Tab-Namen mit.',
+      good: <Story of={TabsStories.DoZahl} inline />,
+      bad: <Story of={TabsStories.DontZahl} inline />,
+    },
+    {
+      title: 'Filter mit multi',
+      doText: 'Mit multi sind mehrere Pills gleichzeitig gewählt (aria-pressed), so wie ein Filter es braucht.',
+      dontText: 'Ohne multi ist es eine Einzelauswahl: Ein Klick ersetzt die Auswahl, es bleibt immer genau ein Tab gewählt.',
+      good: <Story of={TabsStories.DoMulti} inline />,
+      bad: <Story of={TabsStories.DontMulti} inline />,
+    },
+  ]}
+/>
