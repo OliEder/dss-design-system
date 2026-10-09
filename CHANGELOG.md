@@ -6,6 +6,14 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 ## [Unveröffentlicht] — Marken-Rollen und DBB-Marke
 
 ### Geändert
+- **Spielplan-Seite:** `Components/Spielplan` zeigt die Tabellen jetzt mit den echten DSS-Abständen (die Doku-CSS überschrieb zuvor Padding und Kopfhöhe von `dss-tbl--schedule` und `dss-sgrid`); die Seite ist dadurch etwa 300 px kürzer.
+- **Table: Scrollbereich ist eine benannte, fokussierbare Region** (`role="region"`, `tabindex="0"`, Name aus `caption`, sonst `title`, sonst „Tabelle“), mit gestricheltem Fokus-Ring innen (`.dss-table-scroll:focus-visible`, auch für ScheduleTable und ScheduleGrid; vorher Browser-Standard-Ring). Svelte-Table bekommt `caption` und `titleAs` wie React.
+- **Table: Fokus-Ring für Link, Schalter und Eingaben in Zellen** sowie für fokussierbare Zeilen (gestrichelt, Gold/Amber); im Dunkelmodus auf der eigenen Zeile (`is-own`) in Chip-Textfarbe (vorher 2,5 bis 2,8:1).
+- **Positionsmarken (`.dss-pos`) und Status-Pillen (`.dss-pill-s`) im Dunkelmodus:** nutzen die Chip-Tokens statt `--ok/err/warn/info-text` mit `-soft` (Dunkelmodus 8,1 bis 14:1, Hellmodus Pixel für Pixel unverändert). Neue Tokens `--dss-chip-info-*` und `--dss-chip-neutral-*`.
+- **Table: Plus/Minus-Spalten** über `td.num.plus` und `td.num.minus` (Chip-Farben, auf `dss-frame--dark` helle Töne) statt Inline-Farbe mit `--ok-text`/`--err-text` (2,3 bis 2,5:1 auf dunklen Flächen).
+- **Table `striped` mit `is-own`:** die eigene Zeile bleibt auf geraden Zeilen markiert (der Streifen überdeckte sie vorher).
+- **Storybook:** Fließtext-Tabellen-Regeln der Doku-Seiten (`blocks.css`) und Überschriften-Farbe überschreiben keine DSS-Tabellen und Rahmentitel in Stories mehr.
+
 - **Klickbare Karte hat einen Fokus-Ring** (gestrichelt, Gold/Amber): `.dss-card` als Link, `button` oder `role="button"` (vorher der Browser-Standard-Ring).
 - **Svelte-Card:** ein `div` mit `onclick` löst auch bei Enter und Leertaste aus (wie die React-Fassung; vorher nur per Maus).
 - **Spielkarte:** Zusatztext (Spieltag) ohne `opacity` (vorher 3,0:1), Liga in Textfarbe; **Skeleton-Spielkarte** und **Hero-Spielerkarte** laufen auf schmalen Bildschirmen nicht mehr über (Skeleton `min-width: min(320px, 100%)`, Hero in einer Spalte unter 560 px mit kleineren Kennzahlen).
@@ -24,6 +32,7 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 - **Svelte-Modal:** eindeutige Titel-id je Modal (vorher überall `dss-modal-title`, doppelt bei mehreren Modals) und der Titel ist eine `h2` (wie in der React-Fassung, vorher `h4`).
 
 ### Neu
+- **Tabellen-Doku als MDX-Seiten** `Components/Table` (Dichten mit gemessenen Höhen, Boxscore, dunkle Fläche, Zellbausteine, Zahlen, Sortierung, Streifen, Zustands-Matrix, Props, Dos und Don'ts) und `Components/PlayByPlay` (Eintrag, Ereignisarten, Live-Betrieb nach Code- und Browser-Beleg, Zustände, Dos und Don'ts) mit Code-Beispielen je Fassung; die Seite `Docs/Tables & Live-Scoring` und die automatischen Doku-Seiten entfallen (Gruppe `Docs` ist leer und aus der Sortierung entfernt).
 - **Karten-Doku als MDX-Seiten** `Components/Card`, `Components/Card Library` (Spielkarte, Spielerkarte, Ladezustand) und `Components/EmptyState` mit Zustands-Matrizen, Spielwiesen für die Props, Code-Beispielen je Fassung und Dos und Don'ts; die Seite `Docs/Cards & Lists` und die automatischen Doku-Seiten der drei Komponenten entfallen.
 - **Navigations-Doku als MDX-Seiten** `Components/Tabs`, `Components/Navigation` (TopBar, BottomNav, Breadcrumbs, Stepper) und `Components/AppNav` mit Zustands-Matrizen, bedienbaren Beispielen, Tastatur-Tabellen (gegen den Code belegt), Mobil-Vorschau der AppNav, Code-Beispielen je Fassung und Dos und Don'ts; die Seite `Docs/Navigation` und die automatischen Doku-Seiten der drei Komponenten entfallen.
 - **Overlay-Doku als MDX-Seiten** `Components/Modal` und `Components/Banner` mit Anatomie, Schweregraden, Größen, bedienbarem Beispiel, Zustands-Matrix, Code-Beispielen je Fassung (Fokusverhalten von Svelte und React gegen den Code belegt) und Dos und Don'ts; die automatischen Doku-Seiten dieser beiden Komponenten entfallen.

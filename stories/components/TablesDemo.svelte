@@ -1,37 +1,6 @@
 <script>
   import Table from '../../svelte/Table.svelte';
-
-  // ─── Preset data ───────────────────────────────────────────────
-  const roster = [
-    { num: '4',  name: 'A. Seiferth',  pos: 'PG', cap: false, status: 'on' },
-    { num: '7',  name: 'N. Wimberg',   pos: 'SG', cap: false, status: 'on' },
-    { num: '11', name: 'R. Christen',  pos: 'SF', cap: true,  status: 'on' },
-    { num: '13', name: 'T. Reuter',    pos: 'PF', cap: false, status: 'on' },
-    { num: '15', name: 'J. Albers',    pos: 'C',  cap: false, status: 'on' },
-    { num: '21', name: 'P. Steidl',    pos: 'SG', cap: false, status: 'bench' },
-    { num: '24', name: 'M. Niebuhr',   pos: 'SF', cap: false, status: 'bench' },
-    { num: '32', name: 'F. Diener',    pos: 'PF', cap: false, status: 'bench' },
-    { num: '8',  name: 'O. Brettschneider', pos: 'SG', cap: false, status: 'bench' },
-    { num: '9',  name: 'L. Markwart',  pos: 'PG', cap: false, status: 'dnp' },
-  ];
-
-  const boxscore = [
-    { num: '4',  name: 'A. Seiferth', pos: 'pg', min: '32:14', pts: 22, p2: '6/11', p3: '3/6',  ft: '1/2', reb: 4, ast: 8, foul: 2, pm: '+18' },
-    { num: '7',  name: 'N. Wimberg',  pos: 'sg', min: '29:45', pts: 19, p2: '4/8',  p3: '3/8',  ft: '2/2', reb: 3, ast: 5, foul: 3, pm: '+15' },
-    { num: '11', name: 'R. Christen', pos: 'sf', min: '28:02', pts: 14, p2: '5/10', p3: '0/2',  ft: '4/4', reb: 7, ast: 2, foul: 2, pm: '+12' },
-    { num: '13', name: 'T. Reuter',   pos: 'pf', min: '26:18', pts: 12, p2: '5/9',  p3: '0/0',  ft: '2/3', reb: 9, ast: 1, foul: 3, pm: '+9'  },
-    { num: '15', name: 'J. Albers',   pos: 'c',  min: '24:30', pts: 10, p2: '4/7',  p3: '0/0',  ft: '2/4', reb: 11,ast: 1, foul: 4, pm: '+8'  },
-    { num: '21', name: 'P. Steidl',   pos: 'sg', min: '12:08', pts: 6,  p2: '2/4',  p3: '0/2',  ft: '2/2', reb: 1, ast: 3, foul: 1, pm: '+3'  },
-    { num: '24', name: 'M. Niebuhr',  pos: 'sf', min: '08:55', pts: 4,  p2: '1/3',  p3: '0/1',  ft: '2/2', reb: 2, ast: 0, foul: 1, pm: '+2'  },
-  ];
-
-  const crew = [
-    { role: 'Hauptschiedsrichter', name: 'Stefan Bauer',  license: 'SR-2024-0892', status: 'on' },
-    { role: '2. Schiedsrichter',    name: 'Markus Höhne',  license: 'SR-2024-1245', status: 'on' },
-    { role: 'Anschreiber',          name: 'Jana Lutz',     license: 'KG-2025-7621', status: 'on' },
-    { role: 'Zeitnehmer',           name: 'Tom Kellner',   license: 'KG-2025-7188', status: 'on' },
-    { role: '24-Sek.-Zeitnehmer',   name: 'Eva Hartmann',  license: 'KG-2025-8042', status: 'on' },
-  ];
+  import { roster, boxscore, crew, signClass } from './tableData';
 
   let { preset = 'boxscore', density = 'compact', dark = false } = $props();
 </script>
@@ -41,7 +10,7 @@
 {#if preset === 'roster'}
   <Table
     title="TSV Tröster Breitengüßbach"
-    meta="12 Spieler · Validiert · Touch · 60 px"
+    meta="10 Spieler · Touch · 60 px"
     density="touch"
     {dark}
     columns={[
@@ -55,7 +24,7 @@
     {#snippet rows()}
       {#each roster as r}
         <tr>
-          <td class="center"><input type="checkbox" checked={r.status === 'on'} /></td>
+          <td class="center"><input type="checkbox" class="dss-check-input" checked={r.status === 'on'} aria-label={`${r.name} im Spielbericht`} /></td>
           <td class="center"><span class={`dss-tn heim ${r.cap ? 'captain' : ''}`}>{r.num}</span></td>
           <td>
             <div class={`dss-player ${r.status === 'bench' ? 'bench' : ''} ${r.status === 'dnp' ? 'dnp' : ''}`}>
@@ -112,13 +81,13 @@
           <td class="num">{p.reb}</td>
           <td class="num">{p.ast}</td>
           <td class="num">{p.foul}</td>
-          <td class="num" style="color: var(--ok-text)">{p.pm}</td>
+          <td class={`num ${signClass(p.pm)}`}>{p.pm}</td>
         </tr>
       {/each}
     {/snippet}
     {#snippet foot()}
       <tr>
-        <td colspan="3" style="text-align: left; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--n-600);">Team Total</td>
+        <td colspan="3" style="text-align: left; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;">Team Total</td>
         <td class="num">—</td>
         <td class="num" style="font-size: 15px;">87</td>
         <td class="num">27/52</td>
@@ -127,7 +96,7 @@
         <td class="num">37</td>
         <td class="num">20</td>
         <td class="num">16</td>
-        <td class="num" style="color: var(--ok-text)">+23</td>
+        <td class="num plus">+23</td>
       </tr>
     {/snippet}
   </Table>
@@ -162,9 +131,9 @@
     {#each ['touch', 'default', 'compact', 'dense'] as d}
       <div>
         <div style="font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--page-mute); margin-bottom: 8px;">
-          Density · {d} · {d === 'touch' ? '60' : d === 'default' ? '48' : d === 'compact' ? '40' : '32'} px
+          Dichte · {d} · {d === 'touch' ? '60' : d === 'default' ? '48' : d === 'compact' ? '40' : '32'} px
         </div>
-        <Table density={d} {dark} columns={[
+        <Table density={d} {dark} caption={`Dichte ${d}`} columns={[
           { key: 'num', label: '#', width: '52px' },
           { key: 'name', label: 'Spieler' },
           { key: 'pts', label: 'PTS', width: '70px', align: 'right' },

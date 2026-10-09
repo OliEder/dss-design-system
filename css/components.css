@@ -37,6 +37,8 @@
   --dss-chip-ok-bg:  var(--ok-soft);   --dss-chip-ok-fg:  var(--ok-text);
   --dss-chip-err-bg: var(--err-soft);  --dss-chip-err-fg: var(--err-text);
   --dss-chip-warn-bg: var(--warn-soft); --dss-chip-warn-fg: var(--warn-text);
+  --dss-chip-info-bg: var(--info-soft); --dss-chip-info-fg: var(--info-text);
+  --dss-chip-neutral-bg: var(--n-100);  --dss-chip-neutral-fg: var(--n-700);
 }
 
 /* ── Semantische Aliase · Dark ──────────────────────────────── */
@@ -60,6 +62,8 @@
     --dss-chip-ok-bg: oklch(0.30 0.06 150);  --dss-chip-ok-fg: oklch(0.85 0.12 150);
     --dss-chip-err-bg: oklch(0.30 0.08 27);  --dss-chip-err-fg: oklch(0.88 0.09 27);
     --dss-chip-warn-bg: oklch(0.32 0.06 75); --dss-chip-warn-fg: oklch(0.90 0.10 80);
+    --dss-chip-info-bg: oklch(0.30 0.06 245); --dss-chip-info-fg: oklch(0.88 0.08 245);
+    --dss-chip-neutral-bg: var(--n-800); --dss-chip-neutral-fg: var(--n-200);
   }
 }
 :root[data-theme="dark"] {
@@ -75,6 +79,8 @@
   --dss-chip-ok-bg: oklch(0.30 0.06 150);  --dss-chip-ok-fg: oklch(0.85 0.12 150);
   --dss-chip-err-bg: oklch(0.30 0.08 27);  --dss-chip-err-fg: oklch(0.88 0.09 27);
   --dss-chip-warn-bg: oklch(0.32 0.06 75); --dss-chip-warn-fg: oklch(0.90 0.10 80);
+  --dss-chip-info-bg: oklch(0.30 0.06 245); --dss-chip-info-fg: oklch(0.88 0.08 245);
+  --dss-chip-neutral-bg: var(--n-800); --dss-chip-neutral-fg: var(--n-200);
 }
 
 /* ── Basis ──────────────────────────────────────────────────── */
@@ -219,6 +225,14 @@
 /* ── Tabelle ────────────────────────────────────────────────── */
 .dss-frame { border: 1px solid var(--dss-line); border-radius: 14px; background: var(--dss-surface); overflow: hidden; color: var(--dss-fg); }
 .dss-table-scroll { overflow-x: auto; }
+.dss-table-scroll:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: -3px; }
+:where(.dss-tbl td, .dss-tbl th) :is(a, button, input, select, textarea, [tabindex="0"]):focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
+:where(.dss-tbl tbody) tr:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: -3px; }
+/* Dunkelmodus: der Ring (2,5 bis 2,8:1) liegt auf der Auswahlfläche der eigenen Zeile zu schwach, daher der hellere Ton */
+:root[data-theme="dark"] .dss-tbl tr.is-own :focus-visible { outline-color: var(--dss-chip-amber-fg); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .dss-tbl tr.is-own :focus-visible { outline-color: var(--dss-chip-amber-fg); }
+}
 .dss-tbl { width: 100%; border-collapse: collapse; font-family: var(--font-body); font-size: var(--fs-body-md); color: inherit; }
 .dss-tbl th, .dss-tbl td { text-align: left; padding: 0 14px; vertical-align: middle; white-space: nowrap; }
 .dss-tbl th {
@@ -432,6 +446,8 @@
 .dss-tbl th { position: sticky; top: 0; z-index: 1; }
 .dss-tbl th.right, .dss-tbl td.right { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 500; }
 .dss-tbl td.num.dim { color: var(--dss-mute); }
+.dss-tbl td.num.plus { color: var(--dss-chip-ok-fg); }
+.dss-tbl td.num.minus { color: var(--dss-chip-err-fg); }
 .dss-tbl th.sortable { cursor: pointer; user-select: none; }
 .dss-tbl th.sortable::after {
   content: ''; display: inline-block; width: 0; height: 0; border: 4px solid transparent;
@@ -443,6 +459,8 @@
 .dss-tbl--dense td { height: 32px; font-size: var(--fs-body-sm); padding: 0 10px; }
 .dss-tbl--dense th { padding: 0 10px; height: 32px; }
 .dss-tbl--striped tbody tr:nth-child(even) td { background: var(--dss-hover-bg); }
+/* Die eigene Zeile bleibt auch auf geraden Streifen markiert (der Streifen überdeckte sie sonst) */
+.dss-tbl--striped tbody tr.is-own td { background: var(--dss-selected-bg); }
 .dss-tbl tfoot td {
   font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 700; color: var(--dss-fg);
   background: var(--dss-surface-2); border-top: 1px solid var(--dss-line-strong); border-bottom: 0; height: 42px;
@@ -451,10 +469,13 @@
 .dss-frame--dark .dss-tbl td { border-bottom-color: var(--n-800); color: var(--n-200); }
 .dss-frame--dark .dss-tbl tbody tr:hover td { background: var(--n-900); }
 .dss-frame--dark .dss-tbl td.num.lead { color: var(--n-50); }
+.dss-frame--dark .dss-tbl td.num.plus { color: oklch(0.85 0.12 150); }
+.dss-frame--dark .dss-tbl td.num.minus { color: oklch(0.88 0.09 27); }
 .dss-frame--dark .dss-tbl th.sortable::after { border-top-color: var(--n-400); }
 .dss-frame--dark .dss-tbl th.sort-asc::after { border-bottom-color: var(--n-50); }
 .dss-frame--dark .dss-tbl th.sort-desc::after { border-top-color: var(--n-50); }
 .dss-frame--dark .dss-tbl--striped tbody tr:nth-child(even) td { background: var(--n-900); }
+.dss-frame--dark .dss-tbl--striped tbody tr.is-own td { background: var(--dss-selected-bg); }
 .dss-frame--dark .dss-tbl tfoot td { background: var(--n-900); color: var(--n-50); border-top-color: var(--n-700); }
 
 /* Dekorations-Klassen für Boxscore/Roster (Trikotnummer, Position, Pille) */
@@ -483,18 +504,18 @@
   display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box; min-width: 22px; padding: 0 4px; height: 22px; border-radius: 5px;
   font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-caption); background: var(--base-100); color: var(--base-700);
 }
-.dss-pos.pg { background: var(--cool-100); color: var(--cool-800); }
-.dss-pos.sg { background: var(--info-soft); color: var(--info-text); }
-.dss-pos.sf { background: var(--signal-100); color: var(--signal-800); }
-.dss-pos.pf { background: var(--warn-soft); color: var(--warn-text); }
-.dss-pos.c { background: var(--err-soft); color: var(--err-text); }
+.dss-pos.pg { background: var(--dss-chip-sky-bg); color: var(--dss-chip-sky-fg); }
+.dss-pos.sg { background: var(--dss-chip-info-bg); color: var(--dss-chip-info-fg); }
+.dss-pos.sf { background: var(--dss-chip-amber-bg); color: var(--dss-accent-text); }
+.dss-pos.pf { background: var(--dss-chip-warn-bg); color: var(--dss-chip-warn-fg); }
+.dss-pos.c { background: var(--dss-chip-err-bg); color: var(--dss-chip-err-fg); }
 .dss-pill-s {
   display: inline-flex; align-items: center; gap: 5px; font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600;
-  padding: 3px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.06em; background: var(--n-100); color: var(--n-700);
+  padding: 3px 7px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.06em; background: var(--dss-chip-neutral-bg); color: var(--dss-chip-neutral-fg);
 }
-.dss-pill-s.on { background: var(--ok-soft); color: var(--ok-text); }
-.dss-pill-s.cap { background: var(--signal-100); color: var(--signal-800); }
-.dss-pill-s.dnp { background: var(--err-soft); color: var(--err-text); }
+.dss-pill-s.on { background: var(--dss-chip-ok-bg); color: var(--dss-chip-ok-fg); }
+.dss-pill-s.cap { background: var(--dss-chip-amber-bg); color: var(--dss-accent-text); }
+.dss-pill-s.dnp { background: var(--dss-chip-err-bg); color: var(--dss-chip-err-fg); }
 
 /* ── TopBar · dunkle App-Leiste (Modifier, die helle Vereinsregister-Leiste bleibt) ── */
 .dss-topbar.dss-topbar--dark {
