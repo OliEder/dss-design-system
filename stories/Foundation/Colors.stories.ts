@@ -1,6 +1,8 @@
 import Colors from './Colors.svelte';
 
 export default {
+  // Die Seite ist die MDX-Seite; die Stories sind darin eingebettet
+  tags: ['!dev'],
   title: 'Foundation/Colors',
   component: Colors,
   parameters: { layout: 'fullscreen' },

@@ -32,10 +32,10 @@ const example = (name: string, extra: Record<string, unknown> = {}) => ({
   parameters: { controls: { disable: true }, layout: 'padded' },
 });
 
-export const Anatomie   = example('anatomie');
-export const Hierarchie = example('hierarchie');
-export const Groessen   = example('groessen');
-export const Zustaende  = example('zustaende');
+export const Anatomie   = { ...example('anatomie'), tags: ['!dev'] };
+export const Hierarchie = { ...example('hierarchie'), tags: ['!dev'] };
+export const Groessen   = { ...example('groessen'), tags: ['!dev'] };
+export const Zustaende  = { ...example('zustaende'), tags: ['!dev'] };
 
 // Dos und Don'ts: nur in der Doku, nicht in der Seitenleiste. Der Tag steht als Literal an jeder Story
 // (Storybooks Indexer liest Tags nur aus Objektliteralen, nicht aus dem Rückgabewert einer Funktion).

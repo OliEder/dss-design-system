@@ -21,7 +21,7 @@ const example = (name: string) => ({
   parameters: { controls: { disable: true }, layout: 'padded' },
 });
 
-export const AlleFamilien = { ...example('galerie'), parameters: { controls: { disable: true }, layout: 'fullscreen' } };
+export const AlleFamilien = { ...example('galerie'), tags: ['!dev'], parameters: { controls: { disable: true }, layout: 'fullscreen' } };
 
 export const Groessen          = { ...example('groessen'), parameters: { controls: { disable: true }, layout: 'fullscreen' }, tags: ['!dev'] };
 export const Farbe             = { ...example('farbe'), tags: ['!dev'] };
