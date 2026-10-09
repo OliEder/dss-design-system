@@ -68,12 +68,20 @@ Neue Dateien/Änderungen:
 
 ## Zustände einschließlich Fokus (Vorlage für alle Komponenten)
 
-Bisher zeigt nur die Button-Seite die Zustände Hover, Fokus, Aktiv und Gesperrt (feste Klassen `pseudo-*`). Bei allen anderen Komponenten fehlt
-besonders der Fokus-Zustand. Ab Welle 0 gehört in jede MDX-Seite ein Abschnitt **Zustände** als Story `Zustaende`:
-Standard, Hover, Fokus (`pseudo-focus-visible`), Aktiv, Gesperrt, jeweils auf hellem und dunklem Grund; bei Eingabefeldern zusätzlich Fehler.
-Welche Zustände eine Komponente hat, richtet sich nach ihren CSS-Regeln; fehlende Fokus-Regeln werden in der jeweiligen Welle ergänzt und nicht
-nur dokumentiert. Beim Button kommt dazu der Abgleich, ob Fokus-Ring (Farbe, Abstand, Kontrast auf Hell und Dunkel, beide Marken) auf der neuen Seite
-sichtbar und konsistent ist; Abweichungen werden in Welle 0 behoben.
+Bisher lassen sich Hover und Fokus nur auf der Button-Seite als feste Beispiele sehen. In keiner Komponente kann man sie direkt einschalten, so wie
+„Gesperrt“ über ein Steuerelement. Ab Welle 0 gilt für **alle** Komponenten:
+
+1. **Werkzeugleiste „Zustand“** (neues Global in `.storybook/preview.ts`): Normal, Hover, Fokus, Aktiv. Der Dekorator setzt die vorhandenen Klassen
+   `pseudo-hover`, `pseudo-focus-visible`, `pseudo-active` (aus `.storybook/pseudo-states.ts`) auf alle bedienbaren Elemente der gerade gezeigten
+   Story (`button`, `a[href]`, `input`, `select`, `textarea`, `[tabindex]`, `summary`) und hält sie bei neu gerenderten Elementen aktuell
+   (MutationObserver). Wirkt im Canvas und auf Doku-Seiten (jede eingebettete Story). Ohne Einstellung bleibt alles wie bisher.
+2. **Gesperrt** bleibt das Steuerelement `disabled` (Controls) bei den Komponenten, die es kennen; die Matrix zeigt es zusätzlich.
+3. **Abschnitt „Zustände“ in jeder MDX-Seite** als Story `Zustaende`: Standard, Hover, Fokus, Aktiv, Gesperrt nebeneinander, auf hellem und dunklem
+   Grund; bei Eingabefeldern zusätzlich Fehler. Diese Story setzt die Klassen fest und ignoriert die Werkzeugleiste.
+4. **Fehlende Regeln:** Hat eine Komponente keine `:focus-visible`-Regel, wird sie in der jeweiligen Welle ergänzt, nicht nur dokumentiert.
+   Beim Button entsteht kein neues Design; es wird nur geprüft, dass der vorhandene Ring auf der neuen Seite und über die Werkzeugleiste erscheint.
+
+Offen für die Umsetzung: Elemente innerhalb von Overlays (Modal, Menü) sind erst nach dem Öffnen im Dokument; der Beobachter muss sie ebenfalls erfassen.
 
 ## Prüfung (Welle 0)
 
