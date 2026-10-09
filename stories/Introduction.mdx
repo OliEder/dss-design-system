@@ -1,0 +1,105 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as IntroductionStories from './Introduction.stories';
+import './docs/blocks/blocks.css';
+
+<Meta of={IntroductionStories} />
+
+# DSS Design System
+
+Komponenten-Bibliothek für den **Digitalen Spielbericht** des Bayerischen Basketball Verbands und Schwester-Apps (Scoreboard, Vereinsregister, Live-Scoring). Dieses Storybook ist die Referenz: Jede Komponente hat eine Seite mit Beispielen, Zuständen, Props, Code und Dos und Don'ts.
+
+<Canvas of={IntroductionStories.Welcome} />
+
+## Was ist drin
+
+- **Tokens:** `tokens.css` (CSS-Variablen), `tokens.json` (Design Tokens Community Group) und `tailwind.preset.js`.
+- **CSS:** `components.css` mit den Vanilla-Klassen (`dss-btn`, `dss-card`, `dss-tabs`, …), die einzige CSS-Quelle für Svelte, React und Seiten ohne Build-Schritt.
+- **Svelte:** Komponenten unter `svelte/`, einzeln importierbar (`@bbv/dss-design-system/svelte/Button`).
+- **React:** dieselben Komponenten aus `@bbv/dss-design-system/react`.
+- **Storybook:** diese Seiten, mit Hell/Dunkel, A11y-Prüfung und den Code-Beispielen in drei Fassungen.
+
+## Marken, Schrift, Hell und Dunkel
+
+- **Marke:** BBV (Ink · Amber · Sky, Standard) und DBB (Schwarz · Gold · Orange), umschaltbar mit `data-brand="dbb"` auf `<html>`. Komponenten lesen nur Rollen-Tokens und `--dss-*`, die Marke tauscht deren Werte aus. Mehr auf der Seite [Colors](?path=/docs/foundation-colors--docs).
+- **Schrift:** unabhängig von der Marke mit `data-type="dbb"` (Rubik und Sucrose mit Fallback Barlow Condensed statt Manrope und Sora). Mehr auf der Seite [Typography](?path=/docs/foundation-typography--docs).
+- **Hell und Dunkel:** automatisch nach OS-Präferenz, erzwungen mit `data-theme="light"` oder `data-theme="dark"` auf `<html>`.
+- **Barrierefreiheit:** WCAG 2.1 AAA für alle Text-Paare, Fokus-Ring gestrichelt in Gold/Amber ([Focus & Hover](?path=/docs/foundation-focus-hover--docs)), Touch-Ziele in den Stufen 44, 56 und 64 px.
+
+## Die Werkzeugleiste
+
+Oben im Storybook stehen die Schalter, die auf allen Seiten wirken:
+
+- **Marke:** BBV oder DBB.
+- **Schrift:** Standard (Sora, Manrope) oder DBB-Original (Rubik, Sucrose).
+- **Theme:** Hell oder Dunkel.
+- **Fassung:** welche Code-Beispiele die Seiten zeigen: Vanilla (HTML und CSS), Svelte oder React.
+- **Zustand:** erzwingt Hover, Fokus oder Aktiv auf den Vorschauen einer Seite, damit du sie ohne Maus und Tastatur prüfen kannst.
+- **Viewport:** Fenstergröße der Vorschauen, etwa für Handy-Ansichten (nur in der Einzelansicht einer Story).
+
+Marke, Theme und Zustand wirken auf Vorschauen, die direkt auf der Seite stehen; Vorschauen im eigenen Rahmen (iframe) behalten ihre Einstellung.
+
+## Einbinden
+
+```html
+<link rel="stylesheet" href="fonts/fonts.css" />   <!-- selbst gehostete Schriften, optional -->
+<link rel="stylesheet" href="tokens/tokens.css" />
+<link rel="stylesheet" href="css/components.css" />
+```
+
+Für React installierst du das Paket mit seinen Peer-Abhängigkeiten und importierst Stile und Komponenten:
+
+```bash
+npm install github:OliEder/dss-design-system#v0.9.0 react react-dom @radix-ui/react-dialog
+```
+
+```tsx
+import '@bbv/dss-design-system/tokens.css';
+import '@bbv/dss-design-system/components.css';
+import { Button } from '@bbv/dss-design-system/react';
+```
+
+Svelte-Komponenten importierst du einzeln, etwa `import Button from '@bbv/dss-design-system/svelte/Button'`. Tailwind-Nutzer laden `components.css` nach `@tailwind base`. Die ausführliche Anleitung steht in der `README.md`.
+
+## Inhaltsverzeichnis
+
+### Foundation
+
+- [Colors](?path=/docs/foundation-colors--docs): Hue-Rampen, Rollen-Tokens, semantische Farben
+- [Typography](?path=/docs/foundation-typography--docs): Skala, Familien, Zahlen
+- [Focus & Hover](?path=/docs/foundation-focus-hover--docs): Fokus-Ring und Hover-Zustände
+
+### Eingabe und Aktion
+
+- [Button](?path=/docs/components-button--docs): Varianten, Größen, Touch
+- [TextInput](?path=/docs/components-textinput--docs): Eingabefeld mit Label, Hilfetext und Validierung
+- [Select](?path=/docs/components-select--docs): Auswahlfeld im DSS-Look
+- [Checkbox](?path=/docs/components-checkbox--docs): Kontrollkästchen
+
+### Hinweise und Overlays
+
+- [Modal](?path=/docs/components-modal--docs): Dialog mit Schweregraden
+- [Banner](?path=/docs/components-banner--docs): Inline-Hinweis
+
+### Karten und Inhalte
+
+- [Card](?path=/docs/components-card--docs): Container in vier Varianten
+- [Card Library](?path=/docs/components-card-library--docs): Spielkarte, Spielerkarte, Ladezustand
+- [EmptyState](?path=/docs/components-emptystate--docs): Leerzustand und Fehler
+- [Table](?path=/docs/components-table--docs): Datentabelle in vier Dichten
+- [PlayByPlay](?path=/docs/components-playbyplay--docs): Spielverlauf-Feed
+
+### Navigation
+
+- [Tabs](?path=/docs/components-tabs--docs): Underline, Segmented, Pills, Vertical
+- [Navigation](?path=/docs/components-navigation--docs): TopBar, BottomNav, Breadcrumbs, Stepper
+- [AppNav](?path=/docs/components-appnav--docs): Hauptnavigation
+
+### Spielplan
+
+- [Spielplan](?path=/docs/components-spielplan--docs): ScheduleTable und ScheduleGrid mit Varianten, Zuständen und Handy-Ansicht
+- [Spielwiese Spielplan](?path=/story/components-spielplan-spielwiese--tabelle): Spielplan-Daten selbst ausprobieren
+
+### Grafik
+
+- [Icon](?path=/docs/components-icon--docs): Sprite mit 67 Symbolen
+- [CourtLines](?path=/docs/components-courtlines--docs): Spielfeldlinien als Seitenhintergrund
