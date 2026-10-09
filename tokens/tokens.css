@@ -242,7 +242,7 @@
   /* ── Focus ring ─────────────────────────────────────────────── */
   --ring-w:     3px;
   --ring-style: dashed;                          /* gestrichelt: erkennbar auch ohne Farbwahrnehmung, gleich auf allen Flächen */
-  --ring-color: var(--amber-600);                /* Gold/Amber · ≈ #c48400, 3.2:1 auf Weiß (WCAG 1.4.11) */
+  --ring-color: oklch(0.60 0.14 calc(var(--h-amber) - 7.5));  /* Gold/Amber · ≈ #af7100, 4.0:1 auf Weiß, 3.7:1 auf #f4f4f4 (WCAG 1.4.11) */
   --ring-color-on-dark: var(--amber-700);        /* dezenter für dunklen Grund · ≈ #9b6000, ≥ 3.4:1 auf Schwarz/Anthrazit */
 
   /* ── Touch targets ──────────────────────────────────────────── */
