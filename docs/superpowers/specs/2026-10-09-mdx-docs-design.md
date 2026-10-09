@@ -66,6 +66,15 @@ Neue Dateien/Änderungen:
 4. Touch-Größe am Kampfgericht-Tisch. Do: `touch` (64 px). Don't: `sm` für Bedienung in der Halle.
 5. Gesperrt mit Grund. Do: deaktivierter Button mit Hinweistext. Don't: grauer Button ohne Erklärung.
 
+## Zustände einschließlich Fokus (Vorlage für alle Komponenten)
+
+Bisher zeigt nur die Button-Seite die Zustände Hover, Fokus, Aktiv und Gesperrt (feste Klassen `pseudo-*`). Bei allen anderen Komponenten fehlt
+besonders der Fokus-Zustand. Ab Welle 0 gehört in jede MDX-Seite ein Abschnitt **Zustände** als Story `Zustaende`:
+Standard, Hover, Fokus (`pseudo-focus-visible`), Aktiv, Gesperrt, jeweils auf hellem und dunklem Grund; bei Eingabefeldern zusätzlich Fehler.
+Welche Zustände eine Komponente hat, richtet sich nach ihren CSS-Regeln; fehlende Fokus-Regeln werden in der jeweiligen Welle ergänzt und nicht
+nur dokumentiert. Beim Button kommt dazu der Abgleich, ob Fokus-Ring (Farbe, Abstand, Kontrast auf Hell und Dunkel, beide Marken) auf der neuen Seite
+sichtbar und konsistent ist; Abweichungen werden in Welle 0 behoben.
+
 ## Prüfung (Welle 0)
 
 - Storybook-Build erfolgreich **und** `npm run storybook` startet ohne Fehler; `components-button--docs` rendert die neue MDX-Seite (keine doppelte
