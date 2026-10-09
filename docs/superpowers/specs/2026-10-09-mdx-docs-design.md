@@ -38,8 +38,8 @@ entfällt, sobald ihr Inhalt migriert ist.
 
 1. **`DosDonts`**: Props `pairs: { title: string; doText: string; dontText: string; good: ReactNode; bad: ReactNode }[]`, in MDX gefüllt mit
    `<Story of={…} />`. Aufbau pro Paar: Überschrift (die Regel, `h3`), zwei Rahmen nebeneinander „✓ Do“ und „✗ Don't“, darunter je ein Begründungssatz.
-   Bedeutung in Symbol und Wort, nicht nur in Farbe; Farben aus den semantischen Tokens. Falsche Beispiele sind `inert` und tragen eine für
-   Screenreader lesbare Beschriftung „Beispiel für falsche Verwendung“. Unter 640 px stehen die Rahmen untereinander.
+   Bedeutung in Symbol und Wort, nicht nur in Farbe; Farben aus den semantischen Tokens. Falsche Beispiele sind `inert`; der Screenreader-Text „Beispiel für falsche Verwendung“ steht in der
+   Beschriftung „Don't“ (das `inert`-Element selbst ist für Hilfstechnik unsichtbar). Unter 640 px stehen die Rahmen untereinander.
 2. **`FrameworkCode`**: Props `vanilla?`, `svelte?`, `react?` (Strings), optional `label`. Zeigt nur den Block der aktiven Fassung, Standard Svelte;
    fehlt der Code, steht „Für diese Fassung gibt es hier kein Beispiel.“ Die aktive Fassung kommt aus dem globalen Umschalter „Fassung“
    (`html[data-framework]`, im Preview-Dekorator gesetzt; auf Doku-Seiten ohne gerenderte Story muss das Attribut ebenfalls gesetzt sein, zum Beispiel
