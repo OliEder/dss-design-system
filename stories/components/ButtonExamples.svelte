@@ -36,9 +36,9 @@
   </div>
 {:else if example === 'groessen'}
   <div class="row">
-    <Button size="sm">Small · 36 px</Button>
+    <Button size="sm">Small · 44 px</Button>
     <Button size="md">Medium · 44 px</Button>
-    <Button size="lg">Large · 52 px</Button>
+    <Button size="lg">Large · 56 px</Button>
     <Button touch>Touch · 64 px</Button>
   </div>
 {:else if example === 'zustaende'}
@@ -62,7 +62,7 @@
       <div class="states">
         <div class="head dark-head">Auf dunklem Grund</div>
         {#each stateNames as s}<div class="head dark-head">{s}</div>{/each}
-        {#each ['secondary', 'ghost'] as v}
+        {#each ['secondary'] as v}
           <div class="rowlabel dark-head">{v}</div>
           <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md">{v}</button></div>
           <div><button type="button" class="dss-btn dss-btn--{v} dss-btn--md pseudo-hover">{v}</button></div>
@@ -90,7 +90,7 @@
 {:else if example === 'do-touch'}
   <Button variant="amber" touch>2-Punkte buchen</Button>
 {:else if example === 'dont-touch'}
-  <Button variant="amber" size="sm">2-Punkte buchen</Button>
+  <Button variant="amber" size="md">2-Punkte buchen</Button>
 {:else if example === 'do-grund'}
   <div class="reason">
     <button type="button" class="dss-btn dss-btn--primary dss-btn--md" disabled aria-describedby="btn-grund">Freigeben</button>

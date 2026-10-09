@@ -897,10 +897,10 @@ Buttons haben eine einheitliche Höhe je Größe, gleiche Padding-Geometrie und 
 
 | Größe | Höhe | Padding-X | Einsatz |
 |---|---|---|---|
-| `sm` | 36 px | 14 px | Inline, Toolbar, kompakte Listen |
+| `sm` | 44 px | 14 px | Inline, Toolbar, kompakte Listen (gleiche Höhe wie `md`, schmaleres Padding und kleinere Schrift) |
 | `md` | 44 px | 18 px | Standard, alle Screens |
-| `lg` | 52 px | 22 px | Hero-CTA, Modal-Primary |
-| `touch` | 64 px | 28 px | Kampfgericht, Halle, Tisch |
+| `lg` | 56 px | 22 px | Hero-CTA, Modal-Primary |
+| `touch` | 64 px | 24 px | Kampfgericht, Halle, Tisch |
 
 ## Zustände: Hover, Fokus, Aktiv, Gesperrt
 
@@ -946,7 +946,7 @@ Importiere den Button über den Path-Export und reiche bei Bedarf `variant`, `si
     {
       title: 'Touch-Größe am Kampfgericht-Tisch',
       doText: 'Die Größe touch (64 px) für die Bedienung in der Halle.',
-      dontText: 'Die Größe sm ist für Finger und Handschuhe zu klein.',
+      dontText: 'Die Standardgröße md (44 px) ist am Tisch mit Handschuhen zu knapp.',
       good: <Story of={ButtonStories.DoTouch} inline />,
       bad: <Story of={ButtonStories.DontTouch} inline />,
     },
