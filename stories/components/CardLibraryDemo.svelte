@@ -17,9 +17,9 @@
       matchday="17. Spieltag"
       date="Sa, 25. Mai"
       time="19:30"
-      venue="Tröster-Halle · Breitengüßbach"
-      heim={{ name: 'TSV Tröster Breitengüßbach' }}
-      gast={{ name: 'USC Heidelberg' }}
+      venue="Nordhain-Halle · Nordhain"
+      heim={{ name: 'TSV Nordhain 1920' }}
+      gast={{ name: 'Lindenberg Hawks' }}
     />
     <MatchCard
       state="live"
@@ -27,32 +27,32 @@
       matchday="17. Spieltag"
       quarter="Q4"
       clock="02:14"
-      venue="Tröster-Halle"
-      heim={{ name: 'TSV Tröster Breitengüßbach', score: 87 }}
-      gast={{ name: 'USC Heidelberg',             score: 64 }}
+      venue="Nordhain-Halle"
+      heim={{ name: 'TSV Nordhain 1920', score: 87 }}
+      gast={{ name: 'Lindenberg Hawks',             score: 64 }}
     />
     <MatchCard
       state="finished"
       league="Bayernliga Süd"
       matchday="16. Spieltag"
-      venue="Tröster-Halle"
-      heim={{ name: 'TSV Tröster Breitengüßbach', score: 92 }}
-      gast={{ name: 'BG Topstars München',         score: 79 }}
+      venue="Nordhain-Halle"
+      heim={{ name: 'TSV Nordhain 1920', score: 92 }}
+      gast={{ name: 'BG Nordlicht Süd',         score: 79 }}
     />
   </div>
 
 {:else if view === 'player'}
   <div class="grid">
-    <PlayerCard size="compact" jersey="4"  name="A. Seiferth"  position="PG" team="heim" captain stat={22} statLabel="PTS" />
-    <PlayerCard size="compact" jersey="7"  name="N. Wimberg"   position="SG" team="heim" stat={19} statLabel="PTS" />
-    <PlayerCard size="compact" jersey="13" name="T. Reuter"    position="PF" team="heim" stat={12} statLabel="PTS" />
+    <PlayerCard size="compact" jersey="4"  name="J. Tanner"  position="PG" team="heim" captain stat={22} statLabel="PTS" />
+    <PlayerCard size="compact" jersey="7"  name="M. Okafor"   position="SG" team="heim" stat={19} statLabel="PTS" />
+    <PlayerCard size="compact" jersey="13" name="K. Vogler"    position="PF" team="heim" stat={12} statLabel="PTS" />
   </div>
 
   <div style="margin-top: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 880px;">
     <PlayerCard
       size="standard"
       jersey="4"
-      name="A. Seiferth"
+      name="J. Tanner"
       position="PG"
       team="heim"
       captain
@@ -68,7 +68,7 @@
     <PlayerCard
       size="standard"
       jersey="15"
-      name="J. Albers"
+      name="D. Hollis"
       position="C"
       team="heim"
       age="29 J."
@@ -86,7 +86,7 @@
     <PlayerCard
       size="hero"
       jersey="4"
-      name="Aaron Seiferth"
+      name="Jonas Tanner"
       position="PG"
       captain
       age="24 J."

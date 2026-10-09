@@ -26,13 +26,13 @@ export const vanilla = `<!-- Einmal im App-Root einbinden -->
       </thead>
       <tbody>
         <tr>
-          <td><div class="dss-player"><div class="dss-player-info"><span class="dss-player-name">A. Seiferth</span></div></div></td>
+          <td><div class="dss-player"><div class="dss-player-info"><span class="dss-player-name">J. Tanner</span></div></div></td>
           <td class="num">32:14</td>
           <td class="num lead">22</td>
           <td class="num plus">+18</td>
         </tr>
         <tr class="is-own">
-          <td><div class="dss-player"><div class="dss-player-info"><span class="dss-player-name">N. Wimberg</span></div></div></td>
+          <td><div class="dss-player"><div class="dss-player-info"><span class="dss-player-name">M. Okafor</span></div></div></td>
           <td class="num">29:45</td>
           <td class="num lead">19</td>
           <td class="num minus">−4</td>
@@ -49,8 +49,8 @@ export const svelte = `<script>
   import Table from '@bbv/dss-design-system/svelte/Table';
 
   const spieler = [
-    { name: 'A. Seiferth', min: '32:14', pts: 22, pm: '+18' },
-    { name: 'N. Wimberg', min: '29:45', pts: 19, pm: '−4' },
+    { name: 'J. Tanner', min: '32:14', pts: 22, pm: '+18' },
+    { name: 'M. Okafor', min: '29:45', pts: 19, pm: '−4' },
   ];
 </script>
 
@@ -84,8 +84,8 @@ export const svelte = `<script>
 export const react = `import { Table } from '@bbv/dss-design-system/react';
 
 const spieler = [
-  { name: 'A. Seiferth', min: '32:14', pts: 22, pm: '+18' },
-  { name: 'N. Wimberg', min: '29:45', pts: 19, pm: '−4' },
+  { name: 'J. Tanner', min: '32:14', pts: 22, pm: '+18' },
+  { name: 'M. Okafor', min: '29:45', pts: 19, pm: '−4' },
 ];
 
 <Table

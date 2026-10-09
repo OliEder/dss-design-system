@@ -25,8 +25,8 @@ const interactive = { control: 'inline-radio', options: ['none', 'link', 'button
 export const SpielkarteSpielwiese = {
   render,
   args: {
-    kind: 'match', interactive: 'none', state: 'live', league: 'Bayernliga Süd', matchday: '17. Spieltag', date: 'Sa, 25. Mai', time: '19:30', venue: 'Tröster-Halle',
-    heim: { name: 'TSV Tröster', score: 87 }, gast: { name: 'USC Heidelberg', score: 64 }, quarter: 'Q4', clock: '02:14',
+    kind: 'match', interactive: 'none', state: 'live', league: 'Bayernliga Süd', matchday: '17. Spieltag', date: 'Sa, 25. Mai', time: '19:30', venue: 'Nordhain-Halle',
+    heim: { name: 'TSV Nordhain', score: 87 }, gast: { name: 'Lindenberg Hawks', score: 64 }, quarter: 'Q4', clock: '02:14',
   },
   argTypes: {
     ...hidden,
@@ -48,7 +48,7 @@ export const SpielkarteSpielwiese = {
 export const SpielerkarteSpielwiese = {
   render,
   args: {
-    kind: 'player', interactive: 'none', size: 'standard', jersey: '4', name: 'A. Seiferth', position: 'PG', team: 'heim', captain: true, age: '24 J.', height_cm: '188', role: '',
+    kind: 'player', interactive: 'none', size: 'standard', jersey: '4', name: 'J. Tanner', position: 'PG', team: 'heim', captain: true, age: '24 J.', height_cm: '188', role: '',
     vitals: [{ label: 'PPG', value: '17.4', accent: true }, { label: 'APG', value: '6.2' }, { label: 'RPG', value: '3.1' }, { label: 'EFF', value: '22.8' }],
     stat: 22, statLabel: 'PTS',
   },

@@ -30,15 +30,15 @@ describe('TopBar', () => {
         leading={<span>Vorne</span>}
         center={<span>Mitte</span>}
         actions={<button type="button">Aktion</button>}
-        user="Stefan B."
-        userInitials="SB"
+        user="Sven R."
+        userInitials="SR"
       />,
     );
     expect(screen.getByText('Vorne')).toBeInTheDocument();
     expect(screen.getByText('Mitte')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Aktion' })).toBeInTheDocument();
-    expect(screen.getByText('Stefan B.')).toBeInTheDocument();
-    expect(screen.getByText('SB')).toHaveClass('dss-topbar-av');
+    expect(screen.getByText('Sven R.')).toBeInTheDocument();
+    expect(screen.getByText('SR')).toHaveClass('dss-topbar-av');
   });
 
   it('kann als header-Element gerendert werden (banner-Landmark)', () => {

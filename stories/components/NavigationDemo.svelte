@@ -44,8 +44,8 @@
         matchLabel="BBL · 17. Spieltag"
         score="87 : 64"
         clock="Q4 · 02:14"
-        user="Stefan B."
-        userInitials="SB"
+        user="Sven R."
+        userInitials="SR"
       />
     </div>
   </section>
@@ -57,9 +57,9 @@
         brand="BBV"
         mark="B"
         context="admin"
-        matchLabel="Vereinsregister · TSV Tröster Breitengüßbach"
-        user="Jana Lutz"
-        userInitials="JL"
+        matchLabel="Vereinsregister · TSV Nordhain 1920"
+        user="Jule Arendt"
+        userInitials="JA"
       />
     </div>
   </section>
@@ -67,7 +67,7 @@
   <section>
     <div class="hdr">Top-Bar · Default</div>
     <div class="frame">
-      <TopBar brand="DSS Coach" mark="C" user="Tom K." userInitials="TK" />
+      <TopBar brand="DSS Coach" mark="C" user="Timo B." userInitials="TB" />
     </div>
   </section>
 {/if}
@@ -95,7 +95,7 @@
       <Breadcrumbs items={[
         { label: 'Verband',    href: '#' },
         { label: 'Bayernliga', href: '#' },
-        { label: 'TSV Tröster',href: '#' },
+        { label: 'TSV Nordhain',href: '#' },
         { label: 'Roster' },
       ]} />
     </div>
@@ -107,7 +107,7 @@
       <Breadcrumbs variant="tagged" items={[
         { label: 'Verband',    href: '#', tag: 'Org' },
         { label: 'Bayernliga', href: '#', tag: 'Liga' },
-        { label: 'TSV Tröster',href: '#', tag: 'Team' },
+        { label: 'TSV Nordhain',href: '#', tag: 'Team' },
         { label: 'Roster', tag: 'View' },
       ]} />
     </div>

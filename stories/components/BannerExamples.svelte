@@ -45,7 +45,7 @@
 {:else if example === 'link'}
   <div class="stack">
     <Banner severity="danger" title="Trikotnummer doppelt vergeben">
-      #7 ist bei N. Wimberg und H. Drell hinterlegt. <a href="#aufstellung">Zur Aufstellung</a>
+      #7 ist bei M. Okafor und H. Drake hinterlegt. <a href="#aufstellung">Zur Aufstellung</a>
     </Banner>
     <Banner severity="warn" title="Lizenz läuft ab">
       Julia Krause · gültig bis 30.06.2026. <a href="#erinnerung">Erinnerung setzen</a>

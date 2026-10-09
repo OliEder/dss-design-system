@@ -20,8 +20,8 @@ import type { ScheduleGame } from '../js/schedule.js';
 const versus = (over: Partial<ScheduleGame> = {}): ScheduleGame => ({
   id: 'g1',
   state: 'finished',
-  heim: { name: 'TSV Tröster', score: 87 },
-  gast: { name: 'USC Heidelberg', score: 64 },
+  heim: { name: 'TSV Nordhain', score: 87 },
+  gast: { name: 'Lindenberg Hawks', score: 64 },
   ...over,
 });
 
@@ -29,7 +29,7 @@ const persp = (over: Partial<ScheduleGame> = {}): ScheduleGame => ({
   id: 'p1',
   state: 'finished',
   at: 'heim',
-  opponent: { name: 'TSV Jahn Freising', score: 108 },
+  opponent: { name: 'TSV Falken Auental', score: 108 },
   ownScore: 65,
   ...over,
 });
@@ -150,8 +150,8 @@ describe('groupBySection', () => {
 
 describe('initials', () => {
   it('nimmt bis zu drei Anfangsbuchstaben in Großbuchstaben', () => {
-    expect(initials('TSV Jahn Freising')).toBe('TJF');
-    expect(initials('Nürnberger Basketball Club Bayern')).toBe('NBC');
+    expect(initials('TSV Falken Auental')).toBe('TFA');
+    expect(initials('Bergheimer Basketball Club Bayern')).toBe('BBC');
     expect(initials('Dukes')).toBe('D');
     expect(initials('')).toBe('');
   });
@@ -182,7 +182,7 @@ describe('buildGrid', () => {
     versus({ id: 'a', time: '09:30', column: 'f1' }),
     versus({ id: 'b', time: '09:00', column: 'f2' }),
     versus({ id: 'c', time: '09:00', column: 'f1' }),
-    versus({ id: 'bye', time: '09:30', state: 'bye', heim: { name: 'BG Zirndorf' }, gast: undefined }),
+    versus({ id: 'bye', time: '09:30', state: 'bye', heim: { name: 'BG Seeberg' }, gast: undefined }),
     versus({ id: 'x', time: '09:00', column: 'unbekannt' }),
   ];
 

@@ -47,7 +47,7 @@
     <Card>
       {#snippet header()}
         <div class="head">
-          <span>Roster · TSV München</span>
+          <span>Roster · TSV Nordhain</span>
           <span class="mono">12 Spieler</span>
         </div>
       {/snippet}
@@ -79,7 +79,7 @@
       <div class="cap">Link: href</div>
       <Card variant="hoverable" href="#spiel" onclick={stay}>
         <p class="t">17. Spieltag</p>
-        <p class="m">TSV Tröster gegen USC Heidelberg</p>
+        <p class="m">TSV Nordhain gegen Lindenberg Hawks</p>
       </Card>
     </div>
     <div>
@@ -129,7 +129,7 @@
   <div class="narrow">
     <Card variant="hoverable" href="#spiel" onclick={stay}>
       <p class="t">17. Spieltag</p>
-      <p class="m">TSV Tröster gegen USC Heidelberg. Die ganze Karte öffnet das Spiel.</p>
+      <p class="m">TSV Nordhain gegen Lindenberg Hawks. Die ganze Karte öffnet das Spiel.</p>
     </Card>
   </div>
 {:else if example === 'dont-klick'}
@@ -137,7 +137,7 @@
   <div class="narrow">
     <Card variant="hoverable">
       <p class="t">17. Spieltag</p>
-      <p class="m">TSV Tröster gegen USC Heidelberg</p>
+      <p class="m">TSV Nordhain gegen Lindenberg Hawks</p>
       <div class="actions">
         <Button size="sm" variant="secondary">Öffnen</Button>
         <Button size="sm" variant="ghost">Löschen</Button>
@@ -147,7 +147,7 @@
 {:else if example === 'do-ziel'}
   <div class="narrow">
     <Card variant="hoverable" href="#team" onclick={stay}>
-      <p class="t">TSV Tröster</p>
+      <p class="t">TSV Nordhain</p>
       <p class="m">Zur Mannschaftsseite</p>
     </Card>
   </div>
@@ -155,7 +155,7 @@
   <!-- Hoverable ohne Ziel: hier mit erzwungenem Hover, so hebt sich die Karte beim Überfahren -->
   <div class="narrow">
     <Card variant="hoverable" class="pseudo-hover">
-      <p class="t">TSV Tröster</p>
+      <p class="t">TSV Nordhain</p>
       <p class="m">Reine Information, aber mit Zeiger und Lift</p>
     </Card>
   </div>

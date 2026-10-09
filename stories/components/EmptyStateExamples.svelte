@@ -68,9 +68,9 @@
     <div>
       <div class="cap">Gefüllt</div>
       <div class="list">
-        <PlayerCard size="compact" jersey="4" name="A. Seiferth" position="PG" team="heim" captain stat={22} statLabel="PTS" />
-        <PlayerCard size="compact" jersey="7" name="N. Wimberg" position="SG" team="heim" stat={19} statLabel="PTS" />
-        <PlayerCard size="compact" jersey="13" name="T. Reuter" position="PF" team="heim" stat={12} statLabel="PTS" />
+        <PlayerCard size="compact" jersey="4" name="J. Tanner" position="PG" team="heim" captain stat={22} statLabel="PTS" />
+        <PlayerCard size="compact" jersey="7" name="M. Okafor" position="SG" team="heim" stat={19} statLabel="PTS" />
+        <PlayerCard size="compact" jersey="13" name="K. Vogler" position="PF" team="heim" stat={12} statLabel="PTS" />
       </div>
     </div>
   </div>

@@ -10,13 +10,13 @@
   <div class="frame" style="--dss-court-opacity: 0.45;">
     <CourtLines position="absolute" />
     <!-- Falsch ist nur das fehlende position/z-index am Inhalt: das positionierte Linienfeld malt dann über dem Text -->
-    <p class="text" class:above={example === 'do-inhalt'}>Heimspiel gegen USC Heidelberg, Samstag 17:30 Uhr in der Halle am Park.</p>
+    <p class="text" class:above={example === 'do-inhalt'}>Heimspiel gegen Lindenberg Hawks, Samstag 17:30 Uhr in der Halle am Park.</p>
   </div>
 {:else if example === 'do-dezent' || example === 'dont-dezent'}
   <!-- Falsch: Deckkraft des Tokens hochgesetzt (lokales CSS), die Linien liegen kräftig unter dem Text -->
   <div class="frame" style={example === 'dont-dezent' ? '--dss-court-opacity: 1;' : ''}>
     <CourtLines position="absolute" />
-    <p class="text above">Heimspiel gegen USC Heidelberg, Samstag 17:30 Uhr in der Halle am Park.</p>
+    <p class="text above">Heimspiel gegen Lindenberg Hawks, Samstag 17:30 Uhr in der Halle am Park.</p>
   </div>
 {:else if example === 'do-rahmen' || example === 'dont-rahmen'}
   <!-- Falsch: der Rahmen ist nicht positioniert, die Linien füllen den nächsten positionierten Vorfahren (hier der gestrichelte Außenrahmen) -->

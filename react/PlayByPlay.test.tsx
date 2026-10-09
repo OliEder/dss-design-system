@@ -4,8 +4,8 @@ import { PlayByPlay, type PbpEvent } from './PlayByPlay';
 import { expectNoA11yViolations } from './test-utils';
 
 const EVENTS: PbpEvent[] = [
-  { id: 1, time: '02:14', quarter: 'Q4', team: 'heim', kind: 'score-3p', titleBold: 'Drei-Punkte-Wurf', title: 'N. Wimberg #7', detail: 'Assist · T. Reuter #13', score: { heim: 87, gast: 64 } },
-  { id: 2, time: '03:05', quarter: 'Q4', team: 'gast', kind: 'foul', title: '5. Foul · M. Wagner #23', score: { heim: 84, gast: 64 } },
+  { id: 1, time: '02:14', quarter: 'Q4', team: 'heim', kind: 'score-3p', titleBold: 'Drei-Punkte-Wurf', title: 'M. Okafor #7', detail: 'Assist · K. Vogler #13', score: { heim: 87, gast: 64 } },
+  { id: 2, time: '03:05', quarter: 'Q4', team: 'gast', kind: 'foul', title: '5. Foul · H. Lorenz #23', score: { heim: 84, gast: 64 } },
   { id: 3, time: '04:45', quarter: 'Q4', team: 'none', kind: 'sub', title: 'Auswechslung' },
 ];
 
@@ -22,7 +22,7 @@ describe('PlayByPlay', () => {
     expect(container.querySelectorAll('.dss-pbp-event')).toHaveLength(3);
     expect(screen.getByText('02:14')).toBeInTheDocument();
     expect(screen.getByText('Drei-Punkte-Wurf').tagName).toBe('B');
-    expect(screen.getByText('Assist · T. Reuter #13')).toHaveClass('dss-pbp-detail');
+    expect(screen.getByText('Assist · K. Vogler #13')).toHaveClass('dss-pbp-detail');
   });
 
   it('setzt die Ereignisart als Klasse und die Teamfarbe am Streifen', () => {

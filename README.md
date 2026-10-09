@@ -333,7 +333,7 @@ Zwei Bausteine für Spielpläne (Vanilla-Klassen, Svelte, React), gemeinsames Da
 ```tsx
 <ScheduleTable
   games={[{ id: '1', state: 'finished', date: 'Sa, 26.09.2026', time: '17:30', at: 'heim',
-            opponent: { name: 'TSV Jahn Freising', href: '/teams/freising', score: 108 }, ownScore: 65 }]}
+            opponent: { name: 'TSV Falken Auental', href: '/teams/freising', score: 108 }, ownScore: 65 }]}
 />
 ```
 

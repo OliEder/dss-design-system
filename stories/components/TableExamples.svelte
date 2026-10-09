@@ -9,10 +9,10 @@
 
   // Zahlenspalte der Dos und Don'ts: Ziffern mit unterschiedlicher Breite zeigen den Unterschied
   const punkte = [
-    { name: 'A. Seiferth', pts: 118, reb: 11 },
-    { name: 'N. Wimberg', pts: 81, reb: 108 },
-    { name: 'R. Christen', pts: 8, reb: 1 },
-    { name: 'T. Reuter', pts: 100, reb: 111 },
+    { name: 'J. Tanner', pts: 118, reb: 11 },
+    { name: 'M. Okafor', pts: 81, reb: 108 },
+    { name: 'L. Brandt', pts: 8, reb: 1 },
+    { name: 'K. Vogler', pts: 100, reb: 111 },
   ];
 
   const stati = ['Aktiv', 'Bank', 'Aktiv', 'DNP'] as const;
@@ -40,7 +40,7 @@
 {#if example === 'zellen'}
   <div class="gallery">
     <div>
-      <div class="cap">Trikotnummer · dss-tn</div>
+      <div class="bez">Trikotnummer · dss-tn</div>
       <div class="row">
         <span class="dss-tn">4</span>
         <span class="dss-tn heim">7</span>
@@ -51,7 +51,7 @@
       </div>
     </div>
     <div>
-      <div class="cap">Position · dss-pos</div>
+      <div class="bez">Position · dss-pos</div>
       <div class="row">
         <span class="dss-pos">?</span>
         <span class="dss-pos pg">PG</span>
@@ -62,7 +62,7 @@
       </div>
     </div>
     <div>
-      <div class="cap">Status · dss-pill-s</div>
+      <div class="bez">Status · dss-pill-s</div>
       <div class="row">
         <span class="dss-pill-s">Bank</span>
         <span class="dss-pill-s on">Aktiv</span>
@@ -71,11 +71,11 @@
       </div>
     </div>
     <div>
-      <div class="cap">Spieler · dss-player</div>
+      <div class="bez">Spieler · dss-player</div>
       <div class="row row--col">
-        {@render spieler('A. Seiferth')}
-        <div class="dss-player bench"><div class="dss-player-info"><span class="dss-player-name">P. Steidl</span></div></div>
-        <div class="dss-player dnp"><div class="dss-player-info"><span class="dss-player-name">L. Markwart</span><span class="dss-player-meta">nicht eingesetzt</span></div></div>
+        {@render spieler('J. Tanner')}
+        <div class="dss-player bench"><div class="dss-player-info"><span class="dss-player-name">P. Kessel</span></div></div>
+        <div class="dss-player dnp"><div class="dss-player-info"><span class="dss-player-name">C. Fenwick</span><span class="dss-player-meta">nicht eingesetzt</span></div></div>
       </div>
     </div>
   </div>
@@ -90,9 +90,9 @@
         { key: 'pm', label: '+/−', align: 'right' },
       ]}>
       {#snippet rows()}
-        <tr><td>{@render spieler('A. Seiferth')}</td><td class="num">32:14</td><td class="num lead">22</td><td class="num dim">4</td><td class="num plus">+18</td></tr>
-        <tr><td>{@render spieler('N. Wimberg')}</td><td class="num">29:45</td><td class="num lead">19</td><td class="num dim">3</td><td class="num plus">+15</td></tr>
-        <tr><td>{@render spieler('P. Steidl')}</td><td class="num">12:08</td><td class="num lead">6</td><td class="num dim">1</td><td class="num minus">−4</td></tr>
+        <tr><td>{@render spieler('J. Tanner')}</td><td class="num">32:14</td><td class="num lead">22</td><td class="num dim">4</td><td class="num plus">+18</td></tr>
+        <tr><td>{@render spieler('M. Okafor')}</td><td class="num">29:45</td><td class="num lead">19</td><td class="num dim">3</td><td class="num plus">+15</td></tr>
+        <tr><td>{@render spieler('P. Kessel')}</td><td class="num">12:08</td><td class="num lead">6</td><td class="num dim">1</td><td class="num minus">−4</td></tr>
       {/snippet}
     </Table>
   </div>
@@ -162,7 +162,7 @@
               {#if s === 'Gesperrt'}
                 <span class="mute">kein Link</span>
               {:else}
-                <a class={`dss-link ${c}`} href="#spieler" onclick={stay}>A. Seiferth</a>
+                <a class={`dss-link ${c}`} href="#spieler" onclick={stay}>J. Tanner</a>
               {/if}
             </td>
             <td><button type="button" class={`dss-btn dss-btn--secondary dss-btn--sm ${c}`} disabled={s === 'Gesperrt'}>Öffnen</button></td>
@@ -171,7 +171,7 @@
         {/each}
       {/snippet}
     </Table>
-    <div class="cap">Scrollbereich der Tabelle, fokussiert</div>
+    <div class="bez">Scrollbereich der Tabelle, fokussiert</div>
     <div class="narrow" use:forceFocus>
       <Table title="Boxscore" density="compact" caption="Boxscore, seitlich scrollbar"
         columns={[
@@ -300,7 +300,7 @@
   .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 24px; }
   .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
   .row--col { flex-direction: column; align-items: flex-start; gap: 8px; }
-  .cap { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); margin-bottom: 8px; }
+  .bez { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); margin-bottom: 8px; }
   .matrix { display: flex; flex-direction: column; gap: 16px; }
   .mute { color: var(--dss-mute); }
   /* Sticky Kopf wirkt erst, wenn der Scrollbereich eine Höhe hat */

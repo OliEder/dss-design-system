@@ -27,7 +27,7 @@
       <Card {variant} {padding}>
         {#snippet header()}
           <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:8px;border-bottom:1px solid var(--page-line);">
-            <span>Roster · TSV München</span>
+            <span>Roster · TSV Nordhain</span>
             <span style="font-family:var(--font-mono);font-size:11px;color:var(--page-mute);">12 Spieler</span>
           </div>
         {/snippet}
