@@ -459,6 +459,8 @@
 .dss-tbl--dense td { height: 32px; font-size: var(--fs-body-sm); padding: 0 10px; }
 .dss-tbl--dense th { padding: 0 10px; height: 32px; }
 .dss-tbl--striped tbody tr:nth-child(even) td { background: var(--dss-hover-bg); }
+/* Die eigene Zeile bleibt auch auf geraden Streifen markiert (der Streifen überdeckte sie sonst) */
+.dss-tbl--striped tbody tr.is-own td { background: var(--dss-selected-bg); }
 .dss-tbl tfoot td {
   font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 700; color: var(--dss-fg);
   background: var(--dss-surface-2); border-top: 1px solid var(--dss-line-strong); border-bottom: 0; height: 42px;
@@ -473,6 +475,7 @@
 .dss-frame--dark .dss-tbl th.sort-asc::after { border-bottom-color: var(--n-50); }
 .dss-frame--dark .dss-tbl th.sort-desc::after { border-top-color: var(--n-50); }
 .dss-frame--dark .dss-tbl--striped tbody tr:nth-child(even) td { background: var(--n-900); }
+.dss-frame--dark .dss-tbl--striped tbody tr.is-own td { background: var(--dss-selected-bg); }
 .dss-frame--dark .dss-tbl tfoot td { background: var(--n-900); color: var(--n-50); border-top-color: var(--n-700); }
 
 /* Dekorations-Klassen für Boxscore/Roster (Trikotnummer, Position, Pille) */

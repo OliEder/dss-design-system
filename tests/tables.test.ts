@@ -63,6 +63,13 @@ describe('Tabelle und PlayByPlay im Dunkelmodus', () => {
   });
 });
 
+describe('Tabelle: eigene Zeile auf Streifen', () => {
+  it('is-own überdeckt den Streifen der geraden Zeilen, auch auf dunkler Fläche', () => {
+    expect(css).toMatch(/\.dss-tbl--striped tbody tr\.is-own td\s*\{\s*background:\s*var\(--dss-selected-bg\)/);
+    expect(css).toMatch(/\.dss-frame--dark \.dss-tbl--striped tbody tr\.is-own td\s*\{\s*background:\s*var\(--dss-selected-bg\)/);
+  });
+});
+
 describe('Tabelle: Fokus', () => {
   it('Scrollbereich hat einen gestrichelten Fokus-Ring innen (der Rahmen schneidet außen ab)', () => {
     expect(css).toMatch(new RegExp('\\.dss-table-scroll:focus-visible\\s*\\{[^}]*' + ring + ';\\s*outline-offset:\\s*-3px'));
