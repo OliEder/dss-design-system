@@ -4,6 +4,7 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 
 const config: StorybookConfig = {
   stories: [
+    '../stories/**/*.mdx',
     '../stories/**/*.stories.@(js|ts|svelte)',
     '../stories/**/*.spec.stories.ts',
   ],
@@ -32,6 +33,8 @@ const config: StorybookConfig = {
     });
     return mergeConfig(viteConfig, {
       plugins: [svelte()],
+      // React-JSX in .tsx (MDX-Doku-Bausteine): automatischer Transform, da kein Root-tsconfig.json existiert
+      esbuild: { jsx: 'automatic' },
     });
   }
 };

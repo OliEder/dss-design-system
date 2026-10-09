@@ -3,7 +3,6 @@ import ButtonDemo from './components/ButtonDemo.svelte';
 export default {
   title: 'Components/Button',
   component: ButtonDemo,
-  tags: ['autodocs'],
   argTypes: {
     view:    { control: 'inline-radio', options: ['single', 'variants', 'sizes', 'disabled'] },
     variant: { control: 'select', options: ['primary', 'amber', 'secondary', 'danger', 'ghost'] },
@@ -24,3 +23,6 @@ export const HallenTouch   = { args: { variant: 'amber', touch: true, label: '2-
 export const AlleVarianten = { args: { view: 'variants' } };
 export const AlleGroessen  = { args: { view: 'sizes' } };
 export const Disabled      = { args: { view: 'disabled' } };
+
+// Probe für Task 1, wird in Task 5 entfernt
+export const Probe = { tags: ['!dev'], args: { variant: 'amber', label: 'Versteckte Probe' } };
