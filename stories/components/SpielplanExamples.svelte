@@ -138,7 +138,7 @@
 {:else if example === 'dichte-default'}
   <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="default" caption="Dichte Standard · 48 px" />
 {:else if example === 'dichte-compact'}
-  <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="compact" caption="Dichte Kompakt · 45 px" />
+  <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="compact" caption="Dichte Kompakt · 40 px" />
 {:else if example === 'do-dichte'}
   <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="touch" caption="Touch-Dichte" />
 {:else if example === 'dont-dichte'}

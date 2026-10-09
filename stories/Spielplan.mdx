@@ -177,7 +177,7 @@ Das Snippet „time“ ersetzt die Uhrzeit, hier durch ein Eingabefeld mit eigen
 
 ## Dichte und Handy
 
-`density` steuert die Zeilenhöhe: **touch 60 px**, **default 48 px** (Standard), **compact rund 45 px**. Das sind Mindesthöhen der Zelle; Zeilen mit zweiter Zeile (Liga, Notiz) werden höher. Bei `compact` sieht das CSS 40 px vor, das Zellen-Padding von 8 px und der Ergebnis-Chip heben die Zeile gemessen auf 45 px. `ScheduleTable` wählt ohne Angabe `touch` bei `opponent` oder wenn ein Spiel eine Liga-Unterzeile hat, sonst `default`. `ScheduleGrid` nimmt immer `default`.
+`density` steuert die Zeilenhöhe: **touch 60 px**, **default 48 px** (Standard), **compact 40 px**. Das sind Mindesthöhen der Zelle; Zeilen mit zweiter Zeile (Liga, Notiz) werden höher. `ScheduleTable` wählt ohne Angabe `touch` bei `opponent` oder wenn ein Spiel eine Liga-Unterzeile hat, sonst `default`. `ScheduleGrid` nimmt immer `default`.
 
 ### Touch · 60 px
 
@@ -187,7 +187,7 @@ Das Snippet „time“ ersetzt die Uhrzeit, hier durch ein Eingabefeld mit eigen
 
 <Canvas of={SpielplanStories.DichteDefault} />
 
-### Kompakt · 45 px
+### Kompakt · 40 px
 
 <Canvas of={SpielplanStories.DichteCompact} />
 
@@ -323,7 +323,7 @@ Was optisch durch Chip, Farbe oder Durchstreichung gezeigt wird, steht zusätzli
     {
       title: 'Dichte nach Gerät',
       doText: 'Touch (60 px) für das iPad am Kampfgericht-Tisch.',
-      dontText: 'Kompakt (rund 45 px) ist für Bedienung mit dem Finger zu eng.',
+      dontText: 'Kompakt (40 px) ist für Bedienung mit dem Finger zu eng.',
       good: <Story of={SpielplanStories.DoDichte} inline />,
       bad: <Story of={SpielplanStories.DontDichte} inline />,
     },
