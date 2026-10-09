@@ -10,7 +10,7 @@ festen Daten. Es fehlen alle Varianten und Zustände, und nichts davon lässt si
 1. Eine eigene manuelle Seite **`Docs/Spielplan`** mit allen Varianten, Zuständen, der Handy-Ansicht, der API und den Hinweisen.
 2. Eine Story **`Components/Spielplan Spielwiese`**, in der sich alles per Steuerelement einstellen lässt.
 
-Die manuellen Seiten sind die Dokumentation (Entscheidung: kein `@storybook/addon-docs`).
+Die manuellen Seiten sind die ausführliche Dokumentation; `@storybook/addon-docs` ist seit 2026-10-09 installiert und liefert zusätzlich die automatischen Seiten.
 
 ## Seite `Docs/Spielplan`
 
@@ -60,7 +60,7 @@ geordnet (Kategorien „Layout“, „Testspiel“, „Optionen“ über `table.
 ## Bestehende Stories
 
 Die Stories mit festen Daten (`ScheduleTable`: Mannschaft, Liga und Halle, Turnier; `ScheduleGrid`: Zeitraster, Kompakt) bleiben als Schnappschüsse.
-Ihre Beschreibungstexte (`parameters.docs.description`) sind wirkungslos (kein Docs-Addon); ihr Inhalt steht künftig auf der neuen Seite.
+Ihre Beschreibungstexte (`parameters.docs.description`) erscheinen auf den automatischen Doku-Seiten; die ausführliche Fassung steht auf der neuen Seite.
 
 ## Prüfung
 
@@ -74,4 +74,4 @@ Ihre Beschreibungstexte (`parameters.docs.description`) sind wirkungslos (kein D
 ## Bewusst nicht Teil
 
 - Spielwiesen und Seiten für andere Komponenten; die Dos-und-Don'ts-Bausteine (eigener Entwurf, folgt danach).
-- Das Docs-Addon und die Umstellung aller Beschreibungstexte.
+- Eine Neuordnung der automatischen Doku-Seiten.

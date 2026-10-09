@@ -39,7 +39,10 @@
     "./svelte/Checkbox": "./svelte/Checkbox.svelte",
     "./svelte/CourtLines": "./svelte/CourtLines.svelte",
     "./appnav.js": "./js/appnav.js",
-    "./schedule.js": { "types": "./js/schedule.d.ts", "import": "./js/schedule.js" }
+    "./schedule.js": {
+      "types": "./js/schedule.d.ts",
+      "import": "./js/schedule.js"
+    }
   },
   "files": [
     "tokens/",
@@ -81,11 +84,11 @@
     "url": "git+https://github.com/OliEder/dss-design-system.git"
   },
   "peerDependencies": {
-    "svelte": "^5.0.0",
-    "tailwindcss": "^3.4.0 || ^4.0.0",
+    "@radix-ui/react-dialog": "^1.1.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "@radix-ui/react-dialog": "^1.1.0"
+    "svelte": "^5.0.0",
+    "tailwindcss": "^3.4.0 || ^4.0.0"
   },
   "peerDependenciesMeta": {
     "svelte": {
@@ -107,6 +110,7 @@
   "devDependencies": {
     "@radix-ui/react-dialog": "^1.1.23",
     "@storybook/addon-a11y": "^10.6.1",
+    "@storybook/addon-docs": "^10.6.1",
     "@storybook/addon-themes": "^10.6.1",
     "@storybook/svelte-vite": "^10.6.1",
     "@sveltejs/vite-plugin-svelte": "^6.0.0",

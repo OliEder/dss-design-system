@@ -13,11 +13,10 @@ nachziehen.
 
 - Es gibt fünf manuelle Seiten (`stories/docs/ButtonDoc`, `CardsDoc`, `FormsDoc`, `NavigationDoc`, `TablesDoc`) auf der Basis von
   `stories/docs/_SpecPage.svelte`. Dos und Don'ts gibt es dort nirgends.
-- Storybook wurde auf 10.6 aktualisiert; dabei sind die automatischen Doku-Seiten (`tags: ['autodocs']`) entfallen, weil
-  `@storybook/addon-docs` nicht installiert ist. **Entscheidung:** Das Addon wird nicht installiert. Die manuellen Seiten sind
-  die Dokumentation; alle wichtigen Informationen gehören dorthin.
-- Folge (nicht Teil dieses Piloten): Die Beschreibungstexte in `parameters.docs.description` und die Tags `autodocs` sind
-  wirkungslos. Sie sollen später in die manuellen Seiten wandern oder entfernt werden.
+- Storybook wurde auf 10.6 aktualisiert; dabei sind die automatischen Doku-Seiten (`tags: ['autodocs']`) zunächst entfallen, weil
+  `@storybook/addon-docs` nicht installiert war. **Stand 2026-10-09:** Das Addon ist installiert und in `.storybook/main.ts` eingetragen;
+  die 18 automatischen Doku-Seiten und ihre Beschreibungstexte (`parameters.docs.description`) sind wieder da. Die manuell gepflegten
+  Spezifikations-Seiten (`Docs/*`) bleiben daneben die ausführliche Dokumentation, und Dos und Don'ts gehören dorthin.
 
 ## Bausteine
 
@@ -78,4 +77,4 @@ nachgestellt und nur dort.
 
 - Die Seiten Cards, Forms, Navigation.
 - Neue Spezifikations-Seiten für Modal, Banner, Checkbox, Icon und weitere Komponenten (eigenes Teilprojekt).
-- Das Docs-Addon und die Umstellung der Beschreibungstexte aus `parameters.docs.description`.
+- Eine Neuordnung der automatischen Doku-Seiten und ihrer Beschreibungstexte.
