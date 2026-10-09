@@ -262,3 +262,11 @@ describe('Spielplan · ScheduleGrid (Variante B)', () => {
     expect(gridRule(gridMobile, '.dss-sgrid tr.dss-sg-break td, .dss-sgrid tr.dss-sg-bye td')).toContain('display: block');
   });
 });
+
+describe('Button-Höhen', () => {
+  const rule = (sel: string) => new RegExp(`\\${sel}\\s*\\{[^}]*\\}`).exec(css)?.[0] ?? '';
+  it('sm ist 36 px hoch (kompakt), md 44 px', () => {
+    expect(rule('.dss-btn--sm')).toContain('height: var(--fld-h-compact)');
+    expect(rule('.dss-btn--md')).toContain('height: var(--touch-sm)');
+  });
+});

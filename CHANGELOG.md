@@ -5,6 +5,9 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 
 ## [Unveröffentlicht] — Marken-Rollen und DBB-Marke
 
+### Geändert
+- **Button `sm`** ist jetzt 36 px hoch (vorher 44 px, gleich hoch wie `md`); die Doku nannte schon 36 px.
+
 ### Neu
 - **Spielplan:** `ScheduleTable` (Tabelle mit den Layouts `versus`, `opponent`, `columns`) und `ScheduleGrid` (Zeitraster) in
   Vanilla-CSS, Svelte und React, mit gemeinsamem Datenmodell `ScheduleGame` und Hilfsfunktionen in `js/schedule.js`.
