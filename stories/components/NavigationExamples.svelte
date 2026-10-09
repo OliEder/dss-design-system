@@ -115,7 +115,8 @@
   <div class="stack">
     <div>
       <div class="cap">Horizontal</div>
-      <div class="frame pad wide"><div class="hscroll"><Stepper steps={setupSteps} /></div></div>
+      <div class="frame pad wide"><!-- svelte-ignore a11y_no_noninteractive_tabindex -- Fokussierbar mit Absicht: Tastaturnutzer müssen scrollbare Bereiche erreichen -->
+<div class="hscroll" tabindex="0" role="region" aria-label="Stepper, seitlich scrollbar"><Stepper steps={setupSteps} /></div></div>
     </div>
     <div class="grid2">
       <div>
