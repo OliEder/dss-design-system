@@ -11,8 +11,11 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
   Die Eingabegruppe malt den Ring jetzt als Outline statt als `box-shadow`, damit er gestrichelt sein kann.
 - **Hilfetext und Pflicht-Sternchen der Eingabefelder im Dunkelmodus lesbar** (vorher 2,3:1 auf Schwarz): `.dss-field-help--err/--ok/--warn` und `.req` nutzen jetzt die Chip-Tokens `--dss-chip-*-fg`, die einen Dunkelmodus haben; im Hellmodus unverändert.
 - **Spielplan-Tabelle:** Dichte compact misst jetzt wirklich 40 px (vorher 45 px).
+- **Banner-Link: Fokus-Ring ergänzt** (gestrichelt, Gold/Amber); im Dunkelmodus in Textfarbe, weil der dezente Dunkel-Ring auf dem getönten Banner nur 2,2 bis 2,7:1 hatte.
+- **Svelte-Modal:** eindeutige Titel-id je Modal (vorher überall `dss-modal-title`, doppelt bei mehreren Modals) und der Titel ist eine `h2` (wie in der React-Fassung, vorher `h4`).
 
 ### Neu
+- **Overlay-Doku als MDX-Seiten** `Components/Modal` und `Components/Banner` mit Anatomie, Schweregraden, Größen, bedienbarem Beispiel, Zustands-Matrix, Code-Beispielen je Fassung (Fokusverhalten von Svelte und React gegen den Code belegt) und Dos und Don'ts; die automatischen Doku-Seiten dieser beiden Komponenten entfallen.
 - **Eingabe-Doku als MDX-Seiten** `Components/TextInput`, `Components/Select` und `Components/Checkbox` mit Zustands-Matrix, Code-Beispielen je Fassung und Dos und Don'ts; die Seite `Docs/Forms` und die automatischen Doku-Seiten dieser drei Komponenten entfallen.
 - **Spielplan-Doku als MDX-Seite** `Components/Spielplan` (mit Auto-Docs-Texten von ScheduleTable/ScheduleGrid); die Seite `Docs/Spielplan` entfällt.
 - **Storybook: Werkzeugleiste „Zustand“** (Normal, Hover, Fokus, Aktiv) erzwingt den Zustand auf allen bedienbaren Elementen der gezeigten Stories. **Button-Doku als MDX-Seite** (`Components/Button`) mit Zustands-Matrix, Code-Beispielen je Fassung und Dos und Don'ts; die alte Seite `Docs/Button` entfällt. Weitere Komponenten folgen.
