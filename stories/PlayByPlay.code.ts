@@ -45,16 +45,16 @@ export const svelte = `<script>
     { id: 1, time: '02:14', quarter: 'Q4', team: 'heim', kind: 'score-3p', titleBold: 'Drei-Punkte-Wurf', title: 'Spieler #7', detail: 'Assist · Spieler #13', score: { heim: 87, gast: 64 } },
   ]);
 
-  // Neues Ereignis kommt oben dazu; der Baustein sortiert nicht selbst
-  function onEreignis(e) {
-    events = [e, ...events];
-  }
+  // Neues Ereignis kommt oben dazu; der Baustein sortiert nicht selbst.
+  // subscribe: deine Live-Quelle (z. B. WebSocket); sie liefert eine Funktion zum Abmelden.
+  let { subscribe } = $props();
+  $effect(() => subscribe((e) => { events = [e, ...events]; }));
 </script>
 
 <PlayByPlay meta={\`\${events.length} Events\`} {events} />
 <!-- title, titleAs ('h2' | 'h3' | 'h4'), meta, live (Standard true), dark -->`;
 
-export const react = `import { useState } from 'react';
+export const react = `import { useEffect, useState } from 'react';
 import { PlayByPlay, type PbpEvent } from '@bbv/dss-design-system/react';
 
 const start: PbpEvent[] = [
@@ -62,9 +62,10 @@ const start: PbpEvent[] = [
   { id: 1, time: '02:14', quarter: 'Q4', team: 'heim', kind: 'score-3p', titleBold: 'Drei-Punkte-Wurf', title: 'Spieler #7', detail: 'Assist · Spieler #13', score: { heim: 87, gast: 64 } },
 ];
 
-export function Feed() {
+export function Feed({ subscribe }: { subscribe: (cb: (e: PbpEvent) => void) => () => void }) {
   const [events, setEvents] = useState(start);
-  // Neues Ereignis kommt oben dazu; der Baustein sortiert nicht selbst
-  const onEreignis = (e: PbpEvent) => setEvents((prev) => [e, ...prev]);
+  // Neues Ereignis kommt oben dazu; der Baustein sortiert nicht selbst.
+  // subscribe: deine Live-Quelle (z. B. WebSocket); sie liefert eine Funktion zum Abmelden.
+  useEffect(() => subscribe((e) => setEvents((prev) => [e, ...prev])), [subscribe]);
   return <PlayByPlay meta={\`\${events.length} Events\`} events={events} />;
 }`;

@@ -6,6 +6,7 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 ## [Unveröffentlicht] — Marken-Rollen und DBB-Marke
 
 ### Geändert
+- **Spielplan-Seite:** `Components/Spielplan` zeigt die Tabellen jetzt mit den echten DSS-Abständen (die Doku-CSS überschrieb zuvor Padding und Kopfhöhe von `dss-tbl--schedule` und `dss-sgrid`); die Seite ist dadurch etwa 300 px kürzer.
 - **Table: Scrollbereich ist eine benannte, fokussierbare Region** (`role="region"`, `tabindex="0"`, Name aus `caption`, sonst `title`, sonst „Tabelle“), mit gestricheltem Fokus-Ring innen (`.dss-table-scroll:focus-visible`, auch für ScheduleTable und ScheduleGrid; vorher Browser-Standard-Ring). Svelte-Table bekommt `caption` und `titleAs` wie React.
 - **Table: Fokus-Ring für Link, Schalter und Eingaben in Zellen** sowie für fokussierbare Zeilen (gestrichelt, Gold/Amber); im Dunkelmodus auf der eigenen Zeile (`is-own`) in Chip-Textfarbe (vorher 2,5 bis 2,8:1).
 - **Positionsmarken (`.dss-pos`) und Status-Pillen (`.dss-pill-s`) im Dunkelmodus:** nutzen die Chip-Tokens statt `--ok/err/warn/info-text` mit `-soft` (Dunkelmodus 8,1 bis 14:1, Hellmodus Pixel für Pixel unverändert). Neue Tokens `--dss-chip-info-*` und `--dss-chip-neutral-*`.
