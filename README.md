@@ -133,7 +133,7 @@ import { Button, TextInput, Select, Modal, Banner, AppNav, Checkbox, Table, Bott
 
 <Button variant="amber">Speichern</Button>
 <TextInput label="Name" required />
-<Modal open={open} onOpenChange={setOpen} title="Turnier löschen?" severity="danger" dismissOnBackdrop={false}>…</Modal>
+<Modal open={open} onOpenChange={setOpen} title="Turnier löschen?" severity="danger">…</Modal>
 ```
 
 Tailwind-Nutzer: `components.css` **nach** `@tailwind base` laden (Preflight setzt sonst Button-Hintergründe zurück).

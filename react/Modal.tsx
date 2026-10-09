@@ -13,9 +13,9 @@ export interface ModalProps {
   subtitle?: string;
   severity?: ModalSeverity;
   size?: ModalSize;
-  /** Zeigt den Schließen-Button und erlaubt Escape/Hintergrund-Klick (Standard: true). */
+  /** Zeigt den Schließen-Button und erlaubt Escape (Standard: true). */
   closable?: boolean;
-  /** Schließen per Klick auf den Hintergrund (Standard: true). Mit false bleibt das Modal offen. */
+  /** Schließen per Klick auf den Hintergrund (Standard: false: ein Klick daneben schließt das Modal nicht). */
   dismissOnBackdrop?: boolean;
   closeLabel?: string;
   footer?: ReactNode;
@@ -31,7 +31,7 @@ export function Modal({
   severity = 'default',
   size = 'md',
   closable = true,
-  dismissOnBackdrop = true,
+  dismissOnBackdrop = false,
   closeLabel = 'Schließen',
   footer,
   className,
