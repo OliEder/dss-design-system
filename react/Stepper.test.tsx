@@ -43,7 +43,7 @@ describe('Stepper', () => {
     const onStep = vi.fn();
     render(<Stepper steps={STEPS} onStep={onStep} />);
     expect(screen.getAllByRole('button')).toHaveLength(2);
-    fireEvent.click(screen.getByRole('button', { name: 'Runde 1' }));
+    fireEvent.click(screen.getByRole('button', { name: '1. Runde 1' }));
     expect(onStep).toHaveBeenCalledWith('r1');
   });
 
