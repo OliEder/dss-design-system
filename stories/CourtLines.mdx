@@ -1,0 +1,89 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as CourtLinesStories from './CourtLines.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import { DocTable } from './docs/blocks/DocTable';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './CourtLines.code';
+
+<Meta of={CourtLinesStories} />
+
+# CourtLines
+
+Spielfeldlinien (FIBA 28 × 15 m) als dezenter Seitenhintergrund, aus dem Vereinsregister übernommen. Die Linien sind eine reine CSS-Maske (SVG unter `css/courtlines/`), eingefärbt über `--dss-court-color`, dark-sicher und auf dem Handy als Hochformat. Der Hintergrund ist rein dekorativ (`aria-hidden`) und fängt keine Klicks ab (`pointer-events: none`).
+
+<Canvas of={CourtLinesStories.Standard} />
+
+Der Seiteninhalt braucht `position: relative; z-index: 1`, damit er über dem Hintergrund liegt.
+
+## Einbau: Seite oder Bereich
+
+Der Hintergrund ist ein Feld mit `position: fixed; inset: 0` (`.dss-courtbg`): Er füllt den Viewport und bleibt beim Scrollen stehen. Mit `position="absolute"` (Vanilla: `dss-courtbg--absolute`) füllt er stattdessen den nächsten positionierten Container, etwa einen Bereich mit `position: relative; overflow: hidden`. Die Vorschau oben läuft in einem Rahmen, der mit `transform` zum Bezugsrahmen wird; mit dem Steuerelement `position` siehst du beide Fassungen im Rahmen.
+
+Das Feld liegt auf `z-index: 0`. Auf dem Handy (bis 700 px Breite) wechselt die Maske auf die Hochformat-Variante, die das ganze Feld zeigt statt eines Ausschnitts.
+
+## Farbe und Deckkraft
+
+Die Farbe kommt aus `--dss-court-color`, die Deckkraft aus `--dss-court-opacity`. Beide sind pro Marke und Hell/Dunkel gesetzt; in der Werkzeugleiste siehst du jede Kombination. Die Linien sind bewusst schwach, damit auch gedämpfter Text darüber den AAA-Kontrast hält.
+
+<DocTable
+  label="Linienfarbe und Deckkraft"
+  head={['Marke', 'Hell', 'Dunkel']}
+  rows={[
+    ['BBV (Amber)', 'amber-200 bei 0,4', 'amber-700 bei 0,15'],
+    ['DBB (Gold)', 'gold-200 bei 0,5', 'gold-700 bei 0,15'],
+  ]}
+/>
+
+Gemessen auf einem Linienpixel (Linienfarbe mit ihrer Deckkraft über der Fläche) hält der gedämpfte Seitentext `--page-mute` über den Linien in allen vier Kombinationen mindestens 7,04:1, der Fließtext `--dss-fg-soft` mindestens 10,9:1.
+
+<DocTable
+  label="Kontrast über den Linien"
+  head={['Marke und Modus', '--dss-fg-soft', '--page-mute']}
+  rows={[
+    ['BBV hell', '11,8:1', '7,3:1'],
+    ['BBV dunkel', '15,2:1', '7,1:1'],
+    ['DBB hell', '10,9:1', '7,3:1'],
+    ['DBB dunkel', '15,1:1', '7,0:1'],
+  ]}
+/>
+
+Eine eigene Marke setzt beide Tokens mit und misst den Kontrast neu (siehe README, „Eigene Marke für einen anderen Verein“).
+
+## Verwendung: Import und Props
+
+Importiere `CourtLines` über den Path-Export (Svelte) bzw. aus dem React-Paket; Vanilla braucht nur die beiden Klassen und `css/components.css`. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+<Controls of={CourtLinesStories.Standard} />
+
+Die React-Fassung nimmt zusätzlich `className`. Bedienbare Elemente hat die Komponente nicht, darum gibt es keine Zustände.
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Inhalt über die Linien legen',
+      doText: 'Der Inhalt hat position: relative und z-index: 1 und liegt über den Linien.',
+      dontText: 'Ohne position am Inhalt liegt das positionierte Linienfeld über dem Text und färbt ihn ein.',
+      good: <Story of={CourtLinesStories.DoInhalt} inline />,
+      bad: <Story of={CourtLinesStories.DontInhalt} inline />,
+    },
+    {
+      title: 'Die Linien dezent lassen',
+      doText: 'Die Tokens --dss-court-color und --dss-court-opacity bleiben, wie die Marke sie setzt: Text bleibt mühelos lesbar.',
+      dontText: 'Mit voller Deckkraft (hier --dss-court-opacity: 1 per lokalem CSS) kreuzen kräftige Linien den Text.',
+      good: <Story of={CourtLinesStories.DoDezent} inline />,
+      bad: <Story of={CourtLinesStories.DontDezent} inline />,
+    },
+    {
+      title: 'Bereich mit eigenem Rahmen positionieren',
+      doText: 'Der Rahmen hat position: relative; die absolut gesetzten Linien füllen genau diese Karte.',
+      dontText: 'Ohne positionierten Rahmen füllen die Linien den nächsten positionierten Vorfahren (hier der gestrichelte Außenrahmen) und laufen über die Karte hinaus.',
+      good: <Story of={CourtLinesStories.DoRahmen} inline />,
+      bad: <Story of={CourtLinesStories.DontRahmen} inline />,
+    },
+  ]}
+/>

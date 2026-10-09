@@ -1,0 +1,28 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as FocusHoverStories from './FocusHover.stories';
+import '../docs/blocks/blocks.css';
+
+<Meta of={FocusHoverStories} />
+
+# Focus & Hover
+
+Der Fokus-Ring (`--ring-color`, `--ring-w`, `--ring-style`) ist Gold/Amber und gestrichelt, 3 px stark (`--ring-w`). Im Dunkelmodus ist er dezenter (`--ring-color-on-dark`); er hat mindestens 3:1 Kontrast auf Weiß, Grau und Anthrazit. Die gestrichelte Linie ist auch ohne Farbwahrnehmung erkennbar und sieht auf allen Flächen gleich aus. Marke (BBV/DBB) und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+Die Zustände sind fest angezeigt (Klassen `.pseudo-*`, nur Storybook). Links in jeder Zelle: Ruhe, Hover, Fokus. Live: mit der Maus darüberfahren oder mit Tab hineinspringen.
+
+## Zustände wichtiger Komponenten
+
+<Canvas of={FocusHoverStories.Alle} />
+
+## Auf den Komponentenseiten
+
+Jede Komponente mit bedienbaren Elementen zeigt ihre Zustände auf der eigenen Seite in einer Zustände-Matrix (Standard, Hover, Fokus, Aktiv, soweit die Komponente den Zustand hat). Mit der Werkzeugleiste **Zustand** schaltest du dort jede andere Vorschau auf Hover, Fokus oder Aktiv.
+
+- [Button](?path=/docs/components-button--docs): Varianten primary, amber, secondary, ghost
+- [TextInput](?path=/docs/components-textinput--docs) und [Select](?path=/docs/components-select--docs): Eingabefelder, die Gruppe malt den Ring bei Fokus
+- [Checkbox](?path=/docs/components-checkbox--docs)
+- [Tabs](?path=/docs/components-tabs--docs) und [Navigation](?path=/docs/components-navigation--docs): Reiter, Leisten, Brotkrumen
+- [AppNav](?path=/docs/components-appnav--docs): Hauptnavigation mit Gruppen
+- [Card](?path=/docs/components-card--docs): klickbare Karten mit Lift
+- [Table](?path=/docs/components-table--docs): fokussierbarer Scrollbereich, Zeilen und Zellbausteine
+- [Banner](?path=/docs/components-banner--docs) und [Modal](?path=/docs/components-modal--docs): Links und Schaltflächen auf getönten und dunklen Flächen

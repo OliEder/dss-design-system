@@ -2,9 +2,8 @@
   /**
    * DSS Icon · Svelte 5 example
    * --------------------------------------------------------------
-   * Central icon renderer for the v0.6 Icons spec — 54 glyphs across
-   * 7 families (Spielaktionen · Court · Rollen · Status · System ·
-   * UI-Core · Chevrons/Arrows).
+   * Central icon renderer for the v0.6 Icons spec — 67 glyphs in 8 groups
+   * (gallery: Components/Icon in Storybook).
    *
    *   <Icon name="2p" />
    *   <Icon name="whistle" size={32} class="text-amber-700" />

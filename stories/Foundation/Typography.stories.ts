@@ -1,11 +1,13 @@
 import Typography from './Typography.svelte';
 
 export default {
+  // Die Seite ist die MDX-Seite; die Stories sind darin eingebettet
+  tags: ['!dev'],
   title: 'Foundation/Typography',
   component: Typography,
-  parameters: { layout: 'fullscreen' },
+  parameters: { layout: 'padded' },
   argTypes: {
-    mode: { control: 'inline-radio', options: ['scale', 'families', 'numbers', 'context', 'audit'] },
+    mode: { control: 'inline-radio', options: ['scale', 'families', 'numbers', 'context', 'audit'], description: 'Anzeige: Skala, Familien, Zahlen, Einsatz oder Audit' },
   },
 };
 

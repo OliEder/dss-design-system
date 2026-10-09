@@ -5,13 +5,6 @@
 </script>
 
 <div class="wrap">
-  <h2>Fokus und Hover</h2>
-  <p class="muted">
-    Der Fokus-Ring (<code>--ring-color</code>, <code>--ring-w</code>, <code>--ring-style</code>) ist Gold/Amber und gestrichelt, im Dunkelmodus dezenter
-    (<code>--ring-color-on-dark</code>); mindestens 3:1 Kontrast auf Weiß, Grau und Anthrazit.
-    Links: Ruhe · Hover · Fokus. Marke (BBV/DBB) und Light/Dark in der Toolbar umschalten.
-  </p>
-
   <div class="grid">
     <div class="cell">
       <div class="cap">Button · primary</div>
@@ -68,7 +61,7 @@
 
     <div class="cell">
       <div class="cap">Tabs · underline · aktiv, Hover, Fokus</div>
-      <div class="dss-tabs dss-tabs--underline dss-tabs--md" role="tablist">
+      <div class="dss-tabs dss-tabs--underline dss-tabs--md tabrow" role="tablist">
         <button class="dss-tab is-active" role="tab" aria-selected="true">{tabs[0]}</button>
         <button class="dss-tab pseudo-hover" role="tab" aria-selected="false">{tabs[1]}</button>
         <button class="dss-tab pseudo-focus-visible" role="tab" aria-selected="false">{tabs[2]}</button>
@@ -101,16 +94,15 @@
 </div>
 
 <style>
-  .wrap { padding: 32px 40px; font-family: var(--font-body); color: var(--page-fg); background: var(--page-bg); min-height: 100vh; }
-  h2 { font-family: var(--font-display); font-size: var(--fs-h2); margin: 0 0 4px; letter-spacing: -0.015em; }
-  .muted { color: var(--page-mute); margin: 0 0 28px; max-width: 72ch; }
-  code { font-family: var(--font-mono); font-size: 0.9em; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+  .wrap { font-family: var(--font-body); color: var(--page-fg); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr)); gap: 16px; }
   .cell { padding: 20px 22px 26px; border: 1px solid var(--page-line); border-radius: var(--radius-lg); background: var(--surface-0); }
   .cell.dark { background: var(--base-1000); color: var(--n-100); }
   .cap { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); margin-bottom: 16px; }
   .cell.dark .cap { color: var(--n-400); }
   .cell { overflow: hidden; }
+  .tabrow { flex-wrap: wrap; }
   .states { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
   .states.col { flex-direction: column; align-items: stretch; gap: 14px; }
+  .states.col :global(.dss-field), .states.col :global(.dss-input-group), .states.col :global(.dss-input), .states.col :global(.dss-select) { min-width: 0; max-width: 100%; box-sizing: border-box; }
 </style>
