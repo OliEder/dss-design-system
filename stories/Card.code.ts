@@ -6,7 +6,7 @@ export const vanilla = `<!-- Einmal im App-Root einbinden -->
 <!-- Variante: dss-card--default | --elevated | --flat | --hoverable.
      Abstand: dss-card--pad-sm | --pad-md | --pad-lg (wirkt auf den Inhalt). -->
 <article class="dss-card dss-card--default dss-card--pad-md">
-  <div class="dss-card-head">Roster · TSV München</div>
+  <div class="dss-card-head">Roster · TSV Nordhain</div>
   <div class="dss-card-body">
     <p>12 Spieler</p>
   </div>
@@ -33,7 +33,7 @@ export const svelte = `<script>
 
 <!-- Kopf und Fuß sind Snippets -->
 <Card>
-  {#snippet header()}Roster · TSV München{/snippet}
+  {#snippet header()}Roster · TSV Nordhain{/snippet}
   <p>12 Spieler</p>
   {#snippet footer()}
     <span>Stand · 17. Spieltag</span>
@@ -58,7 +58,7 @@ export const react = `import { Card } from '@bbv/dss-design-system/react';
 
 {/* Kopf und Fuß sind Props */}
 <Card
-  header="Roster · TSV München"
+  header="Roster · TSV Nordhain"
   footer={
     <>
       <span>Stand · 17. Spieltag</span>

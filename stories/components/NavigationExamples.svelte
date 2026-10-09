@@ -62,15 +62,15 @@
   <div class="stack">
     <div>
       <div class="cap">Live · Schiri- und Coach-App</div>
-      <div class="frame"><TopBar brand="DSS" mark="D" context="live" matchLabel="BBL · 17. Spieltag" score="87 : 64" clock="Q4 · 02:14" user="Stefan B." userInitials="SB" /></div>
+      <div class="frame"><TopBar brand="DSS" mark="D" context="live" matchLabel="BBL · 17. Spieltag" score="87 : 64" clock="Q4 · 02:14" user="Sven R." userInitials="SR" /></div>
     </div>
     <div>
       <div class="cap">Admin · Vereinsregister</div>
-      <div class="frame"><TopBar brand="BBV" mark="B" context="admin" matchLabel="Vereinsregister · TSV Tröster Breitengüßbach" user="Jana Lutz" userInitials="JL" /></div>
+      <div class="frame"><TopBar brand="BBV" mark="B" context="admin" matchLabel="Vereinsregister · TSV Nordhain 1920" user="Jule Arendt" userInitials="JA" /></div>
     </div>
     <div>
       <div class="cap">Default · ruhig</div>
-      <div class="frame"><TopBar brand="DSS Coach" mark="C" user="Tom K." userInitials="TK" /></div>
+      <div class="frame"><TopBar brand="DSS Coach" mark="C" user="Timo B." userInitials="TB" /></div>
     </div>
   </div>
 {:else if example === 'topbar-eigene'}
@@ -78,7 +78,7 @@
     <div>
       <div class="cap">center und actions</div>
       <div class="frame">
-        <TopBar brand="DSS" mark="D" user="Tom K." userInitials="TK">
+        <TopBar brand="DSS" mark="D" user="Timo B." userInitials="TB">
           {#snippet center()}<span class="mid">Turnier-Manager</span>{/snippet}
           {#snippet actions()}<button type="button" class="dss-btn dss-btn--secondary dss-btn--sm">Hilfe</button>{/snippet}
         </TopBar>
@@ -100,11 +100,11 @@
   <div class="stack">
     <div>
       <div class="cap">Plain</div>
-      <div class="frame pad"><Breadcrumbs ariaLabel="Pfad, plain" items={[{ label: 'Verband', href: '#' }, { label: 'Bayernliga', href: '#' }, { label: 'TSV Tröster', href: '#' }, { label: 'Roster' }]} /></div>
+      <div class="frame pad"><Breadcrumbs ariaLabel="Pfad, plain" items={[{ label: 'Verband', href: '#' }, { label: 'Bayernliga', href: '#' }, { label: 'TSV Nordhain', href: '#' }, { label: 'Roster' }]} /></div>
     </div>
     <div>
       <div class="cap">Tagged</div>
-      <div class="frame pad"><Breadcrumbs ariaLabel="Pfad, tagged" variant="tagged" items={[{ label: 'Verband', href: '#', tag: 'Org' }, { label: 'Bayernliga', href: '#', tag: 'Liga' }, { label: 'TSV Tröster', href: '#', tag: 'Team' }, { label: 'Roster', tag: 'View' }]} /></div>
+      <div class="frame pad"><Breadcrumbs ariaLabel="Pfad, tagged" variant="tagged" items={[{ label: 'Verband', href: '#', tag: 'Org' }, { label: 'Bayernliga', href: '#', tag: 'Liga' }, { label: 'TSV Nordhain', href: '#', tag: 'Team' }, { label: 'Roster', tag: 'View' }]} /></div>
     </div>
     <div>
       <div class="cap">Chip</div>
@@ -216,7 +216,7 @@
 {:else if example === 'dont-bottomnav'}
   <div class="narrow">{@render phone(zuViele, 'Hauptnavigation, sieben Ziele')}</div>
 {:else if example === 'do-pfad'}
-  <Breadcrumbs ariaLabel="Pfad, richtig" items={[{ label: 'Verband', href: '#' }, { label: 'Bayernliga', href: '#' }, { label: 'TSV Tröster', href: '#' }, { label: 'Roster' }]} />
+  <Breadcrumbs ariaLabel="Pfad, richtig" items={[{ label: 'Verband', href: '#' }, { label: 'Bayernliga', href: '#' }, { label: 'TSV Nordhain', href: '#' }, { label: 'Roster' }]} />
 {:else if example === 'dont-pfad'}
   <Breadcrumbs ariaLabel="Pfad, falsch" items={[{ label: 'Startseite', href: '#' }, { label: 'Boxscore', href: '#' }, { label: 'Roster', href: '#' }, { label: 'Boxscore' }]} />
 {:else if example === 'do-stepper'}

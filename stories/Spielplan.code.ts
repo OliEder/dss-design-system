@@ -27,15 +27,15 @@ export const tableVanilla = imports + `
         <tr role="row" class="dss-sch-row">
           <td role="cell" class="dss-sch-when">
             <span class="dss-sch-date">Sa, 26.09.2026</span>
-            <span class="dss-sch-time"><input type="text" value="17:30" aria-label="Anwurfzeit TSV Jahn Freising" /></span>
+            <span class="dss-sch-time"><input type="text" value="17:30" aria-label="Anwurfzeit TSV Falken Auental" /></span>
           </td>
           <td role="cell" class="dss-sch-ha">
             <span class="dss-chip dss-chip--mono dss-chip--sky">vs.</span>
           </td>
           <td role="cell" class="dss-sch-match">
             <span class="dss-sch-opp">
-              <span class="dss-sch-logo" aria-hidden="true">TJF</span>
-              <span class="dss-sch-team"><a class="dss-link" href="/teams/freising">TSV Jahn Freising</a></span>
+              <span class="dss-sch-logo" aria-hidden="true">TFA</span>
+              <span class="dss-sch-team"><a class="dss-link" href="/teams/freising">TSV Falken Auental</a></span>
             </span>
           </td>
           <td role="cell" class="dss-sch-res">
@@ -178,6 +178,6 @@ export const codeGame = `const games = [{
   id: '1', state: 'finished', section: 'Spieltag 5',
   date: 'Sa, 26.09.2026', time: '17:30',
   at: 'heim',
-  opponent: { name: 'TSV Jahn Freising', href: '/teams/freising', score: 108 },
+  opponent: { name: 'TSV Falken Auental', href: '/teams/freising', score: 108 },
   ownScore: 65,
 }];`;

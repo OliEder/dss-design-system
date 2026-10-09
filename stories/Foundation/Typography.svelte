@@ -6,7 +6,7 @@
     { id: 'display', use: 'Spielstand-Anzeige, Trikotnummer groß', sample: '87 : 64' },
     { id: 'clock',   use: 'Spielzeit, 24-s-Uhr (Mono)',           sample: '08:42' },
     { id: 'h1',      use: 'Seitentitel',                           sample: 'Spielbericht' },
-    { id: 'hero',    use: 'Name in Hero-Karten',                   sample: 'Aaron Seiferth' },
+    { id: 'hero',    use: 'Name in Hero-Karten',                   sample: 'Jonas Tanner' },
     { id: 'h2',      use: 'Abschnitte, Modal-Titel, Kennzahl groß', sample: 'Aufstellung Heim' },
     { id: 'stat',    use: 'Kennzahlen in Karten (Pkt., Reb.)',     sample: '17.4' },
     { id: 'h3',      use: 'Karten-Titel, Gruppen',                 sample: 'Kampfgericht' },
@@ -115,7 +115,7 @@
   {:else if mode === 'context'}
     <article class="ctx">
       <div class="dss-t-caption">BBL · 17. Spieltag</div>
-      <h1 class="dss-t-h1">TSV Tröster gegen USC Heidelberg</h1>
+      <h1 class="dss-t-h1">TSV Nordhain gegen Lindenberg Hawks</h1>
       <p class="dss-t-body-lg dss-measure">Das Topspiel der Bayernliga beginnt um 19:30 Uhr. Beide Mannschaften stehen punktgleich an der Tabellenspitze.</p>
       <div class="scoreline">
         <div class="dss-t-display">87 : 64</div>
@@ -126,7 +126,7 @@
       <table class="tbl">
         <thead><tr><th class="dss-t-label">Nr.</th><th class="dss-t-label">Spieler</th><th class="dss-t-label num-r">Pkt.</th></tr></thead>
         <tbody>
-          {#each [['4', 'A. Seiferth', 22], ['7', 'N. Wimberg', 19], ['13', 'T. Reuter', 12]] as [n, name, p]}
+          {#each [['4', 'J. Tanner', 22], ['7', 'M. Okafor', 19], ['13', 'K. Vogler', 12]] as [n, name, p]}
             <tr><td class="dss-t-body-md dss-tnum">{n}</td><td class="dss-t-body-md">{name}</td><td class="dss-t-body-md dss-tnum num-r">{p}</td></tr>
           {/each}
         </tbody>

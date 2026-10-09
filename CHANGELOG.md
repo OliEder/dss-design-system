@@ -6,6 +6,7 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 ## [Unveröffentlicht] — Marken-Rollen und DBB-Marke
 
 ### Geändert
+- **Demo-Daten: nur noch erfundene Namen.** Spieler, Personen, Vereine und Hallen in Stories, Beispielen, Code-Beispielen, README und Tests wirken nicht mehr wie echte (z. B. `TSV Nordhain`, `Lindenberg Hawks`, `BG Seeberg`, `J. Tanner`, `M. Okafor`); Längen bleiben ähnlich, Logo-Initialen und Avatar-Initialen sind angepasst. Ligabezeichnungen und Paketnamen unverändert.
 - **Storybook-Seitenleiste: eine Gruppe `Components/Spielplan`** mit der Docs-Seite und den Untergruppen `Tabelle` (vorher `ScheduleTable`), `Zeitraster` (vorher `ScheduleGrid`) und `Spielwiese` (vorher `Spielplan Spielwiese`). Die Story-IDs ändern sich (`components-spielplan-tabelle--…`, `…-zeitraster--…`, `…-spielwiese--…`); Verweise in Handy-Vorschauen, Einführung und `scripts/visual-compare.mjs` sind angepasst.
 - **Spielplan-Seite:** `Components/Spielplan` zeigt die Tabellen jetzt mit den echten DSS-Abständen (die Doku-CSS überschrieb zuvor Padding und Kopfhöhe von `dss-tbl--schedule` und `dss-sgrid`); die Seite ist dadurch etwa 300 px kürzer.
 - **Table: Scrollbereich ist eine benannte, fokussierbare Region** (`role="region"`, `tabindex="0"`, Name aus `caption`, sonst `title`, sonst „Tabelle“), mit gestricheltem Fokus-Ring innen (`.dss-table-scroll:focus-visible`, auch für ScheduleTable und ScheduleGrid; vorher Browser-Standard-Ring). Svelte-Table bekommt `caption` und `titleAs` wie React.

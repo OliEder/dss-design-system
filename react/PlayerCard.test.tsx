@@ -13,11 +13,11 @@ const VITALS = [
 describe('PlayerCard', () => {
   it('rendert compact als div mit Trikot, Name, Position und Statistik', () => {
     const { container } = render(
-      <PlayerCard size="compact" jersey={4} name="A. Seiferth" position="PG" captain playerRole="Spielmacher" stat={22} statLabel="PTS" />,
+      <PlayerCard size="compact" jersey={4} name="J. Tanner" position="PG" captain playerRole="Spielmacher" stat={22} statLabel="PTS" />,
     );
     expect(container.firstElementChild?.tagName).toBe('DIV');
     expect(container.firstElementChild).toHaveClass('dss-pc-row');
-    expect(screen.getByText('A. Seiferth (C)')).toBeInTheDocument();
+    expect(screen.getByText('J. Tanner (C)')).toBeInTheDocument();
     expect(container.querySelector('.dss-tn')).toHaveClass('heim', 'small', 'captain');
     expect(container.querySelector('.dss-pos')).toHaveClass('pg');
     expect(container.querySelector('.dss-pos')).toHaveAttribute('aria-hidden', 'true');
@@ -26,17 +26,17 @@ describe('PlayerCard', () => {
 
   it('wird compact mit onClick zum Button', () => {
     const onClick = vi.fn();
-    render(<PlayerCard size="compact" jersey={7} name="N. Wimberg" onClick={onClick} />);
-    fireEvent.click(screen.getByRole('button', { name: /N. Wimberg/ }));
+    render(<PlayerCard size="compact" jersey={7} name="M. Okafor" onClick={onClick} />);
+    fireEvent.click(screen.getByRole('button', { name: /M. Okafor/ }));
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
   it('rendert standard mit Überschrift, Kapitän-Marke, Alter, Größe und Kennzahlen', () => {
     const { container } = render(
-      <PlayerCard size="standard" jersey={13} name="T. Reuter" position="PF" team="gast" captain age="24 J." heightCm="198" vitals={VITALS} />,
+      <PlayerCard size="standard" jersey={13} name="K. Vogler" position="PF" team="gast" captain age="24 J." heightCm="198" vitals={VITALS} />,
     );
     expect(container.firstElementChild).toHaveClass('dss-pc-card');
-    expect(screen.getByRole('heading', { name: 'T. Reuter', level: 3 })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'K. Vogler', level: 3 })).toBeInTheDocument();
     expect(screen.getByText('Kapitän')).toHaveClass('dss-pc-cap');
     expect(screen.getByText('198 cm')).toBeInTheDocument();
     expect(container.querySelector('.dss-tn')).toHaveClass('gast', 'large');
@@ -45,10 +45,10 @@ describe('PlayerCard', () => {
   });
 
   it('rendert hero mit großer Trikotnummer und wählbarer Überschriftenebene', () => {
-    const { container } = render(<PlayerCard size="hero" jersey={9} name="M. Wagner" titleAs="h2" vitals={VITALS} />);
+    const { container } = render(<PlayerCard size="hero" jersey={9} name="H. Lorenz" titleAs="h2" vitals={VITALS} />);
     expect(container.firstElementChild).toHaveClass('dss-pc-hero');
     expect(container.querySelector('.dss-tn')).toHaveClass('hero');
-    expect(screen.getByRole('heading', { name: 'M. Wagner', level: 2 })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'H. Lorenz', level: 2 })).toBeInTheDocument();
   });
 
   it('lässt Kennzahlen weg, wenn keine übergeben werden', () => {
@@ -57,7 +57,7 @@ describe('PlayerCard', () => {
   });
 
   it.each(['compact', 'standard', 'hero'] as const)('hat in %s keine A11y-Verstöße', async (size) => {
-    const { container } = render(<PlayerCard size={size} jersey={4} name="A. Seiferth" position="PG" vitals={VITALS} stat={22} statLabel="PTS" />);
+    const { container } = render(<PlayerCard size={size} jersey={4} name="J. Tanner" position="PG" vitals={VITALS} stat={22} statLabel="PTS" />);
     await expectNoA11yViolations(container);
   });
 });

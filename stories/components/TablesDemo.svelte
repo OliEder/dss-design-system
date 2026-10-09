@@ -9,7 +9,7 @@
 
 {#if preset === 'roster'}
   <Table
-    title="TSV Tröster Breitengüßbach"
+    title="TSV Nordhain 1920"
     meta="10 Spieler · Touch · 60 px"
     density="touch"
     {dark}
@@ -47,7 +47,7 @@
 
 {:else if preset === 'boxscore'}
   <Table
-    title={dark ? 'USC Heidelberg · Live Statistik' : 'Spieler-Statistiken Q1 – Q4'}
+    title={dark ? 'Lindenberg Hawks · Live Statistik' : 'Spieler-Statistiken Q1 – Q4'}
     meta={dark ? 'Q4 · 02:14' : 'Stand · 4. Viertel · 02:14'}
     live={dark}
     {density}

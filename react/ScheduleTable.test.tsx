@@ -7,43 +7,43 @@ import { expectNoA11yViolations } from './test-utils';
 const VERSUS: ScheduleGame[] = [
   {
     id: 'v1', state: 'finished', section: 'Spieltag 5', date: 'Sa, 11.10.2026', time: '18:00',
-    heim: { name: 'TSV Tröster', href: '/teams/troester', score: 87, own: true },
-    gast: { name: 'USC Heidelberg', score: 64 },
+    heim: { name: 'TSV Nordhain', href: '/teams/troester', score: 87, own: true },
+    gast: { name: 'Lindenberg Hawks', score: 64 },
     league: { name: 'Bayernliga Süd', href: '/ligen/by' },
   },
   {
     id: 'v2', state: 'scheduled', section: 'Spieltag 6', date: 'Sa, 18.10.2026', time: '18:00',
-    heim: { name: 'TV Lich' }, gast: { name: 'TSV Tröster', own: true },
+    heim: { name: 'TV Elbach' }, gast: { name: 'TSV Nordhain', own: true },
   },
 ];
 
 const PERSPECTIVE: ScheduleGame[] = [
   {
     id: 'p1', state: 'finished', date: 'Sa, 26.09.2026', time: '17:30', at: 'heim',
-    opponent: { name: 'TSV Jahn Freising', href: '/teams/freising', score: 108 }, ownScore: 65,
+    opponent: { name: 'TSV Falken Auental', href: '/teams/freising', score: 108 }, ownScore: 65,
   },
   {
     id: 'p2', state: 'finished', date: 'Sa, 03.10.2026', time: '17:30', at: 'heim', provisional: true,
-    opponent: { name: 'Dukes Dingolfing', score: 0 }, ownScore: 20,
+    opponent: { name: 'Dukes Eschental', score: 0 }, ownScore: 20,
   },
   {
     id: 'p3', state: 'scheduled', date: 'Sa, 10.10.2026', time: '19:30', at: 'gast',
-    opponent: { name: 'Nürnberger Basketball Club', logo: '/logos/nbc.png' },
+    opponent: { name: 'Bergheimer Basketball Club', logo: '/logos/nbc.png' },
   },
 ];
 
 const TOURNAMENT: ScheduleGame[] = [
   {
     id: 't1', state: 'live', nr: '#3', section: 'Runde 2 · Gruppe A', time: '09:30–09:50', field: 'F1',
-    heim: { name: 'TSV Tröster', score: 18, own: true }, gast: { name: 'TV Lich', score: 20 },
+    heim: { name: 'TSV Nordhain', score: 18, own: true }, gast: { name: 'TV Elbach', score: 20 },
   },
   {
     id: 't2', state: 'cancelled', nr: '#4', section: 'Runde 2 · Gruppe A', time: '09:30–09:50', field: 'F2',
-    heim: { name: 'USC Heidelberg' }, gast: { name: 'SV Aschaffenburg' }, note: 'Rückzug SV Aschaffenburg',
+    heim: { name: 'Lindenberg Hawks' }, gast: { name: 'SV Kiefernau' }, note: 'Rückzug SV Kiefernau',
   },
   {
     id: 't3', state: 'bye', nr: '#5', section: 'Runde 2 · Gruppe A', time: '09:30–09:50',
-    heim: { name: 'BG Zirndorf' },
+    heim: { name: 'BG Seeberg' },
   },
   {
     id: 't4', state: 'scheduled', nr: '#9', section: 'Halbfinale', time: '11:00–11:20', field: 'F1',
@@ -58,7 +58,7 @@ describe('ScheduleTable · versus', () => {
     expect([...groups].map((g) => g.textContent)).toEqual(['Spieltag 5', 'Spieltag 6']);
     expect(groups[0]).toHaveAttribute('colspan', '3');
     expect(groups[0]).toHaveAttribute('scope', 'colgroup');
-    expect(screen.getByRole('link', { name: 'TSV Tröster' })).toHaveAttribute('href', '/teams/troester');
+    expect(screen.getByRole('link', { name: 'TSV Nordhain' })).toHaveAttribute('href', '/teams/troester');
     expect(screen.getByRole('link', { name: 'Bayernliga Süd' })).toHaveAttribute('href', '/ligen/by');
   });
 
@@ -114,7 +114,7 @@ describe('ScheduleTable · opponent', () => {
     const chips = [...container.querySelectorAll('.dss-sch-ha .dss-chip')].map((c) => c.textContent);
     expect(chips).toEqual(['vs.', 'vs.', '@']);
     const logos = container.querySelectorAll('.dss-sch-logo');
-    expect(logos[0]).toHaveTextContent('TJF');
+    expect(logos[0]).toHaveTextContent('TFA');
     expect(logos[2].querySelector('img')).toHaveAttribute('src', '/logos/nbc.png');
     expect(screen.getByText('Eigene 65, Gegner 108, Niederlage')).toBeInTheDocument();
     expect(container.querySelector('.dss-chip--err')).toHaveTextContent('N');
@@ -159,19 +159,19 @@ describe('ScheduleTable · columns (Turnier)', () => {
     expect(when.querySelector('.dss-match-live')).toHaveTextContent('Live');
     expect(screen.getByText('Heim 18, Gast 20, läuft')).toHaveClass('dss-sr-only');
     expect(rows[1]).toHaveClass('is-cancelled');
-    expect(screen.getByText('Rückzug SV Aschaffenburg')).toHaveClass('dss-sch-note');
+    expect(screen.getByText('Rückzug SV Kiefernau')).toHaveClass('dss-sch-note');
   });
 
   it('zeigt Freilos als Zeile über alle Spalten und Platzhalter kursiv', () => {
     const { container } = render(<ScheduleTable games={TOURNAMENT} layout="columns" />);
     const bye = container.querySelector('tr.is-bye td') as HTMLElement;
     expect(bye).toHaveAttribute('colspan', '6');
-    expect(bye).toHaveTextContent('BG Zirndorf hat Freilos');
+    expect(bye).toHaveTextContent('BG Seeberg hat Freilos');
     expect(screen.getByText('Erster Gruppe A')).toHaveClass('dss-sch-ph');
   });
 
   it('rendert Slots für Zeit, Hinweis und Router-Links', () => {
-    const games: ScheduleGame[] = [{ ...TOURNAMENT[0], heim: { name: 'TSV Tröster', href: '/t/1' } }];
+    const games: ScheduleGame[] = [{ ...TOURNAMENT[0], heim: { name: 'TSV Nordhain', href: '/t/1' } }];
     const { container } = render(
       <ScheduleTable
         games={games}
@@ -332,7 +332,7 @@ describe('ScheduleTable · Rahmen und Optionen', () => {
 });
 
 describe('ScheduleTable · Freilos', () => {
-  const bye: ScheduleGame = { id: 'by', state: 'bye', time: '09:00', heim: { name: 'BG Zirndorf' } };
+  const bye: ScheduleGame = { id: 'by', state: 'bye', time: '09:00', heim: { name: 'BG Seeberg' } };
   const persp: ScheduleGame = {
     id: 'pp', state: 'scheduled', time: '10:00', at: 'heim', opponent: { name: 'G' },
   };

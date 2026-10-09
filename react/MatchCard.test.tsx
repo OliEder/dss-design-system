@@ -3,8 +3,8 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { MatchCard } from './MatchCard';
 import { expectNoA11yViolations } from './test-utils';
 
-const HEIM = { name: 'TSV Tröster' };
-const GAST = { name: 'USC Heidelberg' };
+const HEIM = { name: 'TSV Nordhain' };
+const GAST = { name: 'Lindenberg Hawks' };
 
 describe('MatchCard', () => {
   it('zeigt in „scheduled“ Datum, Uhrzeit, Halle und keine Punkte', () => {
@@ -41,13 +41,13 @@ describe('MatchCard', () => {
   it('wird mit onClick zum Button und löst den Handler aus', () => {
     const onClick = vi.fn();
     render(<MatchCard heim={HEIM} gast={GAST} onClick={onClick} />);
-    fireEvent.click(screen.getByRole('button', { name: /TSV Tröster/ }));
+    fireEvent.click(screen.getByRole('button', { name: /TSV Nordhain/ }));
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
   it('wird mit href zum Link', () => {
     render(<MatchCard heim={HEIM} gast={GAST} href="/spiele/42" />);
-    expect(screen.getByRole('link', { name: /TSV Tröster/ })).toHaveAttribute('href', '/spiele/42');
+    expect(screen.getByRole('link', { name: /TSV Nordhain/ })).toHaveAttribute('href', '/spiele/42');
   });
 
   it('hat keine A11y-Verstöße (Link und live)', async () => {

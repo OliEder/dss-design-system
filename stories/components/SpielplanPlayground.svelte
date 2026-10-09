@@ -54,8 +54,8 @@
   const dens = $derived(density === 'auto' ? undefined : density);
   const noteText = $derived(note.trim() === '' ? undefined : note);
 
-  const TEAM = 'TSV Tröster';
-  const OPP = $derived(placeholder ? 'Erster Gruppe A' : 'TV Lich');
+  const TEAM = 'TSV Nordhain';
+  const OPP = $derived(placeholder ? 'Erster Gruppe A' : 'TV Elbach');
 
   // ---------- Tabelle ----------
   const league = { name: 'Bayernliga Herren Mitte' };
@@ -68,7 +68,7 @@
       nr: '#1',
       date: 'Sa, 10.10.2026',
       time: '17:30',
-      ...(showVenue ? { venue: 'Sporthalle Breitengüßbach' } : {}),
+      ...(showVenue ? { venue: 'Sporthalle Nordhain' } : {}),
       ...(showField ? { field: 'F1' } : {}),
       ...(showLeague ? { league } : {}),
       ...(provisional ? { provisional: true } : {}),
@@ -108,16 +108,16 @@
 
     return [
       test,
-      mk('c1', 'finished', 'heim', 'USC Heidelberg', 65, 58, {}, { section: 'Spieltag 5', nr: '#2', date: 'Sa, 10.10.2026', time: '19:30', field: 'F2', venue: 'Frankenhalle Zirndorf' }),
-      mk('c2', 'scheduled', 'gast', 'BG Zirndorf', 0, 0, {}, { section: 'Spieltag 6', nr: '#3', date: 'Sa, 17.10.2026', time: '15:00', field: 'F1', venue: 'Sporthalle Breitengüßbach' }),
-      mk('c3', 'cancelled', 'heim', 'SV Aschaffenburg', 0, 0, { note: 'Halle gesperrt' }, { section: 'Spieltag 6', nr: '#4', date: 'Sa, 17.10.2026', time: '17:30', field: 'F2', venue: 'Frankenhalle Zirndorf' }),
+      mk('c1', 'finished', 'heim', 'Lindenberg Hawks', 65, 58, {}, { section: 'Spieltag 5', nr: '#2', date: 'Sa, 10.10.2026', time: '19:30', field: 'F2', venue: 'Seehalle Seeberg' }),
+      mk('c2', 'scheduled', 'gast', 'BG Seeberg', 0, 0, {}, { section: 'Spieltag 6', nr: '#3', date: 'Sa, 17.10.2026', time: '15:00', field: 'F1', venue: 'Sporthalle Nordhain' }),
+      mk('c3', 'cancelled', 'heim', 'SV Kiefernau', 0, 0, { note: 'Halle gesperrt' }, { section: 'Spieltag 6', nr: '#4', date: 'Sa, 17.10.2026', time: '17:30', field: 'F2', venue: 'Seehalle Seeberg' }),
     ];
   });
 
 
   // ---------- Zeitraster ----------
-  const HALL_NAMES = ['Sporthalle Breitengüßbach', 'Frankenhalle Zirndorf', 'Feld 3', 'Mainfranken-Halle Würzburg', 'Halle am Stadtpark'];
-  const TEAMS = ['USC Heidelberg', 'BG Zirndorf', 'SV Aschaffenburg', 'MTV Ansbach', 'TuSpo Heroldsberg', 'CVJM Erlangen', 'TB Weiden', 'FC Tegernheim', 'TG 48 Würzburg', 'TV Altdorf'];
+  const HALL_NAMES = ['Sporthalle Nordhain', 'Seehalle Seeberg', 'Feld 3', 'Mainauer Sporthalle', 'Halle am Stadtpark'];
+  const TEAMS = ['Lindenberg Hawks', 'BG Seeberg', 'SV Kiefernau', 'MTV Bergfeld', 'TuSpo Hellenthal', 'CVJM Ostfeld', 'TB Grünfeld', 'FC Waldbach', 'TG 48 Mainau', 'TV Wiesental'];
   const TIMES = ['09:00', '09:30', '10:00'];
   const PLAN: [ScheduleState, string][][] = [
     [['finished', ''], ['finished', ''], ['finished', ''], ['live', ''], ['scheduled', '']],
@@ -165,7 +165,7 @@
         });
       });
     });
-    if (showBye) list.push({ id: 'gbye', state: 'bye', time: '09:30', heim: { name: 'MTV Ansbach' } });
+    if (showBye) list.push({ id: 'gbye', state: 'bye', time: '09:30', heim: { name: 'MTV Bergfeld' } });
     return list;
   });
 </script>

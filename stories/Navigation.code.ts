@@ -21,8 +21,8 @@ export const topBarVanilla = `${setup}
   </div>
   <span class="dss-topbar-spacer"></span>
   <div class="dss-topbar-user">
-    <span class="dss-topbar-av">SB</span>
-    Stefan B.
+    <span class="dss-topbar-av">SR</span>
+    Sven R.
   </div>
 </div>`;
 
@@ -39,8 +39,8 @@ export const topBarSvelte = `<script>
   matchLabel="BBL · 17. Spieltag"
   score="87 : 64"
   clock="Q4 · 02:14"
-  user="Stefan B."
-  userInitials="SB"
+  user="Sven R."
+  userInitials="SR"
 />
 
 <!-- Eigene Inhalte über Snippets: leading, center, actions -->
@@ -64,8 +64,8 @@ export function Kopf() {
         matchLabel="BBL · 17. Spieltag"
         score="87 : 64"
         clock="Q4 · 02:14"
-        user="Stefan B."
-        userInitials="SB"
+        user="Sven R."
+        userInitials="SR"
       />
 
       {/* Eigene Inhalte über leading, center, actions */}

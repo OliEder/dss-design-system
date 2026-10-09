@@ -5,7 +5,7 @@ import { expectNoA11yViolations } from './test-utils';
 
 const ITEMS: BreadcrumbItem[] = [
   { label: 'Vereine', href: '/vereine', tag: 'Admin' },
-  { label: 'TSV Tröster', href: '/vereine/tsv' },
+  { label: 'TSV Nordhain', href: '/vereine/tsv' },
   { label: 'Teams' },
 ];
 
@@ -14,7 +14,7 @@ describe('Breadcrumbs', () => {
     render(<Breadcrumbs items={ITEMS} />);
     expect(screen.getByRole('navigation', { name: 'Breadcrumb' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Vereine' })).toHaveAttribute('href', '/vereine');
-    expect(screen.getByRole('link', { name: 'TSV Tröster' })).toHaveAttribute('href', '/vereine/tsv');
+    expect(screen.getByRole('link', { name: 'TSV Nordhain' })).toHaveAttribute('href', '/vereine/tsv');
     const current = screen.getByText('Teams');
     expect(current).toHaveAttribute('aria-current', 'page');
     expect(current).toHaveClass('is-current');
