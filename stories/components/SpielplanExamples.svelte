@@ -99,6 +99,12 @@
     { key: 'time', label: 'Bearbeitbare Zeit', games: [{ id: 's15', state: 'scheduled', nr: '#9', time: '11:00', field: 'F1', heim: { name: 'Erster Gruppe A', placeholder: true }, gast: { name: 'Zweiter Gruppe B', placeholder: true } }], layout: 'columns', extra: 'time' },
   ];
 
+  // Dos und Don'ts
+  const eigene: ScheduleGame[] = [
+    ft('e1', { heim: { name: 'Fibalon Baskets Neumarkt', own: true }, gast: { name: 'FC Tegernheim' } }),
+    ft('e2', { time: '17:00' }),
+  ];
+
   const inputStyle = 'width: 7ch; font: inherit; padding: 2px 6px; border: 1px solid var(--dss-line); border-radius: 6px; background: var(--dss-surface); color: var(--dss-fg);';
 </script>
 
@@ -133,6 +139,25 @@
   <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="default" caption="Dichte Standard · 48 px" />
 {:else if example === 'dichte-compact'}
   <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="compact" caption="Dichte Kompakt · 45 px" />
+{:else if example === 'do-dichte'}
+  <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="touch" caption="Touch-Dichte" />
+{:else if example === 'dont-dichte'}
+  <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="compact" caption="Kompakte Dichte" />
+{:else if example === 'do-absage'}
+  <ScheduleTable games={[ft('d1', { state: 'cancelled', note: 'Abgesagt: Halle gesperrt' })]} caption="Abgesagt mit Grund" />
+{:else if example === 'dont-absage'}
+  <ScheduleTable games={[ft('d2', { state: 'cancelled' })]} caption="Abgesagt ohne Grund" />
+{:else if example === 'do-hallen'}
+  <ScheduleGrid games={raster} columns={hallen} caption="Drei Hallen" />
+{:else if example === 'dont-hallen'}
+  <ScheduleGrid games={raster5} columns={hallen5} caption="Fünf Hallen" />
+{:else if example === 'do-eigene'}
+  <ScheduleTable games={eigene} layout="versus" caption="Eigene Mannschaft dezent" />
+{:else if example === 'dont-eigene'}
+  <!-- Nachgestellt: die Komponente kann eine laute Zeile nicht, die Hintergrundfarbe kommt von außen. -->
+  <div class="shout">
+    <ScheduleTable games={eigene} layout="versus" caption="Eigene Mannschaft laut" />
+  </div>
 {/if}
 
 {#each states as s (s.key)}
@@ -150,3 +175,7 @@
     {/if}
   {/if}
 {/each}
+
+<style>
+  .shout :global(.dss-tbl tbody tr:not(.dss-sch-group)) { background: var(--signal-400); }
+</style>

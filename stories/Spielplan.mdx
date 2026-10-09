@@ -1,5 +1,6 @@
-import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks';
 import * as SpielplanStories from './Spielplan.examples.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
 import { FrameworkCode } from './docs/blocks/FrameworkCode';
 import { DocTable } from './docs/blocks/DocTable';
 import './docs/blocks/blocks.css';
@@ -312,6 +313,41 @@ Was optisch durch Chip, Farbe oder Durchstreichung gezeigt wird, steht zusätzli
     ['Farbe', 'Kein Zustand nur über Farbe: Live hat ein Wort-Tag, abgesagt und verlegt tragen Text, vorläufig steht im Klartext, S/N/U sind Buchstaben.'],
     ['Fokus', 'Links und Eingaben zeigen den DSS-Fokusring.'],
     ['Dunkel', <>Der seitenweite Dark Mode wirkt über die <code>--dss-*</code>-Variablen. Der dunkle Rahmen <code>dss-frame--dark</code> ist für Spielpläne nicht vorgesehen.</>],
+  ]}
+/>
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Dichte nach Gerät',
+      doText: 'Touch (60 px) für das iPad am Kampfgericht-Tisch.',
+      dontText: 'Kompakt (rund 45 px) ist für Bedienung mit dem Finger zu eng.',
+      good: <Story of={SpielplanStories.DoDichte} inline />,
+      bad: <Story of={SpielplanStories.DontDichte} inline />,
+    },
+    {
+      title: 'Abgesagt und verlegt nicht nur über Farbe',
+      doText: 'Durchgestrichen und mit Grund: „Abgesagt: Halle gesperrt“.',
+      dontText: 'Nur grau und durchgestrichen: niemand erfährt, warum.',
+      good: <Story of={SpielplanStories.DoAbsage} inline />,
+      bad: <Story of={SpielplanStories.DontAbsage} inline />,
+    },
+    {
+      title: 'Höchstens drei Hallen im Zeitraster',
+      doText: 'Drei Hallen je Raster, die App teilt weitere auf mehrere Raster auf.',
+      dontText: 'Fünf Hallen in einem Raster sprengen den Rahmen und scrollen seitlich.',
+      good: <Story of={SpielplanStories.DoHallen} inline />,
+      bad: <Story of={SpielplanStories.DontHallen} inline />,
+    },
+    {
+      title: 'Eigene Mannschaft dezent hervorheben',
+      doText: 'Balken links und leichter Hintergrund (own).',
+      dontText: 'Eine ganze Zeile in der Signalfarbe erschlägt den Inhalt.',
+      good: <Story of={SpielplanStories.DoEigene} inline />,
+      bad: <Story of={SpielplanStories.DontEigene} inline />,
+    },
   ]}
 />
 

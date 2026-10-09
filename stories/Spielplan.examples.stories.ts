@@ -41,3 +41,12 @@ export const ZustandTime = example('zustand-time');
 export const DichteTouch = example('dichte-touch');
 export const DichteDefault = example('dichte-default');
 export const DichteCompact = example('dichte-compact');
+
+export const DoDichte = example('do-dichte');
+export const DontDichte = example('dont-dichte');
+export const DoAbsage = example('do-absage');
+export const DontAbsage = example('dont-absage');
+export const DoHallen = example('do-hallen');
+export const DontHallen = example('dont-hallen');
+export const DoEigene = example('do-eigene');
+export const DontEigene = example('dont-eigene');
