@@ -1,0 +1,146 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as ModalStories from './Modal.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import { DocTable } from './docs/blocks/DocTable';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './Modal.code';
+
+<Meta of={ModalStories} />
+
+# Modal
+
+Ein Modal unterbricht den Ablauf, wenn etwas wichtig ist: vom „Spielbericht senden?“ beim Schlusspfiff bis zur Bestätigung nach der Synchronisation. Es hat einen Hintergrund, einen Kopf mit optionalem Symbol, einen Inhalt und einen Fuß mit den Aktionen, in Hell und Dunkel und in beiden Marken. Für Hinweise, die stehen bleiben sollen, ist das [Banner](?path=/docs/components-banner--docs) die richtige Wahl.
+
+## Anatomie: Hintergrund, Fläche, Kopf, Inhalt, Fuß
+
+Jedes Modal hat denselben Aufbau. Verändert werden nur Größe, Symbol-Tönung und die Aktionen im Fuß. Die Vorschauen auf dieser Seite sind in einen Rahmen gesetzt; im Einsatz deckt das Modal die ganze Seite ab (`position: fixed`).
+
+<Canvas of={ModalStories.Anatomie} />
+
+<DocTable
+  label="Bestandteile eines Modals"
+  head={['Teil', 'Klasse', 'Beschreibung']}
+  rows={[
+    ['Hintergrund', 'dss-backdrop', <>Halbtransparente Fläche (<code>--backdrop</code>) mit 4 px Unschärfe über der ganzen Seite.</>],
+    ['Fläche', 'dss-modal', <>Radius <code>--radius-xl</code>, Schatten <code>--shadow-xl</code>, höchstens die Fensterhöhe minus 48 px, nie breiter als das Fenster.</>],
+    ['Symbol', 'dss-m-head-icon', <>Optional, getönt nach Schweregrad (<code>danger</code>, <code>warn</code>, <code>ok</code>, <code>info</code>). Bei <code>default</code> entfällt es.</>],
+    ['Titel und Untertitel', 'dss-m-title, dss-m-subtitle', <>Titel in <code>--font-display</code>, 700, <code>--fs-h3</code> (20 px). Der Untertitel ist eine Mono-Zeile in Großbuchstaben mit <code>--dss-mute</code>.</>],
+    ['Schließen', 'dss-m-close', 'Runder 32-px-Button oben rechts, nur mit closable.'],
+    ['Inhalt', 'dss-m-body', <>Text in <code>--fs-body</code> (15 px). Bei viel Inhalt scrollt nur dieser Bereich, Kopf und Fuß bleiben stehen.</>],
+    ['Fuß', 'dss-m-footer', <>Aktionen rechtsbündig mit 8 px Abstand auf <code>--dss-surface-2</code>, die Hauptaktion steht rechts außen. Entfällt, wenn kein Fuß übergeben wird.</>],
+  ]}
+/>
+
+## Schweregrade: Symbol und Ton nach Anlass
+
+Der Schweregrad tönt das Symbol im Kopf. `default` hat kein Symbol und ist für gewöhnliche Bestätigungen gedacht. `danger` kündigt etwas Unwiderrufliches an, `warn` eine Prüfung, `ok` eine Bestätigung, `info` eine Erklärung. Die Hauptaktion im Fuß folgt dem Anlass: `danger` bei zerstörerischen Aktionen, `amber` für die Warnung.
+
+<Canvas of={ModalStories.Schweregrade} />
+
+## Größen
+
+Vier Breiten stehen zur Wahl. Auf schmalen Bildschirmen schrumpft das Modal auf die Fensterbreite abzüglich 24 px Rand auf jeder Seite.
+
+<Canvas of={ModalStories.Groessen} />
+
+<DocTable
+  label="Größen des Modals"
+  head={['Größe', 'Breite', 'Einsatz']}
+  rows={[
+    ['sm', '380 px', 'Kurze Bestätigungen und Rückmeldungen'],
+    ['md', '480 px', 'Standard: eine Entscheidung mit zwei, drei Sätzen Erklärung'],
+    ['wide', '560 px', 'Erklärungen mit mehr Text, z. B. eine Regel'],
+    ['xwide', '720 px', 'Inhalte, die mehr Platz brauchen'],
+  ]}
+/>
+
+## Bedienung: Öffnen, Schließen, Fokus
+
+Das Modal ist ein Dialog (`role="dialog"`, `aria-modal="true"`), der Titel benennt ihn. Probiere es aus: Der Button öffnet das Modal (hier in einer Svelte-Fassung), danach schließen es **Escape**, ein Klick auf den Hintergrund und der Schließen-Button.
+
+<Canvas of={ModalStories.Interaktiv} />
+
+Wie viel Fokusverhalten die Komponente selbst übernimmt, hängt von der Fassung ab:
+
+<DocTable
+  label="Verhalten je Fassung"
+  head={['Verhalten', 'Svelte', 'React (Radix Dialog)']}
+  rows={[
+    ['Escape schließt', 'Ja, nur mit closable', 'Ja, nur mit closable'],
+    ['Klick auf den Hintergrund schließt', 'Ja, nur mit closable', 'Ja, mit closable und dismissOnBackdrop (beides Standard)'],
+    ['Fokus beim Öffnen', 'Nein: der Fokus bleibt auf dem Auslöser hinter dem Modal', 'Ja, in das Modal'],
+    ['Tab bleibt im Modal', 'Nein: Tab erreicht auch die Seite dahinter', 'Ja (Fokusfalle)'],
+    ['Fokus beim Schließen', 'Nein: du setzt ihn selbst zurück', 'Ja, zurück zum vorherigen Element'],
+  ]}
+/>
+
+In der Svelte-Fassung bist du für den Fokus selbst zuständig: setze ihn beim Öffnen in das Modal (z. B. auf die Hauptaktion) und gib ihn beim Schließen an den Auslöser zurück. In reinem HTML gilt dasselbe für alle Punkte der Tabelle.
+
+## Zustände: Schließen und Aktionen
+
+Der Schließen-Button hat bei Hover einen Linienton als Hintergrund und bei Tastaturfokus den gestrichelten Gold/Amber-Ring (3 px). Einen eigenen Aktiv-Stil hat er nicht. Die Schaltflächen im Fuß sind normale [Buttons](?path=/docs/components-button--docs) mit deren Zuständen. Das Modal selbst ist nie gesperrt: Gesperrt gibt es nur für die Aktionen.
+
+<Canvas of={ModalStories.Zustaende} />
+
+Die Matrix ist fest gesetzt. Jede andere Story lässt sich über die Werkzeugleiste **Zustand** auf Hover, Fokus oder Aktiv schalten. Marke und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Verwendung: Import und Props
+
+Titel und Inhalt gehören immer dazu. Die Aktionen kommen in den Fuß (Svelte: Snippet `footer`, React: Prop `footer`). Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+Die Tabelle zeigt die Steuerelemente der Demo; `body`, `cancelLabel`, `confirmLabel` und `confirmVariant` gehören nur zur Demo und beschreiben den Inhalt und die Buttons im Fuß.
+
+<Controls of={ModalStories.Standard} />
+
+Zusätzlich gibt es je nach Fassung:
+
+<DocTable
+  label="Weitere Props"
+  head={['Prop', 'Fassung', 'Beschreibung']}
+  rows={[
+    ['open', 'Svelte, React', <>Sichtbarkeit. Svelte: <code>bind:open</code> (<code>$bindable</code>), React: Prop <code>open</code> mit <code>onOpenChange(open)</code>.</>],
+    ['onclose', 'Svelte', 'Wird nach dem Schließen aufgerufen (Escape, Hintergrund, Button).'],
+    ['onOpenChange', 'React', 'Wird bei jedem Wunsch zu schließen aufgerufen, auch für Escape und Hintergrund.'],
+    ['dismissOnBackdrop', 'React', <>Mit <code>false</code> schließt ein Klick neben das Modal nicht (Standard <code>true</code>).</>],
+    ['closeLabel', 'React', <>Zugänglicher Name des Schließen-Buttons (Standard „Schließen“).</>],
+    ['className', 'React', 'Zusätzliche Klasse an der Modal-Fläche.'],
+  ]}
+/>
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Die Aktion benennen',
+      doText: 'Der Titel stellt die Entscheidung als Frage, die Buttons nennen das Ergebnis als Verb: „Noch prüfen“ oder „Senden“.',
+      dontText: '„Achtung“ als Titel und „Nein“ oder „OK“ als Buttons: Erst der Fließtext verrät, worum es geht.',
+      good: <Story of={ModalStories.DoAktion} inline />,
+      bad: <Story of={ModalStories.DontAktion} inline />,
+    },
+    {
+      title: 'Zerstörerisches als Danger',
+      doText: 'Schweregrad danger und ein danger-Button mit dem Verb („Verwerfen“) machen die Folge sichtbar; die sichere Wahl steht links.',
+      dontText: 'Ein gewöhnliches Modal mit primärem Button sieht aus wie jede Bestätigung, obwohl nichts zurückzuholen ist.',
+      good: <Story of={ModalStories.DoDanger} inline />,
+      bad: <Story of={ModalStories.DontDanger} inline />,
+    },
+    {
+      title: 'Immer einen Ausweg lassen',
+      doText: 'Mit Schließen-Button (und Escape) oder wenigstens einer Aktion im Fuß kommt man aus dem Modal heraus.',
+      dontText: 'closable={false} ohne Fuß: kein Button, kein Escape, kein Klick daneben, das Modal lässt sich nicht beenden.',
+      good: <Story of={ModalStories.DoAusweg} inline />,
+      bad: <Story of={ModalStories.DontAusweg} inline />,
+    },
+    {
+      title: 'Schweregrad passend wählen',
+      doText: 'Eine Regel-Erklärung ist info: blaues Symbol, ruhiger Ton.',
+      dontText: 'danger für eine bloße Information nimmt dem roten Symbol seine Bedeutung.',
+      good: <Story of={ModalStories.DoSchwere} inline />,
+      bad: <Story of={ModalStories.DontSchwere} inline />,
+    },
+  ]}
+/>

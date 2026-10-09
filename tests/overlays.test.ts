@@ -27,3 +27,10 @@ describe('Svelte-Modal: eindeutige Titel-id', () => {
     expect(modal).toMatch(/aria-labelledby=\{titleId\}/);
   });
 });
+
+describe('Banner-Link im Dunkelmodus', () => {
+  it('Fokus-Ring nimmt die Textfarbe (der dezente Dunkel-Ring hat auf dem Banner unter 3:1)', () => {
+    expect(css).toMatch(/:root\[data-theme="dark"\] \.dss-banner a:focus-visible\s*\{\s*outline-color:\s*currentColor/);
+    expect(css).toMatch(/:root:not\(\[data-theme="light"\]\) \.dss-banner a:focus-visible\s*\{\s*outline-color:\s*currentColor/);
+  });
+});

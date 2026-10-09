@@ -19,6 +19,10 @@
 @media (max-width: 640px) { .dss-dd-cols { grid-template-columns: minmax(0, 1fr); } }
 /* Breite Beispiele (Tabellen, Raster) bleiben in der Bühne und scrollen dort */
 .dss-dd-stage > * { min-width: 0; max-width: 100%; }
+/* Modal-Beispiele (position: fixed) bleiben in der Bühne: transform macht sie zum Bezugsrahmen */
+.dss-dd-stage:has(.dss-modal-wrap) { transform: translateZ(0); overflow: hidden; }
+/* Storybook setzt um Inline-Stories ein .sb-story (mit transform): das ist der eigentliche Bezugsrahmen, es muss die Bühne füllen */
+.dss-dd-stage:has(.dss-modal-wrap) > .sb-story { flex: 1 1 100%; align-self: stretch; padding: 0; min-height: 420px; }
 
 /* Fließtext-Tabellen in MDX (z. B. Größen): Marke und Hell/Dunkel statt Storybook-Zebra */
 .sbdocs table:not(.docblock-argstable) { width: 100%; border-collapse: collapse; background: transparent; color: var(--page-fg); font-family: var(--font-body); }
