@@ -23,7 +23,7 @@ const testgame = (withLayout: boolean) => ({
 });
 
 export default {
-  title: 'Components/Spielplan Spielwiese',
+  title: 'Components/Spielplan/Spielwiese',
   component: SpielplanPlayground,
   parameters: { layout: 'fullscreen' },
 };

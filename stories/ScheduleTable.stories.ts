@@ -1,7 +1,7 @@
 import ScheduleDemo from './components/ScheduleDemo.svelte';
 
 export default {
-  title: 'Components/ScheduleTable',
+  title: 'Components/Spielplan/Tabelle',
   component: ScheduleDemo,
   parameters: {
     layout: 'fullscreen',

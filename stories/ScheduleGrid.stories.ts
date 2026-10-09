@@ -1,7 +1,7 @@
 import ScheduleDemo from './components/ScheduleDemo.svelte';
 
 export default {
-  title: 'Components/ScheduleGrid',
+  title: 'Components/Spielplan/Zeitraster',
   component: ScheduleDemo,
   parameters: {
     layout: 'fullscreen',

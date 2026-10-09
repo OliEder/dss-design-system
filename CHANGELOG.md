@@ -6,6 +6,7 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 ## [Unveröffentlicht] — Marken-Rollen und DBB-Marke
 
 ### Geändert
+- **Storybook-Seitenleiste: eine Gruppe `Components/Spielplan`** mit der Docs-Seite und den Untergruppen `Tabelle` (vorher `ScheduleTable`), `Zeitraster` (vorher `ScheduleGrid`) und `Spielwiese` (vorher `Spielplan Spielwiese`). Die Story-IDs ändern sich (`components-spielplan-tabelle--…`, `…-zeitraster--…`, `…-spielwiese--…`); Verweise in Handy-Vorschauen, Einführung und `scripts/visual-compare.mjs` sind angepasst.
 - **Spielplan-Seite:** `Components/Spielplan` zeigt die Tabellen jetzt mit den echten DSS-Abständen (die Doku-CSS überschrieb zuvor Padding und Kopfhöhe von `dss-tbl--schedule` und `dss-sgrid`); die Seite ist dadurch etwa 300 px kürzer.
 - **Table: Scrollbereich ist eine benannte, fokussierbare Region** (`role="region"`, `tabindex="0"`, Name aus `caption`, sonst `title`, sonst „Tabelle“), mit gestricheltem Fokus-Ring innen (`.dss-table-scroll:focus-visible`, auch für ScheduleTable und ScheduleGrid; vorher Browser-Standard-Ring). Svelte-Table bekommt `caption` und `titleAs` wie React.
 - **Table: Fokus-Ring für Link, Schalter und Eingaben in Zellen** sowie für fokussierbare Zeilen (gestrichelt, Gold/Amber); im Dunkelmodus auf der eigenen Zeile (`is-own`) in Chip-Textfarbe (vorher 2,5 bis 2,8:1).
