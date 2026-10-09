@@ -38,3 +38,10 @@ describe('Banner-Link im Dunkelmodus', () => {
     expect(css).toMatch(/:root:not\(\[data-theme="light"\]\) \.dss-banner a:focus-visible\s*\{\s*outline-color:\s*currentColor/);
   });
 });
+
+describe('Modal-Fuß', () => {
+  it('bricht um, statt auf schmalen Bildschirmen abgeschnitten zu werden', () => {
+    const block = css.match(/\.dss-m-footer\s*\{[^}]*\}/)?.[0] ?? '';
+    expect(block).toContain('flex-wrap: wrap');
+  });
+});

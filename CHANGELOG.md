@@ -6,6 +6,7 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 ## [Unveröffentlicht] — Marken-Rollen und DBB-Marke
 
 ### Geändert
+- **Modal-Fuß** (`.dss-m-footer`) bricht auf schmalen Bildschirmen um, statt Buttons abzuschneiden. Peer-Abhängigkeit `svelte` auf `^5.20.0` (das Svelte-Modal nutzt `$props.id()`).
 - **Fokus-Ring jetzt Gold/Amber und gestrichelt, im Dunkelmodus dezenter** (BBV Amber 600 → 700, DBB Gold 600 → 700). Neue Tokens
   `--ring-style` (`dashed`) und `--ring-color-on-dark` (für immer dunkle Flächen wie AppNav dunkel, Frame dunkel, TopBar dunkel).
   Die Eingabegruppe malt den Ring jetzt als Outline statt als `box-shadow`, damit er gestrichelt sein kann.
