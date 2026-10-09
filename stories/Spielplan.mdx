@@ -1,0 +1,356 @@
+import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks';
+import * as SpielplanStories from './Spielplan.examples.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import { DocTable } from './docs/blocks/DocTable';
+import './docs/blocks/blocks.css';
+import { tableVanilla, tableSvelte, tableReact, versusVanilla, versusSvelte, versusReact, gridVanilla, gridSvelte, gridReact, codeGame } from './Spielplan.code';
+
+<Meta of={SpielplanStories} />
+
+# Spielplan
+
+ScheduleTable und ScheduleGrid zeigen Spiele als Tabelle bzw. als Zeitraster. Diese Seite erklärt, wann welche Variante passt, wie jeder Zustand aussieht und wie die Bausteine auf dem Handy und für Screenreader funktionieren.
+
+## Wann welche Variante
+
+Die Wahl hängt davon ab, wessen Sicht gezeigt wird und ob Spiele parallel laufen. Ohne Angabe wählt `ScheduleTable` das Layout selbst: `opponent`, sobald ein Spiel einen `opponent` hat, sonst `versus`. `columns` musst du immer ausdrücklich setzen.
+
+<div className="dss-var-grid">
+  <div className="dss-var-card">
+    <h3>Liga, Halle</h3>
+    <p><b><code>layout="versus"</code></b> · Heim und Gast in einer Zelle, Liga als Unterzeile, Halle unter der Zeit. Für Ligaübersichten und Hallenpläne.</p>
+    <Canvas of={SpielplanStories.MiniLiga} />
+  </div>
+  <div className="dss-var-card">
+    <h3>Mannschaft</h3>
+    <p><b><code>layout="opponent"</code></b> · Sicht einer Mannschaft mit vs./@ und Ergebnis eigene : Gegner. Für Mannschaftsseiten im Vereinsregister.</p>
+    <Canvas of={SpielplanStories.MiniMannschaft} />
+  </div>
+  <div className="dss-var-card">
+    <h3>Turnier-Liste</h3>
+    <p><b><code>layout="columns"</code></b> · Eine Spalte je Angabe: Nr, Zeit, Feld, Heim, Ergebnis, Gast. Für Turnierlisten, die man durchsucht.</p>
+    <Canvas of={SpielplanStories.MiniTurnier} />
+  </div>
+  <div className="dss-var-card dss-var-card--wide">
+    <h3>Tagesplan, Hallenbelegung</h3>
+    <p><b>ScheduleGrid</b> · Anwurfzeiten als Zeilen, Hallen oder Felder als Spalten. Für parallele Spiele.</p>
+    <Canvas of={SpielplanStories.MiniRaster} />
+  </div>
+</div>
+
+## Tabelle: drei Layouts, eine Zeile pro Spiel
+
+Spiele mit gleicher `section` werden unter einer Gruppenzeile zusammengefasst. `versus` und `columns` brauchen `heim` und `gast`; ein Spiel nur mit `opponent` zeigt dort „?“ für die fehlenden Teams und kein Ergebnis.
+
+### opponent: Mannschaftsplan (Touch 60 px)
+
+<Canvas of={SpielplanStories.LayoutOpponent} />
+
+- **Wann:** Spielplan einer Mannschaft, alles aus ihrer Sicht.
+- **Felder:** Chip *vs.* (Heim) oder *@* (Auswärts), Logo (`logo`) oder sonst die Initialen, Gegner als Link, S-/N-/U-Chip, Ergebnis eigene : Gegner und dahinter „vorläufig“.
+- **Hinweis:** `ownScore` sind die Punkte der eigenen Mannschaft, `opponent.score` die des Gegners.
+
+### versus: Liga und Halle (Touch, mit Liga-Zeile 74 px)
+
+<Canvas of={SpielplanStories.LayoutVersus} />
+
+- **Wann:** Liga- oder Hallenübersicht mit Spielen verschiedener Mannschaften.
+- **Felder:** Heim und Gast in einer Zelle, Liga als Unterzeile, Halle unter der Zeit, Ergebnis rechts. Der Verlierer eines beendeten Spiels ist abgeblendet.
+
+### columns: Turnier (Standard 48 px)
+
+<Canvas of={SpielplanStories.LayoutColumns} />
+
+- **Wann:** Turnierliste mit Spielnummer, Feld und Halle.
+- **Spalten:** Nr, Zeit, Feld, Halle, Heim, Ergebnis, Gast. Nr, Feld und Halle erscheinen nur, wenn mindestens ein Spiel den Wert hat.
+- **Hinweis-Spalte:** kommt nur in diesem Layout dazu, wenn ein `notice`-Snippet (Svelte) bzw. `renderNotice` (React) übergeben wird, siehe die Abschnitte „Zustände“ und „Daten und Snippets“.
+- **Zeilenhöhe:** 48 px gilt nur ohne Liga; sobald irgendein Spiel eine `league` hat, wählt `ScheduleTable` `touch`, auch hier, wo die Liga gar nicht angezeigt wird. Mit `density` lässt sich das überschreiben.
+
+## Zeitraster: parallele Spiele nebeneinander
+
+Jede Zeile ist eine Anwurfzeit, jede Spalte eine Halle oder ein Feld (Namen frei wählbar). Ein Spiel landet über `column` (muss zu einer Spalten-`id` in `columns` passen, sonst erscheint das Spiel nicht) und `time` in seiner Zelle. Pausen kommen über `breaks`, ein Freilos ist ein Spiel mit `state: 'bye'`, eine Zelle ohne Spiel zeigt „frei“ (`emptyLabel`).
+
+### Drei Hallen, Pause, Freilos, leere Zelle
+
+<Canvas of={SpielplanStories.Raster3} />
+
+### Gegenbeispiel: fünf Spalten (scrollt im Rahmen)
+
+<Canvas of={SpielplanStories.Raster5} />
+
+Bei zu vielen Spalten scrollt der Rahmen seitlich, die Zeitspalte bleibt dabei stehen. **Empfohlen: höchstens drei Spalten je Raster**, die App teilt darüber auf mehrere Raster auf.
+
+## Zustände: jeder Zustand einzeln
+
+Der Zustand steht in `state` (`scheduled`, `live`, `finished`, `cancelled`, `postponed`, `bye`); `provisional`, `own`, `placeholder` und `outcome` sind weitere Felder. Jede Mini-Tabelle zeigt genau einen Fall.
+
+### Geplant
+
+<Canvas of={SpielplanStories.ZustandScheduled} />
+
+Datum und Zeit, das Ergebnis zeigt einen Strich. Die Ergebniszelle enthält nur den Strich, den der Screenreader als Text liest; ein Ergebnis wird nicht angesagt.
+
+### Live
+
+<Canvas of={SpielplanStories.ZustandLive} />
+
+Ein grünes „Live“-Tag mit Puls hinter der Zeit; das Ergebnis steht schon. Zusätzlich sprechen Screenreader „läuft“ hinter dem Ergebnis.
+
+### Beendet
+
+<Canvas of={SpielplanStories.ZustandFinished} />
+
+Ergebnis in Mono, der Verlierer ist abgeblendet. Gelesen wird „Heim 64, Gast 90“.
+
+### Vorläufig
+
+<Canvas of={SpielplanStories.ZustandProvisional} />
+
+Beendet mit Kennzeichen „provisional“: hinter dem Ergebnis steht „vorläufig“, gelesen wird es hinter dem Ergebnis mit.
+
+### Abgesagt
+
+<Canvas of={SpielplanStories.ZustandCancelled} />
+
+Zeile abgeblendet, Teams, Datum und Zeit durchgestrichen; die Notiz steht unter dem Spiel. Der Screenreader hört zusätzlich „abgesagt“.
+
+### Verlegt
+
+<Canvas of={SpielplanStories.ZustandPostponed} />
+
+Wie abgesagt gedämpft, aber ohne Durchstreichung. Der Screenreader hört „verschoben“.
+
+### Freilos
+
+<Canvas of={SpielplanStories.ZustandBye} />
+
+Eine einzige, gedämpfte Zeile über alle Spalten: „TSV Tröster hat Freilos“. Ohne Mannschaft steht dort die Notiz oder „Spielfrei“.
+
+### Eigene Mannschaft
+
+<Canvas of={SpielplanStories.ZustandOwn} />
+
+Mit „own“ erhält die Zeile eine Hervorhebung (versus und columns). Im Layout opponent entfällt sie, dort ist die Perspektive ohnehin die eigene.
+
+### Platzhalter
+
+<Canvas of={SpielplanStories.ZustandPlaceholder} />
+
+Kursiv und gedämpft, nie als Link. Gedacht für noch offene Paarungen im Turnier.
+
+### Sieg (S)
+
+<Canvas of={SpielplanStories.ZustandWin} />
+
+Grüner Chip „S“, Ergebnis eigene : Gegner. Der Chip ist für Screenreader verborgen, gelesen wird „Eigene 80, Gegner 70, Sieg“.
+
+### Niederlage (N)
+
+<Canvas of={SpielplanStories.ZustandLoss} />
+
+Roter Chip „N“. Gelesen wird „Eigene 65, Gegner 108, Niederlage“.
+
+### Unentschieden (U)
+
+<Canvas of={SpielplanStories.ZustandDraw} />
+
+Neutraler Chip „U“. Gelesen wird „Eigene 70, Gegner 70, Unentschieden“.
+
+### Forfait über outcome
+
+<Canvas of={SpielplanStories.ZustandForfeit} />
+
+Mit „outcome“ wird die Bewertung gesetzt, statt aus den Punkten berechnet zu werden (hier zum Beispiel ein Forfait mit 20 : 0). Wirkt nur im Layout opponent bei beendeten Spielen.
+
+### Konflikt-Hinweis
+
+<Canvas of={SpielplanStories.ZustandNotice} />
+
+Das Snippet „notice“ liefert eine zusätzliche Spalte „Hinweis“ am Zeilenende, hier ein Warn-Chip „Sperrzeit“. Die Spalte gibt es nur im Layout „columns“ und nur, wenn das Snippet übergeben wird; in „versus“ und „opponent“ wird es ignoriert.
+
+### Bearbeitbare Zeit
+
+<Canvas of={SpielplanStories.ZustandTime} />
+
+Das Snippet „time“ ersetzt die Uhrzeit, hier durch ein Eingabefeld mit eigener Beschriftung („Anwurfzeit Spiel #9“), damit Screenreader das Feld benennen können.
+
+## Dichte und Handy
+
+`density` steuert die Zeilenhöhe: **touch 60 px**, **default 48 px** (Standard), **compact 40 px**. Das sind Mindesthöhen der Zelle; Zeilen mit zweiter Zeile (Liga, Notiz) werden höher. `ScheduleTable` wählt ohne Angabe `touch` bei `opponent` oder wenn ein Spiel eine Liga-Unterzeile hat, sonst `default`. `ScheduleGrid` nimmt immer `default`.
+
+### Touch · 60 px
+
+<Canvas of={SpielplanStories.DichteTouch} />
+
+### Standard · 48 px
+
+<Canvas of={SpielplanStories.DichteDefault} />
+
+### Kompakt · 40 px
+
+<Canvas of={SpielplanStories.DichteCompact} />
+
+### Handy-Ansicht · 390 px Breite
+
+Unter 640 px Breite werden Zeilen zu Karten und Anwurfzeiten zu Blöcken mit der Spalten-Beschriftung als Überschrift. Diese Regeln hängen an der Breite des Fensters, nicht an der des Rahmens. Darum sind die Vorschauen eingebettete Seiten mit fester Breite von 390 px.
+
+<div className="dss-phones">
+  <div className="dss-phone">
+    <h4 className="dss-doc-cap">Mannschaft · opponent</h4>
+    <div className="dss-phone-scroll" tabIndex={0} role="region" aria-label="Scrollbereich: Mannschaft · opponent">
+      <iframe title="Handy-Vorschau: Mannschafts-Spielplan in 390 Pixel Breite" src="iframe.html?viewMode=story&globals=brand:bbv&id=components-scheduletable--mannschaft" loading="lazy" />
+    </div>
+  </div>
+  <div className="dss-phone">
+    <h4 className="dss-doc-cap">Turnier · columns</h4>
+    <div className="dss-phone-scroll" tabIndex={0} role="region" aria-label="Scrollbereich: Turnier · columns">
+      <iframe title="Handy-Vorschau: Turnier-Spielplan in 390 Pixel Breite" src="iframe.html?viewMode=story&globals=brand:bbv&id=components-scheduletable--turnier" loading="lazy" />
+    </div>
+  </div>
+  <div className="dss-phone">
+    <h4 className="dss-doc-cap">Zeitraster · ScheduleGrid</h4>
+    <div className="dss-phone-scroll" tabIndex={0} role="region" aria-label="Scrollbereich: Zeitraster · ScheduleGrid">
+      <iframe title="Handy-Vorschau: Zeitraster in 390 Pixel Breite" src="iframe.html?viewMode=story&globals=brand:bbv&id=components-schedulegrid--zeitraster" loading="lazy" />
+    </div>
+  </div>
+</div>
+
+## Daten und Snippets
+
+Die Typen stehen in `js/schedule.d.ts` (Export `@bbv/dss-design-system/schedule.js`). Datum und Zeit liefert die App fertig formatiert, die Bausteine formatieren nichts. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
+
+### ScheduleGame
+
+<DocTable
+  label="ScheduleGame"
+  head={['Feld', 'Typ', 'Beschreibung']}
+  rows={[
+    ['id', 'string', 'Eindeutige Kennung (Pflicht).'],
+    ['state', "'scheduled' | 'live' | 'finished' | 'cancelled' | 'postponed' | 'bye'", 'Zustand (Pflicht).'],
+    ['nr', 'string', 'Spielnummer, z. B. „#3“.'],
+    ['section', 'string', 'Gruppenzeile, z. B. „Spieltag 5“ oder „Halbfinale“.'],
+    ['date', 'string', 'Fertig formatiert, z. B. „Sa, 26.09.2026“.'],
+    ['time', 'string', '„17:30“ oder „09:30–09:50“.'],
+    ['venue', 'string', 'Halle, freier Text.'],
+    ['field', 'string', 'Feld in der Halle, freier Text.'],
+    ['column', 'string', <>Nur ScheduleGrid: Kennung der Spalte, passt zu <code>columns[].id</code>.</>],
+    ['heim, gast', 'ScheduleTeam', 'Gegenüberstellung (Liga, Halle, Turnier).'],
+    ['opponent', 'ScheduleTeam', <>Perspektive einer Mannschaft; <code>opponent.score</code> sind die Punkte des Gegners.</>],
+    ['at', "'heim' | 'gast'", <>Bei <code>opponent</code>: „heim“ zeigt „vs.“, „gast“ zeigt „@“.</>],
+    ['ownScore', 'number', 'Punkte der eigenen Mannschaft.'],
+    ['outcome', "'S' | 'N' | 'U'", 'Überschreibt die berechnete Bewertung (z. B. Forfait).'],
+    ['league', '{ name, href? }', 'Liga, erscheint als Unterzeile.'],
+    ['provisional', 'boolean', 'Vorläufiges Ergebnis.'],
+    ['note', 'string', 'Notiz, z. B. Grund einer Absage.'],
+  ]}
+/>
+
+### ScheduleTeam
+
+<DocTable
+  label="ScheduleTeam"
+  head={['Feld', 'Typ', 'Beschreibung']}
+  rows={[
+    ['name', 'string', 'Mannschaftsname (Pflicht).'],
+    ['href', 'string', 'Name als Link.'],
+    ['logo', 'string', 'Logo-URL; ohne Logo erscheinen die Initialen.'],
+    ['score', 'number', 'Punkte.'],
+    ['placeholder', 'boolean', 'Platzhalter wie „Erster Gruppe A“: kursiv und gedämpft.'],
+    ['own', 'boolean', 'Eigene Mannschaft (Hervorhebung).'],
+  ]}
+/>
+
+### Props: ScheduleTable und ScheduleGrid
+
+<DocTable
+  label="Props, ScheduleTable und ScheduleGrid"
+  head={['Prop', 'Für', 'Beschreibung']}
+  rows={[
+    ['games', 'beide', 'Liste der Spiele (Pflicht).'],
+    ['layout', 'Table', <>'versus' | 'opponent' | 'columns'; Standard: <code>opponent</code>, sobald ein Spiel <code>opponent</code> hat, sonst <code>versus</code>.</>],
+    ['columns', 'Grid', <>Spalten als <code>{'{ id, label }'}</code> (Pflicht).</>],
+    ['slots, breaks', 'Grid', <>Anwurfzeiten vorgeben bzw. Pausen <code>{'{ time, label }'}</code>.</>],
+    ['emptyLabel', 'Grid', 'Text leerer Zellen; Standard „frei“.'],
+    ['density', 'beide', <>'touch' | 'default' | 'compact'; Table leitet sie aus den Spielen ab, Grid nimmt <code>default</code>.</>],
+    ['title, meta', 'beide', 'Rahmenkopf. In Svelte reine Strings, in React beliebige Knoten.'],
+    ['caption', 'beide', 'Unsichtbare Tabellenbeschriftung für Screenreader.'],
+    ['class / className', 'beide', <>Zusätzliche Klasse am Rahmen (Svelte <code>class</code>, React <code>className</code>).</>],
+    ['titleAs', 'React', "Überschriftenebene 'h2' | 'h3' | 'h4'. Svelte: immer h3."],
+    ['renderLink', 'React', <>Router-Links für Teamnamen und Liga. Svelte: einfache <code>&lt;a&gt;</code>.</>],
+    ['renderTime / time', 'Table', <>Ersetzt die Uhrzeit in allen Layouts (React: Funktion, Svelte: Snippet <code>time</code>).</>],
+    ['renderNotice / notice', 'beide', <>Table: zusätzliche Spalte „Hinweis“, nur im Layout <code>columns</code> (in <code>versus</code> und <code>opponent</code> ohne Wirkung). Grid: zusätzlicher Inhalt in der Spielzelle.</>],
+  ]}
+/>
+
+<FrameworkCode label="ScheduleTable, Mannschaftssicht" vanilla={tableVanilla} svelte={tableSvelte} react={tableReact} />
+
+<FrameworkCode label="ScheduleTable, Gegenüberstellung" vanilla={versusVanilla} svelte={versusSvelte} react={versusReact} />
+
+<FrameworkCode label="ScheduleGrid, Zeitraster" vanilla={gridVanilla} svelte={gridSvelte} react={gridReact} />
+
+<FrameworkCode label="Ein Spiel (Mannschaftssicht), für alle Fassungen gleich" vanilla={codeGame} svelte={codeGame} react={codeGame} />
+
+## Barrierefreiheit: was Screenreader hören
+
+Was optisch durch Chip, Farbe oder Durchstreichung gezeigt wird, steht zusätzlich als unsichtbarer Text im Dokument.
+
+<ul className="dss-hear">
+  <li>Ergebnis als Text: <q>Eigene 65, Gegner 108, Niederlage</q>. Die sichtbaren Chips und Zahlen sind für Screenreader verborgen, damit nichts doppelt kommt.</li>
+  <li>Vorläufig und live hinter dem Ergebnis: <q>vorläufig</q>, <q>läuft</q>.</li>
+  <li>Abgesagte und verlegte Spiele: <q>abgesagt</q> bzw. <q>verschoben</q> hinter der Zeit (im Raster vor der Paarung).</li>
+  <li>Freilos: <q>TSV Tröster hat Freilos</q>; ohne Mannschaft steht dort die Notiz oder „Spielfrei“.</li>
+  <li>Freilos im Raster ohne Zeit: der Zeitkopf liest <q>Zeit offen</q>.</li>
+  <li>Zwischen den Paarungen: <q>gegen</q> statt des sichtbaren Gedankenstrichs.</li>
+</ul>
+
+<DocTable
+  label="Barrierefreiheit"
+  head={['Thema', 'Umsetzung']}
+  rows={[
+    ['Tabellensemantik', <>Echte <code>table</code>, <code>th scope</code> und <code>caption</code> (unsichtbar, aus <code>caption</code>). Beim Layout <code>opponent</code> und <code>versus</code> ist der Tabellenkopf nur für Screenreader sichtbar, bei <code>columns</code> sichtbar.</>],
+    ['Handy-Karten', <>Die <code>role</code>-Attribute im Markup bleiben bewusst, damit die Tabellensemantik erhalten bleibt, wenn das Handy-CSS Zeilen zu Karten macht.</>],
+    ['Farbe', 'Kein Zustand nur über Farbe: Live hat ein Wort-Tag, abgesagt und verlegt tragen Text, vorläufig steht im Klartext, S/N/U sind Buchstaben.'],
+    ['Fokus', 'Links und Eingaben zeigen den DSS-Fokusring.'],
+    ['Dunkel', <>Der seitenweite Dark Mode wirkt über die <code>--dss-*</code>-Variablen. Der dunkle Rahmen <code>dss-frame--dark</code> ist für Spielpläne nicht vorgesehen.</>],
+  ]}
+/>
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Dichte nach Gerät',
+      doText: 'Touch (60 px) für das iPad am Kampfgericht-Tisch.',
+      dontText: 'Kompakt (40 px) ist für Bedienung mit dem Finger zu eng.',
+      good: <Story of={SpielplanStories.DoDichte} inline />,
+      bad: <Story of={SpielplanStories.DontDichte} inline />,
+    },
+    {
+      title: 'Abgesagt und verlegt nicht nur über Farbe',
+      doText: 'Durchgestrichen und mit Grund: „Abgesagt: Halle gesperrt“.',
+      dontText: 'Nur grau und durchgestrichen: niemand erfährt, warum.',
+      good: <Story of={SpielplanStories.DoAbsage} inline />,
+      bad: <Story of={SpielplanStories.DontAbsage} inline />,
+    },
+    {
+      title: 'Höchstens drei Hallen im Zeitraster',
+      doText: 'Drei Hallen je Raster, die App teilt weitere auf mehrere Raster auf.',
+      dontText: 'Fünf Hallen in einem Raster sprengen den Rahmen und scrollen seitlich.',
+      good: <Story of={SpielplanStories.DoHallen} inline />,
+      bad: <Story of={SpielplanStories.DontHallen} inline />,
+    },
+    {
+      title: 'Eigene Mannschaft dezent hervorheben',
+      doText: 'Balken links und leichter Hintergrund (own).',
+      dontText: 'Eine ganze Zeile in der Signalfarbe erschlägt den Inhalt.',
+      good: <Story of={SpielplanStories.DoEigene} inline />,
+      bad: <Story of={SpielplanStories.DontEigene} inline />,
+    },
+  ]}
+/>
+
+## Spielwiese
+
+Alle Werte lassen sich in der [Spielwiese](?path=/story/components-spielplan-spielwiese--tabelle) einstellen.

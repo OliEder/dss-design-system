@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 export type Framework = 'vanilla' | 'svelte' | 'react';
 
-// Ohne Attribut oder mit unbekanntem Wert gilt Svelte (wie in stories/docs/_CodeSwitch.svelte).
+// Ohne Attribut oder mit unbekanntem Wert gilt Svelte.
 function read(): Framework {
   const v = document.documentElement.dataset.framework;
   return v === 'vanilla' || v === 'react' ? v : 'svelte';

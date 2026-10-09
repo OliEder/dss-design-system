@@ -118,6 +118,12 @@ describe('Spielplan · ScheduleTable (Variante A)', () => {
     expect(css).toMatch(/\.dss-tbl\.dss-tbl--schedule tbody tr\.dss-sch-row td \{[^}]*padding: 0;/);
   });
 
+  it('Dichte compact: Schedule-Zellen haben kleineres padding-block, damit die Zeile 40 px misst', () => {
+    const m = css.match(/\.dss-tbl--schedule\.dss-tbl--compact td \{ padding-block: (\d+)px; \}/);
+    expect(m).not.toBeNull();
+    expect(Number(m![1])).toBeLessThan(8);
+  });
+
   it('Hinweise nutzen die Dark-Mode-fähige Chip-Warnfarbe statt der festen warn-text', () => {
     const rule = css.match(/\.dss-sch-note \{([^}]*)\}/)?.[1] ?? '';
     expect(rule).toContain('color: var(--dss-chip-warn-fg)');

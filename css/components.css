@@ -980,6 +980,9 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
    border-box, damit einzeilige Zeilen exakt die Dichte-Höhe (60/48/40 px) behalten und nur mehrzeilige wachsen.
    Die Handy-Karten setzen padding: 0 mit höherer Spezifität zurück. */
 .dss-tbl--schedule td { box-sizing: border-box; padding-block: 8px; }
+/* Kompakt: 8 px Padding plus Ergebnis-Chip (29 px) ergäben 45 px; mit 4 px bleibt die einzeilige Zeile bei 40 px,
+   Zeilen mit zweiter Zeile wachsen weiterhin. Handy-Karten bleiben unberührt (eigene Regel mit höherer Spezifität). */
+.dss-tbl--schedule.dss-tbl--compact td { padding-block: 4px; }
 .dss-tbl--schedule tr.dss-sch-group th {
   position: static; text-align: left; height: 32px; padding: 0 14px;
   background: var(--dss-surface-2); color: var(--dss-fg-soft); border-bottom: 1px solid var(--dss-line);

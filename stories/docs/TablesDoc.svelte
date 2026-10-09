@@ -179,7 +179,7 @@
       <div class="spec-title">
         <h2>Eine Zeile pro Spiel.</h2>
         <p>
-          Spielpläne haben eine eigene Seite: <a href="./?path=/story/docs-spielplan--spec" target="_top">Docs / Spielplan</a>
+          Spielpläne haben eine eigene Seite: <a href="./?path=/docs/components-spielplan--docs" target="_top">Components / Spielplan</a>
           zeigt <b>ScheduleTable</b> und <b>ScheduleGrid</b> mit allen Varianten, Zuständen und der Handy-Ansicht.
         </p>
       </div>
