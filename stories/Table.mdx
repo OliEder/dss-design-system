@@ -1,0 +1,201 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as TableStories from './Table.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import { DocTable } from './docs/blocks/DocTable';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './Table.code';
+
+<Meta of={TableStories} />
+
+# Table
+
+Tabellen sind das Rückgrat des Spielberichts. **Table** ist die Datentabelle für den Digitalen Spielbericht und alle Schwester-Apps: vier Dichten decken jede Fläche ab, vom Touch-Tisch in der Halle bis zur Admin-Konsole.
+
+- 4 Dichte-Stufen: **touch (60 px)** · default (48 px) · compact (40 px) · dense (32 px).
+- Helle und dunkle Fläche (Kampfgericht-Tisch).
+- Sticky Kopf, Sortier-Pfeile, optionale Streifen und eine `tfoot`-Summenzeile.
+- Hilfsklassen für Basketball-Zellen: `.dss-tn` (Trikotnummer), `.dss-pos` (Position), `.dss-player` (Namen-Layout), `.dss-pill-s` (Status-Chips).
+
+Der Live-Ereignisstrom steht auf der Seite [PlayByPlay](?path=/docs/components-playbyplay--docs). Spielpläne haben eine eigene Seite: [Spielplan](?path=/docs/components-spielplan--docs) zeigt **ScheduleTable** und **ScheduleGrid** mit allen Varianten, Zuständen und der Handy-Ansicht.
+
+## Vier Dichten, ein Vokabular
+
+Tabellen müssen je nach Fläche unterschiedlich dicht sein: am Kampfgerichts-Tisch **Touch (60 px)**, im Web-Boxscore **Compact (40 px)**, in Admin-Listen **Dense (32 px)**. Eine Skala, ein Vokabular.
+
+<Canvas of={TableStories.DensityVergleich} />
+
+<DocTable
+  label="Dichten"
+  head={['density', 'Zellhöhe', 'Schrift', 'Einsatz']}
+  rows={[
+    ['touch', '60 px', '15 px (--fs-body)', 'Hallen-Tisch, Trikot-Auswahl, Touch-First'],
+    ['default (Standard)', '48 px', '14 px (--fs-body-md)', 'Standard-Listen, Web'],
+    ['compact', '40 px', '14 px (--fs-body-md), Zellrand seitlich 12 px', 'Boxscore, Statistiken'],
+    ['dense', '32 px', '13 px (--fs-body-sm), Zellrand seitlich 10 px', 'Admin, Vereinsregister, Logs'],
+  ]}
+/>
+
+Die Höhe gilt für die Zelle; dazu kommt 1 px Trennlinie, gemessen sind die Zeilen also 61, 49, 41 und 33 px hoch. Die Kopfzeile ist 38 px hoch (bei `dense` 32 px).
+
+## Boxscore: Statistiken auf einen Blick
+
+Compact-Dichte mit den Wurfstatistiken und Sortierpfeilen an den Spalten. PTS ist fett (`.num.lead`), `+/−` nimmt die Farbe des Vorzeichens an (`.plus` grün, `.minus` rot). Die Summenzeile im `tfoot` zeigt die Team-Totals. Die Tabelle zeigt Pfeil und `aria-sort` nur an: Sortieren selbst ist Sache der App.
+
+<Canvas of={TableStories.BoxscoreLight} />
+
+## Kampfgericht dunkel: dieselbe Tabelle, andere Bühne
+
+Am Kampfgerichts-Tisch wird das Licht oft gedimmt. `dark` dreht die Fläche und behält dieselben Akzente; die Marke „Live“ zeigt ein laufendes Spiel. Die Fläche ist auch im hellen Theme dunkel (fest, wie der Rahmen des Tisches). Plus, Minus und Positionsmarken bleiben lesbar, weil `+/−` auf der dunklen Fläche eigene helle Töne hat und die Marken auf den Chip-Tokens des Themes liegen.
+
+<Canvas of={TableStories.BoxscoreDarkKampfgericht} />
+
+## Kader und Kampfgericht
+
+Der Kader am Tisch läuft in **Touch (60 px)**: Kontrollkästchen, Trikotnummer, Name (Kapitän mit Zusatz), Position und Status. Das Kampfgericht (Schiedsrichter und Tischbesetzung) nutzt die Standard-Dichte mit Lizenznummer in Mono.
+
+<Canvas of={TableStories.TeamRosterTouch} />
+
+<Canvas of={TableStories.KampfgerichtCrew} />
+
+## Zellbausteine
+
+Vier Dekorations-Klassen füllen die Zellen. Sie liegen im Rahmen der Tabelle, funktionieren aber auch außerhalb (Karten und Listen).
+
+<Canvas of={TableStories.Zellen} />
+
+<DocTable
+  label="Zellbausteine"
+  head={['Klasse', 'Wirkung']}
+  rows={[
+    ['.dss-tn', 'Trikot-Marke, 44 px Quadrat, Display-Schrift. Mit .heim oder .gast in der Teamfarbe, .captain mit Amber-Ring, Größen .small (32 px), .large (64 px) und .hero (110 px).'],
+    ['.dss-pos', 'Positionsmarke in Mono. .pg, .sg, .sf, .pf und .c färben sie (Chip-Tokens, folgen dem Theme); ohne Zusatz grau.'],
+    ['.dss-pill-s', 'Status-Chip in Mono-Versalien. .on grün, .cap Amber, .dnp rot; ohne Zusatz grau. Der Text trägt die Aussage, die Farbe unterstützt.'],
+    ['.dss-player', 'Namen-Layout mit .dss-player-info, .dss-player-name und .dss-player-meta. .bench dämpft den Namen, .dnp streicht ihn durch.'],
+    ['td.num', 'Zahlenzelle: rechtsbündig, Mono, tabellarische Ziffern, Gewicht 500. .lead fett und stark, .dim gedämpft, .plus grün, .minus rot.'],
+    ['.center', 'Zentriert die Zelle (th und td).'],
+    ['tr.is-own', 'Hebt eine Zeile hervor (z. B. die eigene Mannschaft): Auswahlfläche und fette Schrift.'],
+  ]}
+/>
+
+## Zahlen, Sortierung, Streifen
+
+### Zahlenspalten
+
+Zahlen stehen rechtsbündig in Mono mit tabellarischen Ziffern (`td.num`, in der Kopfzelle `align: 'right'`). So stehen Einer, Zehner und Hunderter untereinander und lassen sich vergleichen. Das Vorzeichen kommt immer als Zeichen (+ oder −), die Farbe unterstützt nur.
+
+<Canvas of={TableStories.Zahlen} />
+
+### Sortierung
+
+`sortable` zeigt in der Kopfzelle einen gedämpften Pfeil und einen Zeiger. `sort: 'asc'` oder `'desc'` macht den Pfeil kräftig und setzt `aria-sort` (`ascending`, `descending`). Die Tabelle sortiert nicht selbst und hängt kein Klick-Verhalten an: Daten sortieren und die Bedienung der Kopfzelle liegen bei der App.
+
+<Canvas of={TableStories.Sortierung} />
+
+### Streifen und eigene Zeile
+
+`striped` legt die Fläche `--dss-hover-bg` auf jede zweite Zeile. `tr.is-own` markiert eine Zeile mit der Auswahlfläche und fetter Schrift. Auf gestreiften geraden Zeilen ist die Hover-Fläche dieselbe wie der Streifen; der Hover ist dort nicht sichtbar.
+
+<Canvas of={TableStories.Streifen} />
+
+### Kopf bleibt stehen
+
+Der Kopf (`th`) ist `position: sticky; top: 0`. Er bleibt stehen, sobald der Scrollbereich (`.dss-table-scroll`) eine Höhe bekommt, hier `max-height: 200px`. Ohne Höhe wächst die Tabelle mit und es gibt nichts zu scrollen.
+
+<Canvas of={TableStories.Sticky} />
+
+## Schmale Bildschirme
+
+Zellen brechen nicht um (`white-space: nowrap`). Wenn die Tabelle breiter ist als der Platz, scrollt sie im Rahmen seitlich (`.dss-table-scroll`, `overflow-x: auto`). Der Scrollbereich ist eine Region mit Namen (`caption`, sonst `title`, sonst „Tabelle“) und per Tab erreichbar, damit Tastaturnutzer ihn mit den Pfeiltasten bewegen können. Ordne die wichtigsten Spalten nach vorn (siehe Dos und Don'ts).
+
+## Zustände: Zeile, Link, Schalter, Kontrollkästchen
+
+Die Tabelle selbst hat nur einen Zustand, den Hover der Zeile (`--dss-hover-bg`). Alles Bedienbare in den Zellen kommt aus den eigenen Bausteinen: Link (`.dss-link`), Schalter (`.dss-btn`), Kontrollkästchen (`.dss-check-input`). Der Fokus-Ring ist gestrichelt in Gold/Amber (3 px, 2 px Abstand; auf dunklen Flächen dezenter). Der Scrollbereich hat den Ring innen, weil der Rahmen außen abschneidet. Ein Gedrückt (Aktiv) gibt es für die Zeile nicht; die Spalte zeigt Hover der Zeile plus Aktiv des Elements. Gesperrt gibt es bei Schalter und Kontrollkästchen.
+
+<Canvas of={TableStories.Zustaende} />
+
+Die Matrix ist fest gesetzt. Jede andere Story lässt sich über die Werkzeugleiste **Zustand** auf Hover, Fokus oder Aktiv schalten. Marke und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Verwendung: Import und Props
+
+Importiere `Table` über den Path-Export (Svelte) bzw. aus dem React-Paket. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste. Die Zellen liefert die App: bei Svelte als Snippet `rows` (oder `body`), bei React als `<tr>`-Kinder.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+Die Tabelle zeigt die Steuerelemente der Demo; `preset` gehört nur zur Demo und `density` wirkt dort nur auf den Boxscore.
+
+<Controls of={TableStories.BoxscoreLight} />
+
+Dazu kommen Props, die sich nicht als Steuerelement zeigen lassen:
+
+<DocTable
+  label="Weitere Props"
+  head={['Prop', 'Typ', 'Beschreibung']}
+  rows={[
+    ['title', 'string (React: ReactNode)', 'Titel im Rahmenkopf. Benennt auch den Scrollbereich, wenn keine caption gesetzt ist.'],
+    ['titleAs', "'h2' | 'h3' | 'h4'", "Überschriftenebene des Titels (Standard 'h3'). Die Ebene muss zur Seite passen, ohne Ebene zu überspringen."],
+    ['meta', 'string (React: ReactNode)', 'Kurzinfo rechts im Kopf, z. B. Stand oder Spielstand.'],
+    ['live', 'boolean', 'Zeigt die Marke „Live“ mit Puls im Kopf (Standard false). Der Puls stoppt bei prefers-reduced-motion.'],
+    ['striped', 'boolean', 'Jede zweite Zeile mit Fläche (Standard false).'],
+    ['columns', 'Spalte[]', 'Kopfzeile aus Spaltendefinitionen. Alternativ head für eigene Kopfzeilen (Svelte: Snippet, React: ReactNode); mit columns wird head ignoriert.'],
+    ['rows / body (React: children)', 'Svelte: Snippet, React: ReactNode', 'Die Zeilen des tbody als tr-Elemente.'],
+    ['foot', 'Svelte: Snippet, React: ReactNode', 'Zeilen des tfoot, z. B. Team-Totals.'],
+    ['caption', 'string', 'Unsichtbare Tabellenbeschriftung für Screenreader; benennt auch den Scrollbereich.'],
+    ['class (React: className)', 'string', 'Zusätzliche Klasse am Rahmen.'],
+  ]}
+/>
+
+<DocTable
+  label="Felder einer Spalte"
+  head={['Feld', 'Typ', 'Beschreibung']}
+  rows={[
+    ['key', 'string', 'Eindeutiger Schlüssel der Spalte.'],
+    ['label', 'string (React: ReactNode)', 'Text der Kopfzelle.'],
+    ['align', "'left' | 'right' | 'center'", "Ausrichtung (Standard 'left'). 'right' setzt Mono und tabellarische Ziffern auch in der Kopfzelle."],
+    ['width', 'string', 'Breite der Spalte, z. B. 60px.'],
+    ['sortable', 'boolean', 'Zeigt Pfeil und Zeiger in der Kopfzelle.'],
+    ['sort', "'asc' | 'desc' | null", 'Aktuelle Sortierung: kräftiger Pfeil und aria-sort.'],
+  ]}
+/>
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Zahlen rechtsbündig in Mono',
+      doText: 'Zahlen stehen rechtsbündig in Mono mit gleich breiten Ziffern (Klasse num): Einer, Zehner und Hunderter stehen untereinander.',
+      dontText: 'Linksbündig in der Proportionalschrift (hier mit lokalem CSS nachgestellt) rutschen die Stellen auseinander, die Spalte lässt sich nicht vergleichen.',
+      good: <Story of={TableStories.DoZahlen} inline />,
+      bad: <Story of={TableStories.DontZahlen} inline />,
+    },
+    {
+      title: 'Dichte nach Gerät',
+      doText: 'Am Tisch bedient man mit dem Finger: touch hat 60 px Zellhöhe, die Zeile ist ein sicheres Ziel.',
+      dontText: 'dense hat 32 px Zellhöhe, deutlich unter den 44 px Zielgröße. Mit dem Finger trifft man leicht die Nachbarzeile. dense gehört in Admin-Listen mit Maus.',
+      good: <Story of={TableStories.DoDichte} inline />,
+      bad: <Story of={TableStories.DontDichte} inline />,
+    },
+    {
+      title: 'Wichtigste Spalten zuerst',
+      doText: 'PTS steht direkt neben dem Spieler. Auf dem Handy bleibt es sichtbar, der Rest ist per Wischen erreichbar.',
+      dontText: 'Steht PTS ganz rechts, ist es erst nach seitlichem Scrollen zu sehen. Zellen brechen nicht um, die Tabelle scrollt im Rahmen.',
+      good: <Story of={TableStories.DoSpalten} inline />,
+      bad: <Story of={TableStories.DontSpalten} inline />,
+    },
+    {
+      title: 'Sortierung über sort anzeigen',
+      doText: "sort: 'desc' zeichnet den Pfeil per CSS und setzt aria-sort an der Kopfzelle: Screenreader hören die Richtung.",
+      dontText: 'Ein Pfeilzeichen im Label („PTS ▼“) ist nur Text: Es gibt kein aria-sort, und Screenreader lesen „Pfeil nach unten“.',
+      good: <Story of={TableStories.DoSort} inline />,
+      bad: <Story of={TableStories.DontSort} inline />,
+    },
+    {
+      title: 'Status nie nur über Farbe',
+      doText: 'Die Pille trägt den Text („Aktiv“, „Bank“, „DNP“). Die Farbe unterstützt, die Aussage steht im Wort.',
+      dontText: 'Ein reiner Farbpunkt (hier mit lokalem CSS ohne Text nachgestellt) ist für Menschen mit Farbsehschwäche nicht lesbar.',
+      good: <Story of={TableStories.DoFarbe} inline />,
+      bad: <Story of={TableStories.DontFarbe} inline />,
+    },
+  ]}
+/>

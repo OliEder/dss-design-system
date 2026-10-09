@@ -19,7 +19,7 @@
 /* MDX-Doku-Seiten: DSS-Schrift und -Farben im Standard-Container */
 .sbdocs.sbdocs-wrapper { background: var(--page-bg); }
 .sbdocs-content { font-family: var(--font-body); color: var(--page-fg); }
-.sbdocs-content h1, .sbdocs-content h2, .sbdocs-content h3 { font-family: var(--font-display); color: var(--page-fg); }
+.sbdocs-content :is(h1, h2, h3):not(.docs-story *) { font-family: var(--font-display); color: var(--page-fg); }
 .sbdocs-content p, .sbdocs-content li { color: var(--page-fg); }
 .sbdocs-content code:not(pre code) { font-family: var(--font-mono); }
 

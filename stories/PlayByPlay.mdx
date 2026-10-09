@@ -1,0 +1,152 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as PlayByPlayStories from './PlayByPlay.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import { DocTable } from './docs/blocks/DocTable';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './PlayByPlay.code';
+
+<Meta of={PlayByPlayStories} />
+
+# PlayByPlay
+
+**Live-Scoring-Ereignisstrom**: chronologischer Spielverlauf für Kampfgerichtstisch und Zuschauer-Boards. Jede Reihe hat einen **4-px-Balken** in der Teamfarbe, die Zeit links als Mono-Spalte und den Spielstand rechts. Fouls (rot) und Auszeiten (blau) heben sich farblich ab, 3-Punkt-Würfe bekommen die Amber-Hervorhebung.
+
+Tabellen mit Statistiken stehen auf der Seite [Table](?path=/docs/components-table--docs).
+
+## Aufbau eines Eintrags
+
+Jeder Event-Eintrag hat:
+
+- Mono-Zeitstempel (M:SS und Viertel-Label)
+- 4-px-Teamfarbstreifen (Heim, Gast oder neutral)
+- Aktions-Titel, optional mit fett geführtem Schlüsselwort
+- optionalen Detail-Untertitel (Mono, klein)
+- Spielstand rechts, kumuliert nach dem Ereignis
+
+<Canvas of={PlayByPlayStories.Eintrag} />
+
+<DocTable
+  label="Felder eines Ereignisses"
+  head={['Feld', 'Typ', 'Beschreibung']}
+  rows={[
+    ['id', 'string | number', 'Eindeutiger Schlüssel des Ereignisses.'],
+    ['time', 'string', 'Zeit im Format M:SS, z. B. 02:14. Die Spalte ist 70 px breit.'],
+    ['quarter', 'string', 'Viertel: Q1 bis Q4 oder OT, unter der Zeit.'],
+    ['team', "'heim' | 'gast' | 'none'", "Farbe des Streifens (Standard 'none', neutral). Der Streifen ist für Screenreader verborgen, stattdessen hören sie „Heim:“ oder „Gast:“ vor der Aktion."],
+    ['kind', 'Ereignisart', "Akzent der Aktion, siehe unten (Standard 'default')."],
+    ['title', 'string', 'Text der Aktion.'],
+    ['titleBold', 'string', 'Optionaler fett gesetzter Einleitungsteil, durch · vom Titel getrennt.'],
+    ['detail', 'string', 'Optionaler Untertitel in Mono.'],
+    ['score', '{ heim: number, gast: number }', 'Spielstand nach dem Ereignis. Screenreader hören „Spielstand 87 zu 64“, die Zahlen sind sonst verborgen.'],
+  ]}
+/>
+
+## Ereignisarten
+
+Die Art (`kind`) färbt die Aktion. Alle anderen Arten haben keinen eigenen Akzent.
+
+<Canvas of={PlayByPlayStories.Arten} />
+
+<DocTable
+  label="Ereignisarten"
+  head={['kind', 'Wirkung']}
+  rows={[
+    ['score-3p', 'Amber-Hervorhebung des fett gesetzten Textes (titleBold).'],
+    ['foul', 'Aktion in Rot.'],
+    ['timeout', 'Aktion in Blau.'],
+    ['score-2p, ft, sub, turnover, default', 'Neutral, ohne eigenen Akzent. Der Unterschied steht im Text.'],
+  ]}
+/>
+
+## Live-Betrieb
+
+Neue Ereignisse kommen oben herein und blenden 0,45 Sekunden lang ein. Die Story simuliert das: „Live-Scoring starten“ fügt alle 2,2 Sekunden ein Ereignis oben ein.
+
+<Canvas of={PlayByPlayStories.LiveScoringInteraktiv} />
+
+Was der Baustein dabei tut und was nicht:
+
+- **Reihenfolge:** Der Baustein sortiert nicht, er zeigt die Ereignisse in der Reihenfolge, die die App liefert. Für „neueste oben“ fügt die App neue Ereignisse vorn ein.
+- **Kein Auto-Scroll:** Der Baustein scrollt nie selbst. Der Feed ist höchstens 600 px hoch und scrollt darüber hinaus. Wer weiter unten liest, bleibt bei seinem Eintrag; das hält das Scroll-Anchoring des Browsers (in Chromium gemessen), nicht der Baustein.
+- **Bewegung:** Das Einblenden der Einträge und der Live-Puls stoppen bei `prefers-reduced-motion: reduce`. Das Einblenden läuft auch beim ersten Rendern jedes Eintrags.
+- **Screenreader:** Der Feed ist ein `role="log"`, benannt nach dem Titel. Die Rolle `log` meldet neu eingefügte Einträge höflich (implizit `aria-live="polite"`), ohne die laufende Ansage zu unterbrechen. Mit einem Screenreader ist das hier nicht geprüft, es folgt der Rollen-Definition.
+- **Tastatur:** Der Feed hat `tabindex="0"`, damit sich der scrollbare Bereich mit den Pfeiltasten bewegen lässt. Der Fokus-Ring liegt innen.
+- **Live-Marke:** `live` (Standard `true`) zeigt „Live“ mit grünem Puls im Kopf. Setze es nur bei einem laufenden Spiel.
+
+## Kampfgericht dunkel
+
+Am Kampfgerichts-Tisch gibt es die dunkle Fläche (`dark`). Sie ist auch im hellen Theme dunkel. Die Akzente für Foul, Auszeit und 3-Punkt-Wurf haben auf der dunklen Fläche eigene hellere Töne.
+
+<Canvas of={PlayByPlayStories.Dunkel} />
+
+<Canvas of={PlayByPlayStories.KampfgerichtTischDark} />
+
+## Zustände: Hover und Fokus
+
+Eine Reihe hebt sich beim Überfahren ab (`--dss-hover-bg`, auf der dunklen Fläche `--n-900`). Der Feed ist per Tab erreichbar und zeigt den Fokus-Ring gestrichelt in Gold/Amber (3 px, innen; auf dunklen Flächen dezenter). Aktiv und Gesperrt gibt es nicht. Die Fläche ohne `dark` folgt dem Theme der Seite.
+
+<Canvas of={PlayByPlayStories.Zustaende} />
+
+Die Matrix ist fest gesetzt. Jede andere Story lässt sich über die Werkzeugleiste **Zustand** auf Hover, Fokus oder Aktiv schalten. Marke und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Verwendung: Import und Props
+
+Importiere `PlayByPlay` über den Path-Export (Svelte) bzw. aus dem React-Paket. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+Die Tabelle zeigt die Steuerelemente der Demo; `mode` gehört nur zur Demo.
+
+<Controls of={PlayByPlayStories.PlayByPlayStandard} />
+
+Dazu kommen Props des Bausteins, die sich nicht als Steuerelement zeigen lassen:
+
+<DocTable
+  label="Props von PlayByPlay"
+  head={['Prop', 'Typ', 'Beschreibung']}
+  rows={[
+    ['events', 'Ereignis[]', 'Die Ereignisse in der anzuzeigenden Reihenfolge, siehe die Felder oben.'],
+    ['title', 'string', "Titel im Kopf und Name des Feeds (Standard „Play-by-Play · neueste oben“). Er muss zur Reihenfolge der Ereignisse passen."],
+    ['titleAs', "'h2' | 'h3' | 'h4'", "Überschriftenebene des Titels (Standard 'h3')."],
+    ['meta', 'string', 'Kurzinfo rechts im Kopf, z. B. Anzahl der Ereignisse.'],
+    ['live', 'boolean', 'Zeigt die Marke „Live“ mit Puls (Standard true).'],
+    ['dark', 'boolean', 'Dunkle Fläche (Standard false).'],
+    ['class (React: className)', 'string', 'Zusätzliche Klasse am Rahmen (nur React).'],
+  ]}
+/>
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Titel und Reihenfolge stimmen überein',
+      doText: 'Der Titel sagt „neueste oben“, und oben steht das jüngste Ereignis (die kleinste Restzeit im Viertel).',
+      dontText: 'Der Baustein sortiert nicht. Liefert die App die ältesten zuerst, stimmt der Titel nicht mehr mit dem Feed überein.',
+      good: <Story of={PlayByPlayStories.DoReihenfolge} inline />,
+      bad: <Story of={PlayByPlayStories.DontReihenfolge} inline />,
+    },
+    {
+      title: 'Das Team steht im Text',
+      doText: 'Der Titel nennt das Team („Auszeit · Gast“). Der Streifen ergänzt es nur.',
+      dontText: 'Ohne Team im Text trägt allein der 4-px-Streifen die Zuordnung, für Menschen mit Farbsehschwäche eine reine Farbinformation. Screenreader hören „Gast:“ trotzdem.',
+      good: <Story of={PlayByPlayStories.DoTeam} inline />,
+      bad: <Story of={PlayByPlayStories.DontTeam} inline />,
+    },
+    {
+      title: 'Zeit als M:SS',
+      doText: 'Die Zeit steht als „02:14“ in der festen 70-px-Spalte, das Viertel darunter.',
+      dontText: 'Ein langer Text sprengt die Spalte, bricht um und verschiebt die Reihe.',
+      good: <Story of={PlayByPlayStories.DoZeit} inline />,
+      bad: <Story of={PlayByPlayStories.DontZeit} inline />,
+    },
+    {
+      title: 'Live nur bei laufendem Spiel',
+      doText: 'Nach Spielende wird live ausgeschaltet. Der Kopf zeigt nur noch den Stand der Daten.',
+      dontText: 'Mit live auf einem beendeten Spiel pulst „Live“ weiter und täuscht ein laufendes Spiel vor.',
+      good: <Story of={PlayByPlayStories.DoLive} inline />,
+      bad: <Story of={PlayByPlayStories.DontLive} inline />,
+    },
+  ]}
+/>
