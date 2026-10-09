@@ -263,15 +263,15 @@
 
 /* ── Felder · Label, Hilfetext, Zustände, Dichte ────────────── */
 .dss-field-label { display: flex; align-items: baseline; gap: 6px; }
-.dss-field-label .req { color: var(--err-text); font-weight: 700; }
+.dss-field-label .req { color: var(--dss-chip-err-fg); font-weight: 700; }
 .dss-field-label .opt {
   margin-left: auto; font-family: var(--font-mono); font-size: var(--fs-caption);
   color: var(--dss-mute); text-transform: uppercase; letter-spacing: 0.06em;
 }
 .dss-field-help { font-size: var(--fs-label); line-height: 1.4; color: var(--dss-mute); }
-.dss-field-help--err { color: var(--err-text); font-weight: 500; }
-.dss-field-help--ok { color: var(--ok-text); font-weight: 500; }
-.dss-field-help--warn { color: var(--warn-text); font-weight: 500; }
+.dss-field-help--err { color: var(--dss-chip-err-fg); font-weight: 500; }
+.dss-field-help--ok { color: var(--dss-chip-ok-fg); font-weight: 500; }
+.dss-field-help--warn { color: var(--dss-chip-warn-fg); font-weight: 500; }
 .dss-field.is-error .dss-input-group, .dss-field.is-error .dss-select { border-color: var(--err-fill); }
 .dss-field.is-ok .dss-input-group, .dss-field.is-ok .dss-select { border-color: var(--ok-fill); }
 .dss-field.is-warn .dss-input-group, .dss-field.is-warn .dss-select { border-color: var(--warn-fill); }

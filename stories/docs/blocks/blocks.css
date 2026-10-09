@@ -67,3 +67,12 @@
 
 /* Inline-Code in Tabellenzellen: Storybook färbt code fest dunkelgrau, im Dunkelmodus unlesbar */
 .sbdocs .dss-doc-table code { color: inherit; }
+
+/* Inline-Code in der Controls-Tabelle: Storybook färbt code fest dunkelgrau auf transparentem Grund, im Dunkelmodus unlesbar */
+.sbdocs .docblock-argstable code { color: inherit; }
+
+/* Links im Fließtext: Storybook-Blau hat auf Schwarz nur 4.4:1 */
+:root[data-theme="dark"] .sbdocs p a.sbdocs-a { color: var(--cool-300); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .sbdocs p a.sbdocs-a { color: var(--cool-300); }
+}

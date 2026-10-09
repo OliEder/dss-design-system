@@ -276,3 +276,18 @@ describe('Button-Höhen', () => {
     expect(rule('.dss-btn--md')).toContain('height: var(--touch-sm)');
   });
 });
+
+describe('Hilfetext und Pflicht-Sternchen im Dunkelmodus', () => {
+  // --err-text, --ok-text und --warn-text haben keinen Dunkelmodus (2.3:1 auf Schwarz); die Chip-Tokens schon.
+  const rule = (sel: string) => new RegExp(`\\${sel}\\s*\\{[^}]*\\}`).exec(css)?.[0] ?? '';
+  it.each([
+    ['.dss-field-help--err', '--dss-chip-err-fg'],
+    ['.dss-field-help--ok', '--dss-chip-ok-fg'],
+    ['.dss-field-help--warn', '--dss-chip-warn-fg'],
+  ])('%s nutzt %s', (sel, token) => {
+    expect(rule(sel)).toContain(`var(${token})`);
+  });
+  it('das Pflicht-Sternchen nutzt --dss-chip-err-fg', () => {
+    expect(css).toMatch(/\.dss-field-label \.req\s*\{[^}]*var\(--dss-chip-err-fg\)/);
+  });
+});
