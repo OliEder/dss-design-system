@@ -2,7 +2,7 @@
   import AppNav from '../../svelte/AppNav.svelte';
   import TopBar from '../../svelte/TopBar.svelte';
 
-  let { tone = 'light', currentHref = '/ergebnisse' }: { tone?: 'light' | 'dark'; currentHref?: string } = $props();
+  let { tone = 'light', currentHref = '/ergebnisse', ariaLabel = 'Hauptnavigation' }: { tone?: 'light' | 'dark'; currentHref?: string; ariaLabel?: string } = $props();
 
   const items = [
     { id: 'prep', label: 'Vorbereiten', items: [
@@ -27,5 +27,5 @@
 
 <div style="min-height: 320px;">
   <TopBar brand="Turnier-Manager" mark="T" />
-  <AppNav {items} {tone} {currentHref} />
+  <AppNav {items} {tone} {currentHref} {ariaLabel} />
 </div>

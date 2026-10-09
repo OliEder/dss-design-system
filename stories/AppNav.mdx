@@ -1,0 +1,132 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as AppNavStories from './AppNav.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import { DocTable } from './docs/blocks/DocTable';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './AppNav.code';
+
+<Meta of={AppNavStories} />
+
+# AppNav
+
+**AppNav** ist die Hauptnavigation mit Gruppen-Dropdowns (Disclosure), gesperrten Einträgen und einem mobilen Hamburger-Menü (unter 720 px).
+
+- Der aktive Link wird über `currentHref` bestimmt und trägt `aria-current="page"`.
+- Gesperrte Einträge sind nicht fokussierbar und tragen einen Hinweis.
+- Esc und ein Klick außerhalb schließen das Menü, der Fokus kehrt zum Auslöser zurück.
+- Die Vanilla-Variante besteht aus einem Markup-Vertrag und `js/appnav.js` (siehe README).
+
+Für Wechsel zwischen Ansichten auf einer Seite sind die [Tabs](?path=/docs/components-tabs--docs) da, für den Pfad zur aktuellen Seite die [Breadcrumbs](?path=/docs/components-navigation--docs).
+
+## Hell und Dunkel, Gruppen und gesperrte Einträge
+
+Die Leiste kennt zwei Flächen: `light` folgt dem Theme (im Dunkelmodus ist sie dunkel), `dark` ist immer dunkel, etwa direkt unter der TopBar. Einträge sind Links oder Gruppen. Eine Gruppe öffnet ein Menü mit Links und hat genau eine Ebene: Eine Gruppe enthält nur Links, keine weiteren Gruppen. Die Beispiele sind bedienbar, die aktuelle Seite ist „Ergebnisse erfassen“.
+
+<Canvas of={AppNavStories.Hell} />
+
+<Canvas of={AppNavStories.Dunkel} />
+
+## Bedienung: öffnen, schließen, Tastatur
+
+Eine Gruppe ist ein Disclosure-Button (`aria-expanded`, `aria-controls`): Ein Klick öffnet das Menü darunter, ein zweiter schließt es, und es ist immer höchstens eine Gruppe offen. Das geschlossene Menü ist `hidden`, seine Links sind per Tastatur nicht erreichbar. Gesperrte Einträge sind nicht fokussierbar: Ein gesperrter Link ist ein `span` mit `role="link"` und `aria-disabled="true"`, eine gesperrte Gruppe ein `disabled`-Button. Der Hinweis (`hint`) steht als Tooltip (`title`) und als unsichtbarer Text für Screenreader am Eintrag.
+
+<DocTable
+  label="Bedienung der AppNav"
+  head={['Aktion', 'Wirkung']}
+  rows={[
+    ['Klick oder Enter/Leertaste auf eine Gruppe', 'Öffnet das Menü der Gruppe und schließt ein anderes offenes. Ein zweiter Klick schließt es.'],
+    ['Escape', 'Schließt das offene Menü und setzt den Fokus auf den Auslöser zurück. Ist keines offen, schließt es das mobile Menü und fokussiert den Menü-Button.'],
+    ['Klick außerhalb', 'Schließt das offene Menü. Das mobile Menü bleibt offen.'],
+    ['Fokus verlässt die Navigation', 'Schließt das offene Menü (Tab aus der Leiste hinaus). Das mobile Menü bleibt offen.'],
+    ['Klick auf einen Link', 'Schließt das Menü und das mobile Menü, dann folgt die Navigation.'],
+    ['Pfeiltasten, Pos1, Ende', 'Nicht belegt. Du gehst mit Tab und Umschalt+Tab von Eintrag zu Eintrag.'],
+  ]}
+/>
+
+In der Vanilla-Fassung übernimmt `js/appnav.js` dasselbe Verhalten für alle Elemente mit `data-dss-appnav`. Einen Unterschied gibt es im Markup: Das Pfeil-Symbol der Gruppen setzt du dort selbst.
+
+## Zustände: Hover, Fokus, Aktuell, Gesperrt
+
+Hover hinterlegt den Eintrag (hell: `--dss-hover-bg`, dunkel: `--n-900`) und färbt die Schrift voll. Der aktuelle Eintrag hat die volle Textfarbe und einen 3-px-Indikator in `--indicator` unter dem Eintrag; im Menü und im mobilen Menü stattdessen einen Balken links auf getönter Fläche. Eine aktuelle Seite in einer Gruppe markiert auch die Gruppe. Gesperrte Einträge sind auf 55 % abgeblendet, tragen ein Schloss und haben kein Hover. Der Fokus-Ring ist gestrichelt in Gold/Amber (3 px) und liegt innen (Abstand −3 px); auf der dunklen Fläche hat er den dezenten Ton `--ring-color-on-dark`. Einen eigenen Stil für die gehaltene Maustaste (Gedrückt) hat die AppNav nicht, die Spalte zeigt Hover.
+
+<Canvas of={AppNavStories.Zustaende} />
+
+Die Matrix ist fest gesetzt. Jede andere Story lässt sich über die Werkzeugleiste **Zustand** auf Hover, Fokus oder Aktiv schalten. Marke und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Mobil: Hamburger-Menü unter 720 px
+
+Unter 720 px Fensterbreite verschwindet die Liste hinter dem Menü-Button (`dss-appnav-toggle`, `aria-expanded`). Ein Klick öffnet die Liste untereinander mit ganzer Zeilenbreite, die Gruppen klappen eingerückt darunter auf. Diese Regel hängt an der Breite des Fensters, nicht an der des Rahmens. Darum sind die Vorschauen eingebettete Seiten mit fester Breite von 390 px: links geschlossen, rechts mit offenem Menü und geöffneter Gruppe „Vorbereiten“.
+
+<div className="dss-phones">
+  <div className="dss-phone">
+    <div className="dss-doc-cap">Geschlossen</div>
+    <div className="dss-phone-scroll" tabIndex={0} role="region" aria-label="Scrollbereich: AppNav geschlossen">
+      <iframe title="Handy-Vorschau: AppNav mit geschlossenem Menü in 390 Pixel Breite" src="iframe.html?viewMode=story&globals=brand:bbv&id=components-appnav--mobil-geschlossen" loading="lazy" />
+    </div>
+  </div>
+  <div className="dss-phone">
+    <div className="dss-doc-cap">Menü offen</div>
+    <div className="dss-phone-scroll" tabIndex={0} role="region" aria-label="Scrollbereich: AppNav mit offenem Menü">
+      <iframe title="Handy-Vorschau: AppNav mit offenem Menü in 390 Pixel Breite" src="iframe.html?viewMode=story&globals=brand:bbv&id=components-appnav--mobil-offen" loading="lazy" />
+    </div>
+  </div>
+</div>
+
+## Verwendung: Import und Props
+
+Importiere `AppNav` über den Path-Export (Svelte) bzw. aus dem React-Paket und übergib die Einträge als `items`. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+Die Tabelle zeigt die Props; `tone` und `currentHref` sind in der Demo einstellbar, die übrigen nur beschrieben.
+
+<Controls of={AppNavStories.Hell} />
+
+Zusätzlich gilt für die Einträge:
+
+<DocTable
+  label="Felder der Einträge"
+  head={['Feld', 'Typ', 'Beschreibung']}
+  rows={[
+    ['id, label', 'string', 'Eindeutige Id und sichtbarer Text.'],
+    ['href', 'string', 'Ziel eines Links. Aktiv ist der Link, dessen href genau dem currentHref entspricht (kein Teilvergleich).'],
+    ['items', 'Link[]', 'Macht den Eintrag zur Gruppe. Die Links der Gruppe haben dieselben Felder, aber keine eigenen items.'],
+    ['disabled, hint', 'boolean, string', 'Sperrt den Link oder die ganze Gruppe; hint erklärt warum (Tooltip und Screenreader-Text). Eine gesperrte Gruppe öffnet kein Menü.'],
+  ]}
+/>
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Ein Ziel, ein Link',
+      doText: 'Ein einzelnes Ziel steht direkt in der Leiste: ein Klick bis zur Seite.',
+      dontText: 'Eine Gruppe mit nur einem Eintrag versteckt das Ziel hinter einem zusätzlichen Klick.',
+      good: <Story of={AppNavStories.DoGruppe} inline />,
+      bad: <Story of={AppNavStories.DontGruppe} inline />,
+    },
+    {
+      title: 'Aktuelle Seite markieren',
+      doText: 'Mit currentHref trägt der Eintrag den Indikator und aria-current="page".',
+      dontText: 'Ohne currentHref ist nichts markiert: Man sieht nicht, wo man ist, und Screenreader erfahren es auch nicht.',
+      good: <Story of={AppNavStories.DoAktuell} inline />,
+      bad: <Story of={AppNavStories.DontAktuell} inline />,
+    },
+    {
+      title: 'Sperren statt verstecken, mit Hinweis',
+      doText: 'Ein Eintrag, der noch nicht verfügbar ist, bleibt sichtbar, mit Schloss und einem Hinweis, warum.',
+      dontText: 'Fehlt der Eintrag, sucht man ihn vergeblich und weiß nicht, dass es ihn später gibt.',
+      good: <Story of={AppNavStories.DoGesperrt} inline />,
+      bad: <Story of={AppNavStories.DontGesperrt} inline />,
+    },
+    {
+      title: 'Wenige Einträge in der Leiste',
+      doText: 'Wenige, kurze Einträge passen nebeneinander in die Leiste, das Übrige gehört in Gruppen.',
+      dontText: 'Die Liste bricht nicht um und scrollt nicht: Was nicht passt, ragt über den Rand hinaus (hier vom Rahmen abgeschnitten).',
+      good: <Story of={AppNavStories.DoWenige} inline />,
+      bad: <Story of={AppNavStories.DontWenige} inline />,
+    },
+  ]}
+/>
