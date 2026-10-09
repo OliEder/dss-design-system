@@ -193,7 +193,7 @@
   .audit th, .audit td { text-align: left; padding: 6px 28px 6px 0; border-bottom: 1px solid var(--page-line); }
   .audit th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); }
   .audit tr.off td { font-weight: 700; }
-  .ok { font-family: var(--font-mono); font-size: 13px; color: var(--ok-text); }
+  .ok { font-family: var(--font-mono); font-size: 13px; color: var(--dss-chip-ok-fg); }
   @media (max-width: 640px) {
     .row { grid-template-columns: minmax(0, 1fr); gap: 8px; }
     .scoreline { flex-wrap: wrap; gap: 16px 32px; }

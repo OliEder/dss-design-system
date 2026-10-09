@@ -388,8 +388,8 @@ Jede HTML-Datei ist ein eigenständiges, scrollbares Dokument zum Live-Anschauen
 
 ## Storybook
 
-Alle Svelte-Komponenten + die Foundation-Tokens sind in Storybook live anschaubar
-und durchklickbar — inkl. Light/Dark-Toggle und A11y-Checks.
+Alle Komponenten und die Foundation-Seiten sind in Storybook live anschaubar
+und durchklickbar, inkl. Hell/Dunkel, A11y-Checks und Code-Beispielen in drei Fassungen.
 
 ```bash
 npm install
@@ -399,9 +399,27 @@ npm run build-storybook # statische Site nach storybook-static/
 
 Was drin ist:
 
-- **Introduction** — Pack-Übersicht
-- **Foundation/Colors** — alle Hue-Ramps (Ink · Amber · Sky · Neutral) + Semantic
-- **Components** — Button · TextInput · Modal · Card · Tabs · Icon
+- **Introduction** (Startseite): Überblick, Werkzeugleiste, Inhaltsverzeichnis aller Seiten
+- **Foundation:** Colors, Typography, Focus & Hover
+- **Components:** je eine MDX-Seite pro Komponente oder Komponentengruppe (Button, TextInput, Select, Checkbox, Modal, Banner, Card, Card Library, Tabs, Navigation, AppNav, Table, Spielplan, EmptyState, PlayByPlay, Icon, CourtLines) und die Spielwiese zum Spielplan
+
+Die Werkzeugleiste schaltet **Marke** (BBV/DBB), **Schrift**, Hell/Dunkel, **Fassung** (Vanilla, Svelte oder React für alle
+Code-Beispiele) und **Zustand** (erzwingt Hover, Fokus oder Aktiv auf den Vorschauen der Seite) um.
+
+### Dokumentation schreiben
+
+Eine Komponentenseite besteht aus vier Dateien in `stories/`:
+
+- `<Name>.stories.ts`: Meta mit `argTypes` (beschriftet, für `<Controls>`) und die Demo-Story; **kein** `tags: ['autodocs']`.
+- `<Name>.mdx`: die Seite (`<Meta of=…>`, Beschreibung, `<Canvas of=…>`, Zustände, `<FrameworkCode>`, `<Controls>`, `<DosDonts>`).
+- `<Name>.code.ts`: die Code-Beispiele (`vanilla`, `svelte`, `react`), gegen die echten Komponenten geprüft.
+- `components/<Name>Examples.svelte`: die Beispiele als Svelte-Komponente, gewählt über ein `example`-Prop.
+
+Beispiel-Stories, die nur der Doku dienen (Zustände, Dos und Don'ts), stehen in der Stories-Datei mit `tags: ['!dev']` **als Literal**
+am Story-Objekt (der Indexer liest keine Tags aus Funktionsrückgaben); so bleiben sie aus der Seitenleiste heraus. Dos und Don'ts
+laufen über den Baustein `DosDonts` (`stories/docs/blocks/`), falsche Beispiele sind darin `inert`. Eine Zustände-Story
+(`Zustaende`) gehört zu jeder Komponente mit bedienbaren Elementen. Die Bausteine (`DosDonts`, `FrameworkCode`, `DocTable`) liegen in
+`stories/docs/blocks/`; manuelle `Docs/*`-Seiten gibt es nicht mehr.
 
 Stories liegen unter `stories/`, geschrieben in [Svelte CSF](https://github.com/storybookjs/addon-svelte-csf).
 
