@@ -12,6 +12,7 @@ Versionierung folgt [Semantic Versioning](https://semver.org/).
 - **Spielplan-Tabelle:** Dichte compact misst jetzt wirklich 40 px (vorher 45 px).
 
 ### Neu
+- **Spielplan-Doku als MDX-Seite** `Components/Spielplan` (mit Auto-Docs-Texten von ScheduleTable/ScheduleGrid); die Seite `Docs/Spielplan` entfällt.
 - **Storybook: Werkzeugleiste „Zustand“** (Normal, Hover, Fokus, Aktiv) erzwingt den Zustand auf allen bedienbaren Elementen der gezeigten Stories. **Button-Doku als MDX-Seite** (`Components/Button`) mit Zustands-Matrix, Code-Beispielen je Fassung und Dos und Don'ts; die alte Seite `Docs/Button` entfällt. Weitere Komponenten folgen.
 - **Spielplan:** `ScheduleTable` (Tabelle mit den Layouts `versus`, `opponent`, `columns`) und `ScheduleGrid` (Zeitraster) in
   Vanilla-CSS, Svelte und React, mit gemeinsamem Datenmodell `ScheduleGame` und Hilfsfunktionen in `js/schedule.js`.

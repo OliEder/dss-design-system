@@ -69,7 +69,7 @@ Spiele mit gleicher `section` werden unter einer Gruppenzeile zusammengefasst. `
 
 ## Zeitraster: parallele Spiele nebeneinander
 
-Jede Zeile ist eine Anwurfzeit, jede Spalte eine Halle oder ein Feld (Namen frei wählbar). Ein Spiel landet über `column` (passt zu `columns[].id`) und `time` in seiner Zelle. Pausen kommen über `breaks`, ein Freilos ist ein Spiel mit `state: 'bye'`, eine Zelle ohne Spiel zeigt „frei“ (`emptyLabel`).
+Jede Zeile ist eine Anwurfzeit, jede Spalte eine Halle oder ein Feld (Namen frei wählbar). Ein Spiel landet über `column` (muss zu einer Spalten-`id` in `columns` passen, sonst erscheint das Spiel nicht) und `time` in seiner Zelle. Pausen kommen über `breaks`, ein Freilos ist ein Spiel mit `state: 'bye'`, eine Zelle ohne Spiel zeigt „frei“ (`emptyLabel`).
 
 ### Drei Hallen, Pause, Freilos, leere Zelle
 
@@ -193,7 +193,7 @@ Das Snippet „time“ ersetzt die Uhrzeit, hier durch ein Eingabefeld mit eigen
 
 ### Handy-Ansicht · 390 px Breite
 
-Unter 640 px Breite werden Zeilen zu Karten und Anwurfzeiten zu Blöcken. Diese Regeln hängen an der Breite des Fensters, nicht an der des Rahmens. Darum sind die Vorschauen eingebettete Seiten mit fester Breite von 390 px.
+Unter 640 px Breite werden Zeilen zu Karten und Anwurfzeiten zu Blöcken mit der Spalten-Beschriftung als Überschrift. Diese Regeln hängen an der Breite des Fensters, nicht an der des Rahmens. Darum sind die Vorschauen eingebettete Seiten mit fester Breite von 390 px.
 
 <div className="dss-phones">
   <div className="dss-phone">

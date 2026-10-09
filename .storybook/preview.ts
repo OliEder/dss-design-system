@@ -90,9 +90,9 @@ const preview: Preview = {
       storySort: {
         order: [
           'Introduction',
-          'Docs', ['Forms', 'Cards & Lists', 'Navigation', 'Tables & Live-Scoring', 'Spielplan'],
+          'Docs', ['Forms', 'Cards & Lists', 'Navigation', 'Tables & Live-Scoring'],
           'Foundation', ['Colors', 'Typography', 'Spacing', 'Shadows'],
-          'Components', ['Button', 'TextInput', 'Select', 'Checkbox', 'Modal', 'Banner', 'Card', 'Card Library', 'Tabs', 'Navigation', 'AppNav', 'Table', 'ScheduleTable', 'ScheduleGrid', 'Spielplan Spielwiese', 'EmptyState', 'CourtLines', 'PlayByPlay', 'Icon'],
+          'Components', ['Button', 'TextInput', 'Select', 'Checkbox', 'Modal', 'Banner', 'Card', 'Card Library', 'Tabs', 'Navigation', 'AppNav', 'Table', 'Spielplan', 'ScheduleTable', 'ScheduleGrid', 'Spielplan Spielwiese', 'EmptyState', 'CourtLines', 'PlayByPlay', 'Icon'],
         ],
       },
     },
@@ -109,7 +109,7 @@ const preview: Preview = {
       else document.documentElement.removeAttribute('data-brand');
       if (context.globals.type === 'dbb') document.documentElement.setAttribute('data-type', 'dbb');
       else document.documentElement.removeAttribute('data-type');
-      // Code-Beispiele der Spec-Seiten folgen dem Umschalter "Fassung" (reines CSS, siehe stories/docs/_CodeSwitch.svelte)
+      // Code-Beispiele der Spec-Seiten folgen dem Umschalter "Fassung" (reines CSS, siehe stories/docs/blocks/useActiveFramework.ts)
       document.documentElement.dataset.framework = context.globals.framework ?? 'svelte';
       setForcedState((context.globals.state ?? 'normal') as ForcedState);
       return story();
