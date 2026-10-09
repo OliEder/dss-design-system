@@ -7,8 +7,10 @@
    *
    * Dichten : touch (60px) · default (48px) · compact (40px) · dense (32px)
    * Flächen : hell (Standard) · dunkel (Kampfgericht-Tisch)
-   * Features: sticky Kopf, Sortier-Pfeil + aria-sort, optionales Striping,
-   *           tfoot-Summenzeile, Hover.
+   * Features: sticky Kopf (sobald der Scrollbereich eine Höhe hat), Sortier-Pfeil +
+   *           aria-sort, optionales Striping, tfoot-Summenzeile, Hover.
+   *           Der Scrollbereich ist eine Region mit Namen (caption, sonst title) und per
+   *           Tastatur erreichbar.
    *
    * Zellen kommen vom Aufrufer über die `rows`/`body`-Snippets. Hilfsklassen:
    *   .num · .num.lead · .num.dim · .center
@@ -20,6 +22,7 @@
 
   let {
     title = '',
+    titleAs = 'h3',
     meta = '',
     live = false,
     density = 'default',
@@ -30,9 +33,12 @@
     head = undefined,
     body,
     foot = undefined,
+    caption = '',
     class: klass = '',
   }: {
     title?: string;
+    /** Überschriftenebene des Titels (Standard h3). */
+    titleAs?: 'h2' | 'h3' | 'h4';
     meta?: string;
     live?: boolean;
     density?: Density;
@@ -43,6 +49,8 @@
     head?: Snippet;
     body?: Snippet;
     foot?: Snippet;
+    /** Unsichtbare Tabellenbeschriftung für Screenreader; benennt auch den Scrollbereich. */
+    caption?: string;
     class?: string;
   } = $props();
 </script>
@@ -50,7 +58,7 @@
 <div class={`dss-frame ${dark ? 'dss-frame--dark' : ''} ${klass}`}>
   {#if title || meta || live}
     <div class="dss-frame-head">
-      {#if title}<h3 class="dss-frame-title">{title}</h3>{:else}<span></span>{/if}
+      {#if title}<svelte:element this={titleAs} class="dss-frame-title">{title}</svelte:element>{:else}<span></span>{/if}
       <div class="dss-frame-meta">
         {#if meta}<span>{meta}</span>{/if}
         {#if live}<span class="dss-crumb"><span class="dss-crumb-dot" aria-hidden="true"></span> Live</span>{/if}
@@ -58,8 +66,10 @@
     </div>
   {/if}
 
-  <div class="dss-table-scroll">
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -- Fokussierbar mit Absicht: Tastaturnutzer müssen den scrollbaren Bereich erreichen (WCAG 2.1.1) -->
+  <div class="dss-table-scroll" role="region" tabindex="0" aria-label={caption || title || 'Tabelle'}>
     <table class={`dss-tbl dss-tbl--${density} ${striped ? 'dss-tbl--striped' : ''}`}>
+      {#if caption}<caption class="dss-sr-only">{caption}</caption>{/if}
       {#if columns}
         <thead>
           <tr>

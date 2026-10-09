@@ -29,7 +29,7 @@ export interface TableProps {
   /** Zeilen des tbody (`<tr>`-Elemente). */
   children?: ReactNode;
   foot?: ReactNode;
-  /** Unsichtbare Tabellenbeschriftung für Screenreader (wenn kein sichtbarer Titel genügt). */
+  /** Unsichtbare Tabellenbeschriftung für Screenreader; benennt auch den Scrollbereich (sonst der Titel). */
   caption?: string;
   className?: string;
 }
@@ -68,7 +68,7 @@ export function Table({
           </div>
         </div>
       ) : null}
-      <div className="dss-table-scroll">
+      <div className="dss-table-scroll" role="region" tabIndex={0} aria-label={caption || (typeof title === 'string' && title) || 'Tabelle'}>
         <table className={cn('dss-tbl', `dss-tbl--${density}`, striped && 'dss-tbl--striped')}>
           {caption ? <caption className="dss-sr-only">{caption}</caption> : null}
           {columns ? (
