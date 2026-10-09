@@ -33,6 +33,9 @@
     onclose?: () => void;
   } = $props();
 
+  const uid = $props.id();
+  const titleId = `dss-modal-title-${uid}`;
+
   function handleClose() {
     open = false;
     onclose?.();
@@ -47,7 +50,7 @@
 
 {#if open}
   <div class="dss-backdrop" onclick={closable ? handleClose : null} role="presentation"></div>
-  <div class="dss-modal-wrap" role="dialog" aria-modal="true" aria-labelledby="dss-modal-title">
+  <div class="dss-modal-wrap" role="dialog" aria-modal="true" aria-labelledby={titleId}>
     <div class="dss-modal dss-modal--{size}">
       <div class="dss-m-head">
         {#if severity !== 'default'}
@@ -64,7 +67,7 @@
           </div>
         {/if}
         <div class="dss-m-head-text">
-          <h4 class="dss-m-title" id="dss-modal-title">{title}</h4>
+          <h4 class="dss-m-title" id={titleId}>{title}</h4>
           {#if subtitle}<div class="dss-m-subtitle">{subtitle}</div>{/if}
         </div>
         {#if closable}

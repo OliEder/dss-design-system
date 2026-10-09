@@ -295,6 +295,7 @@
 .dss-banner-body { flex: 1; min-width: 0; }
 .dss-banner-title { margin: 0 0 2px; font-weight: 700; }
 .dss-banner a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.dss-banner a:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
 
 /* ── Modal (aus svelte/Modal.svelte extrahiert, über --dss-* Aliase) ── */
 .dss-backdrop {
