@@ -30,3 +30,11 @@
 @media (max-width: 640px) {
   .sbdocs .docblock-argstable.docblock-argstable { display: block; overflow-x: auto; max-width: 100%; }
 }
+
+/* --ok-text und --err-text haben keinen Dunkelmodus (dunkle Töne, 2.3:1 auf Schwarz); hier hellere Töne für die Badges */
+:root[data-theme="dark"] .dss-dd-do .dss-dd-badge { color: oklch(0.8 0.15 150); }
+:root[data-theme="dark"] .dss-dd-dont .dss-dd-badge { color: oklch(0.78 0.16 27); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .dss-dd-do .dss-dd-badge { color: oklch(0.8 0.15 150); }
+  :root:not([data-theme="light"]) .dss-dd-dont .dss-dd-badge { color: oklch(0.78 0.16 27); }
+}

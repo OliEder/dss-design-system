@@ -52,6 +52,8 @@ let observer: MutationObserver | undefined;
 
 function applyAll() {
   pending = false;
+  // Nichts erzwungen und nichts zurückzunehmen: spart den Lauf über alle Elemente bei jeder DOM-Änderung
+  if (current === 'normal' && !document.querySelector(`[${OWN}], [${WITHIN}]`)) return;
   document.querySelectorAll(ROOTS).forEach((root) => applyState(root, current));
 }
 
