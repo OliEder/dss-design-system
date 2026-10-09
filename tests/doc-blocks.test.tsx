@@ -2,6 +2,7 @@
 import { act, render, screen } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 import { DosDonts } from '../stories/docs/blocks/DosDonts';
+import { DocTable } from '../stories/docs/blocks/DocTable';
 import { FrameworkCode } from '../stories/docs/blocks/FrameworkCode';
 
 afterEach(() => document.documentElement.removeAttribute('data-framework'));
@@ -62,5 +63,35 @@ describe('DosDonts', () => {
   it('benennt das falsche Beispiel für Screenreader', () => {
     render(<DosDonts pairs={pairs} />);
     expect(screen.getByText('Beispiel für falsche Verwendung')).toHaveClass('dss-sr-only');
+  });
+});
+
+describe('DocTable', () => {
+  const props = {
+    label: 'ScheduleGame',
+    head: ['Feld', 'Typ', 'Beschreibung'],
+    rows: [
+      ['id', 'string', 'Eindeutige Kennung (Pflicht).'],
+      ['state', "'scheduled' | 'live'", <>Zustand mit <code>bye</code>.</>],
+    ],
+  };
+
+  it('rendert eine echte Tabelle mit Kopf, Zeilen und Beschriftung', () => {
+    render(<DocTable {...props} />);
+    expect(screen.getByRole('table', { name: 'ScheduleGame' })).toBeInTheDocument();
+    expect(screen.getAllByRole('columnheader').map((c) => c.textContent)).toEqual(['Feld', 'Typ', 'Beschreibung']);
+    expect(screen.getAllByRole('row')).toHaveLength(3);
+    expect(screen.getByText('bye').tagName).toBe('CODE');
+  });
+
+  it('der Scrollbereich ist per Tastatur erreichbar und benannt', () => {
+    render(<DocTable {...props} />);
+    const region = screen.getByRole('region', { name: 'ScheduleGame, seitlich scrollbar' });
+    expect(region).toHaveAttribute('tabindex', '0');
+  });
+
+  it('erste Spalte ist Zeilenkopf', () => {
+    render(<DocTable {...props} />);
+    expect(screen.getAllByRole('rowheader').map((c) => c.textContent)).toEqual(['id', 'state']);
   });
 });

@@ -38,3 +38,23 @@
   :root:not([data-theme="light"]) .dss-dd-do .dss-dd-badge { color: oklch(0.8 0.15 150); }
   :root:not([data-theme="light"]) .dss-dd-dont .dss-dd-badge { color: oklch(0.78 0.16 27); }
 }
+
+.dss-doc-table-wrap { overflow-x: auto; margin: 0 0 24px; }
+.dss-doc-table { width: 100%; min-width: 560px; border-collapse: collapse; font-size: var(--fs-body-sm); }
+.dss-doc-table th, .dss-doc-table td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--page-line); background: transparent; color: var(--page-fg); }
+.dss-doc-table thead th { font-family: var(--font-mono); font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); }
+.dss-doc-k { font-family: var(--font-mono); font-weight: 600; white-space: nowrap; }
+.dss-doc-v { font-family: var(--font-mono); font-size: 12.5px; }
+
+/* Handy-Vorschauen (eingebettete Seiten mit fester Breite) */
+.dss-phones { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; margin: 16px 0 24px; }
+.dss-phone { max-width: 100%; min-width: 0; }
+.dss-phone-scroll { max-width: 100%; overflow-x: auto; padding-bottom: 4px; }
+.dss-phone iframe { display: block; width: 390px; height: 560px; max-width: none; border: 1px solid var(--page-line); border-radius: 18px; background: var(--n-0); }
+
+/* Variantenkarten (Abschnitt Auswahl) und Hör-Liste (Barrierefreiheit) */
+.dss-var-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; }
+.dss-var-card { min-width: 0; }
+.dss-hear { margin: 0 0 24px; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; }
+.dss-hear li { font-size: var(--fs-body-sm); line-height: 1.5; border-left: 3px solid var(--page-line); padding-left: 12px; }
+@media (max-width: 760px) { .dss-hear { grid-template-columns: minmax(0, 1fr); } }
