@@ -36,4 +36,9 @@ describe('Fokus-Ring: gestrichelt, Gold/Amber', () => {
     expect(css).toMatch(new RegExp('\\.dss-select:focus-visible[^{]*\\{[^}]*' + ring));
     expect(css).toMatch(new RegExp('\\.dss-check-input:focus-visible\\s*\\{[^}]*' + ring));
   });
+  it('Schließen-Button des Modals und Link im Banner haben einen gestrichelten Fokus-Ring', () => {
+    const ring = 'outline:\\s*var\\(--ring-w\\)\\s+var\\(--ring-style\\)\\s+var\\(--ring-color\\)';
+    expect(css).toMatch(new RegExp('\\.dss-m-close:focus-visible\\s*\\{[^}]*' + ring));
+    expect(css).toMatch(new RegExp('\\.dss-banner a:focus-visible\\s*\\{[^}]*' + ring));
+  });
 });

@@ -12,16 +12,24 @@
     cancelLabel = 'Abbrechen',
     confirmLabel = 'Freigeben',
     confirmVariant = 'primary',
+    footer: withFooter = true,
   } = $props();
 
-  // Modal is always open in the showcase
+  // In der Doku ist das Modal immer offen: Schließen (Escape, Hintergrund, Button) öffnet es sofort wieder,
+  // sonst würde ein Escape alle Vorschauen der Seite schließen.
   let open = $state(true);
 </script>
 
-<Modal bind:open {title} {subtitle} {severity} {size} {closable}>
-  {body}
-  {#snippet footer()}
-    <Button variant="secondary">{cancelLabel}</Button>
-    <Button variant={confirmVariant}>{confirmLabel}</Button>
-  {/snippet}
-</Modal>
+{#if withFooter}
+  <Modal bind:open {title} {subtitle} {severity} {size} {closable} onclose={() => (open = true)}>
+    {body}
+    {#snippet footer()}
+      <Button variant="secondary">{cancelLabel}</Button>
+      <Button variant={confirmVariant}>{confirmLabel}</Button>
+    {/snippet}
+  </Modal>
+{:else}
+  <Modal bind:open {title} {subtitle} {severity} {size} {closable} onclose={() => (open = true)}>
+    {body}
+  </Modal>
+{/if}

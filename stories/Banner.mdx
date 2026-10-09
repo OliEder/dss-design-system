@@ -1,0 +1,95 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as BannerStories from './Banner.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import { DocTable } from './docs/blocks/DocTable';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './Banner.code';
+
+<Meta of={BannerStories} />
+
+# Banner
+
+Ein Banner ist ein Inline-Hinweis: Er steht an seiner Stelle im Inhalt, bleibt sichtbar und unterbricht nichts. Vier Schweregrade (info, ok, warn, danger) in Hell und Dunkel und in beiden Marken, mit Symbol, optionalem Titel und Text, der auch Links enthalten darf. Wenn der Ablauf anhalten und eine Entscheidung abgefragt werden soll, nimm ein [Modal](?path=/docs/components-modal--docs).
+
+## Schweregrade
+
+Der Schweregrad bestimmt Farbe und Symbol. `info` erklärt, `ok` bestätigt, `warn` warnt vor etwas, das noch geht, `danger` meldet etwas, das nicht geht.
+
+<Canvas of={BannerStories.Schweregrade} />
+
+Mit dem Schweregrad ändert sich auch die Rolle, die Screenreader zu hören bekommen:
+
+<DocTable
+  label="Rolle je Schweregrad"
+  head={['Schweregrad', 'Rolle', 'Wirkung']}
+  rows={[
+    ['info, ok', 'status', 'Wird höflich angesagt, nachdem die laufende Ansage zu Ende ist.'],
+    ['warn, danger', 'alert', 'Wird sofort angesagt.'],
+  ]}
+/>
+
+Die Rolle lässt sich über die Prop `role` überschreiben (Svelte: `alert`, `status` oder `none`).
+
+## Aufbau: Symbol, Titel, Text
+
+Das Symbol (20 px) und der Titel (fett) sind optional. Beide fehlen, wenn der Text allein genügt. Die Farbe allein sagt wenig: Lass das Symbol oder einen Titel stehen, sobald der Schweregrad zählt.
+
+<Canvas of={BannerStories.Aufbau} />
+
+## Links im Text
+
+Links im Banner übernehmen die Farbe des Banners und sind unterstrichen. Schreibe den Linktext als Aktion („Zur Aufstellung“), der Text davor nennt das Problem.
+
+<Canvas of={BannerStories.MitLink} />
+
+## Zustände: Link im Banner
+
+Das Banner selbst ist nicht bedienbar; bedienbar ist nur ein Link darin. Er hat bei Hover keinen eigenen Stil (er ist immer unterstrichen) und bei Tastaturfokus den gestrichelten Gold/Amber-Ring (3 px). Es gibt keinen Schließen-Button und kein Sperren, darum zeigt die Matrix Standard und Fokus je Schweregrad.
+
+<Canvas of={BannerStories.Zustaende} />
+
+Die Matrix ist fest gesetzt. Jede andere Story lässt sich über die Werkzeugleiste **Zustand** auf Fokus schalten. Live: mit Tab zu einem Link springen. Marke und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Verwendung: Import und Props
+
+Der Text ist der Inhalt des Banners (Svelte: Kinder, React: `children`). Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+<Controls of={BannerStories.Info} />
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Sagen, was zu tun ist',
+      doText: 'Der Text nennt die Ursache und den nächsten Schritt: „Prüfe das Netz und versuche es erneut“.',
+      dontText: '„Fehler 500“ sagt weder, was passiert ist, noch, was jetzt zu tun ist.',
+      good: <Story of={BannerStories.DoText} inline />,
+      bad: <Story of={BannerStories.DontText} inline />,
+    },
+    {
+      title: 'Danger nur bei Blockade',
+      doText: 'Eine knappe Hallenzeit lässt sich noch lösen: warn (amber) warnt, ohne zu blockieren.',
+      dontText: 'danger meldet etwas, das nicht geht, und wird sofort angesagt; für einen lösbaren Engpass ist das zu laut.',
+      good: <Story of={BannerStories.DoSchwere} inline />,
+      bad: <Story of={BannerStories.DontSchwere} inline />,
+    },
+    {
+      title: 'Nicht nur durch Farbe unterscheiden',
+      doText: 'Symbol und Titel tragen den Schweregrad auch ohne Farbwahrnehmung.',
+      dontText: 'Ohne Symbol und Titel bleibt nur der getönte Hintergrund, und der ist für Screenreader unsichtbar.',
+      good: <Story of={BannerStories.DoNichtFarbe} inline />,
+      bad: <Story of={BannerStories.DontNichtFarbe} inline />,
+    },
+    {
+      title: 'Feldfehler gehören ans Feld',
+      doText: 'Der Fehlertext steht direkt am Feld und ist per aria-describedby mit ihm verknüpft; das Feld ist rot markiert.',
+      dontText: 'Ein Banner über dem Formular lässt das Feld unmarkiert und ist nicht mit ihm verknüpft.',
+      good: <Story of={BannerStories.DoFeld} inline />,
+      bad: <Story of={BannerStories.DontFeld} inline />,
+    },
+  ]}
+/>

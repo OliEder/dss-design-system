@@ -295,6 +295,12 @@
 .dss-banner-body { flex: 1; min-width: 0; }
 .dss-banner-title { margin: 0 0 2px; font-weight: 700; }
 .dss-banner a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.dss-banner a:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
+/* Der dezente Dunkel-Ring hat auf dem getönten Banner nur 2,2 bis 2,7:1 (WCAG 1.4.11 verlangt 3:1): dort Textfarbe, 8,8:1 und mehr */
+:root[data-theme="dark"] .dss-banner a:focus-visible { outline-color: currentColor; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .dss-banner a:focus-visible { outline-color: currentColor; }
+}
 
 /* ── Modal (aus svelte/Modal.svelte extrahiert, über --dss-* Aliase) ── */
 .dss-backdrop {
@@ -343,7 +349,7 @@
   color: var(--dss-fg-soft); font-size: var(--fs-body); line-height: 1.55;
 }
 .dss-m-footer {
-  display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px;
   padding: 16px 24px 20px; border-top: 1px solid var(--dss-line); background: var(--dss-surface-2);
 }
 
