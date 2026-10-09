@@ -1,0 +1,105 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as TextInputStories from './TextInput.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './TextInput.code';
+
+<Meta of={TextInputStories} />
+
+# TextInput
+
+Eingabefelder mit klarer Label-Hierarchie, sichtbarer Validierung und allen vier Status-Tonalitäten. Der Fokus ist ein gestrichelter Gold/Amber-Ring (3 px) mit mindestens **3:1** Kontrast auf hellem und dunklem Grund. Die Regeln für Beschriftung, Hilfe- und Fehlertext gelten für alle Formularfelder, auch für [Select](?path=/docs/components-select--docs) und [Checkbox](?path=/docs/components-checkbox--docs).
+
+## Anatomie: Label oben, Hilfe unten, Status farbig
+
+Die TextInput-Anatomie folgt einer festen Reihenfolge: **Label** (oben, optional mit `Optional`-Tag), **Input** (Mitte), **Helper-Text** (unten, klein, farbcodiert je Status). Das Erforderlich-Sternchen sitzt inline am Label-Ende.
+
+<Canvas of={TextInputStories.Anatomie} />
+
+## Tonalitäten: vier Stufen für Feedback
+
+**Standard** ist neutral. **Erfolg** (grün) bestätigt valide Eingaben, z.B. überprüfte Lizenzen. **Warnung** (amber) flaggt grenzwertige Werte (späte Anwurfzeit). **Fehler** (rot) markiert die Eingabe als ungültig und zeigt den Korrektur-Pfad. Nur beim Fehler setzt der TextInput `aria-invalid`; der Hilfetext erscheint immer in der Farbe des Status.
+
+<Canvas of={TextInputStories.Tonalitaeten} />
+
+## Gesperrt: wenn das Feld nicht editierbar ist
+
+Automatisch zugewiesene Werte (Spieler-IDs, generierte Codes) bekommen `disabled`. Die Schrift wird gedämpft (`--dss-mute`), der Cursor zeigt `not-allowed`. Erkläre im Hilfetext, warum das Feld gesperrt ist.
+
+<Canvas of={TextInputStories.Gesperrt} />
+
+## Dichten und Zusätze
+
+Drei Höhen: `touch` (56 px) für den Kampfgerichts-Tisch, `default` (44 px) als Standard, `compact` (36 px) für dichte Ansichten. Mit `prefix` und `suffix` stehen Zusätze wie Einheiten links oder rechts im Feld, innerhalb desselben Rahmens.
+
+<Canvas of={TextInputStories.Dichten} />
+
+<table>
+  <thead>
+    <tr><th>Dichte</th><th>Höhe</th><th>Token</th><th>Einsatz</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>touch</code></td><td>56 px</td><td><code>--fld-h-touch</code></td><td>Kampfgericht, Halle, Tisch</td></tr>
+    <tr><td><code>default</code></td><td>44 px</td><td><code>--fld-h-default</code></td><td>Standard, alle Formulare</td></tr>
+    <tr><td><code>compact</code></td><td>36 px</td><td><code>--fld-h-compact</code></td><td>Dichte Ansichten, Filterleisten</td></tr>
+  </tbody>
+</table>
+
+## Zustände: Fokus, Fehler, OK, Warnung, Gesperrt
+
+Der Fokus-Ring sitzt an der ganzen Eingabegruppe (`:focus-within`), also auch um Zusätze. Der Rahmen bleibt dabei in der Farbe des Status. Hover und Aktiv haben beim Eingabefeld keinen eigenen Stil, darum zeigt die Matrix Standard, Fokus und Gesperrt je Tonalität und Dichte.
+
+<Canvas of={TextInputStories.Zustaende} />
+
+Die Matrix ist fest gesetzt. Jede andere Story lässt sich über die Werkzeugleiste **Zustand** auf Fokus schalten. Live: mit Tab hineinspringen. Marke und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Verwendung: Import und Props
+
+Das Label gehört immer dazu (es ist per `for` mit dem Input verknüpft), Hilfetext und Fehlertext laufen über `help` und werden per `aria-describedby` angebunden. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+<Controls of={TextInputStories.Default} />
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Label immer sichtbar',
+      doText: 'Das Label steht über dem Feld, bleibt beim Tippen sichtbar und ist per for mit dem Input verknüpft: ein Klick darauf fokussiert das Feld.',
+      dontText: 'Ein Platzhalter ersetzt kein Label: er verschwindet beim Tippen und ist in gedämpfter Farbe gesetzt.',
+      good: <Story of={TextInputStories.DoLabel} inline />,
+      bad: <Story of={TextInputStories.DontLabel} inline />,
+    },
+    {
+      title: 'Fehlertext zeigt den Weg',
+      doText: 'Der Text nennt die Regel und die Korrektur: „Nummern müssen FIBA-konform sein (max. 99)“.',
+      dontText: 'Nur ein roter Rand sagt nicht, was falsch ist, und ist ohne Farbwahrnehmung nicht erkennbar.',
+      good: <Story of={TextInputStories.DoFehler} inline />,
+      bad: <Story of={TextInputStories.DontFehler} inline />,
+    },
+    {
+      title: 'Format vorab als Hilfetext',
+      doText: 'Der Hilfetext nennt das erwartete Format schon vor der Eingabe.',
+      dontText: 'Das Format erst im Fehlerfall zu verraten, kostet einen Versuch.',
+      good: <Story of={TextInputStories.DoFormat} inline />,
+      bad: <Story of={TextInputStories.DontFormat} inline />,
+    },
+    {
+      title: 'Rot nur für Ungültiges',
+      doText: 'Grenzwertige Werte bekommen die amber Warnung, die Eingabe bleibt gültig.',
+      dontText: 'Rot für einen noch erlaubten Wert nimmt dem Fehler seine Bedeutung.',
+      good: <Story of={TextInputStories.DoWarnung} inline />,
+      bad: <Story of={TextInputStories.DontWarnung} inline />,
+    },
+    {
+      title: 'Gesperrt mit Grund',
+      doText: 'Der Hilfetext erklärt, warum das Feld nicht editierbar ist.',
+      dontText: 'Ein gedämpftes Feld ohne Erklärung lässt Nutzer rätseln.',
+      good: <Story of={TextInputStories.DoGesperrt} inline />,
+      bad: <Story of={TextInputStories.DontGesperrt} inline />,
+    },
+  ]}
+/>

@@ -8,6 +8,7 @@
     placeholder = '0 · 00 · 1–99',
     help = 'FIBA: 0, 00, einstellig (1–9), zweistellig (01–99).',
     state = 'default',
+    density = 'default',
     required = true,
     optional = '',
     disabled = false,
@@ -16,7 +17,7 @@
 
 {#if view === 'single'}
   <div style="padding: 24px; max-width: 360px;">
-    <TextInput {label} {value} {placeholder} {help} {state} {required} {optional} {disabled} />
+    <TextInput {label} {value} {placeholder} {help} {state} {density} {required} {optional} {disabled} />
   </div>
 {:else}
   <div class="stack">

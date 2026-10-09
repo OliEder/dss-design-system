@@ -1,0 +1,75 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as CheckboxStories from './Checkbox.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import './docs/blocks/blocks.css';
+import { vanilla, svelte, react } from './Checkbox.code';
+
+<Meta of={CheckboxStories} />
+
+# Checkbox
+
+Natives Kontrollkästchen im DSS-Look. Die gesamte Label-Fläche ist klickbar (≥ 44 px). Optionaler Hinweistext wird per `aria-describedby` verknüpft. Für Beschriftung und Hilfetexte in Formularen gelten dieselben Regeln wie beim [TextInput](?path=/docs/components-textinput--docs).
+
+## Anatomie: Box, Label, Hinweis
+
+Die Box misst 22 px, das Label umschließt Box, Text und optionalen Hinweis. Angekreuzt füllt sich die Box mit der Button-Farbe (`--dss-btn-bg`) und zeigt einen Haken.
+
+<Canvas of={CheckboxStories.Anatomie} />
+
+## Dichten
+
+`default` hat eine Mindesthöhe von 44 px (`--fld-h-default`), `compact` von 36 px (`--fld-h-compact`) für dichte Listen.
+
+<Canvas of={CheckboxStories.Dichten} />
+
+## Zustände: Fokus, Angekreuzt, Gesperrt
+
+Der Fokus-Ring sitzt an der Box (`:focus-visible`), gestrichelt in Gold/Amber. Hover und Aktiv haben beim Kontrollkästchen keinen eigenen Stil, darum zeigt die Matrix Standard, Fokus und Gesperrt, jeweils aus und an. Gesperrt reduziert auf 50 % Opacity und zeigt den Cursor `not-allowed`.
+
+<Canvas of={CheckboxStories.Zustaende} />
+
+Die Matrix ist fest gesetzt. Jede andere Story lässt sich über die Werkzeugleiste **Zustand** auf Fokus schalten. Live: mit Tab hineinspringen, mit Leertaste umschalten. Marke und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Verwendung: Import und Props
+
+Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste.
+
+<FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
+
+<Controls of={CheckboxStories.Default} />
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Ganze Label-Fläche klickbar',
+      doText: 'Label und Box sind verknüpft: die ganze Fläche (mindestens 44 px hoch) schaltet um.',
+      dontText: 'Steht der Text lose neben der Box, trifft nur das 22-px-Quadrat.',
+      good: <Story of={CheckboxStories.DoLabel} inline />,
+      bad: <Story of={CheckboxStories.DontLabel} inline />,
+    },
+    {
+      title: 'Erklärung als Hinweistext',
+      doText: 'Ein kurzes Label, die Erklärung im Hinweis darunter (per aria-describedby verknüpft).',
+      dontText: 'Ein Satz im Label macht die Beschriftung schwer überfliegbar.',
+      good: <Story of={CheckboxStories.DoHint} inline />,
+      bad: <Story of={CheckboxStories.DontHint} inline />,
+    },
+    {
+      title: 'Standardhöhe, kompakt nur dicht',
+      doText: 'Die Standardhöhe von 44 px ist der Normalfall.',
+      dontText: 'Kompakt (36 px) bleibt dichten Listen vorbehalten.',
+      good: <Story of={CheckboxStories.DoDichte} inline />,
+      bad: <Story of={CheckboxStories.DontDichte} inline />,
+    },
+    {
+      title: 'Gesperrt mit Grund',
+      doText: 'Der Hinweis erklärt, was fehlt.',
+      dontText: 'Ein halbtransparentes Kästchen ohne Erklärung lässt Nutzer raten.',
+      good: <Story of={CheckboxStories.DoGesperrt} inline />,
+      bad: <Story of={CheckboxStories.DontGesperrt} inline />,
+    },
+  ]}
+/>
