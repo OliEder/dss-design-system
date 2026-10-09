@@ -232,7 +232,7 @@ Umschalten über ein Attribut auf `<html>`:
 Das Attribut muss auf `<html>` stehen, weil abgeleitete Tokens (`--team-heim`, `--page-fg`) am Root aufgelöst werden.
 Gold und Orange haben pro Stufe ähnliche Helligkeit wie Amber, die AAA-Slots (`fill` / `text` / `deep`) bleiben daher
 gleich. Gold und `#ff9900` taugen nicht als Text auf Weiß (je etwa 2.1:1); Text nutzt `signal-800` (≈ 8.5:1). Der Indikator nutzt auf hellem Grund das dunklere `orange-600`, damit er 3:1 erreicht.
-Der Fokus-Ring (`--ring-color`) ist ein mittlerer Ton mit mindestens 3:1 auf Weiß, Grau und Anthrazit (BBV blau, DBB dunkles Orange); eine Marke muss das einhalten.
+Der Fokus-Ring (`--ring-color`) ist Gold/Amber (BBV `amber-600`, DBB `gold-600`) und gestrichelt (`--ring-style`), mit mindestens 3:1 auf Weiß und Anthrazit. Im Dunkelmodus und auf immer dunklen Flächen gilt der dezentere `--ring-color-on-dark` (BBV `amber-700`, DBB `gold-700`); eine Marke muss das einhalten.
 Neue Komponenten verwenden nur die Rollen-Tokens und `--dss-*`, keine Farbfamilien direkt. Im Storybook schaltet die
 Toolbar zwischen beiden Marken um.
 
@@ -297,7 +297,7 @@ lesen nur die Rollen-Tokens; eine Marke ist ein Block, der sie überschreibt (Vo
   --action-bg: …;  --action-bg-2: …;  --action-bg-hover: …;  /* primäre Buttons */
   --indicator: …;  /* aktiver Tab / Nav-Unterstrich, auf Weiß ≥ 3:1 */
   --h-cool: …;  --h-signal: …;  --c-cool: …;  /* Hue/Chroma für Chips und Fokus-Ring */
-  --ring-color: …;  /* mittlerer Ton, ≥ 3:1 auf Weiß und auf Anthrazit */
+  --ring-color: …;  --ring-color-on-dark: …;  /* Gold/Amber, ≥ 3:1 auf Weiß bzw. auf Anthrazit */
   --dss-court-color: …;  --dss-court-opacity: …;  /* Courtlines, Text darüber ≥ 7:1 */
 }
 ```
@@ -348,7 +348,7 @@ Zuordnung Turnier-Manager: `Game` wird zu `ScheduleGame` mit `nr: '#' + gameNumb
 - **WCAG 2.1 AAA** durchgehend validiert (siehe Identity Overview · Section 01 · Audit-Tabelle).
 - Body Text auf Surface: **≥ 7:1**.
 - Large Text und Komponenten: **≥ 4.5:1 / 3:1**.
-- Fokus-Ringe: **3 px Sky-200**, ≥ 3:1 Kontrast.
+- Fokus-Ringe: **3 px gestrichelt, Gold/Amber** (im Dunkelmodus dezenter), ≥ 3:1 Kontrast.
 - Touch-Targets: **44 / 56 / 64 px** je nach Surface (Web / Tablet / Hallen-Tisch).
 
 ---

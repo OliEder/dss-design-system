@@ -167,7 +167,7 @@
       <div class="spec-title">
         <h2>Hover, Focus, Disabled.</h2>
         <p>
-          Jede Variante hat einen Hover-Zustand (eine Stufe dunkler bzw. heller), einen Fokus-Ring mit mindestens
+          Jede Variante hat einen Hover-Zustand (eine Stufe dunkler bzw. heller), einen gestrichelten Gold/Amber-Fokus-Ring (im Dunkelmodus dezenter) mit mindestens
           <b>3:1</b> Kontrast auf hellem und dunklem Grund und einen Active-Zustand (leicht verkleinert).
           Disabled reduziert auf 50 % Opacity und schaltet den Pointer ab.
         </p>

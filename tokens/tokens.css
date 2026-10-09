@@ -241,7 +241,9 @@
 
   /* ── Focus ring ─────────────────────────────────────────────── */
   --ring-w:     3px;
-  --ring-color: oklch(0.62 0.15 var(--h-cool));  /* mittlerer Ton: ≥ 3:1 auf Weiß und auf Schwarz/Anthrazit */
+  --ring-style: dashed;                          /* gestrichelt: erkennbar auch ohne Farbwahrnehmung, gleich auf allen Flächen */
+  --ring-color: var(--amber-600);                /* Gold/Amber · ≈ #c48400, 3.2:1 auf Weiß (WCAG 1.4.11) */
+  --ring-color-on-dark: var(--amber-700);        /* dezenter für dunklen Grund · ≈ #9b6000, ≥ 3.4:1 auf Schwarz/Anthrazit */
 
   /* ── Touch targets ──────────────────────────────────────────── */
   --touch-sm: 44px;   /* WCAG minimum */
@@ -338,7 +340,8 @@
   --action-bg-2:     var(--base-1000);
   --action-bg-hover: var(--n-700);
   --indicator:       var(--orange-600);   /* ≈ #eb6909 · 3.2:1 auf Weiß */
-  --ring-color:      oklch(0.63 0.18 calc(var(--h-orange) - 15));  /* dunkleres Orange: ≥ 3:1 auf Weiß, Grau und Anthrazit */
+  --ring-color:      var(--gold-600);   /* ≈ #998039 · 3.8:1 auf Weiß, 3.5:1 auf #f4f4f4 */
+  --ring-color-on-dark: var(--gold-700);  /* ≈ #796425 · ≥ 3.06:1 auf Anthrazit #191919, 3.6:1 auf Schwarz */
 }
 
 /* Auf dunklem Grund trägt die Marken-Orange #ff9900 (≈ 8:1 auf Anthrazit) */
@@ -389,6 +392,7 @@
     --surface-0: var(--n-1000);
     --surface-1: var(--n-950);
     --surface-2: var(--n-900);
+    --ring-color: var(--ring-color-on-dark);   /* dezenterer Ring auf dunklem Grund */
   }
 }
 :root[data-theme="dark"] {
@@ -399,6 +403,7 @@
   --surface-0: var(--n-1000);
   --surface-1: var(--n-950);
   --surface-2: var(--n-900);
+  --ring-color: var(--ring-color-on-dark);
 }
 
 /* ────────────────────────────────────────────────────────────────

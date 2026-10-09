@@ -93,7 +93,7 @@
 .dss-link:hover { text-decoration-thickness: 2px; }
 .dss-link:focus-visible, .dss-btn:focus-visible, .dss-tab:focus-visible,
 .dss-select:focus-visible, .dss-chip--link:focus-visible {
-  outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px;
+  outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px;
 }
 
 /* ── Button ─────────────────────────────────────────────────── */
@@ -126,7 +126,7 @@
   border-radius: var(--radius-md); background: var(--dss-surface); overflow: hidden;
   transition: border-color 0.14s, box-shadow 0.14s;
 }
-.dss-input-group:focus-within { border-color: var(--dss-fg); box-shadow: 0 0 0 var(--ring-w) var(--ring-color); }
+.dss-input-group:focus-within { border-color: var(--dss-fg); outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
 .dss-input {
   flex: 1; min-width: 0; appearance: none; border: 0; outline: 0; background: transparent;
   height: var(--fld-h-touch); padding: 0 14px; font-family: var(--font-body); font-size: var(--fs-body); color: var(--dss-fg);
@@ -337,7 +337,7 @@
   display: flex; align-items: center; justify-content: center;
 }
 .dss-m-close:hover { background: var(--dss-line); }
-.dss-m-close:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
+.dss-m-close:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
 .dss-m-body {
   padding: 4px 24px 20px; overflow-y: auto; flex: 1; min-height: 0;
   color: var(--dss-fg-soft); font-size: var(--fs-body); line-height: 1.55;
@@ -395,7 +395,7 @@
 }
 .dss-check-input:checked { background: var(--dss-btn-bg); border-color: var(--dss-btn-bg); }
 .dss-check-input:checked::after { transform: translateY(-1px) rotate(45deg) scale(1); }
-.dss-check-input:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
+.dss-check-input:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
 .dss-check-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .dss-check-label { font-weight: 500; line-height: 1.3; }
 .dss-check-hint { font-size: var(--fs-label); line-height: 1.4; color: var(--dss-mute); }
@@ -561,7 +561,7 @@
   font-family: var(--font-mono); font-weight: 700; transition: background 0.12s, border-color 0.12s;
 }
 button.dss-step-dot { cursor: pointer; }
-button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
+button.dss-step-dot:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
 .dss-step-item.is-done .dss-step-dot { background: var(--ok-fill); border-color: var(--ok-fill); color: white; }
 .dss-step-item.is-current .dss-step-dot {
   border-color: var(--signal-500); background: var(--signal-500); color: var(--base-1000);
@@ -622,7 +622,7 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
 }
 .dss-appnav-group-btn.is-disabled .dss-appnav-chev { display: none; }
 .dss-appnav-link:focus-visible, .dss-appnav-group-btn:focus-visible, .dss-appnav-toggle:focus-visible {
-  outline: var(--ring-w) solid var(--ring-color); outline-offset: -3px;
+  outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: -3px;
 }
 .dss-appnav-chev { transition: transform 0.12s; }
 .dss-appnav-group-btn.is-open .dss-appnav-chev { transform: rotate(180deg); }
@@ -644,7 +644,7 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
 .dss-appnav--dark .dss-appnav-link.is-active, .dss-appnav--dark .dss-appnav-group-btn.is-active { color: white; }
 .dss-appnav--dark .dss-appnav-link.is-disabled, .dss-appnav--dark .dss-appnav-group-btn.is-disabled,
 .dss-appnav--dark .dss-appnav-link.is-disabled:hover, .dss-appnav--dark .dss-appnav-group-btn.is-disabled:hover { color: var(--n-400); background: none; }
-.dss-appnav--dark .dss-appnav-link:focus-visible, .dss-appnav--dark .dss-appnav-group-btn:focus-visible, .dss-appnav--dark .dss-appnav-toggle:focus-visible { outline-color: var(--signal-300); }
+.dss-appnav--dark .dss-appnav-link:focus-visible, .dss-appnav--dark .dss-appnav-group-btn:focus-visible, .dss-appnav--dark .dss-appnav-toggle:focus-visible { outline-color: var(--ring-color-on-dark); }
 .dss-appnav--dark .dss-appnav-panel { background: var(--n-950); border-color: var(--n-800); }
 .dss-appnav--dark .dss-appnav-panel .dss-appnav-link.is-active { background: var(--n-900); }
 
@@ -696,8 +696,8 @@ button.dss-step-dot:focus-visible { outline: var(--ring-w) solid var(--ring-colo
   transform: translateY(-12px); transition: background 0.12s, transform 0.12s;
 }
 .dss-bnav-fab:hover { background: var(--signal-400); transform: translateY(-14px); }
-.dss-bnav-item:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: -3px; }
-.dss-bnav-fab:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
+.dss-bnav-item:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: -3px; }
+.dss-bnav-fab:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .dss-bnav-fab, .dss-bnav-fab:hover { transition: none; } }
 
 /* ── Breadcrumbs ────────────────────────────────────────────── */
@@ -721,7 +721,7 @@ a.dss-crumbs-item:hover { color: var(--dss-fg); }
 }
 a.dss-crumbs-chip:hover { background: var(--dss-line); color: var(--dss-fg); }
 .dss-crumbs-chip.is-current { background: var(--dss-btn-bg); color: var(--dss-btn-fg); font-weight: 600; }
-a.dss-crumbs-item:focus-visible, a.dss-crumbs-chip:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
+a.dss-crumbs-item:focus-visible, a.dss-crumbs-chip:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
 
 /* ── Skeleton ───────────────────────────────────────────────── */
 .dss-skel {
@@ -753,7 +753,7 @@ a.dss-crumbs-item:focus-visible, a.dss-crumbs-chip:focus-visible { outline: var(
 }
 button.dss-match, a.dss-match { cursor: pointer; }
 button.dss-match:hover, a.dss-match:hover { border-color: var(--dss-line-strong); box-shadow: var(--shadow-md); transform: translateY(-1px); }
-button.dss-match:focus-visible, a.dss-match:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
+button.dss-match:focus-visible, a.dss-match:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
 .dss-match--live { border-color: var(--ok-fill); }
 .dss-match--live::before { content: ''; display: block; height: 3px; background: var(--ok-fill); }
 .dss-match-head {
@@ -795,7 +795,7 @@ button.dss-match:focus-visible, a.dss-match:focus-visible { outline: var(--ring-
 }
 button.dss-pc-row { cursor: pointer; }
 button.dss-pc-row:hover { border-color: var(--dss-line-strong); background: var(--dss-hover-bg); }
-button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: 2px; }
+button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
 .dss-pc-who { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .dss-pc-name { font-weight: 600; font-size: var(--fs-body); color: var(--dss-fg); letter-spacing: -0.005em; line-height: 1.2; }
 .dss-pc-meta { font-family: var(--font-mono); font-size: var(--fs-caption); color: var(--dss-mute); letter-spacing: 0.06em; text-transform: uppercase; }
@@ -862,7 +862,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
   100% { box-shadow: 0 0 0 0 oklch(0.65 0.18 150 / 0); }
 }
 .dss-pbp-feed { max-height: 600px; overflow-y: auto; }
-.dss-pbp-feed:focus-visible { outline: var(--ring-w) solid var(--ring-color); outline-offset: -3px; }
+.dss-pbp-feed:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: -3px; }
 .dss-pbp-event {
   display: flex; align-items: center; gap: 14px; padding: 12px 22px; border-bottom: 1px solid var(--dss-line);
   transition: background 0.12s; animation: dss-pbp-in 0.45s ease-out;
@@ -1128,4 +1128,9 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) solid var(--ring-color)
     font-size: var(--fs-caption); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dss-mute);
   }
   .dss-sgrid tr.dss-sg-break td, .dss-sgrid tr.dss-sg-bye td { display: block; }
+}
+
+/* ── Fokus-Ring auf immer dunklen Flächen: dezenter Ton (--ring-color-on-dark), auch im hellen Theme ── */
+.dss-frame--dark :focus-visible, .dss-pbp-frame--dark :focus-visible, .dss-topbar--dark :focus-visible {
+  outline-color: var(--ring-color-on-dark);
 }
