@@ -36,7 +36,7 @@
   </div>
 {:else if example === 'groessen'}
   <div class="row">
-    <Button size="sm">Small · 44 px</Button>
+    <Button size="sm">Small · 36 px</Button>
     <Button size="md">Medium · 44 px</Button>
     <Button size="lg">Large · 56 px</Button>
     <Button touch>Touch · 64 px</Button>

@@ -17,3 +17,16 @@
 .dss-dd-do .dss-dd-badge { color: var(--ok-text); }
 .dss-dd-dont .dss-dd-badge { color: var(--err-text); }
 @media (max-width: 640px) { .dss-dd-cols { grid-template-columns: 1fr; } }
+
+/* Fließtext-Tabellen in MDX (z. B. Größen): Marke und Hell/Dunkel statt Storybook-Zebra */
+.sbdocs table:not(.docblock-argstable) { width: 100%; border-collapse: collapse; background: transparent; color: var(--page-fg); font-family: var(--font-body); }
+.sbdocs table:not(.docblock-argstable) tr,
+.sbdocs table:not(.docblock-argstable) tr:nth-of-type(2n) { background: transparent; border-top: 1px solid var(--page-line); }
+.sbdocs table:not(.docblock-argstable) th,
+.sbdocs table:not(.docblock-argstable) td { background: transparent; border: 0; color: var(--page-fg); padding: 8px 12px; text-align: left; }
+.sbdocs table:not(.docblock-argstable) th { color: var(--page-mute); }
+
+/* Schmale Viewports: Controls-Tabelle scrollt in sich, nicht die Seite */
+@media (max-width: 640px) {
+  .sbdocs .docblock-argstable.docblock-argstable { display: block; overflow-x: auto; max-width: 100%; }
+}
