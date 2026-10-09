@@ -105,5 +105,5 @@
   .cap { margin-bottom: 8px; }
   .matrix { display: flex; flex-direction: column; gap: 16px; }
   .surface { background: var(--page-bg); border: 1px solid var(--page-line); border-radius: var(--radius-lg); padding: 22px 24px; overflow-x: auto; }
-  .states { display: grid; grid-template-columns: 90px repeat(3, minmax(230px, 1fr)); gap: 14px 24px; align-items: center; }
+  .states { display: grid; grid-template-columns: 90px repeat(3, minmax(0, 1fr)); gap: 14px 24px; align-items: center; }
 </style>

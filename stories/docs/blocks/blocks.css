@@ -76,3 +76,11 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .sbdocs p a.sbdocs-a { color: var(--cool-300); }
 }
+
+/* Storybooks Schalter „Show code“/„Copy code“ in den Canvas-Aktionen: Standardgrau hat im Dunkelmodus nur 3.55:1 */
+:root[data-theme="dark"] .sbdocs-preview button[aria-controls^="react-aria"],
+:root[data-theme="dark"] .sbdocs-preview-actions button { color: var(--page-mute); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .sbdocs-preview button[aria-controls^="react-aria"],
+  :root:not([data-theme="light"]) .sbdocs-preview-actions button { color: var(--page-mute); }
+}
