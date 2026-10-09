@@ -1,0 +1,173 @@
+import { Meta, Canvas, Controls, Story } from '@storybook/addon-docs/blocks';
+import * as NavigationStories from './Navigation.stories';
+import { DosDonts } from './docs/blocks/DosDonts';
+import { FrameworkCode } from './docs/blocks/FrameworkCode';
+import { DocTable } from './docs/blocks/DocTable';
+import './docs/blocks/blocks.css';
+import {
+  topBarVanilla, topBarSvelte, topBarReact,
+  bottomNavVanilla, bottomNavSvelte, bottomNavReact,
+  breadcrumbsVanilla, breadcrumbsSvelte, breadcrumbsReact,
+  stepperVanilla, stepperSvelte, stepperReact,
+} from './Navigation.code';
+
+<Meta of={NavigationStories} />
+
+# Navigation
+
+**App-Shell-Navigation:** alle Navigationskomponenten außer Tabs. Die Top-Bar trägt Marke und Live-Kontext, die [AppNav](?path=/docs/components-appnav--docs) und die [Tabs](?path=/docs/components-tabs--docs) strukturieren die App, die Bottom-Nav dient dem Handy, Breadcrumbs und Stepper orientieren in Hierarchie und Ablauf.
+
+- **TopBar:** dunkle App-Top-Bar (56 px) mit drei Kontexten: Default, Live (mit Spielstand und Uhr) und Admin.
+- **BottomNav:** mobile Navigation für Schiri-App und Coach-App, 4 bis 5 Einträge, optional mit FAB für die zentrale Aktion.
+- **Breadcrumbs:** drei Varianten, Plain (Seitenkopf), Tagged (mit Kontext-Labels) und Chip (mobilfreundlich).
+- **Stepper:** Setup-Abläufe in drei Layouts, Horizontal, Compact (Sticky-Header) und Vertikal (Sidebar-Wizard).
+
+## Top-Bar: drei Anatomien für drei Kontexte
+
+Die Top-Bar bleibt strukturell gleich: Marke links, Abstandshalter, Aktionen rechts. Der Kontext-Inhalt schaltet die Persönlichkeit: **Live** bringt einen roten Puls-Indikator mit Spielstand und Uhr, **Admin** trägt den Kontext des Vereinsregisters, **Default** bleibt ruhig. Die Leiste ist immer dunkel (Hintergrund `--base-1000`), auch im hellen Theme.
+
+<Canvas of={NavigationStories.TopBarKontexte} />
+
+Eigene Inhalte kommen über drei Plätze: `leading` (nach der Marke), `center` (ersetzt den Kontext) und `actions` (vor dem Nutzer). Mit `contained` bleibt der Inhalt auf `--dss-shell-max` (64 rem) begrenzt, der Hintergrund läuft voll breit. Die Marke ist reiner Text und kein Link, der Nutzer ist eine Anzeige und keine Schaltfläche; bedienbar sind nur die Elemente, die du einsetzt.
+
+<Canvas of={NavigationStories.TopBarEigene} />
+
+## Bottom-Nav: Schiri-App, Coach-App, Zuschauer-Modus
+
+Für Handy-Oberflächen in der Halle: Bottom-Nav mit 4 oder 5 Einträgen, alternativ mit zentralem **FAB** für die Hauptaktion (z. B. „Punkt buchen“). Badges weisen auf neue Ereignisse hin. Die Leiste ist 64 px hoch; der Abstand zur Unterkante moderner Handys (Safe-Area) ist nicht eingebaut, den ergänzt die App. Der aktuelle Eintrag trägt `aria-current="page"`, oben einen Balken in `--signal-500` und die volle Textfarbe. Der FAB ändert die Auswahl nicht, er löst nur eine Aktion aus; sein Label ist Pflicht (zugänglicher Name), wird aber nicht angezeigt.
+
+<Canvas of={NavigationStories.BottomNavBeispiele} />
+
+## Breadcrumbs: wo bin ich, wo komme ich her
+
+Drei Ausführungen: **Plain** für den Seitenkopf, **Tagged** mit Kontext-Labels (Org, Liga, Team) für Admin-Oberflächen und **Chip** als Pill-Stil für das Handy. Das letzte Element ist die aktuelle Seite: kein Link, `aria-current="page"`. Einträge ohne `href` sind reiner Text (Zwischenschritt ohne eigene Seite). Die Pfadleiste bricht um, wenn sie nicht in die Zeile passt.
+
+<Canvas of={NavigationStories.BreadcrumbsArten} />
+
+## Stepper: Setup-Abläufe, Spiel-Vorbereitung, Onboarding
+
+Drei Darstellungen, dieselbe Datenstruktur (`done`, `current`, `pending`): **Horizontal** für Wizard-Köpfe (braucht bei vier Schritten etwa 480 px Breite, in schmaleren Bereichen sind Compact oder Vertikal die Wahl), **Compact** als 4 px hoher Fortschrittsbalken mit „Schritt / Gesamt“ für Sticky-Header, **Vertikal** für Sidebar-Wizards mit Beschreibung je Schritt. Der Zustand steht zusätzlich als unsichtbarer Text im Label („erledigt“, „aktuell“, „ausstehend“), der aktuelle Schritt trägt `aria-current="step"`.
+
+<Canvas of={NavigationStories.StepperLayouts} />
+
+Mit `onstep` (React: `onStep`) werden erledigte und der aktuelle Schritt zu Schaltflächen, mit denen man zurückspringen kann. Ausstehende Schritte bleiben reine Anzeige. Ohne `onstep` ist der ganze Stepper eine Anzeige.
+
+<Canvas of={NavigationStories.StepperKlickbar} />
+
+## Tabs
+
+Tabs als vierte Familie der Navigation haben eine eigene Seite: [Tabs](?path=/docs/components-tabs--docs).
+
+## Zustände: Hover, Fokus, Aktuell
+
+Die bedienbaren Teile der Navigation: Einträge der Bottom-Nav, der FAB, Links der Breadcrumbs, die Punkte des Steppers (nur mit `onstep`) und Aktionen, die du in die Top-Bar setzt. Alle haben einen gestrichelten Gold/Amber-Fokus-Ring (3 px). Die Bottom-Nav zeichnet ihn innen (Abstand −3 px, damit der Rand der Leiste ihn nicht abschneidet), die anderen mit 2 px Abstand; im Dunkelmodus ist er dezenter, in der dunklen Top-Bar immer. Gesperrte Zustände gibt es in dieser Familie nicht: Ein Stepper-Schritt, der noch aussteht, ist keine gesperrte Schaltfläche, sondern gar keine. Einen eigenen Stil für die gehaltene Maustaste (Gedrückt) hat keines der Teile, die Spalte zeigt Hover.
+
+<Canvas of={NavigationStories.Zustaende} />
+
+Die Matrix ist fest gesetzt. Jede andere Story lässt sich über die Werkzeugleiste **Zustand** auf Hover, Fokus oder Aktiv schalten. Marke und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Verwendung: Import und Props
+
+Jede Komponente hat einen Path-Export (Svelte) und kommt aus dem React-Paket. Die Code-Beispiele folgen dem Umschalter „Fassung“ in der Werkzeugleiste. In Vanilla gibt es kein Skript: Zustandswechsel (Auswahl, Schritt) musst du dort selbst setzen.
+
+Die Steuerelemente gehören zur Demo und wechseln nur, welche Komponenten gezeigt werden. Die Props jeder Komponente stehen in den Tabellen unter den Code-Beispielen.
+
+<Controls of={NavigationStories.AlleZusammen} />
+
+### TopBar
+
+<FrameworkCode label="TopBar" vanilla={topBarVanilla} svelte={topBarSvelte} react={topBarReact} />
+
+<DocTable
+  label="Props der TopBar"
+  head={['Prop', 'Typ', 'Beschreibung']}
+  rows={[
+    ['brand, mark', 'string', <>Markenname (Standard „DSS“) und Kurzzeichen im Amber-Quadrat (Standard „D“, dekorativ).</>],
+    ['context', "'default' | 'live' | 'admin'", <>Live zeigt Puls, <code>matchLabel</code>, <code>score</code> und <code>clock</code>; Admin zeigt nur <code>matchLabel</code>; Default nichts.</>],
+    ['matchLabel, score, clock', 'string', 'Texte des Kontexts (Spielbezeichnung, Spielstand, Uhr).'],
+    ['user, userInitials', 'string', 'Nutzer rechts; ohne user entfällt er. Die Initialen stehen in einem runden Avatar.'],
+    ['leading, center, actions', 'Snippet / ReactNode', <>Eigene Inhalte (Svelte: Snippets, React: Props). <code>center</code> ersetzt den Kontext.</>],
+    ['contained', 'boolean', <>Begrenzt den Inhalt auf <code>--dss-shell-max</code>, der Hintergrund bleibt voll breit.</>],
+    ['as', "'header' | 'div'", 'Nur React: macht die Leiste zur banner-Landmark (Standard div).'],
+  ]}
+/>
+
+### BottomNav
+
+<FrameworkCode label="BottomNav" vanilla={bottomNavVanilla} svelte={bottomNavSvelte} react={bottomNavReact} />
+
+<DocTable
+  label="Props der BottomNav"
+  head={['Prop', 'Typ', 'Beschreibung']}
+  rows={[
+    ['items', 'BottomNavItem[]', <><code>{'{ id, label, icon?, badge?, fab?, href? }'}</code>. Mit <code>href</code> wird der Eintrag ein Link statt einer Schaltfläche. Das Label ist Pflicht, auch für den FAB.</>],
+    ['value', 'string', <>Gewählter Eintrag. Svelte: <code>bind:value</code>; React: <code>value</code> oder <code>defaultValue</code> mit <code>onValueChange</code>. Ohne Angabe ist der erste Eintrag, der kein FAB ist, gewählt.</>],
+    ['onchange', '(id) => void', 'Svelte: wird bei jeder Auswahl aufgerufen (React: onValueChange).'],
+    ['onaction', '(id) => void', 'Der FAB löst nur diese Aktion aus und ändert die Auswahl nicht (React: onAction).'],
+    ['ariaLabel', 'string', 'Name der Navigation (Standard „Hauptnavigation“).'],
+  ]}
+/>
+
+### Breadcrumbs
+
+<FrameworkCode label="Breadcrumbs" vanilla={breadcrumbsVanilla} svelte={breadcrumbsSvelte} react={breadcrumbsReact} />
+
+<DocTable
+  label="Props der Breadcrumbs"
+  head={['Prop', 'Typ', 'Beschreibung']}
+  rows={[
+    ['items', 'BreadcrumbItem[]', <><code>{'{ label, href?, tag? }'}</code>. Das letzte Element ist die aktuelle Seite, ohne Link; Einträge ohne <code>href</code> sind reiner Text.</>],
+    ['variant', "'plain' | 'tagged' | 'chip'", <>Standard <code>plain</code>. <code>tag</code> ist nur bei <code>tagged</code> sichtbar.</>],
+    ['ariaLabel', 'string', 'Name der Navigation (Standard „Breadcrumb“).'],
+  ]}
+/>
+
+### Stepper
+
+<FrameworkCode label="Stepper" vanilla={stepperVanilla} svelte={stepperSvelte} react={stepperReact} />
+
+<DocTable
+  label="Props des Steppers"
+  head={['Prop', 'Typ', 'Beschreibung']}
+  rows={[
+    ['steps', 'StepItem[]', <><code>{'{ id, label, description?, state }'}</code> mit <code>state</code> <code>done</code>, <code>current</code> oder <code>pending</code>. <code>description</code> zeigt nur das vertikale Layout.</>],
+    ['variant', "'horizontal' | 'compact' | 'vertical'", <>Standard <code>horizontal</code>.</>],
+    ['onstep', '(id) => void', 'Macht erledigte und aktuelle Schritte zu Schaltflächen (React: onStep). Ohne Angabe ist der Stepper eine Anzeige.'],
+    ['ariaLabel', 'string', 'Name des Steppers (Standard „Fortschritt“).'],
+  ]}
+/>
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Höchstens fünf Ziele in der Bottom-Nav',
+      doText: 'Vier Einträge und ein FAB passen mit Symbol und Label in 380 px.',
+      dontText: 'Jeder Eintrag teilt sich die Breite (mindestens 44 px): Bei sieben Einträgen wird es eng und lange Labels werden abgeschnitten.',
+      good: <Story of={NavigationStories.DoBottomNav} inline />,
+      bad: <Story of={NavigationStories.DontBottomNav} inline />,
+    },
+    {
+      title: 'Breadcrumbs zeigen den Pfad, nicht den Verlauf',
+      doText: 'Von oben nach unten durch die Hierarchie, am Ende die aktuelle Seite ohne Link.',
+      dontText: 'Eine Liste der zuletzt besuchten Seiten ist kein Pfad: Einträge wiederholen sich und der letzte Eintrag ist nicht „hier“.',
+      good: <Story of={NavigationStories.DoPfad} inline />,
+      bad: <Story of={NavigationStories.DontPfad} inline />,
+    },
+    {
+      title: 'Stepper nur für lineare Abläufe',
+      doText: 'Spiel-Daten, Aufstellungen, Kampfgericht, Freigabe: eine feste Reihenfolge, Schritte erledigt, aktuell, ausstehend.',
+      dontText: 'Gleichrangige Bereiche wie Profil, Benachrichtigungen und Lizenz bekommen mit Nummern und „ausstehend“ eine Reihenfolge, die es nicht gibt. Dafür sind vertikale Tabs da.',
+      good: <Story of={NavigationStories.DoStepper} inline />,
+      bad: <Story of={NavigationStories.DontStepper} inline />,
+    },
+    {
+      title: 'Live nur mit Spielstand und Uhr',
+      doText: 'Der Live-Kontext zeigt neben dem Puls das Spiel, den Stand und die Uhr.',
+      dontText: 'Ein roter, pulsierender „Live“-Marker ohne Angaben meldet etwas, was niemand einordnen kann.',
+      good: <Story of={NavigationStories.DoLive} inline />,
+      bad: <Story of={NavigationStories.DontLive} inline />,
+    },
+  ]}
+/>

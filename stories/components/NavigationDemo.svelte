@@ -17,7 +17,7 @@
   ];
   const coachNav = [
     { id: 'team',    label: 'Team',     icon: 'i-roster' },
-    { id: 'play',    label: 'Spielzug', icon: 'i-board' },
+    { id: 'play',    label: 'Spielzug', icon: 'i-edit' },
     { id: 'stats',   label: 'Stats',    icon: 'i-stats' },
     { id: 'subs',    label: 'Wechsel',  icon: 'i-sub' },
   ];
