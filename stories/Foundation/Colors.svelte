@@ -6,6 +6,13 @@
     { name: 'Neutral', cssVar: '--n-',     steps: [0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950, 1000] },
   ];
 
+  // Rollen-Tokens: folgen data-brand (BBV: Ink, Amber, Sky; DBB: Grau, Gold, Grau)
+  const roles = [
+    { name: 'Base (Text, Flächen)',    cssVar: '--base-',   steps: [0, 50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000] },
+    { name: 'Signal (CTA, Highlight)', cssVar: '--signal-', steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+    { name: 'Cool (Links, Heim, Info)', cssVar: '--cool-',  steps: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] },
+  ];
+
   const semantic = [
     { name: 'Success', tokens: [{ label: 'fill', v: '--ok-fill' }, { label: 'text', v: '--ok-text' }, { label: 'soft', v: '--ok-soft' }] },
     { name: 'Warning', tokens: [{ label: 'fill', v: '--warn-fill' }, { label: 'text', v: '--warn-text' }, { label: 'soft', v: '--warn-soft' }] },
@@ -18,8 +25,6 @@
 
 <div class="wrap">
   {#if mode === 'hues'}
-    <h2>Hue Ramps · Ink · Amber · Sky · Neutral</h2>
-    <p class="muted">Drei-Achsen-Identität. Rollen-Tokens (base, signal, cool) schalten per data-brand="dbb" auf die DBB-Marke.</p>
     {#each ramps as ramp}
       <div class="ramp">
         <div class="ramp-h">{ramp.name}</div>
@@ -33,8 +38,21 @@
         </div>
       </div>
     {/each}
+  {:else if mode === 'roles'}
+    {#each roles as ramp}
+      <div class="ramp">
+        <div class="ramp-h">{ramp.name}</div>
+        <div class="ramp-row">
+          {#each ramp.steps as s}
+            <div class="swatch">
+              <div class="chip" style={`background: var(${ramp.cssVar}${s});`}></div>
+              <div class="step">{s}</div>
+            </div>
+          {/each}
+        </div>
+      </div>
+    {/each}
   {:else}
-    <h2>Semantic · success / warning / error / info</h2>
     {#each semantic as group}
       <div class="ramp">
         <div class="ramp-h">{group.name}</div>
@@ -52,9 +70,7 @@
 </div>
 
 <style>
-  .wrap { padding: 32px 40px; font-family: var(--font-body); color: var(--page-fg); background: var(--page-bg); min-height: 100vh; }
-  h2 { font-family: var(--font-display); font-size: 24px; margin: 0 0 4px; letter-spacing: -0.015em; }
-  .muted { color: var(--page-mute); margin: 0 0 28px; }
+  .wrap { font-family: var(--font-body); color: var(--page-fg); }
   .ramp { margin-bottom: 22px; }
   .ramp-h {
     font-family: var(--font-mono); font-size: 11px; font-weight: 600;
@@ -62,7 +78,7 @@
     color: var(--page-mute); margin-bottom: 8px;
   }
   .ramp-row { display: flex; flex-wrap: wrap; gap: 8px; }
-  .swatch { width: 76px; display: flex; flex-direction: column; align-items: stretch; }
+  .swatch { width: 68px; display: flex; flex-direction: column; align-items: stretch; }
   .chip {
     height: 56px;
     border-radius: var(--radius-md);

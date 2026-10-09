@@ -5,13 +5,6 @@
 </script>
 
 <div class="wrap">
-  <h2>Fokus und Hover</h2>
-  <p class="muted">
-    Der Fokus-Ring (<code>--ring-color</code>, <code>--ring-w</code>, <code>--ring-style</code>) ist Gold/Amber und gestrichelt, im Dunkelmodus dezenter
-    (<code>--ring-color-on-dark</code>); mindestens 3:1 Kontrast auf Weiß, Grau und Anthrazit.
-    Links: Ruhe · Hover · Fokus. Marke (BBV/DBB) und Light/Dark in der Toolbar umschalten.
-  </p>
-
   <div class="grid">
     <div class="cell">
       <div class="cap">Button · primary</div>
@@ -101,11 +94,8 @@
 </div>
 
 <style>
-  .wrap { padding: 32px 40px; font-family: var(--font-body); color: var(--page-fg); background: var(--page-bg); min-height: 100vh; }
-  h2 { font-family: var(--font-display); font-size: var(--fs-h2); margin: 0 0 4px; letter-spacing: -0.015em; }
-  .muted { color: var(--page-mute); margin: 0 0 28px; max-width: 72ch; }
-  code { font-family: var(--font-mono); font-size: 0.9em; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; }
+  .wrap { font-family: var(--font-body); color: var(--page-fg); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr)); gap: 16px; }
   .cell { padding: 20px 22px 26px; border: 1px solid var(--page-line); border-radius: var(--radius-lg); background: var(--surface-0); }
   .cell.dark { background: var(--base-1000); color: var(--n-100); }
   .cap { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); margin-bottom: 16px; }

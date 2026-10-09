@@ -66,11 +66,6 @@
 
 <div class="wrap">
   {#if mode === 'scale'}
-    <h2>Type scale</h2>
-    <p class="muted">
-      13 Stufen als CSS-Variablen (<code>--fs-*</code>, <code>--lh-*</code>, <code>--ls-*</code>, <code>--fw-*</code>) und Klassen
-      (<code>.dss-t-*</code>). Werte unten sind live; Marke und Schrift ändern sie. Für die großen Stufen gibt es Handy-Größen (≤ 640 px, <code>--fs-*-sm</code>), die die Klassen <code>.dss-t-*</code> dort verwenden.
-    </p>
     {#each steps as s}
       <div class="row">
         <div class="meta">
@@ -83,8 +78,6 @@
     {/each}
 
   {:else if mode === 'families'}
-    <h2>Familien und Gewichte</h2>
-    <p class="muted">Die Familien folgen <code>data-type</code> auf &lt;html&gt;. Gewichte, die eine Schrift nicht lädt, werden vom Browser auf das nächste verfügbare gesetzt.</p>
     {#each [['Display', 'display', 'Scoreboard, Headlines, Trikotnummern'], ['Heading', 'heading', 'Überschriften'], ['Body', 'body', 'UI, Fließtext, Formulare'], ['Mono', 'mono', 'Spielzeit, Tabellen, Beschriftungen']] as [label, key, use]}
       <div class="fam">
         <div class="fam-h"><span class="name">{label}</span><span class="spec">{first(fonts[key])}</span><span class="use">{use}</span></div>
@@ -98,11 +91,6 @@
     {/each}
 
   {:else if mode === 'numbers'}
-    <h2>Zahlen und Mono</h2>
-    <p class="muted">
-      Spielstände, Uhren und Statistik stehen in Spalten. Dafür gilt <code>font-variant-numeric: tabular-nums</code>
-      (<code>.dss-tnum</code>); <code>.dss-t-display</code> und <code>.dss-t-clock</code> setzen es bereits.
-    </p>
     <div class="pair">
       <div>
         <div class="cap">proportional (Standard)</div>
@@ -125,8 +113,6 @@
     </div>
 
   {:else if mode === 'context'}
-    <h2>Im Einsatz</h2>
-    <p class="muted">Die Stufen zusammen, wie sie in einer Seite stehen. Fließtext ist auf <code>--measure</code> ({fonts.measure}) begrenzt.</p>
     <article class="ctx">
       <div class="dss-t-caption">BBL · 17. Spieltag</div>
       <h1 class="dss-t-h1">TSV Tröster gegen USC Heidelberg</h1>
@@ -151,10 +137,9 @@
     </article>
 
   {:else}
-    <h2>Audit · Schriftgrößen im Code</h2>
     <p class="muted">
       Gezählt aus <code>css/*.css</code> und <code>svelte/*.svelte</code>: <strong>{tokenTotal}</strong> Angaben über <code>--fs-*</code>,
-      <strong>{literalTotal}</strong> mit festem px-Wert. Neue Komponenten setzen <code>font-size</code> nur über die Tokens.
+      <strong>{literalTotal}</strong> mit festem px-Wert.
     </p>
     {#if literalRows.length}
       <div class="cap">Feste px-Werte (auf Tokens umstellen)</div>
@@ -178,9 +163,8 @@
 </div>
 
 <style>
-  .wrap { padding: 32px 40px; font-family: var(--font-body); color: var(--page-fg); background: var(--page-bg); min-height: 100vh; }
-  h2 { font-family: var(--font-display); font-size: 24px; margin: 0 0 4px; letter-spacing: -0.015em; }
-  .muted { color: var(--page-mute); margin: 0 0 28px; max-width: 72ch; }
+  .wrap { font-family: var(--font-body); color: var(--page-fg); }
+  .muted { color: var(--page-mute); margin: 0 0 20px; max-width: 72ch; }
   code { font-family: var(--font-mono); font-size: 0.9em; }
   .row { display: grid; grid-template-columns: 260px 1fr; gap: 24px; padding: 18px 0; border-top: 1px solid var(--page-line); align-items: baseline; }
   .meta .name { font-family: var(--font-mono); font-size: 12px; font-weight: 700; }
@@ -195,7 +179,7 @@
   .weights { display: flex; flex-wrap: wrap; gap: 8px 28px; }
   .w { display: flex; flex-direction: column; gap: 2px; }
   .wl { font-family: var(--font-mono); font-size: 10.5px; color: var(--page-mute); }
-  .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 640px; }
+  .pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); gap: 32px; max-width: 640px; }
   .cap { font-family: var(--font-mono); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); margin-bottom: 8px; }
   .num { font-family: var(--font-mono); font-size: 28px; font-weight: 700; line-height: 1.3; }
   .ctx { max-width: 720px; display: flex; flex-direction: column; gap: 14px; }
@@ -210,4 +194,10 @@
   .audit th { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); }
   .audit tr.off td { font-weight: 700; }
   .ok { font-family: var(--font-mono); font-size: 13px; color: var(--ok-text); }
+  @media (max-width: 640px) {
+    .row { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+    .scoreline { flex-wrap: wrap; gap: 16px 32px; }
+    .audit { font-size: 12px; }
+    .audit th, .audit td { padding-right: 16px; }
+  }
 </style>
