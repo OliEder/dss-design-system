@@ -158,3 +158,111 @@ describe('Spielabschnitte: Paket, Quelltext, Demo-Daten', () => {
     expect(read('stories/CardLibrary.stories.ts')).toMatch(/Veraltet, nur bei `live`/);
   });
 });
+
+describe('TeamCard: CSS', () => {
+  it('Karte ist positioniert; klickbar: Hover wie die Spielkarte (Rand, Schatten, 1 px hoch)', () => {
+    expect(rule('.dss-team')).toMatch(/position:\s*relative/);
+    expect(rule('.dss-team--link:hover')).toMatch(/border-color:\s*var\(--dss-line-strong\)/);
+    expect(rule('.dss-team--link:hover')).toMatch(/box-shadow:\s*var\(--shadow-md\)/);
+    expect(rule('.dss-team--link:hover')).toMatch(/translateY\(-1px\)/);
+  });
+
+  it('der Link deckt die ganze Karte ab (::after) und trägt den gestrichelten Ring um die Karte', () => {
+    expect(rule('.dss-team-link::after')).toMatch(/position:\s*absolute;\s*inset:\s*0/);
+    const ring = rule('.dss-team-link:focus-visible::after');
+    expect(ring).toMatch(/outline:\s*var\(--ring-w\) var\(--ring-style\) var\(--ring-color\)/);
+    expect(ring).toMatch(/outline-offset:\s*2px/);
+    expect(rule('.dss-team-link:focus-visible')).toMatch(/outline:\s*none/);
+  });
+
+  it('Bewegung: Übergang aus bei prefers-reduced-motion', () => {
+    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\) \{ \.dss-team \{ transition: none; \} \}/);
+  });
+
+  it('Logo 48 px im Kopf, 32 px in compact, 20 px beim Gegner; Initialen als Kreis (Baustein aus Paket 3)', () => {
+    expect(px(rule('.dss-team-logo--lg'), 'width')).toBe(48);
+    expect(px(rule('.dss-team-logo--sm'), 'width')).toBe(20);
+    expect(px(rule('.dss-team--compact .dss-team-logo'), 'width')).toBe(32);
+    expect(px(rule('.dss-team-head'), 'gap')).toBe(14);
+    expect(rule('.dss-team-head')).toMatch(/grid-template-columns:\s*48px/);
+    expect(rule('.dss-team-logo--initials')).toMatch(/border-radius:\s*50%/);
+  });
+
+  it('compact: Listenzeile mit Logo 32, Name, Bilanz, Platz', () => {
+    expect(rule('.dss-team--compact')).toMatch(/grid-template-columns:\s*32px minmax\(0, 1fr\) auto auto/);
+  });
+
+  it('Kennzahlen und Werte mit tabular-nums', () => {
+    expect(rule('.dss-pc-v')).toMatch(/font-variant-numeric:\s*tabular-nums/);
+    expect(rule('.dss-team-rec')).toMatch(/font-variant-numeric:\s*tabular-nums/);
+    expect(rule('.dss-team-game-end')).toMatch(/font-variant-numeric:\s*tabular-nums/);
+  });
+
+  it('Spielzeilen brechen um statt die Seite zu verbreitern', () => {
+    expect(rule('.dss-team-game-row')).toMatch(/flex-wrap:\s*wrap/);
+    expect(rule('.dss-team-game-opp')).toMatch(/min-width:\s*0/);
+    expect(rule('.dss-team-who')).toMatch(/min-width:\s*0/);
+  });
+
+  it('keine nackten --*-text/--*-soft-Farben und keine festen Farbwerte im TeamCard-Block', () => {
+    const start = css.indexOf('/* ── TeamCard');
+    const block = css.slice(start, css.indexOf('/* ── Fokus-Ring auf immer dunklen Flächen'));
+    expect(block).not.toMatch(/var\(--(ok|err|warn|info)-(text|soft)\)/);
+    expect(block).not.toMatch(/#[0-9a-fA-F]{3,6}\b|rgba?\(|oklch\(/);
+  });
+
+  it('Texte der Karte (fg, fg-soft, mute) haben ≥ 7:1 auf der Kartenfläche, hell und dunkel, beide Marken', () => {
+    const lightBlock = blockOf(css, ':root {');
+    const darkBlock = blockOf(css, ':root[data-theme="dark"] {\n');
+    const dbb = blockOf(tokens, ':root[data-brand="dbb"] {');
+    for (const brand of ['', dbb]) {
+      for (const dark of [false, true]) {
+        const defs = dark ? darkBlock : lightBlock;
+        const scope = `${dark ? darkBlock : ''}\n${lightBlock}\n${brand}\n${tokens}`;
+        const pick = (name: string) => defs.match(new RegExp(`${name}:\\s*([^;]+);`))?.[1] ?? lightBlock.match(new RegExp(`${name}:\\s*([^;]+);`))![1];
+        const surface = color(pick('--dss-surface'), scope);
+        for (const token of ['--dss-fg', '--dss-fg-soft', '--dss-mute']) {
+          expect(ratio(color(pick(token), scope), surface), `${token} ${dark ? 'dunkel' : 'hell'}`).toBeGreaterThanOrEqual(7);
+        }
+      }
+    }
+  });
+});
+
+describe('TeamCard: Quelltext', () => {
+  const sources = ['svelte/TeamCard.svelte', 'react/TeamCard.tsx'];
+
+  it.each(sources)('%s: Standardwerte (size standard, names full, logos aus, titleAs h3)', (path) => {
+    const source = read(path);
+    expect(source).toMatch(/size = 'standard'/);
+    expect(source).toMatch(/names = 'full'/);
+    expect(source).toMatch(/logos = false/);
+    expect(source).toMatch(/titleAs(: Heading)? = 'h3'/);
+  });
+
+  it.each(sources)('%s: der Statistik-Block erscheint nur mit Daten (kein leerer Rahmen)', (path) => {
+    const source = read(path);
+    expect(source).toMatch(/statList\.length(\s*>\s*0)?/);
+    expect(source).not.toContain("'–'");
+    expect(source).not.toContain('"–"');
+  });
+
+  it.each(sources)('%s: nutzt ScheduleTeam-Felder über js/team (kein zweites Datenmodell) und outcome/ariaForResult aus js/schedule.js', (path) => {
+    expect(read(path)).toContain("from '../js/team.js'");
+    expect(read('js/team.js')).toContain("import { ariaForResult, outcome } from './schedule.js'");
+    expect(read('js/team.d.ts')).toMatch(/Pick<ScheduleTeam, 'name' \| 'short' \| 'logo'>/);
+  });
+
+  it('Svelte-Datei hat kein <style>; Export in package.json und react/index.ts', () => {
+    expect(read('svelte/TeamCard.svelte')).not.toContain('<style');
+    const pkg = JSON.parse(read('package.json')) as { exports: Record<string, unknown> };
+    expect(pkg.exports['./svelte/TeamCard']).toBe('./svelte/TeamCard.svelte');
+    expect(pkg.exports['./team.js']).toEqual({ types: './js/team.d.ts', import: './js/team.js' });
+    expect(read('react/index.ts')).toMatch(/TeamCard[^;]*from '\.\/TeamCard'/);
+  });
+
+  it.each(sources)('%s: Logo dekorativ (leeres alt, aria-hidden, lazy)', (path) => {
+    expect(read(path)).toMatch(/alt=(""|\{""\})\s+loading="lazy"/);
+    expect(read(path)).toContain('aria-hidden="true"');
+  });
+});

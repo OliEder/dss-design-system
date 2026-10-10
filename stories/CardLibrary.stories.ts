@@ -78,6 +78,40 @@ export const SpielerkarteSpielwiese = {
   },
 };
 
+export const TeamkarteSpielwiese = {
+  render,
+  args: {
+    kind: 'team', interactive: 'none', size: 'standard', name: 'TSV Nordhain 1920', short: 'Nordhain', league: 'Bayernliga Süd', leagueHref: '', season: '2026/27',
+    record: { w: 12, l: 3 }, rank: 3, rankOf: 12, points: 24,
+    next: { date: 'Sa, 25.05.', time: '19:30', opponent: { name: 'Lindenberg Hawks', short: 'Hawks' }, at: 'heim', venue: 'Nordhain-Halle' },
+    last: { date: 'Sa, 18.05.', opponent: { name: 'BG Seeberg', short: 'Seeberg' }, ownScore: 92, opponentScore: 79, at: 'gast' },
+    squad: { players: 14, staff: 3 }, stats: { twoPtPct: 48.2, threePtPct: 36.5, trb: 41.3, to: 12.1 },
+    names: 'full', logos: false, titleAs: 'h3',
+  },
+  argTypes: {
+    ...hidden,
+    kind: { table: { disable: true } },
+    interactive,
+    size: { control: 'inline-radio', options: ['standard', 'compact'], description: 'Karte mit allen Blöcken oder Listenzeile (Logo, Name, Liga, Bilanz kurz, Platz)', table: t("'standard' | 'compact'", "'standard'") },
+    name: { control: 'text', description: 'Name der Mannschaft (als einziges Feld Pflicht); die Spielwiese ergänzt das Logo für TSV Nordhain 1920', table: t('string') },
+    short: { control: 'text', description: 'Kurzname: Anzeige bei `names="short"` und automatisch bis 640 px Fensterbreite', table: t('string') },
+    names: { control: 'inline-radio', options: ['full', 'short'], description: 'Voller Name oder Kurzname (`short`, falls vorhanden), auch bei den Gegnern', table: t("'full' | 'short'", "'full'") },
+    logos: { control: 'boolean', description: 'Logo bzw. Initialen vor dem Gegner in den Spielzeilen (das Logo im Kopf steht immer)', table: t('boolean', 'false') },
+    league: { control: 'text', description: 'Liga, unter dem Namen', table: t('string', "''") },
+    leagueHref: { control: 'text', description: 'Link der Liga; nur ohne `href`/`onclick` (eine Aktion je Karte). Leer: reiner Text', table: t('string') },
+    season: { control: 'text', description: 'Saison, z. B. „2026/27“, neben der Liga', table: t('string', "''") },
+    record: { control: 'object', description: 'Bilanz `{ w, l, d? }`: Siege, Niederlagen, optional Unentschieden („12–3“ bzw. „5–1–2“)', table: t('{ w: number; l: number; d?: number }') },
+    rank: { control: 'number', description: 'Tabellenplatz (ganze Zahl ab 1)', table: t('number') },
+    rankOf: { control: 'number', description: 'Teams in der Tabelle: „Platz von 12“', table: t('number') },
+    points: { control: 'number', description: 'Tabellenpunkte', table: t('number') },
+    next: { control: 'object', description: 'Nächstes Spiel `{ date?, time?, opponent: { name, short?, logo? }, at?, venue? }`; `at` `heim` zeigt „vs.“, `gast` „@“', table: t("{ date?: string; time?: string; opponent: TeamRef; at?: 'heim' | 'gast'; venue?: string }") },
+    last: { control: 'object', description: 'Letztes Spiel `{ date?, opponent, ownScore, opponentScore, at? }` mit S/N/U-Chip aus dem Ergebnis', table: t("{ date?: string; opponent: TeamRef; ownScore: number; opponentScore: number; at?: 'heim' | 'gast' }") },
+    squad: { control: 'object', description: 'Kader-Kurzliste `{ players, staff? }`: „14 Spieler · 3 Trainer“', table: t('{ players: number; staff?: number }') },
+    stats: { control: 'object', description: 'Saison-Statistik `{ twoPtPct?, threePtPct?, trb?, to? }`; nur übergebene Felder erscheinen, ohne Feld entfällt der Block (kein Strich als Platzhalter)', table: t('{ twoPtPct?: number; threePtPct?: number; trb?: number; to?: number }') },
+    titleAs: { control: 'inline-radio', options: ['h2', 'h3', 'h4'], description: 'Überschriftenebene des Namens in `standard`', table: t("'h2' | 'h3' | 'h4'", "'h3'") },
+  },
+};
+
 export const LadezustandSpielwiese = {
   render,
   args: { kind: 'skeleton', variant: 'row', count: 2, width: 'auto', height: 'auto', rounded: '6px', label: 'Lädt …' },
@@ -104,6 +138,12 @@ export const Spielabschnitte = { ...example('abschnitte'), tags: ['!dev'] };
 export const KartenNamen    = { ...example('namen'), tags: ['!dev'] };
 export const KartenLogos    = { ...example('logos'), tags: ['!dev'] };
 export const KartenNamenHandy = { ...example('namen-handy'), tags: ['!dev'] };
+export const TeamkartenStandard = { ...example('team-standard'), tags: ['!dev'] };
+export const TeamkartenMinimal = { ...example('team-minimal'), tags: ['!dev'] };
+export const TeamkartenLogos = { ...example('team-logos'), tags: ['!dev'] };
+export const TeamkartenCompact = { ...example('team-compact'), tags: ['!dev'] };
+export const TeamkartenKlickbar = { ...example('team-klickbar'), tags: ['!dev'] };
+export const TeamkartenHandy = { ...example('team-handy'), tags: ['!dev'] };
 export const Spielerkarten  = { ...example('spieler'), tags: ['!dev'] };
 export const SpielerkartenFoto = { ...example('spieler-foto'), tags: ['!dev'] };
 export const SpielerkartenFotoHandy = { ...example('spieler-foto-handy'), tags: ['!dev'] };
@@ -122,5 +162,11 @@ export const DoFotoAlt     = { ...example('do-foto-alt'), tags: ['!dev'] };
 export const DontFotoAlt   = { ...example('dont-foto-alt'), tags: ['!dev'] };
 export const DoFotoAusschnitt = { ...example('do-foto-ausschnitt'), tags: ['!dev'] };
 export const DontFotoAusschnitt = { ...example('dont-foto-ausschnitt'), tags: ['!dev'] };
+export const DoTeamStats   = { ...example('do-team-stats'), tags: ['!dev'] };
+export const DontTeamStats = { ...example('dont-team-stats'), tags: ['!dev'] };
+export const DoTeamListe   = { ...example('do-team-liste'), tags: ['!dev'] };
+export const DontTeamListe = { ...example('dont-team-liste'), tags: ['!dev'] };
+export const DoTeamAktion  = { ...example('do-team-aktion'), tags: ['!dev'] };
+export const DontTeamAktion = { ...example('dont-team-aktion'), tags: ['!dev'] };
 export const DoZeile       = { ...example('do-zeile'), tags: ['!dev'] };
 export const DontZeile     = { ...example('dont-zeile'), tags: ['!dev'] };

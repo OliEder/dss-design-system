@@ -1312,6 +1312,65 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
   .dss-sgrid tr.dss-sg-break td, .dss-sgrid tr.dss-sg-bye td { display: block; }
 }
 
+/* ── TeamCard ───────────────────────────────────────────────
+   Mannschaftskarte (standard) und Listenzeile (compact). Logo/Initialen und Kurzname teilen die Bausteine der Namen-und-Logos-Regeln
+   (.dss-team-logo, .dss-team-name). Klickbar: der Name in der Überschrift ist ein Link (a) oder Button, sein ::after deckt die ganze Karte
+   ab (eine Aktion je Karte; Hover auf der Karte, gestrichelter Fokus-Ring wie bei der Spielkarte um die ganze Karte). */
+.dss-team {
+  position: relative; box-sizing: border-box; display: flex; flex-direction: column; width: 100%; font-family: var(--font-body); color: var(--dss-fg);
+  background: var(--dss-surface); border: 1px solid var(--dss-line); border-radius: 14px; transition: border-color 0.12s, box-shadow 0.12s, transform 0.12s;
+}
+.dss-team--link { cursor: pointer; }
+.dss-team--link:hover { border-color: var(--dss-line-strong); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+/* Hover am Link der Karte (auch die erzwungene Darstellung in Storybook) hebt dieselbe Karte */
+.dss-team--link:has(.dss-team-link:hover) { border-color: var(--dss-line-strong); box-shadow: var(--shadow-md); transform: translateY(-1px); }
+@media (prefers-reduced-motion: reduce) { .dss-team { transition: none; } }
+.dss-team-link { appearance: none; margin: 0; padding: 0; border: 0; background: none; font: inherit; color: inherit; text-align: left; text-decoration: none; cursor: pointer; }
+.dss-team-link::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+.dss-team-link:focus-visible { outline: none; }
+.dss-team-link:focus-visible::after { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; border-radius: 14px; }
+.dss-team--compact .dss-team-link:focus-visible::after { border-radius: 12px; }
+
+.dss-team-head { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 14px; align-items: center; padding: 18px 20px; }
+.dss-team-who { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.dss-team-nm { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body-lg); letter-spacing: -0.01em; line-height: 1.2; color: var(--dss-fg); overflow-wrap: anywhere; }
+.dss-team-sub {
+  display: flex; flex-wrap: wrap; gap: 4px 10px; font-family: var(--font-mono); font-size: var(--fs-caption); letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--dss-mute);
+}
+.dss-team-logo--lg { width: 48px; height: 48px; padding: 3px; font-size: var(--fs-body-md); }
+.dss-team-logo--lg.dss-team-logo--initials { padding: 0; }
+.dss-team-logo--sm { width: 20px; height: 20px; padding: 1px; font-size: 9px; }
+.dss-team-logo--sm.dss-team-logo--initials { padding: 0; }
+.dss-team--compact .dss-team-logo { width: 32px; height: 32px; padding: 2px; font-size: var(--fs-caption); }
+.dss-team--compact .dss-team-logo--initials { padding: 0; }
+
+.dss-team-vitals { display: grid; grid-template-columns: repeat(auto-fit, minmax(76px, 1fr)); gap: 16px; padding: 14px 20px; border-top: 1px solid var(--dss-line); }
+.dss-team-stats .dss-team-vitals { padding: 8px 0 0; border-top: 0; }
+.dss-team-stats { padding: 14px 20px 16px; border-top: 1px solid var(--dss-line); }
+.dss-team-sec { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dss-mute); }
+
+.dss-team-games { display: flex; flex-direction: column; gap: 14px; padding: 14px 20px; border-top: 1px solid var(--dss-line); }
+.dss-team-game-l { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dss-mute); }
+.dss-team-game-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 6px; min-width: 0; }
+.dss-team-game-opp { display: inline-flex; align-items: center; gap: 8px; flex: 1 1 150px; min-width: 0; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body); color: var(--dss-fg); }
+.dss-team-game-end { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; font-family: var(--font-mono); font-size: var(--fs-body-md); color: var(--dss-fg-soft); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.dss-team-game-score { font-weight: 700; font-size: var(--fs-body-lg); color: var(--dss-fg); }
+.dss-team-game-venue { margin-top: 4px; font-size: var(--fs-body-sm); color: var(--dss-mute); }
+.dss-team-squad { padding: 12px 20px; border-top: 1px solid var(--dss-line); font-family: var(--font-mono); font-size: var(--fs-body-sm); letter-spacing: 0.02em; color: var(--dss-fg-soft); }
+.dss-team-stats + .dss-team-squad, .dss-team-squad:last-child { border-bottom: 0; }
+
+.dss-team--compact { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto auto; gap: 14px; align-items: center; padding: 12px 16px; border-radius: 12px; }
+.dss-team--compact .dss-team-who { gap: 2px; }
+.dss-team--compact .dss-team-nm { font-family: var(--font-body); font-weight: 600; font-size: var(--fs-body); letter-spacing: -0.005em; }
+.dss-team-rec { font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-body-md); color: var(--dss-fg); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+.dss-team-rank { font-family: var(--font-mono); font-size: var(--fs-caption); letter-spacing: 0.06em; text-transform: uppercase; color: var(--dss-mute); text-align: right; white-space: nowrap; }
+@media (max-width: 560px) {
+  .dss-team-head, .dss-team-games, .dss-team-squad, .dss-team-stats, .dss-team-vitals { padding-inline: 16px; }
+  .dss-team-stats .dss-team-vitals { padding-inline: 0; }
+  .dss-team-vitals { gap: 8px; }
+}
+
 /* ── Fokus-Ring auf immer dunklen Flächen: dezenter Ton (--ring-color-on-dark), auch im hellen Theme ── */
 .dss-frame--dark :focus-visible, .dss-pbp-frame--dark :focus-visible, .dss-topbar--dark :focus-visible {
   outline-color: var(--ring-color-on-dark);

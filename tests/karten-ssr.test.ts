@@ -88,3 +88,29 @@ describe('PlayByPlay: Spielabschnitt in Svelte und React gleich', () => {
     });
   }
 });
+
+describe('TeamCard: Svelte und React erzeugen dasselbe Markup', () => {
+  const full = {
+    name: 'TSV Nordhain 1920', short: 'TSV N.', logo: '/logos/nordhain.svg', league: 'Bayernliga Süd', season: '2026/27',
+    record: { w: 12, l: 3 }, rank: 3, rankOf: 12, points: 24,
+    next: { date: 'Sa, 25.05.', time: '19:30', opponent: { name: 'Lindenberg Hawks', short: 'Hawks', logo: '/logos/hawks.svg' }, at: 'heim', venue: 'Nordhain-Halle' },
+    last: { date: 'Sa, 18.05.', opponent: { name: 'BG Seeberg', short: 'Seeberg' }, ownScore: 92, opponentScore: 79, at: 'gast' },
+    squad: { players: 14, staff: 3 }, stats: { twoPtPct: 48.2, threePtPct: 36.5, trb: 41.3, to: 12.1 },
+  };
+  const variants: Record<string, unknown>[] = [
+    {}, { size: 'compact' }, { names: 'short' }, { logos: true }, { names: 'short', logos: true },
+    { href: '/t' }, { size: 'compact', href: '/t' }, { titleAs: 'h2' }, { leagueHref: '/liga' }, { leagueHref: '/liga', href: '/t' },
+    { stats: undefined }, { stats: {} }, { stats: { to: 0 } }, { record: { w: 5, d: 1, l: 2 } }, { rankOf: undefined }, { rank: undefined, record: undefined, points: undefined },
+    { next: undefined }, { last: undefined }, { next: undefined, last: undefined, squad: undefined, stats: undefined },
+    { last: { opponent: { name: 'X' }, ownScore: 70, opponentScore: 80 } }, { last: { opponent: { name: 'X' }, ownScore: 70, opponentScore: 70 } },
+    { next: { opponent: { name: 'X' } } }, { squad: { players: 9 } }, { logo: undefined }, { league: '', season: '2026/27' },
+  ];
+  it.each(variants)('%j', async (extra) => {
+    // `undefined` überschreibt den Standard bewusst: in beiden Fassungen gleich behandelt
+    await same('svelte/TeamCard.svelte', 'react/TeamCard.tsx', 'TeamCard', { ...full, ...extra });
+  });
+  it('nur der Name', async () => {
+    await same('svelte/TeamCard.svelte', 'react/TeamCard.tsx', 'TeamCard', { name: 'Nur Name' });
+    await same('svelte/TeamCard.svelte', 'react/TeamCard.tsx', 'TeamCard', { name: 'Nur Name', size: 'compact' });
+  });
+});
