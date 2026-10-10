@@ -55,7 +55,7 @@
       <div class="cap">TopBar · immer dunkel</div>
       <!-- svelte-ignore a11y_no_noninteractive_tabindex -- Fokussierbar mit Absicht: Tastaturnutzer müssen den scrollbaren Bereich erreichen -->
       <div class="scroll" role="region" tabindex="0" aria-label="TopBar mit Live-Kontext, seitlich scrollbar">
-        <div class="scroll-in"><TopBar brand="DSS" mark="D" context="live" matchLabel="BBL · 17. Spieltag" score="87 : 64" clock="Q4 · 02:14" /></div>
+        <div class="scroll-in"><TopBar brand="DSS" mark="D" context="live" matchLabel="BBL · 17. Spieltag" score="87 : 64" clock="4. Viertel · 02:14" /></div>
       </div>
     </div>
 

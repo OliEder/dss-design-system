@@ -224,7 +224,8 @@ export const photoVanilla = `<!-- Foto statt Trikotmarke: .dss-pc-av um Bild und
     <span class="dss-tn dss-tn--badge dss-tn--badge-lg heim captain">4</span>
   </div>
   <div class="dss-pc-hero-right">
-    <h3 class="dss-pc-nm">Jonas Tanner</h3>
+    <h3 class="dss-pc-nm">J. Tanner</h3>
+    <div class="dss-pc-role"><span class="dss-pos pg">PG</span><span class="dss-pc-cap">Kapitän</span></div>
   </div>
 </div>`;
 
@@ -239,7 +240,7 @@ export const photoSvelte = `<script>
 <PlayerCard
   size="hero"
   jersey="4"
-  name="Jonas Tanner"
+  name="J. Tanner"
   position="PG"
   captain
   photo="/players/jt.jpg"
@@ -263,7 +264,7 @@ export const photoReact = `import { PlayerCard } from '@bbv/dss-design-system/re
 <PlayerCard
   size="hero"
   jersey="4"
-  name="Jonas Tanner"
+  name="J. Tanner"
   position="PG"
   captain
   photo="/players/jt.jpg"

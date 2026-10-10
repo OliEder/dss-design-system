@@ -51,6 +51,7 @@ const example = (name: string) => ({
 });
 
 export const Standard  = { ...example('standard'), tags: ['!dev'] };
+export const Forfait   = { ...example('forfait'), tags: ['!dev'] };
 export const Minimal   = { ...example('minimal'), tags: ['!dev'] };
 export const Logos     = { ...example('logos'), tags: ['!dev'] };
 export const Compact   = { ...example('compact'), tags: ['!dev'] };

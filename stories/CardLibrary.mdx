@@ -93,7 +93,7 @@ Ohne `photo`, mit leerem `photo` oder wenn das Bild nicht lädt, erscheint wiede
 
 **Alternativtext:** `photoAlt` ist standardmäßig leer. Das Foto ist dekorativ, weil der Name daneben steht; ein Screenreader liest den Namen so genau einmal. Fülle `photoAlt` nur, wenn das Bild eine Information trägt, die nicht im Text steht (zum Beispiel „im Heimtrikot“). Das Foto ist nie die einzige Information: Name und Trikotnummer stehen immer als Text da.
 
-**Datenschutz:** Fotos von Minderjährigen nur mit Einwilligung der Erziehungsberechtigten verwenden; auch bei Erwachsenen brauchst du das Recht, das Bild zu zeigen. Die Demo-Fotos in dieser Doku stammen von Unsplash (Unsplash-Lizenz) und zeigen reale Personen; die Namen sind erfunden und keinem echten Spieler oder Verein zugeordnet.
+**Datenschutz:** Fotos von Minderjährigen nur mit Einwilligung der Erziehungsberechtigten verwenden; auch bei Erwachsenen brauchst du das Recht, das Bild zu zeigen. Die Demo-Fotos in dieser Doku stammen von Unsplash (Unsplash-Lizenz) und zeigen reale Personen; die Namen sind erfunden und keinem echten Spieler oder Verein zugeordnet. **Die Unsplash-Lizenz enthält kein Model Release (keine Einwilligung der abgebildeten Personen); die Demo-Fotos sind nur für Demonstrationen im Storybook gedacht und nicht für eigene Produkte oder mit Bezug zu echten Personen zu übernehmen.**
 
 <FrameworkCode label="PlayerCard: Foto" vanilla={photoVanilla} svelte={photoSvelte} react={photoReact} />
 
@@ -174,7 +174,7 @@ Die Props zeigen drei Spielwiesen mit den echten Komponenten. Die Spielkarte hat
     {
       title: 'Quadratischer Ausschnitt, Gesicht oben',
       doText: 'Das Foto ist ein quadratischer Ausschnitt mit dem Gesicht im oberen Teil; `object-position: center top` zeigt es sicher.',
-      dontText: 'Zeigt der Ausschnitt nur einen Teil des Gesichts (hier den Bart), ist die Person als Avatar nicht zu erkennen.',
+      dontText: 'Zeigt der Ausschnitt kein Gesicht (hier nur Hintergrund), ist die Person als Avatar nicht zu erkennen.',
       good: <Story of={CardLibraryStories.DoFotoAusschnitt} inline />,
       bad: <Story of={CardLibraryStories.DontFotoAusschnitt} inline />,
     },

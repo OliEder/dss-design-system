@@ -52,6 +52,17 @@
       <TeamCard {...TEAM} />
     </div>
   </div>
+{:else if example === 'forfait'}
+  <div class="grid2">
+    <div>
+      <div class="cap">Ohne outcome: Sieg aus den Punkten</div>
+      <TeamCard name="BG Seeberg" short="Seeberg" logo={seebergLogo} league="Bayernliga Süd" last={{ date: 'Sa, 18.05.', opponent: { name: 'TSV Elbach', logo: elbachLogo }, ownScore: 20, opponentScore: 0, at: 'heim' }} />
+    </div>
+    <div>
+      <div class="cap">outcome="N": Forfait, Wertung gegen die Zahlen</div>
+      <TeamCard name="BG Seeberg" short="Seeberg" logo={seebergLogo} league="Bayernliga Süd" last={{ date: 'Sa, 18.05.', opponent: { name: 'TSV Elbach', logo: elbachLogo }, ownScore: 20, opponentScore: 0, at: 'heim', outcome: 'N' }} />
+    </div>
+  </div>
 {:else if example === 'minimal'}
   <div class="grid2">
     <div>

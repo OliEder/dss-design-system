@@ -4,12 +4,10 @@
   import Skeleton from '../../svelte/Skeleton.svelte';
 
   // Erfundene Vereinslogos (nur Storybook); SV Kiefernau hat kein Logo und zeigt die Initialen
-  // Demo-Fotos (nur Storybook): quadratische Ausschnitte von Unsplash, siehe assets/players/CREDITS.md
-  import tannerFoto from '../assets/players/tanner.jpg';
-  import okaforFoto from '../assets/players/okafor.jpg';
-  import voglerFoto from '../assets/players/vogler.jpg';
-  import hollisFoto from '../assets/players/hollis.jpg';
-  import mertensFoto from '../assets/players/mertens.jpg';
+  // Demo-Fotos (nur Storybook): Foto und erfundener Name gehören zusammen, siehe players.ts und assets/players/CREDITS.md
+  import { PLAYERS } from './players';
+
+  // Erfundene Vereinslogos (nur Storybook); SV Kiefernau hat kein Logo und zeigt die Initialen
   import nordhainLogo from '../assets/logos/nordhain.svg';
   import hawksLogo from '../assets/logos/hawks.svg';
   import seebergLogo from '../assets/logos/seeberg.svg';
@@ -107,7 +105,7 @@
     </div>
     <div>
       <div class="cap">Hero · Profil (immer dunkel)</div>
-      <PlayerCard size="hero" jersey="4" name="Jonas Tanner" position="PG" captain age="24 J." height_cm="188" vitals={[{ label: 'PPG', value: '17.4', accent: true }, { label: 'APG', value: '6.2' }, { label: 'STL', value: '2.1' }, { label: '3P%', value: '41.8' }]} />
+      <PlayerCard size="hero" jersey="4" name="J. Tanner" position="PG" captain age="24 J." height_cm="188" vitals={[{ label: 'PPG', value: '17.4', accent: true }, { label: 'APG', value: '6.2' }, { label: 'STL', value: '2.1' }, { label: '3P%', value: '41.8' }]} />
     </div>
   </div>
 {:else if example === 'spieler-foto'}
@@ -115,27 +113,27 @@
     <div>
       <div class="cap">Compact · mit Foto (Avatar 32 px, Trikotnummer als Badge) und ohne</div>
       <div class="list">
-        <PlayerCard size="compact" jersey="4" name="J. Tanner" position="PG" team="heim" captain stat={22} statLabel="PTS" photo={tannerFoto} />
-        <PlayerCard size="compact" jersey="7" name="M. Okafor" position="SG" team="heim" stat={19} statLabel="PTS" photo={okaforFoto} />
-        <PlayerCard size="compact" jersey="13" name="K. Vogler" position="PF" team="heim" stat={12} statLabel="PTS" photo={voglerFoto} />
+        <PlayerCard size="compact" jersey="4" name="J. Tanner" position="PG" team="heim" captain stat={22} statLabel="PTS" photo={PLAYERS.tanner.photo} />
+        <PlayerCard size="compact" jersey="7" name="M. Okafor" position="SG" team="heim" stat={19} statLabel="PTS" photo={PLAYERS.okafor.photo} />
+        <PlayerCard size="compact" jersey="13" name="K. Vogler" position="PF" team="heim" stat={12} statLabel="PTS" photo={PLAYERS.vogler.photo} />
         <PlayerCard size="compact" jersey="15" name="D. Hollis" position="C" team="heim" stat={9} statLabel="PTS" />
       </div>
     </div>
     <div>
       <div class="cap">Standard · Kopfbild 64 px</div>
       <div class="grid2">
-        <PlayerCard size="standard" jersey="4" name="J. Tanner" position="PG" team="heim" captain age="24 J." height_cm="188" photo={tannerFoto} vitals={TANNER} />
-        <PlayerCard size="standard" jersey="15" name="D. Hollis" position="C" team="gast" age="29 J." height_cm="208" photo={hollisFoto} vitals={[{ label: 'PPG', value: '12.1' }, { label: 'RPG', value: '9.8', accent: true }, { label: 'BPG', value: '1.4' }, { label: 'EFF', value: '18.5' }]} />
+        <PlayerCard size="standard" jersey="4" name="J. Tanner" position="PG" team="heim" captain age="24 J." height_cm="188" photo={PLAYERS.tanner.photo} vitals={TANNER} />
+        <PlayerCard size="standard" jersey="15" name="D. Hollis" position="C" team="gast" age="29 J." height_cm="208" photo={PLAYERS.hollis.photo} vitals={[{ label: 'PPG', value: '12.1' }, { label: 'RPG', value: '9.8', accent: true }, { label: 'BPG', value: '1.4' }, { label: 'EFF', value: '18.5' }]} />
       </div>
     </div>
     <div>
       <div class="cap">Hero · Porträt links mit Verlauf nach Dunkel (immer dunkel)</div>
-      <PlayerCard size="hero" jersey="4" name="Jonas Tanner" position="PG" captain age="24 J." height_cm="188" photo={tannerFoto} vitals={[{ label: 'PPG', value: '17.4', accent: true }, { label: 'APG', value: '6.2' }, { label: 'STL', value: '2.1' }, { label: '3P%', value: '41.8' }]} />
+      <PlayerCard size="hero" jersey="4" name="J. Tanner" position="PG" captain age="24 J." height_cm="188" photo={PLAYERS.tanner.photo} vitals={[{ label: 'PPG', value: '17.4', accent: true }, { label: 'APG', value: '6.2' }, { label: 'STL', value: '2.1' }, { label: '3P%', value: '41.8' }]} />
     </div>
   </div>
 {:else if example === 'spieler-foto-handy'}
   <div class="narrow">
-    <PlayerCard size="hero" jersey="4" name="Jonas Tanner" position="PG" captain age="24 J." height_cm="188" photo={tannerFoto} vitals={[{ label: 'PPG', value: '17.4', accent: true }, { label: 'APG', value: '6.2' }, { label: 'STL', value: '2.1' }, { label: '3P%', value: '41.8' }]} />
+    <PlayerCard size="hero" jersey="4" name="J. Tanner" position="PG" captain age="24 J." height_cm="188" photo={PLAYERS.tanner.photo} vitals={[{ label: 'PPG', value: '17.4', accent: true }, { label: 'APG', value: '6.2' }, { label: 'STL', value: '2.1' }, { label: '3P%', value: '41.8' }]} />
   </div>
 {:else if example === 'spieler-foto-fallback'}
   <div class="stack">
@@ -157,27 +155,27 @@
     </div>
     <div>
       <div class="cap">Hero · Ladefehler</div>
-      <PlayerCard size="hero" jersey="4" name="Jonas Tanner" position="PG" captain age="24 J." height_cm="188" photo={KAPUTT} vitals={[{ label: 'PPG', value: '17.4', accent: true }, { label: 'APG', value: '6.2' }, { label: 'STL', value: '2.1' }, { label: '3P%', value: '41.8' }]} />
+      <PlayerCard size="hero" jersey="4" name="J. Tanner" position="PG" captain age="24 J." height_cm="188" photo={KAPUTT} vitals={[{ label: 'PPG', value: '17.4', accent: true }, { label: 'APG', value: '6.2' }, { label: 'STL', value: '2.1' }, { label: '3P%', value: '41.8' }]} />
     </div>
   </div>
 {:else if example === 'do-foto-alt'}
   <div class="narrow">
-    <PlayerCard size="compact" jersey="7" name="M. Okafor" position="SG" team="heim" stat={19} statLabel="PTS" photo={okaforFoto} />
+    <PlayerCard size="compact" jersey="7" name="M. Okafor" position="SG" team="heim" stat={19} statLabel="PTS" photo={PLAYERS.okafor.photo} />
     <p class="read">Screenreader: „7, M. Okafor“ (Bild bleibt stumm)</p>
   </div>
 {:else if example === 'dont-foto-alt'}
   <div class="narrow">
-    <PlayerCard size="compact" jersey="7" name="M. Okafor" position="SG" team="heim" stat={19} statLabel="PTS" photo={okaforFoto} photoAlt="M. Okafor" />
+    <PlayerCard size="compact" jersey="7" name="M. Okafor" position="SG" team="heim" stat={19} statLabel="PTS" photo={PLAYERS.okafor.photo} photoAlt="M. Okafor" />
     <p class="read">Screenreader: „Bild M. Okafor“, dann „7, M. Okafor“ (Name doppelt)</p>
   </div>
 {:else if example === 'do-foto-ausschnitt'}
   <div class="narrow">
-    <PlayerCard size="standard" jersey="13" name="K. Vogler" position="PF" team="heim" age="26 J." height_cm="198" photo={mertensFoto} vitals={[{ label: 'PPG', value: '9.4' }, { label: 'RPG', value: '6.0' }]} />
+    <PlayerCard size="standard" jersey={PLAYERS.mertens.jersey} name={PLAYERS.mertens.name} position={PLAYERS.mertens.position} team="gast" age="26 J." height_cm="198" photo={PLAYERS.mertens.photo} vitals={[{ label: 'PPG', value: '9.4' }, { label: 'RPG', value: '6.0' }]} />
   </div>
 {:else if example === 'dont-foto-ausschnitt'}
-  <!-- Das Bild zeigt nur einen Ausschnitt unterhalb des Gesichts; nur Doku, per CSS `object-fit: none` nachgestellt -->
+  <!-- Das Bild zeigt nur einen Ausschnitt aus dem Hintergrund (oben links); nur Doku, per CSS `object-fit: none` nachgestellt -->
   <div class="narrow bad-crop">
-    <PlayerCard size="standard" jersey="13" name="K. Vogler" position="PF" team="heim" age="26 J." height_cm="198" photo={mertensFoto} vitals={[{ label: 'PPG', value: '9.4' }, { label: 'RPG', value: '6.0' }]} />
+    <PlayerCard size="standard" jersey={PLAYERS.mertens.jersey} name={PLAYERS.mertens.name} position={PLAYERS.mertens.position} team="gast" age="26 J." height_cm="198" photo={PLAYERS.mertens.photo} vitals={[{ label: 'PPG', value: '9.4' }, { label: 'RPG', value: '6.0' }]} />
   </div>
 {:else if example === 'skeleton'}
   <div class="grid2">
@@ -260,15 +258,15 @@
 {/if}
 
 <style>
-  .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 18px; }
+  .grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 18px; align-items: start; }
   .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 18px; }
   .stack { display: flex; flex-direction: column; gap: 28px; }
   .col { display: flex; flex-direction: column; gap: 24px; min-width: 0; }
   .list { display: flex; flex-direction: column; gap: 8px; }
   .narrow { width: 100%; max-width: 380px; }
   .read { margin: 8px 2px 0; font-size: var(--fs-caption); color: var(--page-mute); }
-  /* Gegenbeispiel: Das Bild zeigt nur einen Ausschnitt unterhalb des Gesichts (hier nur der Bart), nicht das ganze Gesicht */
-  .bad-crop :global(.dss-pc-img) { object-fit: none; object-position: 50% 78%; }
+  /* Gegenbeispiel: Das Bild zeigt nur einen Ausschnitt aus dem Hintergrund (oben links), kein Gesicht */
+  .bad-crop :global(.dss-pc-img) { object-fit: none; object-position: 0% 0%; }
   .gap { height: 10px; }
   .gap-s { height: 8px; }
   .cap, .colhead, .rowlabel { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); }

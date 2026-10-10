@@ -12,14 +12,8 @@
   const LOGO: Record<string, string> = { 'TSV Nordhain': nordhainLogo, 'Lindenberg Hawks': hawksLogo };
   const withLogo = (team: { name: string; logo?: string }) => ({ logo: LOGO[team.name], ...team });
 
-  // Demo-Fotos (nur Storybook): Auswahl über den Namen der Datei
-  import tannerFoto from '../assets/players/tanner.jpg';
-  import okaforFoto from '../assets/players/okafor.jpg';
-  import voglerFoto from '../assets/players/vogler.jpg';
-  import hollisFoto from '../assets/players/hollis.jpg';
-  import mertensFoto from '../assets/players/mertens.jpg';
-  import sorellFoto from '../assets/players/sorell.jpg';
-  const FOTO: Record<string, string> = { tanner: tannerFoto, okafor: okaforFoto, vogler: voglerFoto, hollis: hollisFoto, mertens: mertensFoto, sorell: sorellFoto };
+  // Demo-Fotos (nur Storybook): Auswahl über den Schlüssel, siehe players.ts
+  import { FOTO } from './players';
 
   const noop = () => {};
   const stay = (e?: Event) => e?.preventDefault();

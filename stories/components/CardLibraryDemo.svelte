@@ -86,7 +86,7 @@
     <PlayerCard
       size="hero"
       jersey="4"
-      name="Jonas Tanner"
+      name="J. Tanner"
       position="PG"
       captain
       age="24 J."
