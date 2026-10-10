@@ -50,7 +50,7 @@ Spiele mit gleicher `section` werden unter einer Gruppenzeile zusammengefasst. `
 <Canvas of={SpielplanStories.LayoutOpponent} />
 
 - **Wann:** Spielplan einer Mannschaft, alles aus ihrer Sicht.
-- **Felder:** Chip *vs.* (Heim) oder *@* (Auswärts), Logo (`logo`) oder sonst die Initialen, Gegner als Link, S-/N-/U-Chip, Ergebnis eigene : Gegner und dahinter „vorläufig“.
+- **Felder:** Chip *vs.* (Heim) oder *@* (Auswärts), Logo (`logo`) oder sonst die Initialen, Gegner als Link, S-/N-/U-Chip, Ergebnis eigene : Gegner; bei einem vorläufigen Ergebnis steht „vorläufig“ klein unter der Zahl.
 - **Hinweis:** `ownScore` sind die Punkte der eigenen Mannschaft, `opponent.score` die des Gegners.
 
 ### versus: Liga und Halle (Touch, mit Liga-Zeile 74 px)
@@ -65,7 +65,7 @@ Spiele mit gleicher `section` werden unter einer Gruppenzeile zusammengefasst. `
 <Canvas of={SpielplanStories.LayoutColumns} />
 
 - **Wann:** Turnierliste mit Spielnummer, Feld und Halle.
-- **Spalten:** Nr, Zeit, Feld, Halle, Heim, Ergebnis, Gast. Nr, Feld und Halle erscheinen nur, wenn mindestens ein Spiel den Wert hat.
+- **Spalten:** Nr, Zeit, Feld, Halle, Heim, Ergebnis, Gast. Nr, Feld und Halle erscheinen nur, wenn mindestens ein Spiel den Wert hat. Das Feld steht als Chip (z. B. „F1“), dessen Text vertikal mittig sitzt.
 - **Hinweis-Spalte:** kommt nur in diesem Layout dazu, wenn ein `notice`-Snippet (Svelte) bzw. `renderNotice` (React) übergeben wird, siehe die Abschnitte „Zustände“ und „Daten und Snippets“.
 - **Zeilenhöhe:** 48 px gilt nur ohne Liga; sobald irgendein Spiel eine `league` hat, wählt `ScheduleTable` `touch`, auch hier, wo die Liga gar nicht angezeigt wird. Mit `density` lässt sich das überschreiben.
 
@@ -97,7 +97,11 @@ Datum und Zeit, das Ergebnis zeigt einen Strich. Die Ergebniszelle enthält nur 
 
 <Canvas of={SpielplanStories.ZustandLive} />
 
-Ein grünes „Live“-Tag mit Puls hinter der Zeit; das Ergebnis steht schon. Zusätzlich sprechen Screenreader „läuft“ hinter dem Ergebnis.
+Ein grünes „Live“-Tag mit pulsierendem Punkt hinter der Zeit, die Ergebniszahlen sind ebenfalls grün (`--dss-live-fg`) und pulsieren sanft. Zusätzlich sprechen Screenreader „läuft“ hinter dem Ergebnis; grün allein zeigt „live“ nie an. Alle Live-Stellen des Systems stehen auf der Seite [Live](?path=/docs/foundation-live--docs).
+
+Im Zeitraster steht das Live-Tag in derselben Zeile wie das grüne Ergebnis und bricht erst um, wenn die Zelle (mindestens 180 px breit) zu schmal wird. Hat ein laufendes Spiel noch keinen Stand, steht das Tag hinter der Paarung.
+
+<Canvas of={SpielplanStories.ZustandRaster} />
 
 ### Beendet
 
@@ -109,7 +113,7 @@ Ergebnis in Mono, der Verlierer ist abgeblendet. Gelesen wird „Heim 64, Gast 9
 
 <Canvas of={SpielplanStories.ZustandProvisional} />
 
-Beendet mit Kennzeichen „provisional“: hinter dem Ergebnis steht „vorläufig“, gelesen wird es hinter dem Ergebnis mit.
+Beendet mit Kennzeichen „provisional“: „vorläufig“ steht klein unter der Ergebniszahl, gelesen wird es hinter dem Ergebnis mit („Heim 64, Gast 90, vorläufig“). Die Zahl behält ihre Ausrichtung: rechts, im Layout `columns` mittig; sie springt zwischen vorläufigen und endgültigen Zeilen weder nach links noch nach rechts. Das Tag steht im Zeitraster ebenfalls unter der Zahl.
 
 ### Abgesagt
 
@@ -179,7 +183,7 @@ Das Snippet „time“ ersetzt die Uhrzeit, hier durch ein Eingabefeld mit eigen
 
 ## Dichte und Handy
 
-`density` steuert die Zeilenhöhe: **touch 60 px**, **default 48 px** (Standard), **compact 40 px**. Das sind Mindesthöhen der Zelle; Zeilen mit zweiter Zeile (Liga, Notiz) werden höher. `ScheduleTable` wählt ohne Angabe `touch` bei `opponent` oder wenn ein Spiel eine Liga-Unterzeile hat, sonst `default`. `ScheduleGrid` nimmt immer `default`.
+`density` steuert die Zeilenhöhe: **touch 60 px**, **default 48 px** (Standard), **compact 40 px**. Das sind Mindesthöhen der Zelle; Zeilen mit zweiter Zeile (Liga, Notiz) werden höher. Ein vorläufiges Ergebnis verändert die Höhe nicht: Zahl (22 px), 1 px Abstand und Tag (11 px) sind 34 px hoch und passen mit etwas weniger Innenabstand der Ergebniszelle (6 px in Standard, 2 px in kompakt) in die Dichten Standard und kompakt; gemessen bleiben 60, 48 und 40 px. `ScheduleTable` wählt ohne Angabe `touch` bei `opponent` oder wenn ein Spiel eine Liga-Unterzeile hat, sonst `default`. `ScheduleGrid` nimmt immer `default`.
 
 ### Touch · 60 px
 
@@ -193,9 +197,13 @@ Das Snippet „time“ ersetzt die Uhrzeit, hier durch ein Eingabefeld mit eigen
 
 <Canvas of={SpielplanStories.DichteCompact} />
 
+### Kompakt mit vorläufigem Ergebnis · 40 px
+
+<Canvas of={SpielplanStories.DichteVorlaeufig} />
+
 ### Handy-Ansicht · 390 px Breite
 
-Unter 640 px Breite werden Zeilen zu Karten und Anwurfzeiten zu Blöcken mit der Spalten-Beschriftung als Überschrift. Diese Regeln hängen an der Breite des Fensters, nicht an der des Rahmens. Darum sind die Vorschauen eingebettete Seiten mit fester Breite von 390 px.
+Unter 640 px Breite werden Zeilen zu Karten und Anwurfzeiten zu Blöcken mit der Spalten-Beschriftung als Überschrift. Im Layout `opponent` steht in der ersten Zeile der Karte das Datum mit der Uhrzeit („Sa, 26.09.2026 · 17:30“), darunter „vs.“ oder „@“ vor Logo und Gegner und rechts das Ergebnis. Für Screenreader bleibt die Reihenfolge Zeit, Heim oder Auswärts, Gegner, Ergebnis. Diese Regeln hängen an der Breite des Fensters, nicht an der des Rahmens. Darum sind die Vorschauen eingebettete Seiten mit fester Breite von 390 px.
 
 <div className="dss-phones">
   <div className="dss-phone">
@@ -312,7 +320,7 @@ Was optisch durch Chip, Farbe oder Durchstreichung gezeigt wird, steht zusätzli
   rows={[
     ['Tabellensemantik', <>Echte <code>table</code>, <code>th scope</code> und <code>caption</code> (unsichtbar, aus <code>caption</code>). Beim Layout <code>opponent</code> und <code>versus</code> ist der Tabellenkopf nur für Screenreader sichtbar, bei <code>columns</code> sichtbar.</>],
     ['Handy-Karten', <>Die <code>role</code>-Attribute im Markup bleiben bewusst, damit die Tabellensemantik erhalten bleibt, wenn das Handy-CSS Zeilen zu Karten macht.</>],
-    ['Farbe', 'Kein Zustand nur über Farbe: Live hat ein Wort-Tag, abgesagt und verlegt tragen Text, vorläufig steht im Klartext, S/N/U sind Buchstaben.'],
+    ['Farbe', 'Kein Zustand nur über Farbe: Live hat ein Wort-Tag (die grüne Zahl allein genügt nie), abgesagt und verlegt tragen Text, vorläufig steht im Klartext, S/N/U sind Buchstaben.'],
     ['Fokus', 'Links und Eingaben zeigen den DSS-Fokusring.'],
     ['Dunkel', <>Der seitenweite Dark Mode wirkt über die <code>--dss-*</code>-Variablen. Der dunkle Rahmen <code>dss-frame--dark</code> ist für Spielpläne nicht vorgesehen.</>],
   ]}

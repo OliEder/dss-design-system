@@ -50,6 +50,18 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    motion: {
+      description: 'Bewegung (Live-Puls); Reduziert setzt data-motion="reduce" auf <html>',
+      toolbar: {
+        title: 'Bewegung',
+        icon: 'play',
+        items: [
+          { value: 'normal', title: 'Normal' },
+          { value: 'reduce', title: 'Reduziert (Pause)' },
+        ],
+        dynamicTitle: true,
+      },
+    },
     state: {
       description: 'Zustand erzwingen (Hover, Fokus, Aktiv)',
       toolbar: {
@@ -69,6 +81,7 @@ const preview: Preview = {
     brand: 'bbv',
     type: 'standard',
     framework: 'svelte',
+    motion: 'normal',
     state: 'normal',
 
     backgrounds: {
@@ -90,7 +103,7 @@ const preview: Preview = {
       storySort: {
         order: [
           'Introduction',
-          'Foundation', ['Colors', 'Typography', 'Focus & Hover'],
+          'Foundation', ['Colors', 'Typography', 'Focus & Hover', 'Live'],
           'Components', ['Button', 'TextInput', 'Select', 'Checkbox', 'Modal', 'Banner', 'Card', 'Card Library', 'Tabs', 'Navigation', 'AppNav', 'Table', 'Spielplan', ['Spielplan', 'Tabelle', 'Zeitraster', 'Spielwiese'], 'EmptyState', 'CourtLines', 'PlayByPlay', 'Icon'],
         ],
       },
@@ -110,6 +123,9 @@ const preview: Preview = {
       else document.documentElement.removeAttribute('data-type');
       // Code-Beispiele der Spec-Seiten folgen dem Umschalter "Fassung" (reines CSS, siehe stories/docs/blocks/useActiveFramework.ts)
       document.documentElement.dataset.framework = context.globals.framework ?? 'svelte';
+      // Pause-Schalter der Live-Animation (wie in der App: Attribut auf <html>)
+      if (context.globals.motion === 'reduce') document.documentElement.dataset.motion = 'reduce';
+      else delete document.documentElement.dataset.motion;
       setForcedState((context.globals.state ?? 'normal') as ForcedState);
       return story();
     },

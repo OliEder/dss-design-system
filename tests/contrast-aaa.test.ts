@@ -73,16 +73,17 @@ const root = tokens + '\n' + blockOf(css, ':root {');
 const dbbScope = blockOf(tokens, ':root[data-brand="dbb"] {') + '\n' + tokens;
 
 describe('AAA-Kontrast (≥ 7:1) der nachgezogenen Farbpaare', () => {
-  it('Topbar „Live“-Text: ≥ 7:1 auf Schwarz und auf DBB-Anthrazit #191919', () => {
-    const rule = css.match(/\.dss-topbar-live\s*\{[^}]*?color:\s*(oklch\([^)]+\))/);
+  it('Topbar „Live“-Text: ≥ 7:1 auf Schwarz und auf DBB-Anthrazit #191919 (grün, --dss-live-fg-on-dark)', () => {
+    const rule = css.match(/\.dss-topbar-live\s*\{[^}]*?color:\s*(var\(--dss-live-fg-on-dark\))/);
     expect(rule).not.toBeNull();
     const fg = color(rule![1], root);
     expect(ratio(fg, color(defOf(tokens, '--ink-1000'), tokens))).toBeGreaterThanOrEqual(AAA);
     expect(ratio(fg, hex('#191919'))).toBeGreaterThanOrEqual(AAA);
   });
 
-  it('Topbar-Lampe behält ihre Farbe (--err-fill)', () => {
-    expect(css).toMatch(/\.dss-topbar-live::before\s*\{[^}]*background:\s*var\(--err-fill\)/);
+  it('Topbar-Lampe ist grün (--live-fill), nicht mehr rot', () => {
+    expect(css).toMatch(/\.dss-topbar-live::before\s*\{[^}]*background:\s*var\(--live-fill\)/);
+    expect(css).not.toMatch(/\.dss-topbar-live[^{]*\{[^}]*--err-fill/);
   });
 
   it('Topbar-Avatar: weiß auf --cool-700 ≥ 7:1', () => {

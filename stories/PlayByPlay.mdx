@@ -72,7 +72,7 @@ Was der Baustein dabei tut und was nicht:
 - **Bewegung:** Das Einblenden der Einträge und der Live-Puls stoppen bei `prefers-reduced-motion: reduce`. Das Einblenden läuft auch beim ersten Rendern jedes Eintrags.
 - **Screenreader:** Der Feed ist ein `role="log"`, benannt nach dem Titel. Die Rolle `log` meldet neu eingefügte Einträge höflich (implizit `aria-live="polite"`), ohne die laufende Ansage zu unterbrechen. Mit einem Screenreader ist das hier nicht geprüft, es folgt der Rollen-Definition.
 - **Tastatur:** Der Feed hat `tabindex="0"`, damit sich der scrollbare Bereich mit den Pfeiltasten bewegen lässt. Der Fokus-Ring liegt innen.
-- **Live-Marke:** `live` (Standard `true`) zeigt „Live“ mit grünem Puls im Kopf. Setze es nur bei einem laufenden Spiel.
+- **Live-Marke:** `live` (Standard `true`) zeigt „Live“ mit grünem Puls im Kopf (die gemeinsame [Live-Sprache](?path=/docs/foundation-live--docs): Text `--dss-live-fg`, auf dem dunklen Rahmen `--dss-live-fg-on-dark`, Punkt `--live-fill`). Setze es nur bei einem laufenden Spiel.
 
 ## Kampfgericht dunkel
 

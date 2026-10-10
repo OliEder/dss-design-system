@@ -26,6 +26,7 @@ export const ZustandScheduled = example('zustand-scheduled');
 export const ZustandLive = example('zustand-live');
 export const ZustandFinished = example('zustand-finished');
 export const ZustandProvisional = example('zustand-provisional');
+export const ZustandRaster = example('zustand-raster');
 export const ZustandCancelled = example('zustand-cancelled');
 export const ZustandPostponed = example('zustand-postponed');
 export const ZustandBye = example('zustand-bye');
@@ -41,6 +42,7 @@ export const ZustandTime = example('zustand-time');
 export const DichteTouch = example('dichte-touch');
 export const DichteDefault = example('dichte-default');
 export const DichteCompact = example('dichte-compact');
+export const DichteVorlaeufig = example('dichte-vorlaeufig');
 
 export const DoDichte = example('do-dichte');
 export const DontDichte = example('dont-dichte');

@@ -24,7 +24,7 @@ import {
 
 ## Top-Bar: drei Anatomien für drei Kontexte
 
-Die Top-Bar bleibt strukturell gleich: Marke links, Abstandshalter, Aktionen rechts. Der Kontext-Inhalt schaltet die Persönlichkeit: **Live** bringt einen roten Puls-Indikator mit Spielstand und Uhr, **Admin** trägt den Kontext des Vereinsregisters, **Default** bleibt ruhig. Die Leiste ist immer dunkel (Hintergrund `--base-1000`), auch im hellen Theme.
+Die Top-Bar bleibt strukturell gleich: Marke links, Abstandshalter, Aktionen rechts. Der Kontext-Inhalt schaltet die Persönlichkeit: **Live** bringt einen grünen Puls-Indikator mit Spielstand und Uhr (die gemeinsame [Live-Sprache](?path=/docs/foundation-live--docs): Text `--dss-live-fg-on-dark`, Punkt `--live-fill`), **Admin** trägt den Kontext des Vereinsregisters, **Default** bleibt ruhig. Die Leiste ist immer dunkel (Hintergrund `--base-1000`), auch im hellen Theme.
 
 <Canvas of={NavigationStories.TopBarKontexte} />
 
@@ -165,7 +165,7 @@ Die Steuerelemente gehören zur Demo und wechseln nur, welche Komponenten gezeig
     {
       title: 'Live nur mit Spielstand und Uhr',
       doText: 'Der Live-Kontext zeigt neben dem Puls das Spiel, den Stand und die Uhr.',
-      dontText: 'Ein roter, pulsierender „Live“-Marker ohne Angaben meldet etwas, was niemand einordnen kann.',
+      dontText: 'Ein grüner, pulsierender „Live“-Marker ohne Angaben meldet etwas, was niemand einordnen kann.',
       good: <Story of={NavigationStories.DoLive} inline />,
       bad: <Story of={NavigationStories.DontLive} inline />,
     },

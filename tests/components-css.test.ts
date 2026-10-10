@@ -102,7 +102,7 @@ describe('Spielplan · ScheduleTable (Variante A)', () => {
     'dss-tbl--schedule', 'dss-sch-group', 'dss-sch-nr', 'dss-sch-when', 'dss-sch-date', 'dss-sch-time', 'dss-sch-live',
     'dss-sch-venue', 'dss-sch-ha', 'dss-sch-match', 'dss-sch-opp', 'dss-sch-logo', 'dss-sch-sub', 'dss-sch-team',
     'dss-sch-ph', 'dss-sch-sep', 'dss-sch-note', 'dss-sch-res', 'dss-sch-score', 'dss-sch-none', 'dss-sch-field',
-    'dss-sch-bye', 'dss-sch-notice', 'dss-sch--columns',
+    'dss-sch-bye', 'dss-sch-notice', 'dss-sch--columns', 'dss-sch-resbox', 'dss-sch-prov',
   ];
   it.each(CLASSES)('definiert .%s', (name) => {
     expect(hasClass(name)).toBe(true);
@@ -150,7 +150,7 @@ describe('Spielplan · ScheduleTable (Variante A)', () => {
 
   it.each([
     ['versus', '"when when" "match res"'],
-    ['opponent', '"when ha" "match res"'],
+    ['opponent', '"when when when" "ha match res"'],
     ['columns', '"nr field" "when venue" "heim res" "gast res" "notice notice"'],
   ])('Handy: Layout %s hat explizite grid-template-areas', (layout, areas) => {
     expect(ruleOf(mobile, `.dss-sch--${layout} tr.dss-sch-row`)).toContain(`grid-template-areas: ${areas};`);

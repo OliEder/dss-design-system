@@ -57,10 +57,10 @@ describe('Navigation: Farben mit Dunkelmodus', () => {
     expect(area).not.toMatch(/var\(--(err|ok|warn|info)-text\)/);
   });
 
-  it('Live-Marker der TopBar: Text in hellem Rotton (--err-fill hat auf der dunklen Leiste nur 4,4:1)', () => {
+  it('Live-Marker der TopBar: grüne Live-Sprache (Text --dss-live-fg-on-dark), kein Rot', () => {
     const live = css.match(/\.dss-topbar-live\s*\{[^}]*\}/)?.[0] ?? '';
-    expect(live).toMatch(/color:\s*oklch\(0\.80 0\.19 27\)/);
-    expect(live).not.toMatch(/color:\s*var\(--err-fill\)/);
+    expect(live).toMatch(/color:\s*var\(--dss-live-fg-on-dark\)/);
+    expect(live).not.toMatch(/--err-fill|oklch\(0\.80 0\.19 27\)/);
   });
 });
 

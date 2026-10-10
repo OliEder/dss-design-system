@@ -41,6 +41,11 @@
   --dss-chip-warn-bg: var(--warn-soft); --dss-chip-warn-fg: var(--warn-text);
   --dss-chip-info-bg: var(--info-soft); --dss-chip-info-fg: var(--info-text);
   --dss-chip-neutral-bg: var(--n-100);  --dss-chip-neutral-fg: var(--n-700);
+  /* Live: eine grüne Sprache. Fläche/Punkt aus --ok-fill (etwas dunkler, damit ≥ 3:1 auch auf --dss-surface-2); Text ≥ 7:1;
+     …-on-dark für immer dunkle Flächen (TopBar dunkel, dss-frame--dark), wie --ring-color-on-dark */
+  --live-fill: oklch(0.600 0.150 150);
+  --dss-live-fg: var(--ok-text);
+  --dss-live-fg-on-dark: oklch(0.85 0.12 150);
 }
 
 /* ── Semantische Aliase · Dark ──────────────────────────────── */
@@ -66,6 +71,7 @@
     --dss-chip-warn-bg: oklch(0.32 0.06 75); --dss-chip-warn-fg: oklch(0.90 0.10 80);
     --dss-chip-info-bg: oklch(0.30 0.06 245); --dss-chip-info-fg: oklch(0.88 0.08 245);
     --dss-chip-neutral-bg: var(--n-800); --dss-chip-neutral-fg: var(--n-200);
+    --live-fill: oklch(0.72 0.17 150);  --dss-live-fg: oklch(0.85 0.12 150);  --dss-live-fg-on-dark: oklch(0.85 0.12 150);
   }
 }
 :root[data-theme="dark"] {
@@ -83,6 +89,7 @@
   --dss-chip-warn-bg: oklch(0.32 0.06 75); --dss-chip-warn-fg: oklch(0.90 0.10 80);
   --dss-chip-info-bg: oklch(0.30 0.06 245); --dss-chip-info-fg: oklch(0.88 0.08 245);
   --dss-chip-neutral-bg: var(--n-800); --dss-chip-neutral-fg: var(--n-200);
+  --live-fill: oklch(0.72 0.17 150);  --dss-live-fg: oklch(0.85 0.12 150);  --dss-live-fg-on-dark: oklch(0.85 0.12 150);
 }
 
 /* ── Basis ──────────────────────────────────────────────────── */
@@ -215,9 +222,55 @@
 .dss-chip--ok { background: var(--dss-chip-ok-bg); color: var(--dss-chip-ok-fg); box-shadow: none; }
 .dss-chip--err { background: var(--dss-chip-err-bg); color: var(--dss-chip-err-fg); box-shadow: none; }
 .dss-chip--warn { background: var(--dss-chip-warn-bg); color: var(--dss-chip-warn-fg); box-shadow: none; }
-.dss-chip--mono { font-family: var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; font-size: var(--fs-caption); }
-.dss-chip--link { text-decoration: none; min-height: 44px; padding: 0 14px; font-size: var(--fs-body-sm); }
+/* Mono-Großbuchstaben und Ziffern sitzen in der Zeilenbox (JetBrains Mono) etwa 1 px zu hoch: 1 px Innenabstand von unten nach oben
+   verschoben, die Chip-Höhe (24 px Inhalt + 4 px) bleibt gleich. Gemessen: Textrand oben/unten gleich (Abweichung höchstens 0,25 px). */
+.dss-chip--mono { font-family: var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; font-size: var(--fs-caption); padding-block: 3px 1px; }
+.dss-chip--link { text-decoration: none; min-height: 43px; padding: 1px 14px 0; font-size: var(--fs-body-sm); } /* 43 + 1 px = 44 px Zielgröße; 1 px oben mittigt die Schrift optisch */
 .dss-chip--link:hover { box-shadow: inset 0 0 0 1px var(--dss-line-strong); }
+
+/* ── Live: eine Sprache für alles, was gerade läuft ──────────────
+   Grün statt Rot (Rot bleibt Fehler, Foul und Abgesagt). Punkt/Fläche --live-fill, Text --dss-live-fg
+   (auf immer dunklen Flächen --dss-live-fg-on-dark). Nie nur Farbe: das Wort „Live“ bzw. der Screenreader-Text „läuft“ bleibt.
+   Zwei Animationen (Punkt, Text), beide nur Deckkraft, 1,6 s (unter 1 Hz), keine Bewegung; bei „Bewegung reduzieren“ oder data-motion="reduce" aus. */
+.dss-live { display: inline-flex; align-items: center; gap: 6px; color: var(--dss-live-fg); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.dss-live-dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--live-fill); }
+.dss-sch-row.is-live .dss-sch-score, .dss-sg-game.is-live .dss-sch-score, .dss-match--live .dss-match-score { color: var(--dss-live-fg); }
+/* Zwei Keyframes mit je eigener Untergrenze: Punkte und Flächen pulsieren bis 0,35, Text nur bis 0,8
+   (Kontrast im Tal mindestens 4,5:1 auf allen Seitenflächen, Hell und Dunkel, BBV und DBB; bei 0,75 wären es hell nur 4,3:1). */
+@keyframes dss-live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+@keyframes dss-live-pulse-text { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+.dss-live-pulse, .dss-live-dot, .dss-match-pulse, .dss-pbp-dot, .dss-crumb-dot, .dss-topbar-live::before {
+  animation: dss-live-pulse 1.6s ease-in-out infinite;
+}
+.dss-sch-row.is-live .dss-sch-score, .dss-sg-game.is-live .dss-sch-score, .dss-match--live .dss-match-score {
+  animation: dss-live-pulse-text 1.6s ease-in-out infinite;
+}
+/* Aus: Systemeinstellung „Bewegung reduzieren“ oder das Attribut data-motion="reduce" auf <html> (Pause-Schalter der App, WCAG 2.2.2).
+   Beide Regeln decken dieselben Selektoren ab (Test in tests/live.test.ts). */
+@media (prefers-reduced-motion: reduce) {
+  .dss-live-pulse,
+  .dss-live-dot,
+  .dss-match-pulse,
+  .dss-pbp-dot,
+  .dss-crumb-dot,
+  .dss-topbar-live::before,
+  .dss-sch-row.is-live .dss-sch-score,
+  .dss-sg-game.is-live .dss-sch-score,
+  .dss-match--live .dss-match-score {
+    animation: none;
+  }
+}
+:root[data-motion="reduce"] .dss-live-pulse,
+:root[data-motion="reduce"] .dss-live-dot,
+:root[data-motion="reduce"] .dss-match-pulse,
+:root[data-motion="reduce"] .dss-pbp-dot,
+:root[data-motion="reduce"] .dss-crumb-dot,
+:root[data-motion="reduce"] .dss-topbar-live::before,
+:root[data-motion="reduce"] .dss-sch-row.is-live .dss-sch-score,
+:root[data-motion="reduce"] .dss-sg-game.is-live .dss-sch-score,
+:root[data-motion="reduce"] .dss-match--live .dss-match-score {
+  animation: none;
+}
 
 /* ── Stat-Kachel ────────────────────────────────────────────── */
 .dss-stat { background: var(--dss-surface); border: 1px solid var(--dss-line); border-radius: var(--radius-lg); padding: 14px 16px; }
@@ -437,13 +490,7 @@
 }
 .dss-frame--dark .dss-frame-meta { color: var(--n-400); }
 .dss-crumb { display: inline-flex; align-items: center; gap: 6px; }
-.dss-crumb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok-fill); animation: dss-pulse 2s infinite; }
-@keyframes dss-pulse {
-  0%   { box-shadow: 0 0 0 0 oklch(0.65 0.18 150 / 0.6); }
-  70%  { box-shadow: 0 0 0 8px oklch(0.65 0.18 150 / 0); }
-  100% { box-shadow: 0 0 0 0 oklch(0.65 0.18 150 / 0); }
-}
-@media (prefers-reduced-motion: reduce) { .dss-crumb-dot { animation: none; } }
+.dss-crumb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--live-fill); } /* Puls: siehe Abschnitt Live */
 
 .dss-tbl th { position: sticky; top: 0; z-index: 1; }
 .dss-tbl th.right, .dss-tbl td.right { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 500; }
@@ -538,17 +585,12 @@
   display: flex; align-items: center; gap: 14px; margin-left: 28px; font-family: var(--font-mono);
   font-size: var(--fs-caption); color: var(--n-300); letter-spacing: 0.04em;
 }
-/* Heller Rotton: --err-fill hat als Text auf der immer dunklen Leiste nur 4,4:1 (DBB 3,7:1), dieser Ton mindestens 7:1 (Schwarz 8,9:1, Anthrazit #191919 7,4:1) */
+/* Live auf der immer dunklen Leiste: Text --dss-live-fg-on-dark (≥ 7:1 auf Schwarz und Anthrazit #191919), Punkt --live-fill; Puls: siehe Abschnitt Live */
 .dss-topbar-live {
-  display: inline-flex; align-items: center; gap: 6px; color: oklch(0.80 0.19 27); font-weight: 700;
+  display: inline-flex; align-items: center; gap: 6px; color: var(--dss-live-fg-on-dark); font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.1em;
 }
-.dss-topbar-live::before {
-  content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--err-fill);
-  animation: dss-tb-pulse 1.6s ease-in-out infinite;
-}
-@keyframes dss-tb-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
-@media (prefers-reduced-motion: reduce) { .dss-topbar-live::before { animation: none; } }
+.dss-topbar-live::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--live-fill); }
 .dss-topbar-score { font-weight: 700; font-size: var(--fs-body-md); color: white; letter-spacing: -0.01em; }
 .dss-topbar-clock { color: var(--signal-300); font-weight: 700; }
 .dss-topbar-center { flex: 1; display: flex; justify-content: center; }
@@ -793,8 +835,8 @@ a.dss-crumbs-item:focus-visible, a.dss-crumbs-chip:focus-visible { outline: var(
 button.dss-match, a.dss-match { cursor: pointer; }
 button.dss-match:hover, a.dss-match:hover { border-color: var(--dss-line-strong); box-shadow: var(--shadow-md); transform: translateY(-1px); }
 button.dss-match:focus-visible, a.dss-match:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
-.dss-match--live { border-color: var(--ok-fill); }
-.dss-match--live::before { content: ''; display: block; height: 3px; background: var(--ok-fill); }
+.dss-match--live { border-color: var(--live-fill); }
+.dss-match--live::before { content: ''; display: block; height: 3px; background: var(--live-fill); }
 .dss-match-head {
   display: flex; justify-content: space-between; align-items: center; padding: 14px 18px 8px;
   font-family: var(--font-mono); font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: 0.08em;
@@ -804,10 +846,9 @@ button.dss-match:focus-visible, a.dss-match:focus-visible { outline: var(--ring-
 .dss-match-muted { color: var(--dss-mute); margin-left: 4px; }
 .dss-match-when { color: var(--dss-fg-soft); }
 .dss-match-final { color: var(--dss-fg); }
-.dss-match-live { display: inline-flex; align-items: center; gap: 6px; color: var(--dss-chip-ok-fg); }
-.dss-match-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--ok-fill); animation: dss-mc-pulse 1.6s ease-in-out infinite; }
-@keyframes dss-mc-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-@media (prefers-reduced-motion: reduce) { .dss-match-pulse { animation: none; } button.dss-match, a.dss-match { transition: none; } }
+.dss-match-live { display: inline-flex; align-items: center; gap: 6px; color: var(--dss-live-fg); }
+.dss-match-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--live-fill); } /* Puls: siehe Abschnitt Live */
+@media (prefers-reduced-motion: reduce) { button.dss-match, a.dss-match { transition: none; } }
 .dss-match-body { display: flex; flex-direction: column; gap: 8px; padding: 6px 18px 16px; }
 .dss-match-team { display: grid; grid-template-columns: 16px 1fr auto; gap: 14px; align-items: center; }
 .dss-match-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--team-heim, oklch(0.55 0.20 27)); }
@@ -901,13 +942,9 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
   color: var(--dss-mute); letter-spacing: 0.06em; text-transform: uppercase;
 }
 .dss-pbp-frame--dark .dss-pbp-meta { color: var(--n-400); }
-.dss-pbp-live { display: inline-flex; align-items: center; gap: 6px; }
-.dss-pbp-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok-fill); animation: dss-pbp-pulse 1.8s infinite; }
-@keyframes dss-pbp-pulse {
-  0%   { box-shadow: 0 0 0 0 oklch(0.65 0.18 150 / 0.6); }
-  70%  { box-shadow: 0 0 0 8px oklch(0.65 0.18 150 / 0); }
-  100% { box-shadow: 0 0 0 0 oklch(0.65 0.18 150 / 0); }
-}
+.dss-pbp-live { display: inline-flex; align-items: center; gap: 6px; color: var(--dss-live-fg); font-weight: 700; }
+.dss-pbp-frame--dark .dss-pbp-live { color: var(--dss-live-fg-on-dark); }
+.dss-pbp-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--live-fill); } /* Puls: siehe Abschnitt Live */
 .dss-pbp-feed { max-height: 600px; overflow-y: auto; }
 .dss-pbp-feed:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: -3px; }
 .dss-pbp-event {
@@ -918,7 +955,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
   from { opacity: 0; transform: translateY(-4px); background: var(--dss-selected-bg); }
   to   { opacity: 1; transform: translateY(0); background: transparent; }
 }
-@media (prefers-reduced-motion: reduce) { .dss-pbp-event, .dss-pbp-dot { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .dss-pbp-event { animation: none; } }
 .dss-pbp-frame--dark .dss-pbp-event { border-bottom-color: var(--n-800); }
 .dss-pbp-event:last-child { border-bottom: 0; }
 .dss-pbp-event:hover { background: var(--dss-hover-bg); }
@@ -1060,14 +1097,28 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 .dss-sch-logo img { width: 100%; height: 100%; object-fit: contain; }
 .dss-tbl--schedule td.dss-sch-res { width: 1%; text-align: right; white-space: nowrap; }
 .dss-sch--columns td.dss-sch-res { text-align: center; }
-.dss-sch-res .dss-chip { margin-right: 10px; vertical-align: middle; }
+/* Ergebnis-Box: Zahl (und Sieg-/Niederlage-Chip links davon); "vorläufig" steht klein unter der Zahl.
+   Die Zahl behält ihre Ausrichtung (rechts, im Layout columns mittig), auch wenn das Tag breiter ist als die Zahl.
+   Der Chip steht über beide Zeilen, so wächst die Zeile durch das Tag nicht über die Dichte-Höhe hinaus. */
+.dss-sch-resbox { display: inline-grid; grid-template-columns: auto auto; justify-items: end; align-items: center; vertical-align: middle; }
+.dss-sch--columns .dss-sch-resbox { justify-items: center; }
+.dss-sch-resbox .dss-chip { grid-column: 1; grid-row: 1 / span 2; }
+.dss-sch-resbox .dss-sch-score { grid-column: 2; grid-row: 1; }
+.dss-sch-resbox .dss-sch-prov { grid-column: 2; grid-row: 2; }
+.dss-sch-res .dss-chip { margin-right: 10px; }
+/* Zeilen mit vorläufigem Ergebnis: Zahl (22 px) plus Tag (11 px, 1 px Abstand) sind 34 px hoch (plus 1 px Zeilenlinie); weniger Innenabstand in der Ergebniszelle,
+   damit die Dichte-Höhen (default 48, compact 40) auch dann gelten. touch (60) hat genug Platz. */
+.dss-tbl--schedule.dss-tbl--default td.dss-sch-res { padding-block: 6px; }
+.dss-tbl--schedule.dss-tbl--compact td.dss-sch-res { padding-block: 2px; }
 .dss-sch-score {
   font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-stat); line-height: 1;
   letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--dss-fg);
 }
 .dss-sch-none { font-family: var(--font-mono); color: var(--dss-mute); }
-.dss-sch-res small { margin-left: 8px; font-size: var(--fs-body-sm); color: var(--dss-mute); }
-.dss-sch-field { max-width: 14ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: middle; }
+.dss-sch-prov { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; line-height: 1; letter-spacing: 0.04em; color: var(--dss-mute); white-space: nowrap; margin-top: 1px; }
+/* inline-block statt inline-flex (nötig für die Auslassungspunkte); line-height = Inhaltshöhe des Chips (24 px), damit der Text mittig sitzt;
+   die Zeilenbox liegt hier etwas anders als im Flex-Chip, deshalb 2 px statt 3/1 px Innenabstand (gemessen) */
+.dss-sch-field { max-width: 14ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: middle; line-height: 24px; padding-block: 2px; }
 .dss-tbl--schedule td.dss-sch-notice { max-width: 24ch; white-space: normal; }
 .dss-tbl--schedule tr.is-own td:first-child { box-shadow: inset 3px 0 0 var(--indicator); }
 /* Eigene Zeile: gedämpfter Text auf dem getönten Grund (Dunkelmodus 5,5:1 mit --dss-mute) auf ≥ 7:1 */
@@ -1098,7 +1149,11 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
   }
   .dss-tbl--schedule tr.dss-sch-row:last-child { border-bottom: 0; }
   .dss-sch--versus tr.dss-sch-row { grid-template-areas: "when when" "match res"; }
-  .dss-sch--opponent tr.dss-sch-row { grid-template-areas: "when ha" "match res"; }
+  /* Perspektive: erste Zeile Datum und Uhrzeit, zweite Zeile "vs."/"@" vor dem Gegner, Ergebnis rechts.
+     Die DOM-Reihenfolge (Zeit, Heim/Auswärts, Gegner, Ergebnis) bleibt für Screenreader unverändert. */
+  .dss-sch--opponent tr.dss-sch-row { grid-template-columns: auto 1fr auto; grid-template-areas: "when when when" "ha match res"; }
+  .dss-tbl--schedule.dss-sch--opponent .dss-sch-date { display: inline; }
+  .dss-tbl--schedule.dss-sch--opponent .dss-sch-date + .dss-sch-time::before { content: " · "; color: var(--dss-mute); }
   .dss-sch--columns tr.dss-sch-row { grid-template-areas: "nr field" "when venue" "heim res" "gast res" "notice notice"; }
 
   .dss-tbl.dss-tbl--schedule tbody tr.dss-sch-row td {
@@ -1107,7 +1162,9 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
   .dss-tbl.dss-tbl--schedule tbody tr.dss-sch-row td:first-child { margin-top: 0; }
   .dss-tbl--schedule td.dss-sch-nr { grid-area: nr; }
   .dss-tbl--schedule td.dss-sch-when { grid-area: when; }
-  .dss-tbl--schedule td.dss-sch-ha { grid-area: ha; text-align: right; }
+  .dss-tbl--schedule td.dss-sch-ha { grid-area: ha; text-align: left; align-self: start; }
+  /* Chip (28 px) mittig zum Logo (36 px) der ersten Gegner-Zeile: 4 px Grundabstand der Zellen plus 4 px */
+  .dss-tbl.dss-tbl--schedule tbody tr.dss-sch-row td.dss-sch-ha { margin-top: 8px; }
   .dss-tbl--schedule td.dss-sch-match { grid-area: match; }
   .dss-tbl--schedule td.dss-sch-heim { grid-area: heim; }
   .dss-tbl--schedule td.dss-sch-gast { grid-area: gast; }
@@ -1155,8 +1212,12 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 .dss-sg-game.is-cancelled .dss-sch-team { text-decoration: line-through; }
 .dss-sg-game.is-postponed { color: var(--dss-mute); }
 .dss-sg-teams { line-height: 1.35; }
-.dss-sg-result { display: flex; align-items: baseline; gap: 6px; }
+/* Ergebnis und Live-Tag stehen in einer Zeile und brechen erst um, wenn die Zelle (mindestens 180 px) zu schmal wird.
+   Ohne Stand steht das Live-Tag hinter der Paarung (läuft im Text mit, bricht dort um). */
+.dss-sg-result { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
 .dss-sg-result .dss-sch-score { font-size: var(--fs-body); }
+.dss-sg-result .dss-sch-live { margin-left: 0; }
+.dss-sg-result .dss-sch-resbox { justify-items: start; }
 .dss-sg-game + .dss-sg-game { margin-top: 6px; }
 .dss-tbl--compact .dss-sg-game { min-height: 0; padding: 4px 8px; gap: 2px; }
 .dss-tbl--compact .dss-sg-game + .dss-sg-game { margin-top: 4px; }

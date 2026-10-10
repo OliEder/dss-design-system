@@ -8,7 +8,7 @@
    * Vereinsregister).
    *
    *   default — ruhig, ohne Live-Anzeige
-   *   live    — roter Puls + Spielstand + Uhr (Schiri-/Coach-App)
+   *   live    — grüner Puls + Spielstand + Uhr (Schiri-/Coach-App)
    *   admin   — Breadcrumb-Kontext (Vereinsregister, Einstellungen)
    */
   import type { Snippet } from 'svelte';

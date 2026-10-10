@@ -323,7 +323,7 @@ Zwei Bausteine für Spielpläne (Vanilla-Klassen, Svelte, React), gemeinsames Da
   `columns[].id` passen, sonst (und ohne `time`) erscheint das Spiel nicht. `breaks` für Pausen; Snippet bzw. Prop
   `notice` je Spiel.
 - Der Scrollbereich beider Bausteine ist eine fokussierbare Region (`role="region"`, `tabindex="0"`), benannt nach `caption`, sonst nach einem Text-`title`, sonst „Spielplan“ bzw. „Zeitraster“; so lässt er sich mit der Tastatur scrollen.
-- Zustände: `scheduled`, `live` (grüner Puls hinter der Uhrzeit), `finished`, `cancelled`, `postponed`, `bye`;
+- Zustände: `scheduled`, `live` (grünes Live-Tag mit pulsierendem Punkt hinter der Uhrzeit, grüne Ergebniszahlen), `finished`, `cancelled`, `postponed`, `bye`;
   `provisional` für vorläufige Ergebnisse. Texte (Datum, Zeit) kommen fertig formatiert von der App.
 - Screenreader: Das Ergebnis wird als unsichtbarer Text gesprochen; abgesagte und verschobene Spiele tragen zusätzlich
   den Text „abgesagt“ bzw. „verschoben“ (nicht nur über Farbe oder Durchstreichung erkennbar).

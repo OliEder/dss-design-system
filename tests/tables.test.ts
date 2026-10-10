@@ -105,8 +105,9 @@ describe('PlayByPlay: Verhalten, das die Seite beschreibt', () => {
     expect(css).toMatch(new RegExp('\\.dss-pbp-feed:focus-visible\\s*\\{[^}]*' + ring + ';\\s*outline-offset:\\s*-3px'));
   });
   it('Animationen (Einblenden, Live-Puls) stoppen bei prefers-reduced-motion', () => {
-    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.dss-pbp-event, \.dss-pbp-dot\s*\{\s*animation:\s*none/);
-    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.dss-crumb-dot\s*\{\s*animation:\s*none/);
+    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.dss-pbp-event\s*\{\s*animation:\s*none/);
+    // Live-Punkte (PlayByPlay, Breadcrumb) laufen über die gemeinsame Live-Animation, siehe tests/live.test.ts
+    expect(css).toMatch(/@media \(prefers-reduced-motion: reduce\)\s*\{\s*[^{}]*\.dss-pbp-dot[^{}]*\.dss-crumb-dot[^{}]*\{\s*animation:\s*none/);
   });
   it('kein Auto-Scroll im Baustein', () => {
     expect(read('../svelte/PlayByPlay.svelte')).not.toMatch(/scrollTo|scrollTop|scrollIntoView/);

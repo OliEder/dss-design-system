@@ -153,10 +153,12 @@
             {#if !scored}
               <span class="dss-sch-none">–</span>
             {:else}
-              {#if result}<span class="dss-chip dss-chip--mono {OUTCOME_CHIP[result]}" aria-hidden="true">{result}</span>{/if}
-              <span class="dss-sch-score" aria-hidden="true">{mode === 'opponent' && game.opponent ? `${game.ownScore} : ${game.opponent.score}` : `${game.heim?.score} : ${game.gast?.score}`}</span>
-              <span class="dss-sr-only">{ariaForResult(game, mode)}</span>
-              {#if game.provisional}<small aria-hidden="true">vorläufig</small>{/if}
+              <span class="dss-sch-resbox">
+                {#if result}<span class="dss-chip dss-chip--mono {OUTCOME_CHIP[result]}" aria-hidden="true">{result}</span>{/if}
+                <span class="dss-sch-score" aria-hidden="true">{mode === 'opponent' && game.opponent ? `${game.ownScore} : ${game.opponent.score}` : `${game.heim?.score} : ${game.gast?.score}`}</span>
+                <span class="dss-sr-only">{ariaForResult(game, mode)}</span>
+                {#if game.provisional}<small class="dss-sch-prov" aria-hidden="true">vorläufig</small>{/if}
+              </span>
             {/if}
           </td>
         {:else if col.key === 'notice'}
