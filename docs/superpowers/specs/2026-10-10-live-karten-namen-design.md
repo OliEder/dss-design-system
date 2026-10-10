@@ -50,3 +50,9 @@ Gemeinsame Bausteine: Token `--live-fill` (Fläche/Punkt, `--ok-fill`-nah), `--d
 - Prop-Namen: `names="full" | "short"` und `logos` (Spielplan, Karten); `period` und `periods={4 | 8}` (MatchCard, PlayByPlay).
 - Offen bleibt nur: Wo die Live-Foundation-Doku steht (entscheidet die Umsetzung von Paket 2) und ob Team Card und Spielplan das Datenmodell `ScheduleTeam` teilen (Vorschlag: ja, `name`, `short`, `logo`).
 - Reihenfolge: Pakete 1 und 2 zuerst (laufen gemeinsam), danach 3, danach 4, weil sich die Pakete dieselben Dateien teilen.
+
+## Spielerfotos für die Demos (Paket 4)
+- Quelle: die Unsplash-Fotos im lokalen Ordner `images/` (ignoriert, 110 MB, 39 Dateien). Der Ordner bleibt ignoriert und wird nie referenziert, weil er auf GitHub Pages und im CI fehlt.
+- Vorgehen: Eine kleine Auswahl (etwa 6 bis 10 Fotos mit gut erkennbaren Gesichtern/Porträts) wird mit `sips` auf quadratische Ausschnitte von höchstens 480 px verkleinert (JPEG, Ziel unter 60 KB je Datei) und unter `stories/assets/players/` abgelegt (nur Storybook, nicht im npm-Paket: `package.json` `files` prüfen). Dazu `stories/assets/players/CREDITS.md` mit Fotograf und Link zur Unsplash-Lizenz (Namen aus den Dateinamen).
+- Die Bilder zeigen echte Personen, die Demo-Namen sind erfunden: Das wird in der Doku nicht als „echter Spieler“ ausgegeben; keine Zuordnung zu realen Vereinen.
+- Die Auswahl und der Zuschnitt werden vor dem Merge im Screenshot geprüft (Gesicht im Ausschnitt, kein Text/Logo im Bild).
