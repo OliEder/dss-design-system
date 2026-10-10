@@ -5,6 +5,7 @@ export type {
   ScheduleGame,
   ScheduleGridColumn,
   ScheduleLayout,
+  ScheduleNames,
   ScheduleOutcome,
   ScheduleState,
   ScheduleTeam,

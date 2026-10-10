@@ -117,13 +117,19 @@ export function groupBySection(games) {
 }
 
 /** Bis zu drei Anfangsbuchstaben in Großbuchstaben (Platzhalter für fehlende Logos). */
-export function initials(name) {
+export function initials(name, max = 3) {
   return name
     .split(/\s+/)
     .filter(Boolean)
-    .slice(0, 3)
+    .slice(0, max)
     .map((word) => word[0].toUpperCase())
     .join('');
+}
+
+/** Kurzname eines Teams; leer, wenn keiner angegeben ist oder er dem Namen gleicht (dann gibt es nichts zu kürzen). */
+export function shortName(team) {
+  const short = team?.short?.trim();
+  return short && short !== team.name ? short : undefined;
 }
 
 /** Text des Ergebnisses für Screenreader; nur sinnvoll, wenn hasScore(game, layout) gilt. */

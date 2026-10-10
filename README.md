@@ -328,6 +328,7 @@ Zwei Bausteine für Spielpläne (Vanilla-Klassen, Svelte, React), gemeinsames Da
 - Screenreader: Das Ergebnis wird als unsichtbarer Text gesprochen; abgesagte und verschobene Spiele tragen zusätzlich
   den Text „abgesagt“ bzw. „verschoben“ (nicht nur über Farbe oder Durchstreichung erkennbar).
 - Unter 640 px werden Zeilen zu Karten (Tabelle) bzw. Anwurfzeiten zu Blöcken (Raster).
+- Kurznamen und Logos (auch an `MatchCard`): `ScheduleTeam.short` und `logo`; Prop `names="full" | "short"` (Standard `full`; bis 640 px Breite erscheint der Kurzname automatisch, per CSS) und `logos` (Standard aus; Logo-Bild mit leerem Alternativtext oder Initialen; im Layout `opponent` an, solange nicht `false`). Der volle Name bleibt für Screenreader lesbar.
 - Kein dunkler Rahmen (`dss-frame--dark`); der seitenweite Dark Mode wirkt über die `--dss-*`-Variablen.
 
 ```tsx

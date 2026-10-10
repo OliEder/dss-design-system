@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { cn } from './cn';
 import { ariaForResult, buildGrid, hasScore, stateLabel, winnerSide } from '../js/schedule.js';
 import { LiveTag, ResultText, TeamName, type ScheduleRenderLink } from './ScheduleParts';
-import type { ScheduleBreak, ScheduleDensity, ScheduleGame, ScheduleGridColumn } from './schedule-types';
+import type { ScheduleBreak, ScheduleDensity, ScheduleGame, ScheduleGridColumn, ScheduleNames } from './schedule-types';
 
 export interface ScheduleGridProps {
   /** Jedes Spiel braucht `time` und `column` (passt zu einer `columns[].id`). */
@@ -16,6 +16,10 @@ export interface ScheduleGridProps {
   emptyLabel?: string;
   /** Zeilenhöhe; Standard: `default` (anders als ScheduleTable wird sie nicht aus den Spielen abgeleitet). */
   density?: ScheduleDensity;
+  /** `short` zeigt den Kurzname (`short`), falls vorhanden; bis 640 px Breite erscheint er automatisch (CSS). Standard: `full`. */
+  names?: ScheduleNames;
+  /** Logo bzw. Initialen vor dem Teamnamen (Platzhalter ohne Logo). Standard: aus. */
+  logos?: boolean;
   title?: ReactNode;
   titleAs?: 'h2' | 'h3' | 'h4';
   meta?: ReactNode;
@@ -34,6 +38,8 @@ export function ScheduleGrid({
   breaks,
   emptyLabel = 'frei',
   density = 'default',
+  names = 'full',
+  logos = false,
   title,
   titleAs: Heading = 'h3',
   meta,
@@ -62,12 +68,12 @@ export function ScheduleGrid({
       >
         <div className="dss-sg-teams">
           {stateLabel(game.state) ? <span className="dss-sr-only">{`${stateLabel(game.state)} `}</span> : null}
-          <TeamName team={game.heim} loser={winner === 'gast'} renderLink={renderLink} />
+          <TeamName team={game.heim} loser={winner === 'gast'} renderLink={renderLink} names={names} logo={logos} />
           <span className="dss-sch-sep" aria-hidden="true">
             {' – '}
           </span>
           <span className="dss-sr-only"> gegen </span>
-          <TeamName team={game.gast} loser={winner === 'heim'} renderLink={renderLink} />
+          <TeamName team={game.gast} loser={winner === 'heim'} renderLink={renderLink} names={names} logo={logos} />
           {game.state === 'live' && !hasScore(game, 'versus') ? <LiveTag /> : null}
         </div>
         {(game.state === 'finished' || game.state === 'live') && hasScore(game, 'versus') ? (
@@ -133,7 +139,13 @@ export function ScheduleGrid({
                       {row.time ? row.time : <span className="dss-sr-only">Zeit offen</span>}
                     </th>
                     <td role="cell" colSpan={columns.length}>
-                      {row.game.heim ? `${row.game.heim.name} hat Freilos` : (row.game.note ?? 'Spielfrei')}
+                      {row.game.heim ? (
+                        <>
+                          <TeamName team={row.game.heim} renderLink={renderLink} names={names} logo={logos} /> hat Freilos
+                        </>
+                      ) : (
+                        (row.game.note ?? 'Spielfrei')
+                      )}
                     </td>
                   </tr>
                 );

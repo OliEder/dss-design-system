@@ -26,7 +26,8 @@ export const SpielkarteSpielwiese = {
   render,
   args: {
     kind: 'match', interactive: 'none', state: 'live', league: 'Bayernliga Süd', matchday: '17. Spieltag', date: 'Sa, 25. Mai', time: '19:30', venue: 'Nordhain-Halle',
-    heim: { name: 'TSV Nordhain', score: 87 }, gast: { name: 'Lindenberg Hawks', score: 64 }, quarter: 'Q4', clock: '02:14',
+    heim: { name: 'TSV Nordhain', short: 'TSV N.', score: 87 }, gast: { name: 'Lindenberg Hawks', short: 'Hawks', score: 64 }, quarter: 'Q4', clock: '02:14',
+    names: 'full', logos: false,
   },
   argTypes: {
     ...hidden,
@@ -38,8 +39,10 @@ export const SpielkarteSpielwiese = {
     date: { control: 'text', description: 'Datum, nur bei `scheduled`', table: t('string', "''") },
     time: { control: 'text', description: 'Anpfiff, nur bei `scheduled` hinter dem Datum', table: t('string', "''") },
     venue: { control: 'text', description: 'Halle, im Fuß der Karte', table: t('string', "''") },
-    heim: { control: 'object', description: 'Heimmannschaft: `{ name, score? }`', table: t('{ name: string; score?: number }') },
-    gast: { control: 'object', description: 'Gastmannschaft: `{ name, score? }`', table: t('{ name: string; score?: number }') },
+    heim: { control: 'object', description: 'Heimmannschaft: `{ name, short?, logo?, score? }` (die Spielwiese ergänzt das Logo für TSV Nordhain und Lindenberg Hawks)', table: t('{ name: string; short?: string; logo?: string; score?: number }') },
+    gast: { control: 'object', description: 'Gastmannschaft: `{ name, short?, logo?, score? }`', table: t('{ name: string; short?: string; logo?: string; score?: number }') },
+    names: { control: 'inline-radio', options: ['full', 'short'], description: 'Voller Name oder Kurzname (`short`, falls vorhanden). Bis 640 px Fensterbreite erscheint der Kurzname automatisch.', table: t("'full' | 'short'", "'full'") },
+    logos: { control: 'boolean', description: 'Logo (`logo`-URL) bzw. Initialen im Kreis vor dem Teamnamen', table: t('boolean', 'false') },
     quarter: { control: 'text', description: 'Spielviertel, nur bei `live`', table: t('string', "''") },
     clock: { control: 'text', description: 'Spieluhr, nur bei `live`', table: t('string', "''") },
   },
@@ -93,6 +96,9 @@ const example = (name: string) => ({
 });
 
 export const Spielkarten    = { ...example('spiel'), tags: ['!dev'] };
+export const KartenNamen    = { ...example('namen'), tags: ['!dev'] };
+export const KartenLogos    = { ...example('logos'), tags: ['!dev'] };
+export const KartenNamenHandy = { ...example('namen-handy'), tags: ['!dev'] };
 export const Spielerkarten  = { ...example('spieler'), tags: ['!dev'] };
 export const Ladezustaende  = { ...example('skeleton'), tags: ['!dev'] };
 export const Zustaende      = { ...example('zustaende'), tags: ['!dev'] };

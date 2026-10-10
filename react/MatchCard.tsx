@@ -1,10 +1,18 @@
 import type { MouseEventHandler } from 'react';
 import { cn } from './cn';
+import { shortName } from '../js/schedule.js';
+import { TeamLogo } from './ScheduleParts';
 
 export type MatchState = 'scheduled' | 'live' | 'finished';
 
+export type MatchNames = 'full' | 'short';
+
 export interface MatchTeam {
   name: string;
+  /** Kurzname (z. B. "Hawks"): Anzeige bei `names="short"` und automatisch bis 640 px Breite. */
+  short?: string;
+  /** Logo-URL; ohne Logo erscheinen bei `logos` die Initialen. */
+  logo?: string;
   score?: number;
 }
 
@@ -17,6 +25,10 @@ export interface MatchCardProps {
   venue?: string;
   heim: MatchTeam;
   gast: MatchTeam;
+  /** `short` zeigt den Kurzname, falls vorhanden; bis 640 px Breite erscheint er automatisch (CSS). Standard: `full`. */
+  names?: MatchNames;
+  /** Logo bzw. Initialen vor dem Teamnamen. Standard: aus. */
+  logos?: boolean;
   /** Nur bei `live`: Spielviertel und Uhr. */
   quarter?: string;
   clock?: string;
@@ -36,6 +48,8 @@ export function MatchCard({
   venue,
   heim,
   gast,
+  names = 'full',
+  logos = false,
   quarter = '',
   clock = '',
   href,
@@ -45,6 +59,25 @@ export function MatchCard({
   const heimWin = state === 'finished' && (heim.score ?? 0) > (gast.score ?? 0);
   const gastWin = state === 'finished' && (gast.score ?? 0) > (heim.score ?? 0);
   const showScore = state !== 'scheduled';
+
+  const teamBlock = (team: MatchTeam) => {
+    const short = shortName(team);
+    return (
+      <>
+        {logos ? <TeamLogo name={team.name} logo={team.logo} /> : null}
+        {short ? (
+          <span className={cn('dss-match-name', 'dss-team-name', names === 'short' && 'dss-team-name--short')}>
+            <span className="dss-name-full">{team.name}</span>
+            <span className="dss-name-short" aria-hidden="true" title={team.name}>
+              {short}
+            </span>
+          </span>
+        ) : (
+          <span className="dss-match-name">{team.name}</span>
+        )}
+      </>
+    );
+  };
 
   const body = (
     <>
@@ -69,12 +102,12 @@ export function MatchCard({
       <span className="dss-match-body">
         <span className={cn('dss-match-team', gastWin && 'is-loser')}>
           <span className="dss-match-dot" aria-hidden="true" />
-          <span className="dss-match-name">{heim.name}</span>
+          {teamBlock(heim)}
           {showScore && heim.score !== undefined ? <span className="dss-match-score">{heim.score}</span> : null}
         </span>
         <span className={cn('dss-match-team', 'dss-match-team--gast', heimWin && 'is-loser')}>
           <span className="dss-match-dot" aria-hidden="true" />
-          <span className="dss-match-name">{gast.name}</span>
+          {teamBlock(gast)}
           {showScore && gast.score !== undefined ? <span className="dss-match-score">{gast.score}</span> : null}
         </span>
       </span>
@@ -86,7 +119,7 @@ export function MatchCard({
     </>
   );
 
-  const cls = cn('dss-match', `dss-match--${state}`, className);
+  const cls = cn('dss-match', `dss-match--${state}`, logos && 'dss-match--logos', className);
   if (href) {
     return (
       <a className={cls} href={href} onClick={onClick}>

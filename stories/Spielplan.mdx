@@ -4,7 +4,7 @@ import { DosDonts } from './docs/blocks/DosDonts';
 import { FrameworkCode } from './docs/blocks/FrameworkCode';
 import { DocTable } from './docs/blocks/DocTable';
 import './docs/blocks/blocks.css';
-import { tableVanilla, tableSvelte, tableReact, versusVanilla, versusSvelte, versusReact, gridVanilla, gridSvelte, gridReact, codeGame } from './Spielplan.code';
+import { tableVanilla, tableSvelte, tableReact, versusVanilla, versusSvelte, versusReact, gridVanilla, gridSvelte, gridReact, codeGame, namesVanilla, namesSvelte, namesReact } from './Spielplan.code';
 
 <Meta of={SpielplanStories} />
 
@@ -181,6 +181,98 @@ Das Snippet „notice“ liefert eine zusätzliche Spalte „Hinweis“ am Zeile
 
 Das Snippet „time“ ersetzt die Uhrzeit, hier durch ein Eingabefeld mit eigener Beschriftung („Anwurfzeit Spiel #9“), damit Screenreader das Feld benennen können.
 
+## Namen und Logos
+
+Lange Vereinsnamen wie „TSV Nordhain 1920“ füllen auf dem Handy eine ganze Zeile. Darum kann jedes Team einen Kurznamen (`short`, z. B. „TSV N.“) und ein Logo (`logo`, URL) mitbringen. Zwei Props wählen die Darstellung, in `ScheduleTable` und `ScheduleGrid` (und in der [MatchCard](?path=/docs/components-card-library--docs)) gleich: `names` und `logos`.
+
+<DocTable
+  label="Props für Namen und Logos"
+  head={['Prop', 'Werte', 'Wirkung']}
+  rows={[
+    ['names', "'full' | 'short'", <>Standard <code>full</code>: voller Name. <code>short</code>: der Kurzname, wo ein Team <code>short</code> hat; sonst bleibt der volle Name.</>],
+    ['logos', 'boolean', <>Standard <code>false</code>: kein Logo. <code>true</code>: je Team ein Logo (<code>logo</code>-URL) bzw. die Initialen im Kreis. Ausnahme Layout <code>opponent</code>, siehe unten.</>],
+  ]}
+/>
+
+### Volle Namen und Kurznamen
+
+<Canvas of={SpielplanStories.NamenVoll} />
+
+<Canvas of={SpielplanStories.NamenKurz} />
+
+Beide Tabellen zeigen dieselben Daten; oben `names="full"` (Standard), unten `names="short"`. Ein Team ohne `short`, oder mit einem `short`, das dem Namen gleicht, zeigt immer den Namen. Links (`href`) liegen um den sichtbaren Namen.
+
+**Automatisch auf dem Handy:** Bis 640 px Fensterbreite (wie die Handy-Karten) erscheint der Kurzname auch bei `names="full"`, wo ein Team einen hat. Die Regel steckt im CSS, beide Texte stehen im Markup (`dss-name-full`, `dss-name-short`); es ist kein JavaScript nötig und es funktioniert beim Rendern auf dem Server. Ein Team ohne Kurzname ändert sich nicht.
+
+### Logos
+
+<Canvas of={SpielplanStories.LogosVersus} />
+
+`logos` setzt ein Logo vor den Namen, in `versus`, `columns` und im Zeitraster. Das Bild ist dekorativ: `alt=""`, weil der Name daneben steht (siehe Barrierefreiheit unten); es lädt verzögert (`loading="lazy"`) und liegt mit `object-fit: contain` in einer Kachel in `--dss-surface-2`, damit auch transparente Logos im Dunkelmodus eine Fläche haben. Ohne `logo` erscheint ein Kreis mit den Initialen (die ersten zwei Wörter des vollen Namens, z. B. „SK“ für SV Kiefernau). Platzhalter („Erster Gruppe A“) bekommen in `versus`, `columns` und im Zeitraster kein Logo und keinen Initialenkreis; im Layout `opponent` bleibt der Initialenkreis wie bisher. Logos werden bei Verlierern und abgesagten Spielen nicht abgedunkelt, nur der Text. Freilos-Zeilen („… hat Freilos“) zeigen den Namen ebenfalls mit Kurzname und Logo.
+
+<Canvas of={SpielplanStories.LogosVersusKurz} />
+
+Logos und Kurznamen lassen sich frei kombinieren.
+
+<Canvas of={SpielplanStories.LogosColumns} />
+
+Im Layout `columns` stehen Logo und Name in den Spalten Heim und Gast; der Platzhalter in der letzten Zeile hat kein Logo.
+
+<Canvas of={SpielplanStories.LogosRaster} />
+
+Im Zeitraster steht das Logo vor dem Namen jeder Paarung.
+
+### Layout opponent: Logos wie bisher
+
+<Canvas of={SpielplanStories.LogosOpponent} />
+
+`opponent` zeigte schon immer das Logo des Gegners (36 px, bei fehlendem Logo die Initialen aus bis zu drei Wörtern). Das bleibt ohne Angabe so: dort sind Logos an, solange `logos` nicht ausdrücklich `false` ist. Mit `logos={false}` entfällt das Logo auch dort:
+
+<Canvas of={SpielplanStories.LogosOpponentAus} />
+
+### Größen je Dichte
+
+<DocTable
+  label="Logo-Größen"
+  head={['Dichte', 'Zeilenhöhe', 'Logo (versus, columns, Raster)', 'Logo im Layout opponent']}
+  rows={[
+    ['touch', '60 px', '28 px', '38 px (36 px und Rand)'],
+    ['default', '48 px', '28 px', '38 px (36 px und Rand)'],
+    ['compact', '40 px', '20 px', '38 px (36 px und Rand)'],
+  ]}
+/>
+
+Einzeilige Zeilen behalten mit Logos ihre Höhe (gemessen: 60, 48 und 40 px). In `compact` ist das Logo kleiner (20 px), damit es in die 40 px passt; die Initialen sind dort kleiner gesetzt (9 statt 11 px). Zeilen mit zweiter Zeile (Notiz, Liga) wachsen wie bisher; mit Logo etwas mehr (gemessen: Zeile mit Notiz in Standard 55,5 px ohne und 64,5 px mit Logos). Im Zeitraster sind die Spielblöcke mindestens 56 px hoch: Die Beispiele auf dieser Seite ändern sich durch Logos nicht, ein Block mit Ergebnis, Abschnitt und Notiz wird in Standard und Touch um etwa 9 px höher (74 auf 83 px), in `compact` um etwa 1 px. `opponent` wählt ohne Angabe `touch`; sein Logo ist unverändert.
+
+<Canvas of={SpielplanStories.LogosTouch} />
+
+<Canvas of={SpielplanStories.LogosDefault} />
+
+<Canvas of={SpielplanStories.LogosCompact} />
+
+### Barrierefreiheit: der Name wird einmal gelesen
+
+- **Logo:** Das Logo ist für Hilfstechnik verborgen (`aria-hidden`, Bild mit `alt=""`). Ein Alternativtext mit dem Vereinsnamen würde den Namen doppelt ansagen („Logo TSV Nordhain 1920, TSV Nordhain 1920“).
+- **Handy:** Teams mit Logo stehen bis 640 px untereinander, je Team eine Zeile; der Gedankenstrich entfällt dort (er ist für Hilfstechnik ohnehin verborgen, gelesen wird „gegen“).
+- **Kurzname:** Er ist `aria-hidden`. Wo der Kurzname sichtbar ist (mit `names="short"` und bis 640 px), bleibt der volle Name im Dokument (unsichtbar, `dss-sr-only`-Muster) und Screenreader lesen den vollen Namen genau einmal; als Linktext zählt der volle Name. Dafür ist der volle Name nie `display: none`.
+- **Markieren und Kopieren:** Wo der Kurzname sichtbar ist, ist der versteckte volle Name nicht markierbar (`user-select: none`); Markieren und Kopieren liefern nur den sichtbaren Namen. Mit der Maus zeigt der Kurzname den vollen Namen als Tooltip (`title`); für Hilfstechnik bleibt er verborgen, es kommt nichts doppelt.
+- **Sprachsteuerung (WCAG 2.5.3, Label im Namen):** Ein abgekürzter Kurzname wie „TSV N.“ steckt nicht im zugänglichen Namen „TSV Nordhain 1920“; „Klick TSV N.“ greift dann nicht. Wähle Kurznamen deshalb so, dass sie Teil des vollen Namens sind („Hawks“, „Seeberg“) oder dessen Anfang bilden.
+
+### Handy mit Kurznamen und Logos · 390 px Breite
+
+Die Vorschau ist eine eingebettete Seite mit fester Breite von 390 px, ohne dass `names` gesetzt ist: Der Kurzname erscheint automatisch.
+
+<div className="dss-phones">
+  <div className="dss-phone">
+    <h4 className="dss-doc-cap">Gegenüberstellung · logos</h4>
+    <div className="dss-phone-scroll" tabIndex={0} role="region" aria-label="Scrollbereich: Gegenüberstellung mit Logos">
+      <iframe title="Handy-Vorschau: Spielplan mit Kurznamen und Logos in 390 Pixel Breite" src="iframe.html?viewMode=story&globals=brand:bbv&id=components-spielplan--namen-handy" loading="lazy" />
+    </div>
+  </div>
+</div>
+
+<FrameworkCode label="Namen und Logos" vanilla={namesVanilla} svelte={namesSvelte} react={namesReact} />
+
 ## Dichte und Handy
 
 `density` steuert die Zeilenhöhe: **touch 60 px**, **default 48 px** (Standard), **compact 40 px**. Das sind Mindesthöhen der Zelle; Zeilen mit zweiter Zeile (Liga, Notiz) werden höher. Ein vorläufiges Ergebnis verändert die Höhe nicht: Zahl (22 px), 1 px Abstand und Tag (11 px) sind 34 px hoch und passen mit etwas weniger Innenabstand der Ergebniszelle (6 px in Standard, 2 px in kompakt) in die Dichten Standard und kompakt; gemessen bleiben 60, 48 und 40 px. `ScheduleTable` wählt ohne Angabe `touch` bei `opponent` oder wenn ein Spiel eine Liga-Unterzeile hat, sonst `default`. `ScheduleGrid` nimmt immer `default`.
@@ -264,7 +356,8 @@ Die Typen stehen in `js/schedule.d.ts` (Export `@bbv/dss-design-system/schedule.
   rows={[
     ['name', 'string', 'Mannschaftsname (Pflicht).'],
     ['href', 'string', 'Name als Link.'],
-    ['logo', 'string', 'Logo-URL; ohne Logo erscheinen die Initialen.'],
+    ['short', 'string', <>Kurzname (z. B. „Hawks“): Anzeige bei <code>names="short"</code> und bis 640 px Breite.</>],
+    ['logo', 'string', <>Logo-URL; ohne Logo erscheinen bei <code>logos</code> die Initialen.</>],
     ['score', 'number', 'Punkte.'],
     ['placeholder', 'boolean', 'Platzhalter wie „Erster Gruppe A“: kursiv und gedämpft.'],
     ['own', 'boolean', 'Eigene Mannschaft (Hervorhebung).'],
@@ -283,6 +376,8 @@ Die Typen stehen in `js/schedule.d.ts` (Export `@bbv/dss-design-system/schedule.
     ['slots, breaks', 'Grid', <>Anwurfzeiten vorgeben bzw. Pausen <code>{'{ time, label }'}</code>.</>],
     ['emptyLabel', 'Grid', 'Text leerer Zellen; Standard „frei“.'],
     ['density', 'beide', <>'touch' | 'default' | 'compact'; Table leitet sie aus den Spielen ab, Grid nimmt <code>default</code>.</>],
+    ['names', 'beide', <>'full' | 'short'; Standard <code>full</code>. Bis 640 px Breite erscheint der Kurzname automatisch, siehe „Namen und Logos“.</>],
+    ['logos', 'beide', <>Logo bzw. Initialen vor dem Teamnamen; Standard <code>false</code>, im Layout <code>opponent</code> an, solange nicht ausdrücklich <code>false</code>.</>],
     ['title, meta', 'beide', 'Rahmenkopf. In Svelte reine Strings, in React beliebige Knoten.'],
     ['caption', 'beide', 'Unsichtbare Tabellenbeschriftung für Screenreader.'],
     ['class / className', 'beide', <>Zusätzliche Klasse am Rahmen (Svelte <code>class</code>, React <code>className</code>).</>],
@@ -350,6 +445,20 @@ Was optisch durch Chip, Farbe oder Durchstreichung gezeigt wird, steht zusätzli
       dontText: 'Fünf Hallen in einem Raster sprengen den Rahmen und scrollen seitlich.',
       good: <Story of={SpielplanStories.DoHallen} inline />,
       bad: <Story of={SpielplanStories.DontHallen} inline />,
+    },
+    {
+      title: 'Kurznamen nur mit eindeutiger Zuordnung',
+      doText: 'Jeder Kurzname nennt das Team eindeutig: „Hawks“, „Seeberg“.',
+      dontText: 'Mehrere Vereine als „TSV“: niemand erkennt, wer gegen wen spielt.',
+      good: <Story of={SpielplanStories.DoKurz} inline />,
+      bad: <Story of={SpielplanStories.DontKurz} inline />,
+    },
+    {
+      title: 'Logos dekorativ, Alternativtext leer',
+      doText: 'Logo mit leerem Alternativtext (alt=""): der Name steht daneben und wird einmal gelesen.',
+      dontText: 'Alternativtext mit dem Vereinsnamen: Screenreader sagen den Namen doppelt an.',
+      good: <Story of={SpielplanStories.DoLogo} inline />,
+      bad: <Story of={SpielplanStories.DontLogo} inline />,
     },
     {
       title: 'Eigene Mannschaft dezent hervorheben',

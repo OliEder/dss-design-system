@@ -6,6 +6,12 @@
   // Spielwiese für die Controls: ein Teil der Props gilt je nach `kind`, der Rest bleibt ungenutzt.
   let { kind = 'match', interactive = 'none', ...rest }: { kind?: 'match' | 'player' | 'skeleton'; interactive?: 'none' | 'link' | 'button'; [key: string]: any } = $props();
 
+  // Erfundene Vereinslogos (nur Storybook) für die Teams der Spielwiese
+  import nordhainLogo from '../assets/logos/nordhain.svg';
+  import hawksLogo from '../assets/logos/hawks.svg';
+  const LOGO: Record<string, string> = { 'TSV Nordhain': nordhainLogo, 'Lindenberg Hawks': hawksLogo };
+  const withLogo = (team: { name: string; logo?: string }) => ({ logo: LOGO[team.name], ...team });
+
   const noop = () => {};
   const stay = (e?: Event) => e?.preventDefault();
 </script>
@@ -19,8 +25,10 @@
       date={rest.date}
       time={rest.time}
       venue={rest.venue}
-      heim={rest.heim}
-      gast={rest.gast}
+      heim={withLogo(rest.heim)}
+      gast={withLogo(rest.gast)}
+      names={rest.names}
+      logos={rest.logos}
       quarter={rest.quarter}
       clock={rest.clock}
       href={interactive === 'link' ? '#spiel' : undefined}

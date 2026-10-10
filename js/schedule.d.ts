@@ -3,8 +3,12 @@ export type ScheduleLayout = 'versus' | 'opponent' | 'columns';
 export type ScheduleDensity = 'touch' | 'default' | 'compact';
 export type ScheduleOutcome = 'S' | 'N' | 'U';
 
+export type ScheduleNames = 'full' | 'short';
+
 export interface ScheduleTeam {
   name: string;
+  /** Kurzname (z. B. "Hawks"): Anzeige bei `names="short"` und automatisch bis 640 px Breite. */
+  short?: string;
   /** Teamname als Link. */
   href?: string;
   /** Logo-URL; ohne Logo erscheinen die Initialen. */
@@ -89,7 +93,10 @@ export function columnsFor(layout: ScheduleLayout, games: ScheduleGame[], hasNot
 export function startMinutes(time: string | undefined): number;
 export function slotsFromGames(games: ScheduleGame[]): string[];
 export function groupBySection(games: ScheduleGame[]): ScheduleGroup[];
-export function initials(name: string): string;
+/** Anfangsbuchstaben der ersten `max` Wörter (Standard 3), groß. */
+export function initials(name: string, max?: number): string;
+/** Kurzname eines Teams; `undefined`, wenn keiner angegeben ist oder er dem Namen gleicht. */
+export function shortName(team: { name: string; short?: string } | undefined): string | undefined;
 export function ariaForResult(game: ScheduleGame, layout: ScheduleLayout): string;
 export function buildGrid(input: {
   games: ScheduleGame[];

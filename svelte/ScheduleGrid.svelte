@@ -8,10 +8,13 @@
    * die React-Fassung. Snippet `notice`: zusätzlicher Inhalt in der Spielzelle.
    * `title` und `meta` sind reine Strings; `renderLink` und `titleAs` gibt es
    * in Svelte nicht (Überschrift immer h3, Links als einfache <a>).
+   *
+   * `names`: "full" (Standard) oder "short" (Kurzname, falls vorhanden); bis 640 px Breite
+   * erscheint der Kurzname automatisch (CSS). `logos`: Logo/Initialen vor dem Teamnamen (Standard aus).
    */
   import type { Snippet } from 'svelte';
-  import { ariaForResult, buildGrid, hasScore, stateLabel, winnerSide } from '../js/schedule.js';
-  import type { ScheduleBreak, ScheduleDensity, ScheduleGame, ScheduleGridColumn, ScheduleTeam } from '../js/schedule.js';
+  import { ariaForResult, buildGrid, hasScore, initials, shortName, stateLabel, winnerSide } from '../js/schedule.js';
+  import type { ScheduleBreak, ScheduleDensity, ScheduleGame, ScheduleGridColumn, ScheduleNames, ScheduleTeam } from '../js/schedule.js';
 
   let {
     games,
@@ -20,6 +23,8 @@
     breaks = undefined,
     emptyLabel = 'frei',
     density = 'default',
+    names = 'full',
+    logos = false,
     title = '',
     meta = '',
     caption = '',
@@ -32,6 +37,8 @@
     breaks?: ScheduleBreak[];
     emptyLabel?: string;
     density?: ScheduleDensity;
+    names?: ScheduleNames;
+    logos?: boolean;
     title?: string;
     meta?: string;
     caption?: string;
@@ -43,15 +50,22 @@
 </script>
 
 <!-- team-Snippet: synchron halten mit ScheduleTable/ScheduleGrid -->
-{#snippet team(t: ScheduleTeam | undefined, loser: boolean)}
+{#snippet teamName(t: ScheduleTeam)}
+  {@const short = shortName(t)}
+  {#if short}<span class="dss-team-name" class:dss-team-name--short={names === 'short'}><span class="dss-name-full">{t.name}</span><span class="dss-name-short" aria-hidden="true" title={t.name}>{short}</span></span>{:else}{t.name}{/if}
+{/snippet}
+
+{#snippet team(t: ScheduleTeam | undefined, loser: boolean, withLogo: boolean)}
   {@const current = t ?? { name: '?' }}
-  <span class="dss-sch-team" class:is-loser={loser}>
+  {@const logo = withLogo && t !== undefined && !t.placeholder}
+  <span class="dss-sch-team" class:is-loser={loser} class:dss-sch-team--logo={logo}>
+    {#if logo}<span class="dss-team-logo" class:dss-team-logo--initials={!current.logo} aria-hidden="true">{#if current.logo}<img src={current.logo} alt="" loading="lazy" />{:else}{initials(current.name, 2)}{/if}</span>{/if}
     {#if current.href && !current.placeholder}
-      <a class="dss-link" href={current.href}>{current.name}</a>
+      <a class="dss-link" href={current.href}>{@render teamName(current)}</a>
     {:else if current.placeholder}
-      <span class="dss-sch-ph">{current.name}</span>
+      <span class="dss-sch-ph">{@render teamName(current)}</span>
     {:else}
-      {current.name}
+      {@render teamName(current)}
     {/if}
   </span>
 {/snippet}
@@ -69,10 +83,10 @@
   >
     <div class="dss-sg-teams">
       {#if stateLabel(game.state)}<span class="dss-sr-only">{`${stateLabel(game.state)} `}</span>{/if}
-      {@render team(game.heim, winner === 'gast')}
+      {@render team(game.heim, winner === 'gast', logos)}
       <span class="dss-sch-sep" aria-hidden="true"> – </span>
       <span class="dss-sr-only"> gegen </span>
-      {@render team(game.gast, winner === 'heim')}
+      {@render team(game.gast, winner === 'heim', logos)}
       {#if game.state === 'live' && !hasScore(game, 'versus')}
         <span class="dss-match-live dss-sch-live"><span class="dss-match-pulse" aria-hidden="true"></span> Live</span>
       {/if}
@@ -133,7 +147,7 @@
             <!-- svelte-ignore a11y_no_redundant_roles -->
             <tr role="row" class="dss-sg-bye">
               <th scope="row" role="rowheader" class="dss-sg-time">{#if row.time}{row.time}{:else}<span class="dss-sr-only">Zeit offen</span>{/if}</th>
-              <td role="cell" colspan={columns.length}>{row.game.heim ? `${row.game.heim.name} hat Freilos` : (row.game.note ?? 'Spielfrei')}</td>
+              <td role="cell" colspan={columns.length}>{#if row.game.heim}{@render team(row.game.heim, false, logos)} hat Freilos{:else}{row.game.note ?? 'Spielfrei'}{/if}</td>
             </tr>
           {:else}
             <!-- svelte-ignore a11y_no_redundant_roles -->
