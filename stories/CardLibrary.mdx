@@ -4,7 +4,7 @@ import { DosDonts } from './docs/blocks/DosDonts';
 import { FrameworkCode } from './docs/blocks/FrameworkCode';
 import { DocTable } from './docs/blocks/DocTable';
 import './docs/blocks/blocks.css';
-import { vanilla, svelte, react, namesVanilla, namesSvelte, namesReact, photoVanilla, photoSvelte, photoReact, teamVanilla, teamSvelte, teamReact } from './CardLibrary.code';
+import { vanilla, svelte, react, namesVanilla, namesSvelte, namesReact, photoVanilla, photoSvelte, photoReact } from './CardLibrary.code';
 
 <Meta of={CardLibraryStories} />
 
@@ -14,7 +14,7 @@ import { vanilla, svelte, react, namesVanilla, namesSvelte, namesReact, photoVan
 
 - **MatchCard**: Spielkarte in 3 Zuständen: `scheduled`, `live`, `finished`. Heim- und Gastpunkte, Liga, Halle, Live-Puls, Endstand-Styling.
 - **PlayerCard**: Spieler in 3 Maßstäben: `compact` (Roster-Zeile), `standard` (Übersicht mit 4 Kennzahlen), `hero` (dunkle Profilkarte); optional mit Foto.
-- **TeamCard**: Mannschaft mit Logo, Liga, Bilanz, Tabellenplatz, nächstem und letztem Spiel, Kader und optionaler Saison-Statistik; Größen `standard` (Karte) und `compact` (Listenzeile).
+- **TeamCard**: Mannschaft mit Logo, Liga, Bilanz, Tabellenplatz, nächstem und letztem Spiel, Kader und optionaler Saison-Statistik; hat eine eigene Seite: [TeamCard](?path=/docs/components-teamcard--docs).
 - **Skeleton**: Shimmer-Platzhalter für Ladezustände. Bausteine (`line`, `block`, `circle`) und fertige Muster (`row`, `match`).
 - **EmptyState**: 3 Tonalitäten: `neutral`, `action` (Amber), `error` (Rot), immer mit nächstem Schritt. Hat eine eigene Seite: [EmptyState](?path=/docs/components-emptystate--docs).
 
@@ -99,56 +99,7 @@ Ohne `photo`, mit leerem `photo` oder wenn das Bild nicht lädt, erscheint wiede
 
 ## Teamkarte
 
-Die **Teamkarte** zeigt eine Mannschaft auf einen Blick. Alles außer dem Namen (`name`) ist optional; **was fehlt, erscheint nicht**: kein leerer Rahmen, kein Strich als Platzhalter. Die Daten teilen sich das Modell mit dem Spielplan: Name, Kurzname und Logo sind dieselben Felder wie bei `ScheduleTeam` (`name`, `short`, `logo`).
-
-- **Kopf:** Logo (48 px; ohne `logo` die Initialen im Kreis), Name als Überschrift (`h3`, mit `titleAs` wählbar), Liga (`league`, mit `leagueHref` als Link) und Saison (`season`, z. B. „2026/27“).
-- **Bilanz und Platz:** als Kennzahlen: `record` (`{ w, l, d? }`) als „12–3“ (S–N) bzw. „5–1–2“ (S–U–N), `rank` mit `rankOf` als „Platz von 12“, `points`. Screenreader hören „Bilanz: 12 Siege, 3 Niederlagen“ und „Tabellenplatz 3 von 12“.
-- **Nächstes und letztes Spiel:** zwei Zeilen im Stil des Spielplans (`at`: „vs.“ bei `heim`, „@“ bei `gast`, vor dem Gegner). Das letzte Spiel zeigt das Ergebnis mit S/N/U-Chip, berechnet wie im Spielplan; Screenreader hören „Eigene 92, Gegner 79, Sieg“, und vor dem Gegner „Heimspiel gegen“ bzw. „Auswärtsspiel bei“.
-- **Kader:** `squad` als „14 Spieler · 3 Trainer“, ohne Namen und Fotos.
-- **Saison-Statistik:** `stats` mit `twoPtPct` („2PP %“), `threePtPct` („3PP %“), `trb` („TRB“) und `to` („TO“). Nur übergebene Felder erscheinen; ist kein einziges Feld da, entfällt der ganze Block. Werte stehen mit Dezimalkomma („48,2“, feste Formatierung ohne `Intl`, damit Server und Browser gleich rendern); eine 0 ist ein Wert und erscheint.
-
-<Canvas of={CardLibraryStories.TeamkartenStandard} />
-
-Ohne Daten bleibt die Karte klein: nur der Name oder nur wenige Blöcke.
-
-<Canvas of={CardLibraryStories.TeamkartenMinimal} />
-
-`names` und `logos` wirken wie bei der Spielkarte: `names="short"` zeigt den Kurznamen, auch bei den Gegnern (bis 640 px Fensterbreite erscheint er automatisch); `logos` setzt Logo bzw. Initialen (20 px) vor den Gegner in den Spielzeilen. Das Logo im Kopf steht immer. Es ist dekorativ (`alt=""`, `aria-hidden`), weil der Name daneben steht.
-
-<Canvas of={CardLibraryStories.TeamkartenLogos} />
-
-### Listenzeile (compact)
-
-`size="compact"` ist die Zeile für Tabellen und Listen: Logo (32 px), Name, Liga und rechts die Bilanz kurz („12–3“) über dem Platz, ohne Spielzeilen, Kader und Statistik. Die Zeile hat keine Überschrift; `titleAs` gilt nur für `standard`.
-
-<Canvas of={CardLibraryStories.TeamkartenCompact} />
-
-### Klickbar
-
-Mit `href` ist die ganze Karte ein Link, mit `onclick` (React: `onClick`) ein Button; `href` gewinnt. Technisch ist der **Name in der Überschrift** der Link bzw. Button, und seine Fläche reicht per `::after` über die ganze Karte. So gibt es genau eine Aktion je Karte, die Überschrift bleibt in der Gliederung, und der zugängliche Name ist der volle Teamname, auch beim Kurznamen. Hover hebt die Karte wie die Spielkarte (Rand, Schatten, 1 px hoch); bei Tastaturfokus liegt der gestrichelte Gold/Amber-Ring (3 px, 2 px Abstand) um die ganze Karte. Weitere Links in der Karte gäbe es nur mit eigenem Markup; deshalb zählt `leagueHref` nur ohne `href` und `onclick`.
-
-<Canvas of={CardLibraryStories.TeamkartenKlickbar} />
-
-### Handy · 390 px Breite
-
-Die Vorschauen sind eingebettete Seiten mit fester Breite von 390 px, links hell, rechts dunkel: Der Kurzname erscheint automatisch, die Spielzeilen brechen um, die Seite scrollt nicht seitlich. Im Dunkelmodus gelten dieselben Tokens; alle Texte haben mindestens 7:1.
-
-<div className="dss-phones">
-  <div className="dss-phone">
-    <h4 className="dss-doc-cap">TeamCard · hell</h4>
-    <div className="dss-phone-scroll" tabIndex={0} role="region" aria-label="Scrollbereich: TeamCard hell">
-      <iframe title="Handy-Vorschau: Teamkarte hell in 390 Pixel Breite" src="iframe.html?viewMode=story&globals=brand:bbv&id=components-card-library--teamkarten-handy" loading="lazy" />
-    </div>
-  </div>
-  <div className="dss-phone">
-    <h4 className="dss-doc-cap">TeamCard · dunkel</h4>
-    <div className="dss-phone-scroll" tabIndex={0} role="region" aria-label="Scrollbereich: TeamCard dunkel">
-      <iframe title="Handy-Vorschau: Teamkarte dunkel in 390 Pixel Breite" src="iframe.html?viewMode=story&globals=brand:bbv;theme:Dark&id=components-card-library--teamkarten-handy" loading="lazy" />
-    </div>
-  </div>
-</div>
-
-<FrameworkCode label="TeamCard" vanilla={teamVanilla} svelte={teamSvelte} react={teamReact} />
+Die **Teamkarte** (Logo, Liga, Bilanz, Tabellenplatz, nächstes und letztes Spiel, Kader, optionale Saison-Statistik; `standard` und `compact`) hat eine eigene Seite: [TeamCard](?path=/docs/components-teamcard--docs).
 
 ## Laden ohne Springen
 
@@ -162,7 +113,7 @@ Die Muster haben die Struktur der Zielkomponente, aber nicht ihre genaue Höhe: 
 
 ## Zustände: Hover, Fokus, Aktiv
 
-Klickbare Spielkarten (`a` oder `button`) ändern bei Hover Rand (`--dss-line-strong`) und Schatten und heben sich um 1 px; klickbare Spielerzeilen (`button`) färben Rand und Hintergrund; die klickbare Teamkarte verhält sich wie die Spielkarte (der Hover liegt auf der ganzen Karte). Beide haben bei Tastaturfokus den gestrichelten Gold/Amber-Ring (3 px, 2 px Abstand, im Dunkelmodus dezenter). Nicht klickbare Karten (`div`), Standard- und Hero-Karte und Skeleton reagieren nicht. Einen eigenen Stil für Gedrückt gibt es nicht, die Spalte zeigt denselben Hover; Gesperrt gibt es nicht.
+Klickbare Spielkarten (`a` oder `button`) ändern bei Hover Rand (`--dss-line-strong`) und Schatten und heben sich um 1 px; klickbare Spielerzeilen (`button`) färben Rand und Hintergrund. Beide haben bei Tastaturfokus den gestrichelten Gold/Amber-Ring (3 px, 2 px Abstand, im Dunkelmodus dezenter). Nicht klickbare Karten (`div`), Standard- und Hero-Karte und Skeleton reagieren nicht. Einen eigenen Stil für Gedrückt gibt es nicht, die Spalte zeigt denselben Hover; Gesperrt gibt es nicht.
 
 <Canvas of={CardLibraryStories.Zustaende} />
 
@@ -174,7 +125,7 @@ Importiere die Komponenten über die Path-Exporte (Svelte) bzw. aus dem React-Pa
 
 <FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
 
-Die Props zeigen vier Spielwiesen mit den echten Komponenten. Die Spielkarte hat zusätzlich `names` und `logos` (siehe „Kurznamen und Logos“), die Spielerkarte `photo` und `photoAlt` (siehe „Mit Foto“; in der Spielwiese wählst du eines der Demo-Fotos). Die Namen gelten für Svelte; in React heißen `onclick` `onClick`, `height_cm` `heightCm` und `role` `playerRole`.
+Die Props zeigen drei Spielwiesen mit den echten Komponenten. Die Spielkarte hat zusätzlich `names` und `logos` (siehe „Kurznamen und Logos“), die Spielerkarte `photo` und `photoAlt` (siehe „Mit Foto“; in der Spielwiese wählst du eines der Demo-Fotos). Die Namen gelten für Svelte; in React heißen `onclick` `onClick`, `height_cm` `heightCm` und `role` `playerRole`.
 
 ### MatchCard
 
@@ -183,12 +134,6 @@ Die Props zeigen vier Spielwiesen mit den echten Komponenten. Die Spielkarte hat
 ### PlayerCard
 
 <Controls of={CardLibraryStories.SpielerkarteSpielwiese} />
-
-### TeamCard
-
-Die Spielwiese ergänzt Logos für TSV Nordhain 1920 und die Gegner Lindenberg Hawks und BG Seeberg. Die Objekt-Felder (`record`, `next`, `last`, `squad`, `stats`) lassen sich im Controls-Reiter als JSON bearbeiten; leere Objekte oder weggelassene Felder blenden den jeweiligen Block aus.
-
-<Controls of={CardLibraryStories.TeamkarteSpielwiese} />
 
 ### Skeleton
 
@@ -229,30 +174,9 @@ Die Spielwiese ergänzt Logos für TSV Nordhain 1920 und die Gegner Lindenberg H
     {
       title: 'Quadratischer Ausschnitt, Gesicht oben',
       doText: 'Das Foto ist ein quadratischer Ausschnitt mit dem Gesicht im oberen Teil; `object-position: center top` zeigt es sicher.',
-      dontText: 'Ein Ausschnitt mit dem Gesicht am unteren Rand zeigt Hals und Schulter; als Avatar ist die Person nicht zu erkennen.',
+      dontText: 'Zeigt der Ausschnitt nur einen Teil des Gesichts (hier den Bart), ist die Person als Avatar nicht zu erkennen.',
       good: <Story of={CardLibraryStories.DoFotoAusschnitt} inline />,
       bad: <Story of={CardLibraryStories.DontFotoAusschnitt} inline />,
-    },
-    {
-      title: 'Saison-Statistik nur mit Daten',
-      doText: 'Ohne Statistik-Daten entfällt der Block ganz; die Karte zeigt, was bekannt ist.',
-      dontText: 'Ein Block voller Striche („–“) belegt Platz, sagt nichts und liest sich wie ein Fehler. Die Komponente zeigt solche Platzhalter nie.',
-      good: <Story of={CardLibraryStories.DoTeamStats} inline />,
-      bad: <Story of={CardLibraryStories.DontTeamStats} inline />,
-    },
-    {
-      title: 'Teams in Listen: compact mit Kurzname und Logo',
-      doText: 'Die Listenzeile (`compact`, 60 px) zeigt Logo, Kurzname, Bilanz und Platz; so passen viele Teams auf den Bildschirm.',
-      dontText: 'Die Standardkarte mit allen Blöcken je Team ist ein Mehrfaches so hoch; sie gehört in die Teamübersicht, nicht in die Liste.',
-      good: <Story of={CardLibraryStories.DoTeamListe} inline />,
-      bad: <Story of={CardLibraryStories.DontTeamListe} inline />,
-    },
-    {
-      title: 'Eine Aktion je Karte',
-      doText: 'Ist die ganze Karte klickbar, gibt es keine weiteren Links in ihr: eine Fläche, ein Ziel, ein Tab-Stopp.',
-      dontText: 'Ein zweiter Link (hier die Liga) auf der klickbaren Karte macht zwei Ziele auf einer Fläche und verschachtelt Aktionen; die Komponente verhindert das (`leagueHref` zählt nur ohne `href`).',
-      good: <Story of={CardLibraryStories.DoTeamAktion} inline />,
-      bad: <Story of={CardLibraryStories.DontTeamAktion} inline />,
     },
     {
       title: 'Zeile für lange Listen',

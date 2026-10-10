@@ -9,6 +9,7 @@ import { svelte } from '@sveltejs/vite-plugin-svelte';
 import ts from 'typescript';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import * as code from '../stories/CardLibrary.code';
+import * as team from '../stories/TeamCard.code';
 
 const rootDir = new URL('../', import.meta.url).pathname;
 const tmpDir = `${rootDir}tests/.code-tmp/`;
@@ -39,8 +40,8 @@ const normalize = (html: string) =>
     .replace(/<(img|br)([^>]*?)\/?>/g, '<$1$2>')
     .trim();
 
-const SVELTE = { svelte: code.svelte, namesSvelte: code.namesSvelte, photoSvelte: code.photoSvelte, teamSvelte: code.teamSvelte };
-const REACT = { react: code.react, namesReact: code.namesReact, photoReact: code.photoReact, teamReact: code.teamReact };
+const SVELTE = { svelte: code.svelte, namesSvelte: code.namesSvelte, photoSvelte: code.photoSvelte, teamSvelte: team.svelte };
+const REACT = { react: code.react, namesReact: code.namesReact, photoReact: code.photoReact, teamReact: team.react };
 
 describe('Svelte-Code-Beispiele rendern (SSR)', () => {
   it.each(Object.entries(SVELTE))('%s', async (name, source) => {
@@ -100,7 +101,7 @@ describe('Vanilla-Beispiel der Teamkarte entspricht der Komponente', () => {
     const { JSDOM } = await import('jsdom').catch(() => ({ JSDOM: undefined }));
     expect(JSDOM).toBeDefined();
     const dom = new JSDOM!('');
-    const roots = [...dom.window.document.createRange().createContextualFragment(code.teamVanilla.replace(/<!--[\s\S]*?-->/g, '')).children].map((el) => el.outerHTML);
+    const roots = [...dom.window.document.createRange().createContextualFragment(team.vanilla.replace(/<!--[\s\S]*?-->/g, '')).children].map((el) => el.outerHTML);
     expect(roots).toHaveLength(2);
 
     const Svelte = ((await vite.ssrLoadModule(`${rootDir}svelte/TeamCard.svelte`)) as { default: unknown }).default;

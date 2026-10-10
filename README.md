@@ -416,7 +416,7 @@ Was drin ist:
 
 - **Introduction** (Startseite): Überblick, Werkzeugleiste, Inhaltsverzeichnis aller Seiten
 - **Foundation:** Colors, Typography, Focus & Hover
-- **Components:** je eine MDX-Seite pro Komponente oder Komponentengruppe (Button, TextInput, Select, Checkbox, Modal, Banner, Card, Card Library, Tabs, Navigation, AppNav, Table, Spielplan, EmptyState, PlayByPlay, Icon, CourtLines) und die Spielwiese zum Spielplan
+- **Components:** je eine MDX-Seite pro Komponente oder Komponentengruppe (Button, TextInput, Select, Checkbox, Modal, Banner, Card, Card Library, TeamCard, Tabs, Navigation, AppNav, Table, Spielplan, EmptyState, PlayByPlay, Icon, CourtLines) und die Spielwiese zum Spielplan
 
 Die Werkzeugleiste schaltet **Marke** (BBV/DBB), **Schrift**, Hell/Dunkel, **Fassung** (Vanilla, Svelte oder React für alle
 Code-Beispiele) und **Zustand** (erzwingt Hover, Fokus oder Aktiv auf den Vorschauen der Seite) um.

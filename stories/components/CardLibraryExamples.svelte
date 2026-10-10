@@ -2,7 +2,6 @@
   import MatchCard from '../../svelte/MatchCard.svelte';
   import PlayerCard from '../../svelte/PlayerCard.svelte';
   import Skeleton from '../../svelte/Skeleton.svelte';
-  import TeamCard from '../../svelte/TeamCard.svelte';
 
   // Erfundene Vereinslogos (nur Storybook); SV Kiefernau hat kein Logo und zeigt die Initialen
   // Demo-Fotos (nur Storybook): quadratische Ausschnitte von Unsplash, siehe assets/players/CREDITS.md
@@ -14,7 +13,6 @@
   import nordhainLogo from '../assets/logos/nordhain.svg';
   import hawksLogo from '../assets/logos/hawks.svg';
   import seebergLogo from '../assets/logos/seeberg.svg';
-  import elbachLogo from '../assets/logos/elbach.svg';
 
   let { example }: { example: string } = $props();
 
@@ -27,27 +25,11 @@
   const KAPUTT = 'data:image/jpeg;base64,AAAA';
   const TANNER = [{ label: 'PPG', value: '17.4', accent: true }, { label: 'APG', value: '6.2' }, { label: 'RPG', value: '3.1' }, { label: 'EFF', value: '22.8' }];
 
-  // Teamkarten: erfundene Daten, Logos wie oben
-  const TEAM = {
-    name: 'TSV Nordhain 1920', short: 'Nordhain', logo: nordhainLogo, league: 'Bayernliga Süd', season: '2026/27',
-    record: { w: 12, l: 3 }, rank: 3, rankOf: 12, points: 24,
-    next: { date: 'Sa, 25.05.', time: '19:30', opponent: { name: 'Lindenberg Hawks', short: 'Hawks', logo: hawksLogo }, at: 'heim' as const, venue: 'Nordhain-Halle' },
-    last: { date: 'Sa, 18.05.', opponent: { name: 'BG Seeberg', short: 'Seeberg', logo: seebergLogo }, ownScore: 92, opponentScore: 79, at: 'gast' as const },
-    squad: { players: 14, staff: 3 },
-  };
-  const STATS = { twoPtPct: 48.2, threePtPct: 36.5, trb: 41.3, to: 12.1 };
-  const LISTE = [
-    { name: 'TSV Nordhain 1920', short: 'Nordhain', logo: nordhainLogo, league: 'Bayernliga Süd', record: { w: 12, l: 3 }, rank: 3 },
-    { name: 'Lindenberg Hawks', short: 'Hawks', logo: hawksLogo, league: 'Bayernliga Süd', record: { w: 14, l: 1 }, rank: 1 },
-    { name: 'BG Seeberg', short: 'Seeberg', logo: seebergLogo, league: 'Bayernliga Süd', record: { w: 9, l: 6 }, rank: 5 },
-    { name: 'SV Kiefernau', short: 'Kiefernau', league: 'Bayernliga Süd', record: { w: 4, l: 11 }, rank: 11 },
-  ];
-
   const noop = () => {};
 
   // Erzwingt einen Zustand auf dem Wurzelelement der Karte (die Svelte-Karten haben keine class-Prop)
   function mark(node: HTMLElement, cls: string) {
-    const target = node.querySelector<HTMLElement>('.dss-match, .dss-pc-row, .dss-team-link');
+    const target = node.querySelector<HTMLElement>('.dss-match, .dss-pc-row');
     if (cls && target) target.classList.add(...cls.split(' '));
   }
 
@@ -84,106 +66,6 @@
       <div class="cap">period=&#123;6&#125; · 2. Verlängerung</div>
       <MatchCard state="live" league="Bayernliga Süd" period={6} clock="04:12" heim={{ name: 'TSV Nordhain', score: 95 }} gast={{ name: 'Lindenberg Hawks', score: 94 }} />
     </div>
-  </div>
-{:else if example === 'team-standard'}
-  <div class="grid2">
-    <div>
-      <div class="cap">Vollständig</div>
-      <TeamCard {...TEAM} stats={STATS} />
-    </div>
-    <div>
-      <div class="cap">Ohne Saison-Statistik</div>
-      <TeamCard {...TEAM} />
-    </div>
-  </div>
-{:else if example === 'team-minimal'}
-  <div class="grid2">
-    <div>
-      <div class="cap">Nur der Name</div>
-      <TeamCard name="SV Kiefernau" />
-    </div>
-    <div>
-      <div class="cap">Name, Liga, Bilanz, Kader</div>
-      <TeamCard name="SV Kiefernau" league="Bezirksliga" season="2026/27" record={{ w: 4, l: 11 }} squad={{ players: 11 }} />
-    </div>
-  </div>
-{:else if example === 'team-logos'}
-  <div class="grid2">
-    <div>
-      <div class="cap">logos · names="short" (Gegner mit Logo und Kurzname)</div>
-      <TeamCard {...TEAM} logos names="short" />
-    </div>
-    <div>
-      <div class="cap">Ohne Logo: Initialen im Kreis</div>
-      <TeamCard name="SV Kiefernau" short="Kiefernau" league="Bezirksliga" record={{ w: 4, l: 11 }} rank={11} rankOf={12} last={{ opponent: { name: 'TSV Elbach', logo: elbachLogo }, ownScore: 60, opponentScore: 64 }} logos />
-    </div>
-  </div>
-{:else if example === 'team-compact'}
-  <div class="narrow wide-list">
-    <div class="cap">Kurzname und Logo in der Liste (compact)</div>
-    <div class="list">
-      {#each LISTE as t (t.name)}<TeamCard size="compact" {...t} />{/each}
-    </div>
-  </div>
-{:else if example === 'team-klickbar'}
-  <div class="grid2">
-    <div>
-      <div class="cap">href · die ganze Karte ist der Link</div>
-      <TeamCard {...TEAM} href="#nordhain" />
-    </div>
-    <div class="col">
-      <div>
-        <div class="cap">onclick · Button</div>
-        <TeamCard {...TEAM} next={undefined} last={undefined} squad={undefined} onclick={noop} />
-      </div>
-      <div>
-        <div class="cap">compact · href</div>
-        <div class="list">
-          <TeamCard size="compact" {...LISTE[0]} href="#nordhain" />
-          <TeamCard size="compact" {...LISTE[1]} href="#hawks" />
-        </div>
-      </div>
-    </div>
-  </div>
-{:else if example === 'team-handy'}
-  <div class="narrow">
-    <TeamCard {...TEAM} stats={STATS} href="#nordhain" />
-    <div class="gap"></div>
-    <div class="list">
-      <TeamCard size="compact" {...LISTE[0]} href="#nordhain" />
-      <TeamCard size="compact" {...LISTE[3]} href="#kiefernau" />
-    </div>
-  </div>
-{:else if example === 'do-team-stats'}
-  <div class="narrow">
-    <TeamCard name="BG Seeberg" short="Seeberg" logo={seebergLogo} league="Bayernliga Süd" season="2026/27" record={{ w: 9, l: 6 }} rank={5} rankOf={12} squad={{ players: 12, staff: 2 }} />
-  </div>
-{:else if example === 'dont-team-stats'}
-  <!-- Falsch: Der Block erscheint hier mit Strichen als Platzhalter; die Komponente tut das nie, die Doku stellt es mit eigenem Markup nach. -->
-  <div class="narrow">
-    <TeamCard name="BG Seeberg" short="Seeberg" logo={seebergLogo} league="Bayernliga Süd" season="2026/27" record={{ w: 9, l: 6 }} rank={5} rankOf={12} squad={{ players: 12, staff: 2 }} />
-    <div class="fake-stats" aria-hidden="true">
-      <div class="cap">Saison-Statistik</div>
-      <div class="fake-grid"><div><b>–</b><span>2PP %</span></div><div><b>–</b><span>3PP %</span></div><div><b>–</b><span>TRB</span></div><div><b>–</b><span>TO</span></div></div>
-    </div>
-  </div>
-{:else if example === 'do-team-liste'}
-  <div class="narrow list">
-    {#each LISTE.slice(0, 3) as t (t.name)}<TeamCard size="compact" {...t} />{/each}
-  </div>
-{:else if example === 'dont-team-liste'}
-  <div class="narrow list">
-    {#each LISTE.slice(0, 2) as t (t.name)}<TeamCard {...t} next={TEAM.next} last={TEAM.last} squad={TEAM.squad} />{/each}
-  </div>
-{:else if example === 'do-team-aktion'}
-  <div class="narrow">
-    <TeamCard {...TEAM} next={undefined} last={undefined} href="#nordhain" />
-  </div>
-{:else if example === 'dont-team-aktion'}
-  <!-- Falsch: ganze Karte klickbar und zusätzlich ein zweiter Link (Liga) in der Karte; die Komponente verhindert das (leagueHref zählt nur ohne href), die Doku stellt es mit eigenem Markup nach. -->
-  <div class="narrow fake-nested">
-    <TeamCard {...TEAM} next={undefined} last={undefined} league="" href="#nordhain" />
-    <a class="dss-link fake-league" href="#liga">Bayernliga Süd</a>
   </div>
 {:else if example === 'namen'}
   <div class="grid3">
@@ -293,7 +175,7 @@
     <PlayerCard size="standard" jersey="13" name="K. Vogler" position="PF" team="heim" age="26 J." height_cm="198" photo={mertensFoto} vitals={[{ label: 'PPG', value: '9.4' }, { label: 'RPG', value: '6.0' }]} />
   </div>
 {:else if example === 'dont-foto-ausschnitt'}
-  <!-- Der Ausschnitt sitzt am unteren Bildrand (Rumpf statt Gesicht); nur Doku, im Stil `object-position` überschrieben -->
+  <!-- Das Bild zeigt nur einen Ausschnitt unterhalb des Gesichts; nur Doku, per CSS `object-fit: none` nachgestellt -->
   <div class="narrow bad-crop">
     <PlayerCard size="standard" jersey="13" name="K. Vogler" position="PF" team="heim" age="26 J." height_cm="198" photo={mertensFoto} vitals={[{ label: 'PPG', value: '9.4' }, { label: 'RPG', value: '6.0' }]} />
   </div>
@@ -331,12 +213,6 @@
         {#each cols as c}
           <div class="cell" use:mark={stateClass[c]}>
             <MatchCard state="scheduled" league="BBL" date="Sa, 25. Mai" heim={{ name: 'TSV Nordhain' }} gast={{ name: 'Lindenberg Hawks' }} onclick={noop} />
-          </div>
-        {/each}
-        <div class="rowlabel">Team&shy;zeile</div>
-        {#each cols as c}
-          <div class="cell" use:mark={stateClass[c]}>
-            <TeamCard size="compact" name="TSV Nordhain" short="Nordhain" logo={nordhainLogo} record={{ w: 12, l: 3 }} rank={3} onclick={noop} />
           </div>
         {/each}
         <div class="rowlabel">Spieler&shy;zeile</div>
@@ -391,16 +267,8 @@
   .list { display: flex; flex-direction: column; gap: 8px; }
   .narrow { width: 100%; max-width: 380px; }
   .read { margin: 8px 2px 0; font-size: var(--fs-caption); color: var(--page-mute); }
-  /* Gegenbeispiel: Foto mit Ausschnitt am unteren Rand (Gesicht abgeschnitten) */
-  .bad-crop :global(.dss-pc-img) { object-position: center 100%; transform: scale(2.2); transform-origin: 50% 100%; clip-path: inset(0 round 14px); }
-  .wide-list { max-width: 560px; }
-  .fake-stats { margin-top: 10px; padding: 12px 20px; border: 1px solid var(--page-line); border-radius: 14px; }
-  .fake-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 8px; }
-  .fake-grid div { display: flex; flex-direction: column; font-family: var(--font-mono); }
-  .fake-grid b { font-size: var(--fs-stat); color: var(--page-mute); }
-  .fake-grid span { font-size: var(--fs-caption); color: var(--page-mute); }
-  .fake-nested { position: relative; }
-  .fake-league { position: absolute; top: 22px; right: 20px; z-index: 2; font-size: var(--fs-body-sm); }
+  /* Gegenbeispiel: Das Bild zeigt nur einen Ausschnitt unterhalb des Gesichts (hier nur der Bart), nicht das ganze Gesicht */
+  .bad-crop :global(.dss-pc-img) { object-fit: none; object-position: 50% 78%; }
   .gap { height: 10px; }
   .gap-s { height: 8px; }
   .cap, .colhead, .rowlabel { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); }
