@@ -9,6 +9,8 @@
   import { initialEvents } from '../components/pbpData';
   import type { ScheduleGame } from '../../js/schedule.js';
 
+  let { mode = 'alle' }: { mode?: 'alle' | 'ohne-stand' } = $props();
+
   const zeile: ScheduleGame[] = [
     { id: 'z1', state: 'live', date: 'So, 04.10.2026', time: '15:45', heim: { name: 'TuSpo Hellenthal', score: 52 }, gast: { name: 'TSV Hollbach 2', score: 48 } },
   ];
@@ -16,8 +18,17 @@
     { id: 'r1', state: 'live', time: '09:00', column: 'h1', heim: { name: 'SV Kiefernau', score: 12 }, gast: { name: 'MTV Bergfeld', score: 10 } },
   ];
   const hallen = [{ id: 'h1', label: 'Halle 1' }];
+  // Live ohne Stand: das Tag steht hinter der Paarung (Zelle in Mindestbreite, 180 px)
+  const ohneStand: ScheduleGame[] = [
+    { id: 'o1', state: 'live', time: '09:00', column: 'h1', heim: { name: 'SV Kiefernau' }, gast: { name: 'MTV Bergfeld' } },
+  ];
 </script>
 
+{#if mode === 'ohne-stand'}
+  <div class="wrap narrow">
+    <ScheduleGrid games={ohneStand} columns={hallen} caption="Live ohne Stand im Zeitraster" />
+  </div>
+{:else}
 <div class="wrap">
   <div class="grid">
     <div class="cell wide">
@@ -67,14 +78,16 @@
     </div>
   </div>
 </div>
+{/if}
 
 <style>
   .wrap { font-family: var(--font-body); color: var(--page-fg); }
   .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(420px, 100%), 1fr)); gap: 16px; }
-  .cell { padding: 20px 22px 26px; border: 1px solid var(--page-line); border-radius: var(--radius-lg); background: var(--surface-0); overflow: hidden; min-width: 0; }
+  .cell { padding: 20px 22px 26px; border: 1px solid var(--page-line); border-radius: var(--radius-lg); background: var(--surface-0); min-width: 0; }
   .cell.wide { grid-column: 1 / -1; }
   .cap { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--page-mute); margin-bottom: 16px; }
   .scroll { overflow-x: auto; }
   .scroll-in { min-width: 560px; }
+  .narrow { max-width: 320px; }
   .tags { display: flex; flex-wrap: wrap; gap: 24px; }
 </style>

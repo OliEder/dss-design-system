@@ -9,3 +9,6 @@ export default {
 };
 
 export const Alle = {};
+
+// Zeitraster-Zelle in Mindestbreite: Live ohne Stand, das Tag steht hinter der Paarung
+export const OhneStand = { render: () => ({ Component: Live, props: { mode: 'ohne-stand' } }) };

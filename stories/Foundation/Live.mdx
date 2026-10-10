@@ -1,6 +1,8 @@
 import { Meta, Canvas } from '@storybook/addon-docs/blocks';
 import * as LiveStories from './Live.stories';
 import { DocTable } from '../docs/blocks/DocTable';
+import { FrameworkCode } from '../docs/blocks/FrameworkCode';
+import { pauseVanilla, pauseSvelte, pauseReact } from './Live.code';
 import '../docs/blocks/blocks.css';
 
 <Meta of={LiveStories} />
@@ -29,15 +31,35 @@ Die Token stehen in `css/components.css` neben den `--dss-chip-*`-Token, jeweils
   ]}
 />
 
-Der Punkt hat mindestens 3:1 gegen jede Seitenfläche (Hell, Dunkel, flache Fläche, Hover, Auswahl) und mindestens 4,7:1 auf den dunklen Leisten. Alle Texte erreichen 7:1.
+Der Punkt hat mindestens 3:1 gegen jede Seitenfläche (Hell, Dunkel, flache Fläche, Hover, Auswahl) und mindestens 4,7:1 auf den dunklen Leisten. Statisch erreichen alle Texte mindestens 7:1. Pulsierender Text (Ergebniszahlen) fällt im Puls-Tal auf 80 % Deckkraft; dort bleibt der Kontrast bei mindestens 4,5:1 (gerechnet als Mischung von Textfarbe und Fläche):
+
+<DocTable
+  label="Kontrast der Ergebniszahlen im Puls-Tal"
+  head={['Fläche', 'Hell (BBV und DBB)', 'Dunkel (BBV und DBB)']}
+  rows={[
+    [<code>--dss-surface</code>, '5,18:1', '8,75:1'],
+    [<code>--dss-surface-2</code>, '4,84 bis 4,86:1', '8,50 bis 8,51:1'],
+    [<code>--dss-hover-bg</code>, '5,04:1', '8,50 bis 8,51:1'],
+    [<code>--dss-selected-bg</code>, '4,94 bis 4,95:1', '6,71:1'],
+  ]}
+/>
 
 ## Animation
 
-Es gibt genau eine Animation, `dss-live-pulse`: 1,6 Sekunden, `ease-in-out`, die Deckkraft geht von 1 auf 0,35 und zurück, nie darunter. Es ändert sich nur die Deckkraft: keine Bewegung, kein Farbwechsel, kein Flackern. Eine Periode dauert 1,6 Sekunden, das ist weniger als ein Wechsel pro Sekunde (WCAG 2.3.1, drei Blitze pro Sekunde sind die Grenze). Mit `prefers-reduced-motion: reduce` steht jede Live-Stelle still und bleibt voll deckend.
+Es gibt zwei Animationen, beide nur über die Deckkraft, beide 1,6 Sekunden, `ease-in-out`:
 
-Die Animation hängt an diesen Stellen: `.dss-live-dot`, `.dss-match-pulse`, `.dss-pbp-dot`, `.dss-crumb-dot`, dem Punkt der TopBar und den Ergebniszahlen laufender Spiele (Spielplan, Zeitraster, Spielkarte). Für eigene Stellen gibt es die Hilfsklasse `.dss-live-pulse`.
+- `dss-live-pulse` für Punkte und Flächen: Deckkraft 1 → 0,35 → 1.
+- `dss-live-pulse-text` für Text: Deckkraft 1 → 0,8 → 1. Bei 0,75 läge der Kontrast im Tal auf hellen Flächen nur bei 4,3:1, deshalb die Untergrenze 0,8.
 
-WCAG 2.2.2 (Pause, Stopp, Ausblenden) verlangt bei automatisch startender, länger als fünf Sekunden laufender Bewegung eine Möglichkeit zum Anhalten. Die Systemeinstellung „Bewegung reduzieren“ hält den Puls an; wer eine Seite mit dauerhaftem Puls ausliefert, bietet zusätzlich einen eigenen Schalter an, falls die Zielgruppe das braucht.
+Es ändert sich nur die Deckkraft: keine Bewegung, kein Farbwechsel, kein Flackern. Eine Periode dauert 1,6 Sekunden, das ist weniger als ein Wechsel pro Sekunde (WCAG 2.3.1). Mit `prefers-reduced-motion: reduce` oder `data-motion="reduce"` auf `<html>` steht jede Live-Stelle still und bleibt voll deckend.
+
+Die Punkt-Animation hängt an `.dss-live-dot`, `.dss-match-pulse`, `.dss-pbp-dot`, `.dss-crumb-dot` und dem Punkt der TopBar; die Text-Animation an den Ergebniszahlen laufender Spiele (Spielplan, Zeitraster, Spielkarte). Für eigene Punkte gibt es die Hilfsklasse `.dss-live-pulse`.
+
+## Pause-Schalter
+
+Eine Seite mit Live-Puls braucht einen sichtbaren Pause-Schalter (WCAG 2.2.2, Stufe A). Das Design System liefert dafür das Attribut `data-motion="reduce"` auf `<html>`; die Systemeinstellung „Bewegung reduzieren“ wird ebenfalls beachtet. Beide schalten dieselben Live-Stellen ab. In Storybook wirkt die Werkzeugleiste **Bewegung** genauso: auf „Reduziert“ stellen und diese Seite ansehen.
+
+<FrameworkCode label="Pause-Schalter mit localStorage" vanilla={pauseVanilla} svelte={pauseSvelte} react={pauseReact} />
 
 ## Nie nur Farbe
 
