@@ -1,4 +1,5 @@
 import { cn } from './cn';
+import { resolvePeriod } from '../js/periods.js';
 
 export type PbpTeam = 'heim' | 'gast' | 'none';
 export type PbpKind = 'default' | 'score-2p' | 'score-3p' | 'ft' | 'foul' | 'timeout' | 'sub' | 'turnover';
@@ -7,8 +8,10 @@ export interface PbpEvent {
   id: string | number;
   /** „M:SS“ */
   time: string;
-  /** „Q1“ … „OT“ */
-  quarter: string;
+  /** Spielabschnitt ab 1 (mit `periods`): Chip „V1“ bis „V4“ bzw. „A1“ bis „A8“, „VL“ für die Verlängerung; Screenreader lesen „3. Viertel“. */
+  period?: number;
+  /** @deprecated Stattdessen `period`; ohne `period` wird der Text unverändert angezeigt („Q1“ … „OT“). */
+  quarter?: string;
   team?: PbpTeam;
   kind?: PbpKind;
   title: string;
@@ -27,6 +30,8 @@ export interface PlayByPlayProps {
   meta?: string;
   live?: boolean;
   dark?: boolean;
+  /** 4 Viertel (Standard) oder 8 Achtel (Mini-Basketball). */
+  periods?: 4 | 8;
   className?: string;
 }
 
@@ -40,6 +45,7 @@ export function PlayByPlay({
   meta = '',
   live = true,
   dark = false,
+  periods = 4,
   className,
 }: PlayByPlayProps) {
   return (
@@ -59,11 +65,23 @@ export function PlayByPlay({
       <div className="dss-pbp-feed" role="log" aria-label={title} tabIndex={0}>
         {events.map((event) => {
           const team = event.team ?? 'none';
+          const abschnitt = resolvePeriod({ period: event.period, periods, quarter: event.quarter });
           return (
             <div key={event.id} className={cn('dss-pbp-event', `dss-pbp-event--${event.kind ?? 'default'}`)}>
               <div className="dss-pbp-time">
                 {event.time}
-                <span className="dss-pbp-q">{event.quarter}</span>
+                {abschnitt.short ? (
+                  <span className="dss-pbp-q">
+                    {abschnitt.alias ? (
+                      abschnitt.label
+                    ) : (
+                      <>
+                        <span aria-hidden="true">{abschnitt.short}</span>
+                        <span className="dss-sr-only">{abschnitt.label}</span>
+                      </>
+                    )}
+                  </span>
+                ) : null}
               </div>
               <div className={cn('dss-pbp-strip', `dss-pbp-strip--${team}`)} aria-hidden="true" />
               <div className="dss-pbp-body">

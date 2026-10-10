@@ -26,7 +26,7 @@ export const SpielkarteSpielwiese = {
   render,
   args: {
     kind: 'match', interactive: 'none', state: 'live', league: 'Bayernliga Süd', matchday: '17. Spieltag', date: 'Sa, 25. Mai', time: '19:30', venue: 'Nordhain-Halle',
-    heim: { name: 'TSV Nordhain', short: 'TSV N.', score: 87 }, gast: { name: 'Lindenberg Hawks', short: 'Hawks', score: 64 }, quarter: 'Q4', clock: '02:14',
+    heim: { name: 'TSV Nordhain', short: 'TSV N.', score: 87 }, gast: { name: 'Lindenberg Hawks', short: 'Hawks', score: 64 }, period: 4, periods: 4, quarter: '', clock: '02:14',
     names: 'full', logos: false,
   },
   argTypes: {
@@ -43,7 +43,9 @@ export const SpielkarteSpielwiese = {
     gast: { control: 'object', description: 'Gastmannschaft: `{ name, short?, logo?, score? }`', table: t('{ name: string; short?: string; logo?: string; score?: number }') },
     names: { control: 'inline-radio', options: ['full', 'short'], description: 'Voller Name oder Kurzname (`short`, falls vorhanden). Bis 640 px Fensterbreite erscheint der Kurzname automatisch.', table: t("'full' | 'short'", "'full'") },
     logos: { control: 'boolean', description: 'Logo (`logo`-URL) bzw. Initialen im Kreis vor dem Teamnamen', table: t('boolean', 'false') },
-    quarter: { control: 'text', description: 'Spielviertel, nur bei `live`', table: t('string', "''") },
+    period: { control: { type: 'number', min: 1, max: 10, step: 1 }, description: 'Spielabschnitt ab 1, nur bei `live`: „3. Viertel“, bei `periods` 8 „5. Achtel“, darüber „Verlängerung“, „2. Verlängerung“', table: t('number') },
+    periods: { control: 'inline-radio', options: [4, 8], description: 'Anzahl der regulären Abschnitte: 4 Viertel (Standard) oder 8 Achtel (Mini-Basketball)', table: t('4 | 8', '4') },
+    quarter: { control: 'text', description: 'Veraltet, nur bei `live`: freier Text; wird nur ohne `period` angezeigt, unverändert. Nutze `period`.', table: t('string', "''") },
     clock: { control: 'text', description: 'Spieluhr, nur bei `live`', table: t('string', "''") },
   },
 };
@@ -53,7 +55,7 @@ export const SpielerkarteSpielwiese = {
   args: {
     kind: 'player', interactive: 'none', size: 'standard', jersey: '4', name: 'J. Tanner', position: 'PG', team: 'heim', captain: true, age: '24 J.', height_cm: '188', role: '',
     vitals: [{ label: 'PPG', value: '17.4', accent: true }, { label: 'APG', value: '6.2' }, { label: 'RPG', value: '3.1' }, { label: 'EFF', value: '22.8' }],
-    stat: 22, statLabel: 'PTS',
+    stat: 22, statLabel: 'PTS', photo: '', photoAlt: '',
   },
   argTypes: {
     ...hidden,
@@ -71,6 +73,8 @@ export const SpielerkarteSpielwiese = {
     vitals: { control: 'object', description: 'Vier Kennzahlen `{ label, value, accent? }`, nur `standard` und `hero`; `accent` hebt den Wert in Amber hervor', table: t('{ label: string; value: string | number; accent?: boolean }[]', '[]') },
     stat: { control: 'text', description: 'Hauptstatistik der `compact`-Zeile', table: t('string | number | null', 'null') },
     statLabel: { control: 'text', description: 'Beschriftung der Hauptstatistik', table: t('string', "''") },
+    photo: { control: 'select', options: ['', 'tanner', 'okafor', 'vogler', 'hollis', 'mertens', 'sorell'], description: 'Foto-URL; ersetzt die Trikotmarke, die Trikotnummer bleibt als Badge. In der Spielwiese wählst du eines der Demo-Fotos (`tanner` …), im Code übergibst du die URL. Leer oder bei Ladefehler: Trikotmarke.', table: t('string', "''") },
+    photoAlt: { control: 'text', description: 'Alternativtext des Fotos. Standard leer (dekorativ, der Name steht daneben); nur füllen, wenn das Bild eine Information trägt, die nicht im Text steht.', table: t('string', "''") },
   },
 };
 
@@ -96,10 +100,14 @@ const example = (name: string) => ({
 });
 
 export const Spielkarten    = { ...example('spiel'), tags: ['!dev'] };
+export const Spielabschnitte = { ...example('abschnitte'), tags: ['!dev'] };
 export const KartenNamen    = { ...example('namen'), tags: ['!dev'] };
 export const KartenLogos    = { ...example('logos'), tags: ['!dev'] };
 export const KartenNamenHandy = { ...example('namen-handy'), tags: ['!dev'] };
 export const Spielerkarten  = { ...example('spieler'), tags: ['!dev'] };
+export const SpielerkartenFoto = { ...example('spieler-foto'), tags: ['!dev'] };
+export const SpielerkartenFotoHandy = { ...example('spieler-foto-handy'), tags: ['!dev'] };
+export const SpielerkartenFotoFallback = { ...example('spieler-foto-fallback'), tags: ['!dev'] };
 export const Ladezustaende  = { ...example('skeleton'), tags: ['!dev'] };
 export const Zustaende      = { ...example('zustaende'), tags: ['!dev'] };
 
@@ -110,5 +118,9 @@ export const DoPlatzhalter = { ...example('do-platzhalter'), tags: ['!dev'] };
 export const DontPlatzhalter = { ...example('dont-platzhalter'), tags: ['!dev'] };
 export const DoStatus      = { ...example('do-status'), tags: ['!dev'] };
 export const DontStatus    = { ...example('dont-status'), tags: ['!dev'] };
+export const DoFotoAlt     = { ...example('do-foto-alt'), tags: ['!dev'] };
+export const DontFotoAlt   = { ...example('dont-foto-alt'), tags: ['!dev'] };
+export const DoFotoAusschnitt = { ...example('do-foto-ausschnitt'), tags: ['!dev'] };
+export const DontFotoAusschnitt = { ...example('dont-foto-ausschnitt'), tags: ['!dev'] };
 export const DoZeile       = { ...example('do-zeile'), tags: ['!dev'] };
 export const DontZeile     = { ...example('dont-zeile'), tags: ['!dev'] };

@@ -2,7 +2,10 @@
   export type PbpEvent = {
     id: string | number;
     time: string; // "M:SS"
-    quarter: string; // "Q1" .. "OT"
+    /** Spielabschnitt ab 1 (mit `periods`): Chip „V1“ bis „V4“ bzw. „A1“ bis „A8“, „VL“ für die Verlängerung. */
+    period?: number;
+    /** @deprecated Stattdessen `period`; ohne `period` wird der Text unverändert angezeigt. */
+    quarter?: string; // freier Text, z. B. "Q1" .. "OT"
     team?: 'heim' | 'gast' | 'none';
     kind?: 'default' | 'score-2p' | 'score-3p' | 'ft' | 'foul' | 'timeout' | 'sub' | 'turnover';
     title: string;
@@ -13,12 +16,16 @@
 </script>
 
 <script lang="ts">
+  import { resolvePeriod } from '../js/periods.js';
   /**
    * DSS PlayByPlay · Svelte 5
    * --------------------------------------------------------------
-   * Live-Scoring-Ereignisstrom, chronologisch. Je Ereignis: Zeit (M:SS + Viertel),
+   * Live-Scoring-Ereignisstrom, chronologisch. Je Ereignis: Zeit (M:SS + Spielabschnitt),
    * 4 px Teamstreifen, Aktion (+ Detail), kumulierter Spielstand. Nutzt nur Klassen
    * aus css/components.css. Der Feed ist ein `role="log"` und per Tastatur scrollbar.
+   *
+   * Spielabschnitt: `period` je Ereignis und `periods` (4 Viertel, Standard, oder 8 Achtel) an der Komponente; der Chip
+   * zeigt die Kurzform (V3, A5, VL), Screenreader lesen den vollen Text („3. Viertel“). `quarter` ist veraltet (Alias).
    *
    * Ereignisarten: default · score-2p · score-3p · ft · foul · timeout · sub · turnover
    */
@@ -28,6 +35,7 @@
     meta = '',
     live = true,
     dark = false,
+    periods = 4,
     events,
   }: {
     title?: string;
@@ -35,6 +43,7 @@
     meta?: string;
     live?: boolean;
     dark?: boolean;
+    periods?: 4 | 8;
     events: PbpEvent[];
   } = $props();
 
@@ -52,10 +61,13 @@
 
   <div class="dss-pbp-feed" role="log" aria-label={title} tabindex="0">
     {#each events as e (e.id)}
+      {@const abschnitt = resolvePeriod({ period: e.period, periods, quarter: e.quarter })}
       <div class={`dss-pbp-event dss-pbp-event--${e.kind ?? 'default'}`}>
         <div class="dss-pbp-time">
           {e.time}
-          <span class="dss-pbp-q">{e.quarter}</span>
+          {#if abschnitt.short}
+            <span class="dss-pbp-q">{#if abschnitt.alias}{abschnitt.label}{:else}<span aria-hidden="true">{abschnitt.short}</span><span class="dss-sr-only">{abschnitt.label}</span>{/if}</span>
+          {/if}
         </div>
         <div class={`dss-pbp-strip dss-pbp-strip--${e.team ?? 'none'}`} aria-hidden="true"></div>
         <div class="dss-pbp-body">

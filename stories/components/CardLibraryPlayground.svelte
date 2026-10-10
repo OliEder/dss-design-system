@@ -12,6 +12,9 @@
   const LOGO: Record<string, string> = { 'TSV Nordhain': nordhainLogo, 'Lindenberg Hawks': hawksLogo };
   const withLogo = (team: { name: string; logo?: string }) => ({ logo: LOGO[team.name], ...team });
 
+  // Demo-Fotos (nur Storybook): Auswahl über den Schlüssel, siehe players.ts
+  import { FOTO } from './players';
+
   const noop = () => {};
   const stay = (e?: Event) => e?.preventDefault();
 </script>
@@ -29,6 +32,8 @@
       gast={withLogo(rest.gast)}
       names={rest.names}
       logos={rest.logos}
+      period={rest.period}
+      periods={rest.periods}
       quarter={rest.quarter}
       clock={rest.clock}
       href={interactive === 'link' ? '#spiel' : undefined}
@@ -48,6 +53,8 @@
       vitals={rest.vitals}
       stat={rest.stat}
       statLabel={rest.statLabel}
+      photo={FOTO[rest.photo] ?? rest.photo}
+      photoAlt={rest.photoAlt}
       onclick={interactive === 'button' ? noop : undefined}
     />
   {:else}

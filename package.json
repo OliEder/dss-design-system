@@ -33,6 +33,7 @@
     "./svelte/Stepper": "./svelte/Stepper.svelte",
     "./svelte/MatchCard": "./svelte/MatchCard.svelte",
     "./svelte/PlayerCard": "./svelte/PlayerCard.svelte",
+    "./svelte/TeamCard": "./svelte/TeamCard.svelte",
     "./svelte/EmptyState": "./svelte/EmptyState.svelte",
     "./svelte/Skeleton": "./svelte/Skeleton.svelte",
     "./svelte/AppNav": "./svelte/AppNav.svelte",
@@ -42,6 +43,14 @@
     "./schedule.js": {
       "types": "./js/schedule.d.ts",
       "import": "./js/schedule.js"
+    },
+    "./team.js": {
+      "types": "./js/team.d.ts",
+      "import": "./js/team.js"
+    },
+    "./periods.js": {
+      "types": "./js/periods.d.ts",
+      "import": "./js/periods.js"
     }
   },
   "files": [

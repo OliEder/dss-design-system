@@ -25,7 +25,7 @@
       state="live"
       league="Bayernliga Süd"
       matchday="17. Spieltag"
-      quarter="Q4"
+      period={4}
       clock="02:14"
       venue="Nordhain-Halle"
       heim={{ name: 'TSV Nordhain 1920', score: 87 }}
@@ -86,7 +86,7 @@
     <PlayerCard
       size="hero"
       jersey="4"
-      name="Jonas Tanner"
+      name="J. Tanner"
       position="PG"
       captain
       age="24 J."

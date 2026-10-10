@@ -10,7 +10,7 @@ export const vanilla = `<!-- Einmal im App-Root einbinden -->
     <span class="dss-match-league">
       <span>Bayernliga Süd</span><span class="dss-match-muted">· 17. Spieltag</span>
     </span>
-    <span class="dss-match-live"><span class="dss-match-pulse" aria-hidden="true"></span> Live · Q4 02:14</span>
+    <span class="dss-match-live"><span class="dss-match-pulse" aria-hidden="true"></span> Live · 4. Viertel 02:14</span>
   </span>
   <span class="dss-match-body">
     <span class="dss-match-team">
@@ -59,7 +59,7 @@ export const svelte = `<script>
   state="live"
   league="Bayernliga Süd"
   matchday="17. Spieltag"
-  quarter="Q4"
+  period={4}
   clock="02:14"
   venue="Nordhain-Halle"
   heim={{ name: 'TSV Nordhain', score: 87 }}
@@ -99,7 +99,7 @@ export const react = `import { MatchCard, PlayerCard, Skeleton } from '@bbv/dss-
   state="live"
   league="Bayernliga Süd"
   matchday="17. Spieltag"
-  quarter="Q4"
+  period={4}
   clock="02:14"
   venue="Nordhain-Halle"
   heim={{ name: 'TSV Nordhain', score: 87 }}
@@ -185,3 +185,96 @@ export const namesReact = `import { MatchCard } from '@bbv/dss-design-system/rea
   heim={{ name: 'TSV Nordhain 1920', short: 'TSV N.', logo: '/logos/nordhain.svg' }}
   gast={{ name: 'Lindenberg Hawks', short: 'Hawks' }}
 />`;
+
+
+// Spielerkarte mit Foto (Platzhalter-URL für die Bilddatei)
+export const photoVanilla = `<!-- Foto statt Trikotmarke: .dss-pc-av um Bild und Badge; die Trikotnummer bleibt als .dss-tn--badge.
+     alt="" (dekorativ): der Name steht daneben. width/height gleich, lazy und async laden. -->
+<div class="dss-pc-row">
+  <span class="dss-pc-av">
+    <img class="dss-pc-img" src="/players/jt.jpg" alt="" width="32" height="32" loading="lazy" decoding="async" />
+    <span class="dss-tn dss-tn--badge heim captain">4</span>
+  </span>
+  <span class="dss-pc-who">
+    <span class="dss-pc-name">J. Tanner (C)</span>
+    <span class="dss-pc-meta">PG</span>
+  </span>
+  <span class="dss-pos pg" aria-hidden="true">PG</span>
+  <span class="dss-pc-stat">22<span class="dss-pc-stat-l">PTS</span></span>
+</div>
+
+<!-- Standard: .dss-pc-av--lg (64 px) im Kartenkopf, Badge mit .dss-tn--badge-lg -->
+<div class="dss-pc-card">
+  <div class="dss-pc-head">
+    <span class="dss-pc-av dss-pc-av--lg">
+      <img class="dss-pc-img" src="/players/jt.jpg" alt="" width="64" height="64" loading="lazy" decoding="async" />
+      <span class="dss-tn dss-tn--badge dss-tn--badge-lg heim captain">4</span>
+    </span>
+    <div class="dss-pc-who">
+      <h3 class="dss-pc-nm">J. Tanner</h3>
+      <div class="dss-pc-role"><span class="dss-pos pg">PG</span><span class="dss-pc-cap">Kapitän</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Hero: .dss-pc-hero--photo, Bild und Badge im linken Feld -->
+<div class="dss-pc-hero dss-pc-hero--photo">
+  <div class="dss-pc-hero-left">
+    <img class="dss-pc-img" src="/players/jt.jpg" alt="" width="200" height="200" loading="lazy" decoding="async" />
+    <span class="dss-tn dss-tn--badge dss-tn--badge-lg heim captain">4</span>
+  </div>
+  <div class="dss-pc-hero-right">
+    <h3 class="dss-pc-nm">J. Tanner</h3>
+    <div class="dss-pc-role"><span class="dss-pos pg">PG</span><span class="dss-pc-cap">Kapitän</span></div>
+  </div>
+</div>`;
+
+export const photoSvelte = `<script>
+  import PlayerCard from '@bbv/dss-design-system/svelte/PlayerCard';
+</script>
+
+<!-- photo: URL des Fotos. photoAlt bleibt leer (dekorativ), weil der Name danebensteht.
+     Ohne photo, mit leerem photo oder bei Ladefehler erscheint die Trikotmarke. -->
+<PlayerCard size="compact" jersey="4" name="J. Tanner" position="PG" captain stat={22} statLabel="PTS" photo="/players/jt.jpg" />
+
+<PlayerCard
+  size="hero"
+  jersey="4"
+  name="J. Tanner"
+  position="PG"
+  captain
+  photo="/players/jt.jpg"
+  vitals={[
+    { label: 'PPG', value: '17.4', accent: true },
+    { label: 'APG', value: '6.2' },
+    { label: 'STL', value: '2.1' },
+    { label: '3P%', value: '41.8' },
+  ]}
+/>
+
+<!-- Nur wenn das Bild eine Information trägt, die nicht im Text steht -->
+<PlayerCard size="standard" jersey="4" name="J. Tanner" photo="/players/jt.jpg" photoAlt="J. Tanner im Heimtrikot" />`;
+
+export const photoReact = `import { PlayerCard } from '@bbv/dss-design-system/react';
+
+{/* photo: URL des Fotos. photoAlt bleibt leer (dekorativ), weil der Name danebensteht.
+    Ohne photo, mit leerem photo oder bei Ladefehler erscheint die Trikotmarke. */}
+<PlayerCard size="compact" jersey="4" name="J. Tanner" position="PG" captain stat={22} statLabel="PTS" photo="/players/jt.jpg" />
+
+<PlayerCard
+  size="hero"
+  jersey="4"
+  name="J. Tanner"
+  position="PG"
+  captain
+  photo="/players/jt.jpg"
+  vitals={[
+    { label: 'PPG', value: '17.4', accent: true },
+    { label: 'APG', value: '6.2' },
+    { label: 'STL', value: '2.1' },
+    { label: '3P%', value: '41.8' },
+  ]}
+/>
+
+{/* Nur wenn das Bild eine Information trägt, die nicht im Text steht */}
+<PlayerCard size="standard" jersey="4" name="J. Tanner" photo="/players/jt.jpg" photoAlt="J. Tanner im Heimtrikot" />`;

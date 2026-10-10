@@ -31,12 +31,15 @@ svelte/
   Breadcrumbs.svelte    ← v0.9 · Brotkrumen (CSS in css/components.css)
   Skeleton.svelte       ← v0.9 · Lade-Platzhalter (CSS in css/components.css)
   MatchCard.svelte      ← v0.9 · Spielkarte (CSS in css/components.css)
-  PlayerCard.svelte     ← v0.9 · Spielerkarte (CSS in css/components.css)
+  PlayerCard.svelte     ← v0.9 · Spielerkarte, optional mit Foto (CSS in css/components.css)
+  TeamCard.svelte       ← Mannschaftskarte (CSS in css/components.css)
   PlayByPlay.svelte     ← v0.9 · Spielverlauf-Feed (CSS in css/components.css)
   CourtLines.svelte     ← v0.9 · Spielfeldlinien-Seitenhintergrund
-react/                  ← v0.9 · React-Fassung aller Svelte-Komponenten (Button, TextInput, Select, Modal, Banner, Card, Tabs, Icon, Checkbox, Table, TopBar, EmptyState, Stepper, AppNav, BottomNav, Breadcrumbs, Skeleton, MatchCard, PlayerCard, PlayByPlay, CourtLines)
+react/                  ← v0.9 · React-Fassung aller Svelte-Komponenten (Button, TextInput, Select, Modal, Banner, Card, Tabs, Icon, Checkbox, Table, TopBar, EmptyState, Stepper, AppNav, BottomNav, Breadcrumbs, Skeleton, MatchCard, PlayerCard, TeamCard, PlayByPlay, CourtLines)
 js/
   appnav.js             ← v0.8 · Vanilla-Verhalten der AppNav
+  periods.js            ← Spielabschnitte: „3. Viertel“, „5. Achtel“, „Verlängerung“ (`./periods.js`)
+  team.js               ← Hilfsfunktionen der TeamCard (`./team.js`)
 icons/
   sprite.ts             ← v0.7 · gemeinsamer Icon-Sprite für Svelte und React
 css/
@@ -129,7 +132,7 @@ npm install github:OliEder/dss-design-system#v0.9.0 react react-dom @radix-ui/re
 ```tsx
 import '@bbv/dss-design-system/tokens.css';
 import '@bbv/dss-design-system/components.css';
-import { Button, TextInput, Select, Modal, Banner, AppNav, Checkbox, Table, BottomNav, Breadcrumbs, MatchCard, PlayerCard, CourtLines } from '@bbv/dss-design-system/react';
+import { Button, TextInput, Select, Modal, Banner, AppNav, Checkbox, Table, BottomNav, Breadcrumbs, MatchCard, PlayerCard, TeamCard, CourtLines } from '@bbv/dss-design-system/react';
 
 <Button variant="amber">Speichern</Button>
 <TextInput label="Name" required />
@@ -344,6 +347,17 @@ Zuordnung Turnier-Manager: `Game` wird zu `ScheduleGame` mit `nr: '#' + gameNumb
 
 ---
 
+## Karten
+
+- **`PlayerCard`** in drei Größen (`compact`, `standard`, `hero`); mit `photo` (URL) zeigt sie ein Foto statt der Trikotmarke (die Trikotnummer bleibt als Badge). `photoAlt` ist standardmäßig leer: das Foto ist dekorativ, weil der Name danebensteht. Ohne `photo`, mit leerem `photo` oder bei Ladefehler erscheint die Trikotmarke. **Datenschutz:** Fotos von Minderjährigen nur mit Einwilligung der Erziehungsberechtigten verwenden. Die Demo-Fotos in Storybook stammen von Unsplash (`stories/assets/players/CREDITS.md`), zeigen reale Personen und gehören nicht zum npm-Paket. Die Unsplash-Lizenz enthält kein Model Release (keine Einwilligung der abgebildeten Personen); die Demo-Fotos sind nur für Demonstrationen im Storybook gedacht und nicht für eigene Produkte oder mit Bezug zu echten Personen zu übernehmen.
+- **`MatchCard`** zeigt den Spielabschnitt mit `period` (ab 1) und `periods` (`4` Viertel, Standard, oder `8` Achtel): „3. Viertel“, „5. Achtel“, darüber „Verlängerung“, „2. Verlängerung“. `PlayByPlay` nimmt `period` je Ereignis und `periods` an der Komponente (Chip „V3“, „A5“, „VL“; Screenreader lesen den vollen Text). `quarter` ist veraltet und wird ohne `period` unverändert angezeigt.
+- **`TeamCard`**: Mannschaft mit Logo, Liga, Bilanz, Tabellenplatz, nächstem und letztem Spiel, Kader und optionaler Saison-Statistik (`stats`: nur übergebene Felder). Alles außer `name` ist optional; `size="compact"` ist die Listenzeile; mit `href` oder `onclick` ist die Karte klickbar.
+
+```tsx
+<TeamCard name="TSV Nordhain 1920" short="Nordhain" league="Bayernliga Süd" record={{ w: 12, l: 3 }} rank={3} rankOf={12} href="/teams/nordhain" />
+<MatchCard state="live" period={5} periods={8} clock="03:10" heim={{ name: 'TSV Nordhain', score: 24 }} gast={{ name: 'Lindenberg Hawks', score: 22 }} />
+```
+
 ## Accessibility
 
 - **WCAG 2.1 AAA** durchgehend validiert (siehe Identity Overview · Section 01 · Audit-Tabelle).
@@ -402,7 +416,7 @@ Was drin ist:
 
 - **Introduction** (Startseite): Überblick, Werkzeugleiste, Inhaltsverzeichnis aller Seiten
 - **Foundation:** Colors, Typography, Focus & Hover
-- **Components:** je eine MDX-Seite pro Komponente oder Komponentengruppe (Button, TextInput, Select, Checkbox, Modal, Banner, Card, Card Library, Tabs, Navigation, AppNav, Table, Spielplan, EmptyState, PlayByPlay, Icon, CourtLines) und die Spielwiese zum Spielplan
+- **Components:** je eine MDX-Seite pro Komponente oder Komponentengruppe (Button, TextInput, Select, Checkbox, Modal, Banner, Card, Card Library, TeamCard, Tabs, Navigation, AppNav, Table, Spielplan, EmptyState, PlayByPlay, Icon, CourtLines) und die Spielwiese zum Spielplan
 
 Die Werkzeugleiste schaltet **Marke** (BBV/DBB), **Schrift**, Hell/Dunkel, **Fassung** (Vanilla, Svelte oder React für alle
 Code-Beispiele) und **Zustand** (erzwingt Hover, Fokus oder Aktiv auf den Vorschauen der Seite) um.

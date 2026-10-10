@@ -4,7 +4,7 @@ import { DosDonts } from './docs/blocks/DosDonts';
 import { FrameworkCode } from './docs/blocks/FrameworkCode';
 import { DocTable } from './docs/blocks/DocTable';
 import './docs/blocks/blocks.css';
-import { vanilla, svelte, react, namesVanilla, namesSvelte, namesReact } from './CardLibrary.code';
+import { vanilla, svelte, react, namesVanilla, namesSvelte, namesReact, photoVanilla, photoSvelte, photoReact } from './CardLibrary.code';
 
 <Meta of={CardLibraryStories} />
 
@@ -13,7 +13,8 @@ import { vanilla, svelte, react, namesVanilla, namesSvelte, namesReact } from '.
 **Domänen-spezifische Karten:** der Container [Card](?path=/docs/components-card--docs) ist die generische Basis. Diese Komponenten sind darauf aufgebaute, fertige Muster für das Spielberichts-Erlebnis, von der Roster-Liste bis zum Live-Spielstand:
 
 - **MatchCard**: Spielkarte in 3 Zuständen: `scheduled`, `live`, `finished`. Heim- und Gastpunkte, Liga, Halle, Live-Puls, Endstand-Styling.
-- **PlayerCard**: Spieler in 3 Maßstäben: `compact` (Roster-Zeile), `standard` (Übersicht mit 4 Kennzahlen), `hero` (dunkle Profilkarte).
+- **PlayerCard**: Spieler in 3 Maßstäben: `compact` (Roster-Zeile), `standard` (Übersicht mit 4 Kennzahlen), `hero` (dunkle Profilkarte); optional mit Foto.
+- **TeamCard**: Mannschaft mit Logo, Liga, Bilanz, Tabellenplatz, nächstem und letztem Spiel, Kader und optionaler Saison-Statistik; hat eine eigene Seite: [TeamCard](?path=/docs/components-teamcard--docs).
 - **Skeleton**: Shimmer-Platzhalter für Ladezustände. Bausteine (`line`, `block`, `circle`) und fertige Muster (`row`, `match`).
 - **EmptyState**: 3 Tonalitäten: `neutral`, `action` (Amber), `error` (Rot), immer mit nächstem Schritt. Hat eine eigene Seite: [EmptyState](?path=/docs/components-emptystate--docs).
 
@@ -24,6 +25,14 @@ import { vanilla, svelte, react, namesVanilla, namesSvelte, namesReact } from '.
 <Canvas of={CardLibraryStories.Spielkarten} />
 
 Mit `href` ist die Karte ein Link, mit `onclick` (React: `onClick`) ein Button, sonst ein `div`. Die Pulsanimation von Lampe und Stand stoppt bei `prefers-reduced-motion: reduce`; „Live“ steht immer auch als Wort im Kopf.
+
+## Viertel und Achtel
+
+Eine laufende Karte zeigt im Kopf „Live · 3. Viertel 06:40“. Die Props: `period` (ab 1), `periods` (`4` Standard oder `8`) und `clock` (Spieluhr als Text). Mit `periods={8}` heißt der Abschnitt „5. Achtel“, so spielt der Mini-Basketball. Ist `period` größer als `periods`, steht „Verlängerung“, ab der zweiten „2. Verlängerung“ (`period − periods`). Ungültige Werte (0, negativ, Kommazahl) zeigen keinen Abschnitt, nur die Uhr.
+
+<Canvas of={CardLibraryStories.Spielabschnitte} />
+
+**`quarter` ist veraltet.** Bestehender Code mit `quarter="Q4"` läuft weiter: Ohne `period` wird der Text unverändert angezeigt. Ist `period` gesetzt, gewinnt es. Die Berechnung steht in `@bbv/dss-design-system/periods.js` (`periodLabel`, `periodShort`, `resolvePeriod`), damit Svelte und React gleich entscheiden; auch [PlayByPlay](?path=/docs/components-playbyplay--docs) nutzt sie.
 
 ## Kurznamen und Logos
 
@@ -61,6 +70,37 @@ Die Vorschau ist eine eingebettete Seite mit fester Breite von 390 px, ohne dass
 
 Nur die Zeile `compact` ist klickbar (mit `onclick`, React: `onClick`, wird sie zum Button). Standard und Hero zeigen den Namen als Überschrift, standardmäßig `h3`; mit `titleAs` wählst du die Ebene, die in deine Gliederung passt.
 
+### Mit Foto
+
+Mit `photo` (URL) ersetzt ein Foto die Trikotmarke; die Trikotnummer bleibt als **Badge** an der unteren rechten Ecke, damit sie auf der Liste weiter lesbar ist (weiß auf Teamfarbe, Kapitänsring bleibt). Der Avatar ist so groß wie die Marke, die er ersetzt: **compact** 32 px rund, **standard** 64 px mit abgerundeten Ecken (14 px). Die Zeilenhöhe der compact-Zeile wächst dadurch nicht. In **hero** füllt das Porträt die linke Kartenhälfte (200 px breit, bis zum Rand) und läuft nach rechts in das Dunkel der Karte aus; die Trikotnummer sitzt als Badge unten links im Bild. Unter 560 px liegt das Porträt als Banner (280 px hoch) oben, die Trikotnummer sitzt oben links, der weiße Name liegt über dem dunklen Verlauf (mindestens 92 % Deckkraft, auch bei einem weißen Foto ≥ 7:1).
+
+Das Bild hat `object-fit: cover` und `object-position: center top`: ein quadratischer Ausschnitt mit dem Gesicht oben ist ideal. Es lädt `lazy` und `async`, `width` und `height` sind gesetzt, damit nichts springt.
+
+<Canvas of={CardLibraryStories.SpielerkartenFoto} />
+
+Ohne `photo`, mit leerem `photo` oder wenn das Bild nicht lädt, erscheint wieder die Trikotmarke, nie ein kaputtes Bildsymbol (ein `onerror`-Handler in Svelte, ein State in React; eine neue URL wird erneut versucht).
+
+<Canvas of={CardLibraryStories.SpielerkartenFotoFallback} />
+
+<div className="dss-phones">
+  <div className="dss-phone">
+    <h4 className="dss-doc-cap">PlayerCard · hero mit Foto</h4>
+    <div className="dss-phone-scroll" tabIndex={0} role="region" aria-label="Scrollbereich: PlayerCard hero mit Foto">
+      <iframe title="Handy-Vorschau: Spielerkarte hero mit Foto in 390 Pixel Breite" src="iframe.html?viewMode=story&globals=brand:bbv&id=components-card-library--spielerkarten-foto-handy" loading="lazy" />
+    </div>
+  </div>
+</div>
+
+**Alternativtext:** `photoAlt` ist standardmäßig leer. Das Foto ist dekorativ, weil der Name daneben steht; ein Screenreader liest den Namen so genau einmal. Fülle `photoAlt` nur, wenn das Bild eine Information trägt, die nicht im Text steht (zum Beispiel „im Heimtrikot“). Das Foto ist nie die einzige Information: Name und Trikotnummer stehen immer als Text da.
+
+**Datenschutz:** Fotos von Minderjährigen nur mit Einwilligung der Erziehungsberechtigten verwenden; auch bei Erwachsenen brauchst du das Recht, das Bild zu zeigen. Die Demo-Fotos in dieser Doku stammen von Unsplash (Unsplash-Lizenz) und zeigen reale Personen; die Namen sind erfunden und keinem echten Spieler oder Verein zugeordnet. **Die Unsplash-Lizenz enthält kein Model Release (keine Einwilligung der abgebildeten Personen); die Demo-Fotos sind nur für Demonstrationen im Storybook gedacht und nicht für eigene Produkte oder mit Bezug zu echten Personen zu übernehmen.**
+
+<FrameworkCode label="PlayerCard: Foto" vanilla={photoVanilla} svelte={photoSvelte} react={photoReact} />
+
+## Teamkarte
+
+Die **Teamkarte** (Logo, Liga, Bilanz, Tabellenplatz, nächstes und letztes Spiel, Kader, optionale Saison-Statistik; `standard` und `compact`) hat eine eigene Seite: [TeamCard](?path=/docs/components-teamcard--docs).
+
 ## Laden ohne Springen
 
 Shimmer-Platzhalter nehmen die Struktur der späteren Komponente ein, damit es beim Eintreffen der Daten möglichst wenige Layout-Sprünge gibt. Bausteine für Text, Blöcke und Avatare, fertige Muster für die gängigsten Zeilen.
@@ -85,7 +125,7 @@ Importiere die Komponenten über die Path-Exporte (Svelte) bzw. aus dem React-Pa
 
 <FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
 
-Die Props zeigen drei Spielwiesen mit den echten Komponenten. Die Spielkarte hat zusätzlich `names` und `logos` (siehe „Kurznamen und Logos“). Die Namen gelten für Svelte; in React heißen `onclick` `onClick`, `height_cm` `heightCm` und `role` `playerRole`.
+Die Props zeigen drei Spielwiesen mit den echten Komponenten. Die Spielkarte hat zusätzlich `names` und `logos` (siehe „Kurznamen und Logos“), die Spielerkarte `photo` und `photoAlt` (siehe „Mit Foto“; in der Spielwiese wählst du eines der Demo-Fotos). Die Namen gelten für Svelte; in React heißen `onclick` `onClick`, `height_cm` `heightCm` und `role` `playerRole`.
 
 ### MatchCard
 
@@ -123,6 +163,20 @@ Die Props zeigen drei Spielwiesen mit den echten Komponenten. Die Spielkarte hat
       dontText: 'Mit live trägt ein beendetes Spiel Puls, grünen Balken und „Live“, und der Verlierer wird nicht gedimmt.',
       good: <Story of={CardLibraryStories.DoStatus} inline />,
       bad: <Story of={CardLibraryStories.DontStatus} inline />,
+    },
+    {
+      title: 'Foto dekorativ: leerer Alternativtext',
+      doText: 'Das Foto ist dekorativ (`photoAlt` leer), weil der Name danebensteht; der Screenreader liest „7, M. Okafor“.',
+      dontText: 'Mit `photoAlt="M. Okafor"` sagt der Screenreader den Namen zweimal an („Bild M. Okafor“, dann „7, M. Okafor“).',
+      good: <Story of={CardLibraryStories.DoFotoAlt} inline />,
+      bad: <Story of={CardLibraryStories.DontFotoAlt} inline />,
+    },
+    {
+      title: 'Quadratischer Ausschnitt, Gesicht oben',
+      doText: 'Das Foto ist ein quadratischer Ausschnitt mit dem Gesicht im oberen Teil; `object-position: center top` zeigt es sicher.',
+      dontText: 'Zeigt der Ausschnitt kein Gesicht (hier nur Hintergrund), ist die Person als Avatar nicht zu erkennen.',
+      good: <Story of={CardLibraryStories.DoFotoAusschnitt} inline />,
+      bad: <Story of={CardLibraryStories.DontFotoAusschnitt} inline />,
     },
     {
       title: 'Zeile für lange Listen',

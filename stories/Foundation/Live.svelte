@@ -43,19 +43,19 @@
 
     <div class="cell">
       <div class="cap">Spielkarte (MatchCard)</div>
-      <MatchCard state="live" league="Bayernliga Süd" matchday="17. Spieltag" quarter="Q4" clock="02:14" venue="Nordhain-Halle" heim={{ name: 'TSV Nordhain', score: 87 }} gast={{ name: 'Lindenberg Hawks', score: 64 }} />
+      <MatchCard state="live" league="Bayernliga Süd" matchday="17. Spieltag" period={4} clock="02:14" venue="Nordhain-Halle" heim={{ name: 'TSV Nordhain', score: 87 }} gast={{ name: 'Lindenberg Hawks', score: 64 }} />
     </div>
 
     <div class="cell">
       <div class="cap">Play-by-Play · Kopf</div>
-      <PlayByPlay title="Play-by-Play" meta="Q4" events={initialEvents.slice(0, 2)} />
+      <PlayByPlay title="Play-by-Play" meta="4. Viertel" events={initialEvents.slice(0, 2)} />
     </div>
 
     <div class="cell wide">
       <div class="cap">TopBar · immer dunkel</div>
       <!-- svelte-ignore a11y_no_noninteractive_tabindex -- Fokussierbar mit Absicht: Tastaturnutzer müssen den scrollbaren Bereich erreichen -->
       <div class="scroll" role="region" tabindex="0" aria-label="TopBar mit Live-Kontext, seitlich scrollbar">
-        <div class="scroll-in"><TopBar brand="DSS" mark="D" context="live" matchLabel="BBL · 17. Spieltag" score="87 : 64" clock="Q4 · 02:14" /></div>
+        <div class="scroll-in"><TopBar brand="DSS" mark="D" context="live" matchLabel="BBL · 17. Spieltag" score="87 : 64" clock="4. Viertel · 02:14" /></div>
       </div>
     </div>
 

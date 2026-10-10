@@ -56,4 +56,34 @@ describe('MatchCard', () => {
     );
     await expectNoA11yViolations(container);
   });
+
+  describe('Spielabschnitt (period, periods, quarter)', () => {
+    const live = (props: Record<string, unknown>) =>
+      render(<MatchCard state="live" clock="02:14" heim={{ ...HEIM, score: 87 }} gast={{ ...GAST, score: 64 }} {...props} />).container.querySelector('.dss-match-live')!;
+
+    it.each([
+      [{ period: 3 }, 'Live · 3. Viertel 02:14'],
+      [{ period: 4, periods: 4 }, 'Live · 4. Viertel 02:14'],
+      [{ period: 5, periods: 8 }, 'Live · 5. Achtel 02:14'],
+      [{ period: 5 }, 'Live · Verlängerung 02:14'],
+      [{ period: 6 }, 'Live · 2. Verlängerung 02:14'],
+      [{ period: 9, periods: 8 }, 'Live · Verlängerung 02:14'],
+      [{ period: 10, periods: 8 }, 'Live · 2. Verlängerung 02:14'],
+    ])('%j zeigt %s', (props, text) => {
+      expect(live(props)).toHaveTextContent(text);
+    });
+
+    it('Alias quarter wird ohne period unverändert angezeigt', () => {
+      expect(live({ quarter: 'Q4' })).toHaveTextContent('Live · Q4 02:14');
+      expect(live({ quarter: 'Q4', period: 2 })).toHaveTextContent('Live · 2. Viertel 02:14');
+    });
+
+    it.each([0, -1, 1.5, Number.NaN])('ungültiges period %s zeigt nur die Uhr', (period) => {
+      expect(live({ period })).toHaveTextContent(/^\s*Live · 02:14$/);
+    });
+
+    it('ohne Uhr und Abschnitt steht nur „Live“', () => {
+      expect(live({ clock: '' })).toHaveTextContent(/^\s*Live ·\s*$/);
+    });
+  });
 });

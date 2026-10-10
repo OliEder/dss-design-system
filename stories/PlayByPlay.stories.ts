@@ -22,6 +22,7 @@ const example = (name: string) => ({
 });
 
 export const Eintrag    = { ...example('eintrag'), tags: ['!dev'] };
+export const Abschnitte = { ...example('abschnitte'), tags: ['!dev'] };
 export const Arten      = { ...example('arten'), tags: ['!dev'] };
 export const Dunkel     = { ...example('dunkel'), tags: ['!dev'] };
 export const Zustaende  = { ...example('zustaende'), tags: ['!dev'] };

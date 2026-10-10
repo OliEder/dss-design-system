@@ -5,15 +5,20 @@
    * Drei Spielzustände, eine Kartengrammatik. Nutzt nur Klassen aus css/components.css.
    *
    *   scheduled — Datum/Uhrzeit, Halle, Teams
-   *   live      — Spielstand, Viertel + Uhr, Puls
+   *   live      — Spielstand, Spielabschnitt + Uhr, Puls
    *   finished  — Endstand, Sieger/Verlierer
    *
    * Mit `href` ist die Karte ein Link, mit `onclick` ein Button, sonst ein div.
    *
    * `names`: "full" (Standard) oder "short" (Kurzname, falls vorhanden); bis 640 px Breite erscheint
    * der Kurzname automatisch (CSS, Viewport-Regel). `logos`: Logo bzw. Initialen vor dem Namen (Standard aus).
+   *
+   * Spielabschnitt (nur live): `period` (ab 1) mit `periods` (4 Viertel, Standard, oder 8 Achtel) ergibt „3. Viertel“,
+   * „5. Achtel“, „Verlängerung“ (js/periods.js). `quarter` ist veraltet und bleibt als Alias: Ohne `period` wird der
+   * Text unverändert angezeigt.
    */
   import { initials, shortName } from '../js/schedule.js';
+  import { resolvePeriod } from '../js/periods.js';
   type State = 'scheduled' | 'live' | 'finished';
   type Team = { name: string; short?: string; logo?: string; color?: 'heim' | 'gast'; score?: number };
   type Names = 'full' | 'short';
@@ -29,6 +34,8 @@
     gast,
     names = 'full',
     logos = false,
+    period = undefined,
+    periods = 4,
     quarter = '',
     clock = '',
     href = undefined,
@@ -44,6 +51,9 @@
     gast: Team;
     names?: Names;
     logos?: boolean;
+    period?: number;
+    periods?: 4 | 8;
+    /** @deprecated Stattdessen `period`; ohne `period` wird der Text unverändert angezeigt. */
     quarter?: string;
     clock?: string;
     href?: string;
@@ -53,6 +63,7 @@
   let heimWin = $derived(state === 'finished' && (heim.score ?? 0) > (gast.score ?? 0));
   let gastWin = $derived(state === 'finished' && (gast.score ?? 0) > (heim.score ?? 0));
   const tag = $derived(href ? 'a' : onclick ? 'button' : 'div');
+  const liveText = $derived([resolvePeriod({ period, periods, quarter }).label, clock].filter(Boolean).join(' '));
 </script>
 
 {#snippet teamBlock(t: Team)}
@@ -75,7 +86,7 @@
       {#if matchday}<span class="dss-match-muted">· {matchday}</span>{/if}
     </span>
     {#if state === 'live'}
-      <span class="dss-match-live"><span class="dss-match-pulse" aria-hidden="true"></span> Live · {quarter} {clock}</span>
+      <span class="dss-match-live"><span class="dss-match-pulse" aria-hidden="true"></span> Live · {liveText}</span>
     {:else if state === 'finished'}
       <span class="dss-match-final">Endstand</span>
     {:else if date}
