@@ -124,6 +124,11 @@ describe('ScheduleTable · opponent', () => {
     const { container } = render(<ScheduleTable games={PERSPECTIVE} />);
     expect(screen.getByText('Eigene 20, Gegner 0, Sieg, vorläufig')).toBeInTheDocument();
     expect(container.querySelector('.dss-chip--ok')).toHaveTextContent('S');
+    // "vorläufig" steht als Tag in der Ergebnis-Box, nach der Zahl im Markup (CSS setzt es darunter)
+    const box = container.querySelector('.dss-sch-prov')?.closest('.dss-sch-resbox') as HTMLElement;
+    expect(box.querySelector('.dss-sch-prov')).toHaveTextContent('vorläufig');
+    expect(box.querySelector('.dss-sch-prov')).toHaveAttribute('aria-hidden', 'true');
+    expect(box.querySelector('.dss-sch-score')?.nextElementSibling).toHaveClass('dss-sr-only');
     const rows = container.querySelectorAll('tr.dss-sch-row');
     expect(within(rows[2] as HTMLElement).getByText('–')).toBeInTheDocument();
     expect(within(rows[2] as HTMLElement).queryByText(/Eigene/)).toBeNull();

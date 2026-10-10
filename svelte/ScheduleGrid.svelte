@@ -73,15 +73,20 @@
       <span class="dss-sch-sep" aria-hidden="true"> – </span>
       <span class="dss-sr-only"> gegen </span>
       {@render team(game.gast, winner === 'heim')}
+      {#if game.state === 'live' && !hasScore(game, 'versus')}
+        <span class="dss-match-live dss-sch-live"><span class="dss-match-pulse" aria-hidden="true"></span> Live</span>
+      {/if}
     </div>
-    {#if game.state === 'live'}
-      <span class="dss-match-live dss-sch-live"><span class="dss-match-pulse" aria-hidden="true"></span> Live</span>
-    {/if}
     {#if (game.state === 'finished' || game.state === 'live') && hasScore(game, 'versus')}
       <div class="dss-sg-result">
-        <span class="dss-sch-score" aria-hidden="true">{game.heim?.score} : {game.gast?.score}</span>
-        <span class="dss-sr-only">{ariaForResult(game, 'versus')}</span>
-        {#if game.provisional}<small aria-hidden="true">vorläufig</small>{/if}
+        <span class="dss-sch-resbox">
+          <span class="dss-sch-score" aria-hidden="true">{game.heim?.score} : {game.gast?.score}</span>
+          <span class="dss-sr-only">{ariaForResult(game, 'versus')}</span>
+          {#if game.provisional}<small class="dss-sch-prov" aria-hidden="true">vorläufig</small>{/if}
+        </span>
+        {#if game.state === 'live'}
+          <span class="dss-match-live dss-sch-live"><span class="dss-match-pulse" aria-hidden="true"></span> Live</span>
+        {/if}
       </div>
     {/if}
     {#if metaText}<div class="dss-sg-meta">{metaText}</div>{/if}

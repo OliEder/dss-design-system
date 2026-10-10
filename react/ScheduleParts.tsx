@@ -46,17 +46,24 @@ interface ResultTextProps {
   visible: string;
   spoken: string;
   provisional?: boolean;
+  /** Sieg-/Niederlage-Chip links neben der Zahl (nur Layout `opponent`). */
+  chip?: ReactNode;
 }
 
-/** Sichtbares Ergebnis (für Screenreader versteckt) plus gesprochener Text. */
-export function ResultText({ visible, spoken, provisional = false }: ResultTextProps) {
+/** Sichtbares Ergebnis (für Screenreader versteckt) plus gesprochener Text; "vorläufig" steht klein unter der Zahl. */
+export function ResultText({ visible, spoken, provisional = false, chip = null }: ResultTextProps) {
   return (
-    <>
+    <span className="dss-sch-resbox">
+      {chip}
       <span className="dss-sch-score" aria-hidden="true">
         {visible}
       </span>
       <span className="dss-sr-only">{spoken}</span>
-      {provisional ? <small aria-hidden="true">vorläufig</small> : null}
-    </>
+      {provisional ? (
+        <small className="dss-sch-prov" aria-hidden="true">
+          vorläufig
+        </small>
+      ) : null}
+    </span>
   );
 }

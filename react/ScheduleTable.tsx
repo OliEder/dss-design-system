@@ -182,12 +182,18 @@ export function ScheduleTable({
             : `${game.heim?.score} : ${game.gast?.score}`;
         return (
           <td key={key} role="cell" className="dss-sch-res">
-            {result ? (
-              <span className={cn('dss-chip dss-chip--mono', OUTCOME_CHIP[result])} aria-hidden="true">
-                {result}
-              </span>
-            ) : null}
-            <ResultText visible={visible} spoken={ariaForResult(game, mode)} provisional={game.provisional} />
+            <ResultText
+              visible={visible}
+              spoken={ariaForResult(game, mode)}
+              provisional={game.provisional}
+              chip={
+                result ? (
+                  <span className={cn('dss-chip dss-chip--mono', OUTCOME_CHIP[result])} aria-hidden="true">
+                    {result}
+                  </span>
+                ) : null
+              }
+            />
           </td>
         );
       }

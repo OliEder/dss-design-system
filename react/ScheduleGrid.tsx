@@ -68,8 +68,8 @@ export function ScheduleGrid({
           </span>
           <span className="dss-sr-only"> gegen </span>
           <TeamName team={game.gast} loser={winner === 'heim'} renderLink={renderLink} />
+          {game.state === 'live' && !hasScore(game, 'versus') ? <LiveTag /> : null}
         </div>
-        {game.state === 'live' ? <LiveTag /> : null}
         {(game.state === 'finished' || game.state === 'live') && hasScore(game, 'versus') ? (
           <div className="dss-sg-result">
             <ResultText
@@ -77,6 +77,7 @@ export function ScheduleGrid({
               spoken={ariaForResult(game, 'versus')}
               provisional={game.provisional}
             />
+            {game.state === 'live' ? <LiveTag /> : null}
           </div>
         ) : null}
         {metaText ? <div className="dss-sg-meta">{metaText}</div> : null}
