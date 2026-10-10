@@ -1071,16 +1071,16 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 .dss-sch-resbox .dss-sch-score { grid-column: 2; grid-row: 1; }
 .dss-sch-resbox .dss-sch-prov { grid-column: 2; grid-row: 2; }
 .dss-sch-res .dss-chip { margin-right: 10px; }
-/* Zeilen mit vorläufigem Ergebnis: Zahl (22 px) plus Tag (11 px) sind 33 px hoch; weniger Innenabstand in der Ergebniszelle,
+/* Zeilen mit vorläufigem Ergebnis: Zahl (22 px) plus Tag (11 px, 1 px Abstand) sind 34 px hoch (plus 1 px Zeilenlinie); weniger Innenabstand in der Ergebniszelle,
    damit die Dichte-Höhen (default 48, compact 40) auch dann gelten. touch (60) hat genug Platz. */
-.dss-tbl--schedule.dss-tbl--default td.dss-sch-res { padding-block: 7px; }
-.dss-tbl--schedule.dss-tbl--compact td.dss-sch-res { padding-block: 3px; }
+.dss-tbl--schedule.dss-tbl--default td.dss-sch-res { padding-block: 6px; }
+.dss-tbl--schedule.dss-tbl--compact td.dss-sch-res { padding-block: 2px; }
 .dss-sch-score {
   font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-stat); line-height: 1;
   letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--dss-fg);
 }
 .dss-sch-none { font-family: var(--font-mono); color: var(--dss-mute); }
-.dss-sch-prov { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; line-height: 1; letter-spacing: 0.04em; color: var(--dss-mute); white-space: nowrap; }
+.dss-sch-prov { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; line-height: 1; letter-spacing: 0.04em; color: var(--dss-mute); white-space: nowrap; margin-top: 1px; }
 /* inline-block statt inline-flex (nötig für die Auslassungspunkte); line-height = Inhaltshöhe des Chips (24 px), damit der Text mittig sitzt;
    die Zeilenbox liegt hier etwas anders als im Flex-Chip, deshalb 2 px statt 3/1 px Innenabstand (gemessen) */
 .dss-sch-field { max-width: 14ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: middle; line-height: 24px; padding-block: 2px; }
@@ -1182,6 +1182,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 .dss-sg-result { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
 .dss-sg-result .dss-sch-score { font-size: var(--fs-body); }
 .dss-sg-result .dss-sch-live { margin-left: 0; }
+.dss-sg-result .dss-sch-resbox { justify-items: start; }
 .dss-sg-game + .dss-sg-game { margin-top: 6px; }
 .dss-tbl--compact .dss-sg-game { min-height: 0; padding: 4px 8px; gap: 2px; }
 .dss-tbl--compact .dss-sg-game + .dss-sg-game { margin-top: 4px; }

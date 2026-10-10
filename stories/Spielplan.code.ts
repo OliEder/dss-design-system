@@ -4,7 +4,7 @@ const imports = `<!-- Einmal im App-Root einbinden -->
 <!-- optional: <link rel="stylesheet" href="fonts/fonts.css" /> -->
 `;
 
-// Mannschaftssicht (layout opponent), mit eigener Uhrzeit
+// Mannschaftssicht (layout opponent), mit eigener Uhrzeit; das Ergebnis ist hier vorläufig (Tag unter der Zahl)
 export const tableVanilla = imports + `
 <div class="dss-frame">
   <div class="dss-frame-head">
@@ -39,9 +39,12 @@ export const tableVanilla = imports + `
             </span>
           </td>
           <td role="cell" class="dss-sch-res">
-            <span class="dss-chip dss-chip--mono dss-chip--err" aria-hidden="true">N</span>
-            <span class="dss-sch-score" aria-hidden="true">65 : 108</span>
-            <span class="dss-sr-only">Eigene 65, Gegner 108, Niederlage</span>
+            <span class="dss-sch-resbox">
+              <span class="dss-chip dss-chip--mono dss-chip--err" aria-hidden="true">N</span>
+              <span class="dss-sch-score" aria-hidden="true">65 : 108</span>
+              <span class="dss-sr-only">Eigene 65, Gegner 108, Niederlage, vorläufig</span>
+              <small class="dss-sch-prov" aria-hidden="true">vorläufig</small>
+            </span>
           </td>
         </tr>
       </tbody>
@@ -94,8 +97,10 @@ export const versusVanilla = `<div class="dss-frame">
             <span class="dss-sch-team is-loser">Team B</span>
           </td>
           <td role="cell" class="dss-sch-res">
-            <span class="dss-sch-score" aria-hidden="true">72 : 65</span>
-            <span class="dss-sr-only">Heim 72, Gast 65</span>
+            <span class="dss-sch-resbox">
+              <span class="dss-sch-score" aria-hidden="true">72 : 65</span>
+              <span class="dss-sr-only">Heim 72, Gast 65</span>
+            </span>
           </td>
         </tr>
       </tbody>

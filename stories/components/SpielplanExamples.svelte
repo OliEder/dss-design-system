@@ -99,6 +99,14 @@
     { key: 'time', label: 'Bearbeitbare Zeit', games: [{ id: 's15', state: 'scheduled', nr: '#9', time: '11:00', field: 'F1', heim: { name: 'Erster Gruppe A', placeholder: true }, gast: { name: 'Zweiter Gruppe B', placeholder: true } }], layout: 'columns', extra: 'time' },
   ];
 
+  // Zeitraster: Live (mit Stand) und vorläufig nebeneinander
+  const rasterZustaende: ScheduleGame[] = [
+    { id: 'z1', state: 'live', time: '09:00', column: 'h1', heim: { name: 'SV Kiefernau', score: 12 }, gast: { name: 'MTV Bergfeld', score: 10 } },
+    { id: 'z2', state: 'finished', provisional: true, time: '09:00', column: 'h2', heim: { name: 'BG Seeberg', score: 28 }, gast: { name: 'TV Elbach', score: 35 } },
+  ];
+  // Dichte mit vorläufigem Ergebnis: die Zeilenhöhe bleibt wie ohne Tag
+  const turnierVorlaeufig: ScheduleGame[] = [{ ...turnier[0], provisional: true }, turnier[1]];
+
   // Dos und Don'ts
   const eigene: ScheduleGame[] = [
     ft('e1', { heim: { name: 'Norvik Baskets Rosenau', own: true }, gast: { name: 'FC Waldbach' } }),
@@ -139,6 +147,10 @@
   <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="default" caption="Dichte Standard · 48 px" />
 {:else if example === 'dichte-compact'}
   <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="compact" caption="Dichte Kompakt · 40 px" />
+{:else if example === 'dichte-vorlaeufig'}
+  <ScheduleTable games={turnierVorlaeufig} layout="columns" density="compact" caption="Dichte Kompakt mit vorläufigem Ergebnis" />
+{:else if example === 'zustand-raster'}
+  <ScheduleGrid games={rasterZustaende} columns={[{ id: 'h1', label: 'Halle 1' }, { id: 'h2', label: 'Halle 2' }]} caption="Zeitraster: live und vorläufig" />
 {:else if example === 'do-dichte'}
   <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="touch" caption="Touch-Dichte" />
 {:else if example === 'dont-dichte'}

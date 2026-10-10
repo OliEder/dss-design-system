@@ -33,8 +33,8 @@ describe('Vorläufig steht unter der Ergebniszahl', () => {
   });
 
   it('die Dichte-Höhen gelten auch mit Tag (weniger Innenabstand in der Ergebniszelle)', () => {
-    expect(rule('.dss-tbl--schedule.dss-tbl--default td.dss-sch-res')).toMatch(/padding-block:\s*7px/);
-    expect(rule('.dss-tbl--schedule.dss-tbl--compact td.dss-sch-res')).toMatch(/padding-block:\s*3px/);
+    expect(rule('.dss-tbl--schedule.dss-tbl--default td.dss-sch-res')).toMatch(/padding-block:\s*6px/);
+    expect(rule('.dss-tbl--schedule.dss-tbl--compact td.dss-sch-res')).toMatch(/padding-block:\s*2px/);
   });
 
   it.each(['svelte/ScheduleTable.svelte', 'svelte/ScheduleGrid.svelte', 'react/ScheduleParts.tsx'])(
