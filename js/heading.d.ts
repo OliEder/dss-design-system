@@ -1,5 +1,7 @@
 /** Ebene einer Komponentenüberschrift: 2 bis 6 (die h1 gehört der Seite der App). */
 export type HeadingLevelValue = 2 | 3 | 4 | 5 | 6;
+/** Ebene als Eingabe: Zahl 2 bis 6 oder dieselbe Zahl als Zeichenkette (`level="4"` in Svelte-Vorlagen). */
+export type HeadingLevelInput = HeadingLevelValue | `${HeadingLevelValue}`;
 /** Elementname einer Komponentenüberschrift: `h2` bis `h6`. */
 export type HeadingTag = 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 

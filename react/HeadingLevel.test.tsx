@@ -68,6 +68,9 @@ describe('HeadingLevel', () => {
   it('level gewinnt gegen by', () => {
     expect(level(<HeadingLevel level={3}><HeadingLevel level={6} by={-1}><Probe /></HeadingLevel></HeadingLevel>)).toBe('6');
   });
+  it('level als Ziffern-Zeichenkette gilt wie die Zahl', () => {
+    expect(level(<HeadingLevel level="4"><Probe /></HeadingLevel>)).toBe('4');
+  });
   it('begrenzt auf 2 bis 6', () => {
     expect(level(<HeadingLevel level={9 as never}><Probe /></HeadingLevel>)).toBe('6');
     expect(level(<HeadingLevel level={1 as never}><Probe /></HeadingLevel>)).toBe('2');

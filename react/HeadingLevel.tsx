@@ -1,14 +1,14 @@
 import { createContext, useContext, type ReactNode } from 'react';
-import { headingLevel, nextLevel, resolveHeading, type HeadingLevelValue, type HeadingTag } from '../js/heading.js';
+import { headingLevel, nextLevel, resolveHeading, type HeadingLevelInput, type HeadingLevelValue, type HeadingTag } from '../js/heading.js';
 
-export type { HeadingLevelValue, HeadingTag };
+export type { HeadingLevelInput, HeadingLevelValue, HeadingTag };
 
 /** Ebene, die Komponentenüberschriften im Teilbaum bekommen; `undefined` ohne `HeadingLevel` darüber. */
 export const HeadingLevelContext = createContext<HeadingLevelValue | undefined>(undefined);
 
 export interface HeadingLevelProps {
-  /** Absolute Ebene (2 bis 6) für die Überschriften der Komponenten darunter. Gewinnt gegen `by`. */
-  level?: HeadingLevelValue;
+  /** Absolute Ebene (2 bis 6, auch als Zeichenkette `"4"`) für die Überschriften der Komponenten darunter. Gewinnt gegen `by`. */
+  level?: HeadingLevelInput;
   /**
    * Relativ zum übergeordneten `HeadingLevel` (Standard 1). Ohne übergeordnetes `HeadingLevel` zählt die
    * Ausgangsebene 2, `by={1}` ergibt also h3 (wie der Standard der Komponenten).

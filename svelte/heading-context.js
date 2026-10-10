@@ -19,11 +19,12 @@ export function provideHeadingLevel(getLevel) {
 }
 
 /**
- * Ebene des übergeordneten `HeadingLevel` (oder `undefined`). Nur beim Initialisieren einer Komponente aufrufen.
- * @returns {number | undefined}
+ * Kontext des übergeordneten `HeadingLevel` (oder `undefined`); `level` wird erst beim Lesen aufgelöst und bleibt so
+ * reaktiv, wenn sich das äußere `level` ändert. Nur beim Initialisieren einer Komponente aufrufen.
+ * @returns {{ readonly level: number } | undefined}
  */
-export function parentHeadingLevel() {
-  return /** @type {{ level: number } | undefined} */ (getContext(KEY))?.level;
+export function parentHeadingContext() {
+  return /** @type {{ level: number } | undefined} */ (getContext(KEY));
 }
 
 /**

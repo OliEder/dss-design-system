@@ -42,7 +42,7 @@ const SVELTE = { seiteSvelte: code.seiteSvelte, relativSvelte: code.relativSvelt
 const REACT = { seiteReact: code.seiteReact, relativReact: code.relativReact, modalReact: code.modalReact, hookReact: code.hookReact };
 const EXPECTED: Record<string, string[]> = {
   seite: ['h1', 'h2', 'h3', 'h2', 'h3', 'h3'],
-  relativ: ['h3', 'h4', 'h2'],
+  relativ: ['h3', 'h4', 'h2', 'h5'],
   modal: ['h2', 'h3'],
 };
 
@@ -132,7 +132,7 @@ describe('React-Beispiele rendern mit den erwarteten Ebenen und wie Svelte', () 
     expect(normalize(react)).toBe(normalize(svelteHtml));
     expect(normalize(code.seiteVanilla)).toBe(normalize(svelteHtml));
   });
-  it('relativ: h3, h4, h2', async () => {
+  it('relativ: h3, h4, h2, h5 (level als Zeichenkette)', async () => {
     expect(tags(await run('relativReact', code.relativReact))).toEqual(EXPECTED.relativ);
     expect(normalize(await run('relativReact', code.relativReact))).toBe(normalize(await renderSvelte('relativSvelte2', code.relativSvelte)));
   });
@@ -166,5 +166,32 @@ describe('CSS-Beispiel der Tokens', () => {
       const token = name.slice(4, -1);
       expect(readFileSync(`${rootDir}tokens/tokens.css`, 'utf8'), token).toContain(`${token}:`);
     }
+  });
+});
+
+describe('Typ HeadingLevelInput (js/heading.d.ts, Svelte und React)', () => {
+  const check = (body: string) => {
+    const file = `${rootDir}react/__code_typ.ts`;
+    const files: Record<string, string> = { [file]: `import type { HeadingLevelInput } from '../js/heading.js';\n${body}` };
+    const options: ts.CompilerOptions = { target: ts.ScriptTarget.ES2020, lib: ['lib.es2020.d.ts'], module: ts.ModuleKind.ESNext, moduleResolution: ts.ModuleResolutionKind.Bundler, strict: true, noEmit: true, skipLibCheck: true, isolatedModules: true, types: [] };
+    const host = ts.createCompilerHost(options);
+    const original = host.getSourceFile.bind(host);
+    host.getSourceFile = (name, version, ...rest) => (name in files ? ts.createSourceFile(name, files[name], version) : original(name, version, ...rest));
+    const exists = host.fileExists.bind(host);
+    host.fileExists = (name) => name in files || exists(name);
+    return ts.getPreEmitDiagnostics(ts.createProgram([file], options, host)).filter((d) => d.file?.fileName === file).length;
+  };
+  it('Zahlen 2 bis 6 und ihre Zeichenketten sind erlaubt', () => {
+    expect(check("const a: HeadingLevelInput[] = [2, 3, 4, 5, 6, '2', '3', '4', '5', '6']; void a;")).toBe(0);
+  });
+  it('1, 7 und fremde Zeichenketten sind Typfehler', () => {
+    expect(check("const a: HeadingLevelInput = 7; void a;")).toBeGreaterThan(0);
+    expect(check("const a: HeadingLevelInput = '1'; void a;")).toBeGreaterThan(0);
+    expect(check("const a: HeadingLevelInput = 'h3'; void a;")).toBeGreaterThan(0);
+  });
+  it('die Svelte- und React-Komponente nutzen ihn für level', async () => {
+    const { readFileSync } = await import('node:fs');
+    expect(readFileSync(`${rootDir}svelte/HeadingLevel.svelte`, 'utf8')).toMatch(/level\?: HeadingLevelInput;/);
+    expect(readFileSync(`${rootDir}react/HeadingLevel.tsx`, 'utf8')).toMatch(/level\?: HeadingLevelInput;/);
   });
 });

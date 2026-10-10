@@ -103,6 +103,11 @@ export const relativSvelte = `<script lang="ts">
 
   <!-- titleAs gewinnt immer -->
   <EmptyState title="Gesperrt" titleAs="h2" />        <!-- h2 -->
+
+  <!-- Ziffern als Text gelten wie die Zahl: level="5" ist level={5} -->
+  <HeadingLevel level="5">
+    <EmptyState title="Als Text" />                   <!-- h5 -->
+  </HeadingLevel>
 </HeadingLevel>`;
 
 export const relativReact = `import { EmptyState, HeadingLevel } from '@bbv/dss-design-system/react';
@@ -117,6 +122,11 @@ export const relativReact = `import { EmptyState, HeadingLevel } from '@bbv/dss-
 
   {/* titleAs gewinnt immer */}
   <EmptyState title="Gesperrt" titleAs="h2" />        {/* h2 */}
+
+  {/* Ziffern als Text gelten wie die Zahl: level="5" ist level={5} */}
+  <HeadingLevel level="5">
+    <EmptyState title="Als Text" />                   {/* h5 */}
+  </HeadingLevel>
 </HeadingLevel>`;
 
 // Modal: Titel h2, Inhalt eine Ebene tiefer

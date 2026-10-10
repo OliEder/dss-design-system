@@ -7,23 +7,24 @@
    * Ausgangsebene 2, `by={1}` ergibt also h3). Ändert nur die Ebene im Dokument, nicht die Größe. Kein eigener Scoped-Style.
    */
   import type { Snippet } from 'svelte';
-  import { headingLevel, nextLevel, type HeadingLevelValue } from '../js/heading.js';
-  import { parentHeadingLevel, provideHeadingLevel } from './heading-context.js';
+  import { headingLevel, nextLevel, type HeadingLevelInput } from '../js/heading.js';
+  import { parentHeadingContext, provideHeadingLevel } from './heading-context.js';
 
   let {
     level = undefined,
     by = 1,
     children,
   }: {
-    /** Absolute Ebene (2 bis 6) für die Überschriften der Komponenten darunter. Gewinnt gegen `by`. */
-    level?: HeadingLevelValue;
+    /** Absolute Ebene (2 bis 6, auch als Zeichenkette `"4"`) für die Überschriften der Komponenten darunter. Gewinnt gegen `by`. */
+    level?: HeadingLevelInput;
     /** Relativ zum übergeordneten HeadingLevel (Standard 1). */
     by?: number;
     children?: Snippet;
   } = $props();
 
-  const parent = parentHeadingLevel();
-  provideHeadingLevel(() => (level !== undefined ? headingLevel(level) : nextLevel(parent, by)));
+  // Den Vorfahren-Kontext behalten und `parent?.level` erst im Getter lesen: so folgt `by` einem Wechsel des äußeren `level`
+  const parent = parentHeadingContext();
+  provideHeadingLevel(() => (level !== undefined ? headingLevel(level) : nextLevel(parent?.level, by)));
 </script>
 
 {@render children?.()}
