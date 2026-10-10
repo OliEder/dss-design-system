@@ -46,7 +46,7 @@ Gemeinsame Bausteine: Token `--live-fill` (Fläche/Punkt, `--ok-fill`-nah), `--d
 - Fakten in der Doku gegen CSS/Code messen; kein erfundener Wert.
 - Keine neuen Abhängigkeiten.
 
-## Offene Punkte (vor Paket 3 und 4 mit dem Auftraggeber klären)
-- Prop-Namen `names`/`logos` und `period`/`periods`.
-- Wo die Live-Foundation-Dokumentation steht.
-- Ob die Team Card auch für ältere `MatchCard`-Nutzer ein Datenmodell mit `ScheduleTeam` teilen soll.
+## Bestätigt am 2026-10-10
+- Prop-Namen: `names="full" | "short"` und `logos` (Spielplan, Karten); `period` und `periods={4 | 8}` (MatchCard, PlayByPlay).
+- Offen bleibt nur: Wo die Live-Foundation-Doku steht (entscheidet die Umsetzung von Paket 2) und ob Team Card und Spielplan das Datenmodell `ScheduleTeam` teilen (Vorschlag: ja, `name`, `short`, `logo`).
+- Reihenfolge: Pakete 1 und 2 zuerst (laufen gemeinsam), danach 3, danach 4, weil sich die Pakete dieselben Dateien teilen.
