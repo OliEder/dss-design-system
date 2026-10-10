@@ -169,26 +169,24 @@ export function TeamCard({
           <span className="dss-team-nm">{nameBlock}</span>
           {leagueLine}
         </div>
-        {rec ? (
-          <>
-            <span className="dss-team-rec" aria-hidden="true">
-              {rec.text}
-            </span>
-            <span className="dss-sr-only">{rec.aria}</span>
-          </>
-        ) : (
-          <span />
-        )}
-        {pos ? (
-          <>
-            <span className="dss-team-rank" aria-hidden="true">
-              Platz {pos.text}
-            </span>
-            <span className="dss-sr-only">{pos.aria}</span>
-          </>
-        ) : (
-          <span />
-        )}
+        <span className="dss-team-end">
+          {rec ? (
+            <>
+              <span className="dss-team-rec" aria-hidden="true">
+                {rec.text}
+              </span>
+              <span className="dss-sr-only">{rec.aria}</span>
+            </>
+          ) : null}
+          {pos ? (
+            <>
+              <span className="dss-team-rank" aria-hidden="true">
+                Platz {pos.text}
+              </span>
+              <span className="dss-sr-only">{pos.aria}</span>
+            </>
+          ) : null}
+        </span>
       </div>
     );
   }

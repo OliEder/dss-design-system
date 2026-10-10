@@ -188,8 +188,8 @@ describe('TeamCard: CSS', () => {
     expect(rule('.dss-team-logo--initials')).toMatch(/border-radius:\s*50%/);
   });
 
-  it('compact: Listenzeile mit Logo 32, Name, Bilanz, Platz', () => {
-    expect(rule('.dss-team--compact')).toMatch(/grid-template-columns:\s*32px minmax\(0, 1fr\) auto auto/);
+  it('compact: Listenzeile mit Logo 32, Name und rechter Spalte (Bilanz über Platz)', () => {
+    expect(rule('.dss-team--compact')).toMatch(/grid-template-columns:\s*32px minmax\(0, 1fr\) auto\b(?! auto)/);
   });
 
   it('Kennzahlen und Werte mit tabular-nums', () => {

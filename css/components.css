@@ -838,11 +838,12 @@ button.dss-match:focus-visible, a.dss-match:focus-visible { outline: var(--ring-
 .dss-match--live { border-color: var(--live-fill); }
 .dss-match--live::before { content: ''; display: block; height: 3px; background: var(--live-fill); }
 .dss-match-head {
-  display: flex; justify-content: space-between; align-items: center; padding: 14px 18px 8px;
+  display: flex; flex-wrap: wrap; gap: 2px 12px; justify-content: space-between; align-items: center; padding: 14px 18px 8px;
   font-family: var(--font-mono); font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: 0.08em;
   color: var(--dss-mute); font-weight: 600;
 }
 .dss-match-league { color: var(--dss-fg-soft); }
+.dss-match-head > :last-child { margin-left: auto; } /* bricht der Kopf um (langer Abschnitt wie „2. Verlängerung“), steht die Angabe rechtsbündig in der zweiten Zeile */
 .dss-match-muted { color: var(--dss-mute); margin-left: 4px; }
 .dss-match-when { color: var(--dss-fg-soft); }
 .dss-match-final { color: var(--dss-fg); }
@@ -1333,7 +1334,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 
 .dss-team-head { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 14px; align-items: center; padding: 18px 20px; }
 .dss-team-who { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.dss-team-nm { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body-lg); letter-spacing: -0.01em; line-height: 1.2; color: var(--dss-fg); overflow-wrap: anywhere; }
+.dss-team-nm { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body-lg); letter-spacing: -0.01em; line-height: 1.2; color: var(--dss-fg); overflow-wrap: break-word; }
 .dss-team-sub {
   display: flex; flex-wrap: wrap; gap: 4px 10px; font-family: var(--font-mono); font-size: var(--fs-caption); letter-spacing: 0.06em;
   text-transform: uppercase; color: var(--dss-mute);
@@ -1360,11 +1361,12 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 .dss-team-squad { padding: 12px 20px; border-top: 1px solid var(--dss-line); font-family: var(--font-mono); font-size: var(--fs-body-sm); letter-spacing: 0.02em; color: var(--dss-fg-soft); }
 .dss-team-stats + .dss-team-squad, .dss-team-squad:last-child { border-bottom: 0; }
 
-.dss-team--compact { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto auto; gap: 14px; align-items: center; padding: 12px 16px; border-radius: 12px; }
+.dss-team--compact { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px 16px; border-radius: 12px; }
 .dss-team--compact .dss-team-who { gap: 2px; }
 .dss-team--compact .dss-team-nm { font-family: var(--font-body); font-weight: 600; font-size: var(--fs-body); letter-spacing: -0.005em; }
-.dss-team-rec { font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-body-md); color: var(--dss-fg); font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
-.dss-team-rank { font-family: var(--font-mono); font-size: var(--fs-caption); letter-spacing: 0.06em; text-transform: uppercase; color: var(--dss-mute); text-align: right; white-space: nowrap; }
+.dss-team-end { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.dss-team-rec { font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-body-md); color: var(--dss-fg); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.dss-team-rank { font-family: var(--font-mono); font-size: var(--fs-caption); letter-spacing: 0.06em; text-transform: uppercase; color: var(--dss-mute); white-space: nowrap; }
 @media (max-width: 560px) {
   .dss-team-head, .dss-team-games, .dss-team-squad, .dss-team-stats, .dss-team-vitals { padding-inline: 16px; }
   .dss-team-stats .dss-team-vitals { padding-inline: 0; }

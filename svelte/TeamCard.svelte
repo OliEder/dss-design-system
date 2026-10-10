@@ -119,8 +119,10 @@
       <span class="dss-team-nm">{@render nameBlock()}</span>
       {@render leagueLine()}
     </div>
-    {#if rec}<span class="dss-team-rec" aria-hidden="true">{rec.text}</span><span class="dss-sr-only">{rec.aria}</span>{:else}<span></span>{/if}
-    {#if pos}<span class="dss-team-rank" aria-hidden="true">Platz {pos.text}</span><span class="dss-sr-only">{pos.aria}</span>{:else}<span></span>{/if}
+    <span class="dss-team-end">
+      {#if rec}<span class="dss-team-rec" aria-hidden="true">{rec.text}</span><span class="dss-sr-only">{rec.aria}</span>{/if}
+      {#if pos}<span class="dss-team-rank" aria-hidden="true">Platz {pos.text}</span><span class="dss-sr-only">{pos.aria}</span>{/if}
+    </span>
   </div>
 {:else}
   <div class={`dss-team dss-team--standard${clickable ? ' dss-team--link' : ''}`}>

@@ -342,10 +342,12 @@ export const teamVanilla = `<!-- Teamkarte: dss-team--standard; compact: dss-tea
     <span class="dss-team-nm"><a class="dss-team-link" href="/teams/nordhain">TSV Nordhain 1920</a></span>
     <div class="dss-team-sub"><span>Bayernliga Süd</span></div>
   </div>
-  <span class="dss-team-rec" aria-hidden="true">12–3</span>
-  <span class="dss-sr-only">Bilanz: 12 Siege, 3 Niederlagen</span>
-  <span class="dss-team-rank" aria-hidden="true">Platz 3</span>
-  <span class="dss-sr-only">Tabellenplatz 3</span>
+  <span class="dss-team-end">
+    <span class="dss-team-rec" aria-hidden="true">12–3</span>
+    <span class="dss-sr-only">Bilanz: 12 Siege, 3 Niederlagen</span>
+    <span class="dss-team-rank" aria-hidden="true">Platz 3</span>
+    <span class="dss-sr-only">Tabellenplatz 3</span>
+  </span>
 </div>`;
 
 export const teamSvelte = `<script>

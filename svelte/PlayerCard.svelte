@@ -134,7 +134,7 @@
   </div>
 
 {:else}
-  <div class={`dss-pc-hero ${showPhoto ? 'dss-pc-hero--photo' : ''}`}>
+  <div class={showPhoto ? 'dss-pc-hero dss-pc-hero--photo' : 'dss-pc-hero'}>
     <div class="dss-pc-hero-left">
       {#if showPhoto}
         {@render photoImg()}

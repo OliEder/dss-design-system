@@ -201,9 +201,10 @@ describe('TeamCard compact', () => {
     expect(container.querySelector('.dss-sr-only')?.textContent).toMatch(/Bilanz: 12 Siege, 3 Niederlagen/);
   });
 
-  it('ohne Bilanz und Platz bleiben die Grid-Spalten leer besetzt', () => {
+  it('ohne Bilanz und Platz bleibt die dritte Grid-Spalte leer besetzt', () => {
     const { container } = render(<TeamCard name="X" size="compact" />);
-    expect(container.firstElementChild!.children).toHaveLength(4);
+    expect(container.firstElementChild!.children).toHaveLength(3);
+    expect(container.querySelector('.dss-team-end')).toBeEmptyDOMElement();
   });
 
   it('klickbar als Link; der Name bleibt einmal im Dokument', () => {
