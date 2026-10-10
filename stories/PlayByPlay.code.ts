@@ -52,7 +52,7 @@ export const svelte = `<script>
 </script>
 
 <PlayByPlay meta={\`\${events.length} Events\`} {events} />
-<!-- title, titleAs ('h2' | 'h3' | 'h4'), meta, live (Standard true), dark, periods (4 | 8, Standard 4) -->`;
+<!-- title, titleAs ('h2' bis 'h6', Standard h3 bzw. Ebene aus HeadingLevel), meta, live (Standard true), dark, periods (4 | 8, Standard 4) -->`;
 
 export const react = `import { useEffect, useState } from 'react';
 import { PlayByPlay, type PbpEvent } from '@bbv/dss-design-system/react';

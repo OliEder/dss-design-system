@@ -7,7 +7,7 @@
     body = '',
     cta = '',
     titleAs = 'h3',
-  }: { tone?: 'neutral' | 'action' | 'error'; title?: string; body?: string; cta?: string; titleAs?: 'h2' | 'h3' | 'h4' } = $props();
+  }: { tone?: 'neutral' | 'action' | 'error'; title?: string; body?: string; cta?: string; titleAs?: 'h2' | 'h3' | 'h4' | 'h5' | 'h6' } = $props();
 </script>
 
 <div style="padding: 24px;">

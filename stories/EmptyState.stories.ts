@@ -9,7 +9,7 @@ export default {
     title:   { control: 'text', description: 'Überschrift, sagt in einem Satz, was los ist', table: { type: { summary: 'string' } } },
     body:    { control: 'text', description: 'Erklärung und Hinweis, was als Nächstes möglich ist', table: { type: { summary: 'string' }, defaultValue: { summary: "''" } } },
     cta:     { control: 'text', description: 'Beschriftung des Buttons für den nächsten Schritt; leer lässt ihn weg (Klick: `onclick`, React: `onCta`)', table: { type: { summary: 'string' }, defaultValue: { summary: "''" } } },
-    titleAs: { control: 'inline-radio', options: ['h2', 'h3', 'h4'], description: 'Überschriftenebene der Überschrift, passend zur Gliederung der Seite', table: { type: { summary: "'h2' | 'h3' | 'h4'" }, defaultValue: { summary: "'h3'" } } },
+    titleAs: { control: 'inline-radio', options: ['h2', 'h3', 'h4', 'h5', 'h6'], description: 'Überschriftenebene des Titels, passend zur Gliederung der Seite. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor `h3`. Die Größe hängt am Token `--dss-card-title-size`, nicht an der Ebene.', table: { type: { summary: "'h2' | 'h3' | 'h4' | 'h5' | 'h6'" }, defaultValue: { summary: "'h3'" } } },
   },
   args: { tone: 'neutral', titleAs: 'h3' },
 };

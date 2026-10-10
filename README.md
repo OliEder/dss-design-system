@@ -40,6 +40,7 @@ js/
   appnav.js             ← v0.8 · Vanilla-Verhalten der AppNav
   periods.js            ← Spielabschnitte: „3. Viertel“, „5. Achtel“, „Verlängerung“ (`./periods.js`)
   team.js               ← Hilfsfunktionen der TeamCard (`./team.js`)
+  heading.js            ← Überschriftenebenen: `headingTag`, `nextLevel` (`./heading.js`)
 icons/
   sprite.ts             ← v0.7 · gemeinsamer Icon-Sprite für Svelte und React
 css/
@@ -356,6 +357,20 @@ Zuordnung Turnier-Manager: `Game` wird zu `ScheduleGame` mit `nr: '#' + gameNumb
 ```tsx
 <TeamCard name="TSV Nordhain 1920" short="Nordhain" league="Bayernliga Süd" record={{ w: 12, l: 3 }} rank={3} rankOf={12} href="/teams/nordhain" />
 <MatchCard state="live" period={5} periods={8} clock="03:10" heim={{ name: 'TSV Nordhain', score: 24 }} gast={{ name: 'Lindenberg Hawks', score: 22 }} />
+```
+
+## Überschriften
+
+Komponenten mit Titel (Table, ScheduleTable, ScheduleGrid, PlayerCard, TeamCard, EmptyState, PlayByPlay, Modal) geben nie eine `h1` aus; die gehört der App. Die **Ebene** (`h2` bis `h6`) wählst du mit `titleAs` an der Komponente oder für einen ganzen Abschnitt mit `HeadingLevel` (React: `@bbv/dss-design-system/react`, Svelte: `@bbv/dss-design-system/svelte/HeadingLevel`). Rangfolge: `titleAs` vor `HeadingLevel` vor dem Standard `h3`. Das Modal hat `titleAs` (Standard `h2`) und gibt seinem Inhalt die nächste Ebene weiter. In Vanilla-HTML schreibst du das Element selbst. Die **Größe** hängt nie an der Ebene, sondern an Tokens: `--dss-title-size`, `--dss-title-weight`, `--dss-title-leading`, `--dss-frame-title-size` (Tabellen, Spielplan, PlayByPlay) und `--dss-card-title-size` (Karten, EmptyState); ohne Wert gelten die bisherigen Größen.
+
+```tsx
+<h1>Mannschaft</h1>
+<section>
+  <h2>Kader</h2>
+  <HeadingLevel level={3}>
+    <PlayerCard jersey="4" name="J. Tanner" />   {/* h3 */}
+  </HeadingLevel>
+</section>
 ```
 
 ## Accessibility

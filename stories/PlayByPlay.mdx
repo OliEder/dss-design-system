@@ -130,7 +130,7 @@ Dazu kommen Props des Bausteins, die sich nicht als Steuerelement zeigen lassen:
   rows={[
     ['events', 'Ereignis[]', 'Die Ereignisse in der anzuzeigenden Reihenfolge, siehe die Felder oben.'],
     ['title', 'string', "Titel im Kopf und Name des Feeds (Standard „Play-by-Play · neueste oben“). Er muss zur Reihenfolge der Ereignisse passen."],
-    ['titleAs', "'h2' | 'h3' | 'h4'", "Überschriftenebene des Titels (Standard 'h3')."],
+    ['titleAs', "'h2' | 'h3' | 'h4' | 'h5' | 'h6'", <>Überschriftenebene des Titels. Rangfolge: <code>titleAs</code> vor der Ebene aus <code>HeadingLevel</code> vor <code>'h3'</code>. Die Größe hängt am Token <code>--dss-frame-title-size</code>, nicht an der Ebene (siehe <a href="?path=/docs/foundation-headings--docs">Headings</a>).</>],
     ['meta', 'string', 'Kurzinfo rechts im Kopf, z. B. Anzahl der Ereignisse.'],
     ['live', 'boolean', 'Zeigt die Marke „Live“ mit Puls (Standard true).'],
     ['dark', 'boolean', 'Dunkle Fläche (Standard false).'],

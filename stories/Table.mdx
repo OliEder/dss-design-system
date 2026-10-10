@@ -133,7 +133,7 @@ Dazu kommen Props, die sich nicht als Steuerelement zeigen lassen:
   head={['Prop', 'Typ', 'Beschreibung']}
   rows={[
     ['title', 'string (React: ReactNode)', 'Titel im Rahmenkopf. Benennt auch den Scrollbereich, wenn keine caption gesetzt ist.'],
-    ['titleAs', "'h2' | 'h3' | 'h4'", "Überschriftenebene des Titels (Standard 'h3'). Die Ebene muss zur Seite passen, ohne Ebene zu überspringen."],
+    ['titleAs', "'h2' | 'h3' | 'h4' | 'h5' | 'h6'", <>Überschriftenebene des Titels. Rangfolge: <code>titleAs</code> vor der Ebene aus <code>HeadingLevel</code> vor <code>'h3'</code>. Die Ebene muss zur Seite passen, ohne Ebene zu überspringen; die Größe hängt am Token <code>--dss-frame-title-size</code>, nicht an der Ebene (siehe <a href="?path=/docs/foundation-headings--docs">Headings</a>).</>],
     ['meta', 'string (React: ReactNode)', 'Kurzinfo rechts im Kopf, z. B. Stand oder Spielstand.'],
     ['live', 'boolean', 'Zeigt die Marke „Live“ mit grünem Puls-Punkt im Kopf (Standard false). Der Puls stoppt bei prefers-reduced-motion.'],
     ['striped', 'boolean', 'Jede zweite Zeile mit Fläche (Standard false).'],

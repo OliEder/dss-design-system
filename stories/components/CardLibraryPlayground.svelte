@@ -55,6 +55,7 @@
       statLabel={rest.statLabel}
       photo={FOTO[rest.photo] ?? rest.photo}
       photoAlt={rest.photoAlt}
+      titleAs={rest.titleAs}
       onclick={interactive === 'button' ? noop : undefined}
     />
   {:else}

@@ -381,7 +381,7 @@ Die Typen stehen in `js/schedule.d.ts` (Export `@bbv/dss-design-system/schedule.
     ['title, meta', 'beide', 'Rahmenkopf. In Svelte reine Strings, in React beliebige Knoten.'],
     ['caption', 'beide', 'Unsichtbare Tabellenbeschriftung für Screenreader.'],
     ['class / className', 'beide', <>Zusätzliche Klasse am Rahmen (Svelte <code>class</code>, React <code>className</code>).</>],
-    ['titleAs', 'beide', "Überschriftenebene 'h2' | 'h3' | 'h4' (Standard 'h3', gedacht für einen Abschnitt unter einer h2). Direkt unter der Seitenüberschrift (h1) der App wähle 'h2'."],
+    ['titleAs', 'beide', <>Überschriftenebene <code>'h2'</code> bis <code>'h6'</code>. Rangfolge: <code>titleAs</code> vor der Ebene aus <code>HeadingLevel</code> vor <code>'h3'</code> (gedacht für einen Abschnitt unter einer h2). Direkt unter der Seitenüberschrift (h1) der App wähle <code>'h2'</code>. Die Größe hängt am Token <code>--dss-frame-title-size</code>, nicht an der Ebene (siehe <a href="?path=/docs/foundation-headings--docs">Headings</a>).</>],
     ['renderLink', 'React', <>Router-Links für Teamnamen und Liga. Svelte: einfache <code>&lt;a&gt;</code>.</>],
     ['renderTime / time', 'Table', <>Ersetzt die Uhrzeit in allen Layouts (React: Funktion, Svelte: Snippet <code>time</code>).</>],
     ['renderNotice / notice', 'beide', <>Table: zusätzliche Spalte „Hinweis“, nur im Layout <code>columns</code> (in <code>versus</code> und <code>opponent</code> ohne Wirkung). Grid: zusätzlicher Inhalt in der Spielzelle.</>],
