@@ -97,6 +97,17 @@ describe('Logos: Größen und Darstellung', () => {
   });
 });
 
+describe('Handy: Teams mit Logo untereinander', () => {
+  it('bis 640 px je Team eine Zeile, der Gedankenstrich entfällt', () => {
+    const start = css.indexOf('.dss-sch-team--logo + .dss-sch-sep');
+    expect(start).toBeGreaterThan(0);
+    const block = css.slice(css.lastIndexOf('@media', start), start + 400);
+    expect(block).toMatch(/@media \(max-width: 640px\)/);
+    expect(block).toMatch(/\.dss-sch-match \.dss-sch-team--logo, \.dss-sg-teams \.dss-sch-team--logo\s*\{\s*display:\s*flex/);
+    expect(block).toMatch(/\.dss-sch-team--logo \+ \.dss-sch-sep\s*\{\s*display:\s*none/);
+  });
+});
+
 describe('Zeilenhöhen der Dichten bleiben unverändert', () => {
   it('touch 60, default 48, compact 40 px; Logos sind kleiner als Zeile minus Innenabstand', () => {
     expect(rule('.dss-tbl td')).toMatch(/height:\s*48px/);

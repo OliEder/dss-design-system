@@ -236,13 +236,13 @@ Im Zeitraster steht das Logo vor dem Namen jeder Paarung.
   label="Logo-Größen"
   head={['Dichte', 'Zeilenhöhe', 'Logo (versus, columns, Raster)', 'Logo im Layout opponent']}
   rows={[
-    ['touch', '60 px', '28 px', '36 px'],
-    ['default', '48 px', '28 px', '36 px'],
-    ['compact', '40 px', '20 px', '36 px'],
+    ['touch', '60 px', '28 px', '38 px (36 px und Rand)'],
+    ['default', '48 px', '28 px', '38 px (36 px und Rand)'],
+    ['compact', '40 px', '20 px', '38 px (36 px und Rand)'],
   ]}
 />
 
-Die Zeilenhöhen bleiben mit Logos unverändert (gemessen: 60, 48 und 40 px). In `compact` ist das Logo kleiner (20 px), damit es in die 40 px passt; die Initialen sind dort kleiner gesetzt. `opponent` wählt ohne Angabe `touch`; sein 36-px-Logo ist unverändert.
+Einzeilige Zeilen behalten mit Logos ihre Höhe (gemessen: 60, 48 und 40 px). In `compact` ist das Logo kleiner (20 px), damit es in die 40 px passt; die Initialen sind dort kleiner gesetzt (9 statt 11 px). Zeilen mit zweiter Zeile (Notiz, Liga) wachsen wie bisher; mit Logo etwas mehr (gemessen: Zeile mit Notiz in Standard 55,5 px ohne und 64,5 px mit Logos). Im Zeitraster sind die Spielblöcke mindestens 56 px hoch: Die Beispiele auf dieser Seite ändern sich durch Logos nicht, ein Block mit Ergebnis, Abschnitt und Notiz wird in Standard und Touch um etwa 9 px höher (74 auf 83 px), in `compact` um etwa 1 px. `opponent` wählt ohne Angabe `touch`; sein Logo ist unverändert.
 
 <Canvas of={SpielplanStories.LogosTouch} />
 
@@ -253,6 +253,7 @@ Die Zeilenhöhen bleiben mit Logos unverändert (gemessen: 60, 48 und 40 px). In
 ### Barrierefreiheit: der Name wird einmal gelesen
 
 - **Logo:** Das Logo ist für Hilfstechnik verborgen (`aria-hidden`, Bild mit `alt=""`). Ein Alternativtext mit dem Vereinsnamen würde den Namen doppelt ansagen („Logo TSV Nordhain 1920, TSV Nordhain 1920“).
+- **Handy:** Teams mit Logo stehen bis 640 px untereinander, je Team eine Zeile; der Gedankenstrich entfällt dort (er ist für Hilfstechnik ohnehin verborgen, gelesen wird „gegen“).
 - **Kurzname:** Er ist `aria-hidden`. Wo der Kurzname sichtbar ist (mit `names="short"` und bis 640 px), bleibt der volle Name im Dokument (unsichtbar, `dss-sr-only`-Muster) und Screenreader lesen den vollen Namen genau einmal; als Linktext zählt der volle Name. Dafür ist der volle Name nie `display: none`.
 - **Suchen und Kopieren:** Die versteckten Texte können beim Markieren und Kopieren mitkommen.
 

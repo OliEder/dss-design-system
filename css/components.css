@@ -1129,6 +1129,12 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 .dss-tbl--compact .dss-team-logo--initials { padding: 0; }
 .dss-sch-team--logo { display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; }
 .dss-tbl--compact .dss-sch-team--logo { gap: 6px; }
+/* Handy: Teams mit Logo stehen untereinander (je Team eine Zeile), der Gedankenstrich entfällt; sonst bricht er allein um */
+@media (max-width: 640px) {
+  .dss-sch-match .dss-sch-team--logo, .dss-sg-teams .dss-sch-team--logo { display: flex; }
+  .dss-sch-team--logo + .dss-sch-sep { display: none; }
+  .dss-sch-match .dss-sch-team--logo + .dss-sch-sep + .dss-sr-only + .dss-sch-team--logo, .dss-sg-teams .dss-sch-team--logo + .dss-sch-sep + .dss-sr-only + .dss-sch-team--logo { margin-top: 4px; }
+}
 .dss-tbl--schedule td.dss-sch-res { width: 1%; text-align: right; white-space: nowrap; }
 .dss-sch--columns td.dss-sch-res { text-align: center; }
 /* Ergebnis-Box: Zahl (und Sieg-/Niederlage-Chip links davon); "vorläufig" steht klein unter der Zahl.

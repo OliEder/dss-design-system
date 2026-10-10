@@ -219,8 +219,8 @@
 {:else if example === 'dont-kurz'}
   <ScheduleTable games={mehrdeutig} layout="versus" names="short" caption="Mehrdeutige Kurznamen" />
 {:else if example === 'do-logo'}
-  <ScheduleTable games={[namen[0]]} layout="versus" logos caption="Logo mit leerem Alternativtext" />
-  <p class="readout">Screenreader: <q>Spiel TSV Nordhain 1920 gegen Lindenberg Hawks</q></p>
+  <ScheduleTable games={[{ ...namen[0], section: undefined }]} layout="versus" logos caption="Logo mit leerem Alternativtext" />
+  <p class="readout">Screenreader: <q>TSV Nordhain 1920, gegen, Lindenberg Hawks</q></p>
 {:else if example === 'dont-logo'}
   <!-- Nachgestellt: die Komponente setzt immer alt="". Hier trägt das Bild den Vereinsnamen als Alternativtext. -->
   <div class="dss-frame">
