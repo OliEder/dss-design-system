@@ -2,6 +2,11 @@
   import ScheduleTable from '../../svelte/ScheduleTable.svelte';
   import ScheduleGrid from '../../svelte/ScheduleGrid.svelte';
   import type { ScheduleGame } from '../../js/schedule.js';
+  // Erfundene Vereinslogos (nur Storybook, nicht im Paket)
+  import nordhainLogo from '../assets/logos/nordhain.svg';
+  import hawksLogo from '../assets/logos/hawks.svg';
+  import seebergLogo from '../assets/logos/seeberg.svg';
+  import elbachLogo from '../assets/logos/elbach.svg';
 
   let { example }: { example: string } = $props();
 
@@ -113,6 +118,40 @@
     ft('e2', { time: '17:00' }),
   ];
 
+  // 05 · Namen und Logos (Kurznamen und Logo-Dateien erfunden; Kiefernau und Bergfeld ohne Logo zeigen die Initialen)
+  const NORDHAIN = { name: 'TSV Nordhain 1920', short: 'TSV N.', logo: nordhainLogo };
+  const HAWKS = { name: 'Lindenberg Hawks', short: 'Hawks', logo: hawksLogo };
+  const SEEBERG = { name: 'BG Seeberg', short: 'Seeberg', logo: seebergLogo };
+  const ELBACH = { name: 'TV Elbach', short: 'Elbach', logo: elbachLogo };
+  const KIEFERNAU = { name: 'SV Kiefernau', short: 'Kiefernau' };
+  const BERGFELD = { name: 'MTV Bergfeld', short: 'Bergfeld' };
+  const namen: ScheduleGame[] = [
+    { id: 'n1', state: 'finished', section: 'Spieltag 5', date: D, time: '15:00', heim: { ...NORDHAIN, href: '#', score: 87, own: true }, gast: { ...HAWKS, href: '#', score: 64 } },
+    { id: 'n2', state: 'live', section: 'Spieltag 5', date: D, time: '17:00', heim: { ...SEEBERG, href: '#', score: 52 }, gast: { ...ELBACH, href: '#', score: 48 } },
+    { id: 'n3', state: 'scheduled', section: 'Spieltag 6', date: 'Sa, 17.10.2026', time: '15:00', heim: { ...KIEFERNAU, href: '#' }, gast: { ...BERGFELD, href: '#' } },
+  ];
+  const namenTurnier: ScheduleGame[] = [
+    { id: 'nt1', state: 'finished', nr: '#1', section: 'Runde 1 · Gruppe A', time: '09:00–09:20', field: 'F1', heim: { ...NORDHAIN, score: 42, own: true }, gast: { ...HAWKS, score: 31 } },
+    { id: 'nt2', state: 'scheduled', nr: '#2', section: 'Runde 1 · Gruppe A', time: '09:30–09:50', field: 'F2', heim: { ...SEEBERG }, gast: { ...KIEFERNAU } },
+    { id: 'nt9', state: 'scheduled', nr: '#9', section: 'Halbfinale', time: '11:00–11:20', field: 'F1', heim: { name: 'Erster Gruppe A', short: 'Erster A', placeholder: true }, gast: { name: 'Zweiter Gruppe B', short: 'Zweiter B', placeholder: true } },
+  ];
+  const namenMannschaft: ScheduleGame[] = [
+    { id: 'nm1', state: 'finished', date: 'Sa, 26.09.2026', time: '17:30', at: 'heim', opponent: { name: 'Bergheimer Basketball Club', short: 'BBC', href: '#', logo: elbachLogo, score: 58 }, ownScore: 71 },
+    { id: 'nm2', state: 'scheduled', date: 'Sa, 10.10.2026', time: '19:30', at: 'gast', opponent: { name: 'Dukes Eschental', short: 'Dukes', href: '#' } },
+  ];
+  const namenRaster: ScheduleGame[] = [
+    { id: 'nr1', state: 'live', time: '09:00', column: 'h1', heim: { ...NORDHAIN, score: 12, own: true }, gast: { ...HAWKS, score: 10 } },
+    { id: 'nr2', state: 'scheduled', time: '09:00', column: 'h2', heim: { ...SEEBERG }, gast: { ...KIEFERNAU } },
+    { id: 'nr3', state: 'scheduled', time: '09:30', column: 'h1', heim: { ...ELBACH }, gast: { ...BERGFELD } },
+  ];
+  const namenDichte = namenTurnier.slice(0, 2);
+  const eindeutig: ScheduleGame[] = [namen[0], namen[1]];
+  // Gegenbeispiel: zwei Vereine mit demselben Kurznamen
+  const mehrdeutig: ScheduleGame[] = [
+    { id: 'md1', state: 'finished', date: D, time: '15:00', heim: { name: 'TSV Nordhain 1920', short: 'TSV', score: 87 }, gast: { name: 'TSV Hollbach 2', short: 'TSV', score: 64 } },
+    { id: 'md2', state: 'scheduled', date: D, time: '17:00', heim: { name: 'TSV Falken Auental', short: 'TSV' }, gast: { name: 'TSV Nordhain 1920', short: 'TSV' } },
+  ];
+
   const inputStyle = 'width: 7ch; font: inherit; padding: 2px 6px; border: 1px solid var(--dss-line); border-radius: 6px; background: var(--dss-surface); color: var(--dss-fg);';
 </script>
 
@@ -151,6 +190,59 @@
   <ScheduleTable games={turnierVorlaeufig} layout="columns" density="compact" caption="Dichte Kompakt mit vorläufigem Ergebnis" />
 {:else if example === 'zustand-raster'}
   <ScheduleGrid games={rasterZustaende} columns={[{ id: 'h1', label: 'Halle 1' }, { id: 'h2', label: 'Halle 2' }]} caption="Zeitraster: live und vorläufig" />
+{:else if example === 'namen-voll'}
+  <ScheduleTable games={namen} layout="versus" caption="Volle Namen" />
+{:else if example === 'namen-kurz'}
+  <ScheduleTable games={namen} layout="versus" names="short" caption="Kurznamen" />
+{:else if example === 'logos-versus'}
+  <ScheduleTable games={namen} layout="versus" logos caption="Gegenüberstellung mit Logos" />
+{:else if example === 'logos-versus-kurz'}
+  <ScheduleTable games={namen} layout="versus" logos names="short" caption="Gegenüberstellung mit Logos und Kurznamen" />
+{:else if example === 'logos-columns'}
+  <ScheduleTable games={namenTurnier} layout="columns" logos names="short" caption="Turnier-Liste mit Logos und Kurznamen" />
+{:else if example === 'logos-opponent'}
+  <ScheduleTable games={namenMannschaft} layout="opponent" caption="Mannschaftssicht, Logos wie bisher" />
+{:else if example === 'logos-opponent-aus'}
+  <ScheduleTable games={namenMannschaft} layout="opponent" logos={false} names="short" caption="Mannschaftssicht ohne Logos, Kurznamen" />
+{:else if example === 'logos-raster'}
+  <ScheduleGrid games={namenRaster} columns={[{ id: 'h1', label: 'Halle 1' }, { id: 'h2', label: 'Halle 2' }]} logos names="short" caption="Zeitraster mit Logos und Kurznamen" />
+{:else if example === 'logos-touch'}
+  <ScheduleTable games={namenDichte} layout="columns" density="touch" logos caption="Logos in Touch" />
+{:else if example === 'logos-default'}
+  <ScheduleTable games={namenDichte} layout="columns" density="default" logos caption="Logos in Standard" />
+{:else if example === 'logos-compact'}
+  <ScheduleTable games={namenDichte} layout="columns" density="compact" logos caption="Logos in Kompakt" />
+{:else if example === 'namen-handy'}
+  <ScheduleTable games={namen} layout="versus" logos title="Spieltage" caption="Namen und Logos auf dem Handy" />
+{:else if example === 'do-kurz'}
+  <ScheduleTable games={eindeutig} layout="versus" names="short" caption="Eindeutige Kurznamen" />
+{:else if example === 'dont-kurz'}
+  <ScheduleTable games={mehrdeutig} layout="versus" names="short" caption="Mehrdeutige Kurznamen" />
+{:else if example === 'do-logo'}
+  <ScheduleTable games={[namen[0]]} layout="versus" logos caption="Logo mit leerem Alternativtext" />
+  <p class="readout">Screenreader: <q>Spiel TSV Nordhain 1920 gegen Lindenberg Hawks</q></p>
+{:else if example === 'dont-logo'}
+  <!-- Nachgestellt: die Komponente setzt immer alt="". Hier trägt das Bild den Vereinsnamen als Alternativtext. -->
+  <div class="dss-frame">
+    <div class="dss-table-scroll">
+      <table role="table" class="dss-tbl dss-tbl--schedule dss-tbl--default dss-sch--versus">
+        <caption class="dss-sr-only">Logo mit Alternativtext</caption>
+        <tbody role="rowgroup">
+          <tr role="row" class="dss-sch-row">
+            <td role="cell" class="dss-sch-when"><span class="dss-sch-date">{D}</span> <span class="dss-sch-time">15:00</span></td>
+            <td role="cell" class="dss-sch-match">
+              <span class="dss-sch-team dss-sch-team--logo"><span class="dss-team-logo"><img src={nordhainLogo} alt="Logo TSV Nordhain 1920" /></span><a class="dss-link" href="#">TSV Nordhain 1920</a></span>
+              <span class="dss-sch-sep" aria-hidden="true"> – </span>
+              <span class="dss-sr-only"> gegen </span>
+              <span class="dss-sch-team dss-sch-team--logo"><span class="dss-team-logo"><img src={hawksLogo} alt="Logo Lindenberg Hawks" /></span><a class="dss-link" href="#">Lindenberg Hawks</a></span>
+            </td>
+            <td role="cell" class="dss-sch-res"><span class="dss-sch-none">–</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="readout">Screenreader: <q>Logo TSV Nordhain 1920, TSV Nordhain 1920, gegen, Logo Lindenberg Hawks, Lindenberg Hawks</q></p>
 {:else if example === 'do-dichte'}
   <ScheduleTable games={turnier.slice(0, 2)} layout="columns" density="touch" caption="Touch-Dichte" />
 {:else if example === 'dont-dichte'}
@@ -189,5 +281,6 @@
 {/each}
 
 <style>
+  .readout { margin: 8px 0 0; font-size: var(--fs-body-sm); color: var(--dss-fg-soft); }
   .shout :global(.dss-tbl tbody tr:not(.dss-sch-group)) { background: var(--signal-400); }
 </style>

@@ -3,7 +3,17 @@
   import PlayerCard from '../../svelte/PlayerCard.svelte';
   import Skeleton from '../../svelte/Skeleton.svelte';
 
+  // Erfundene Vereinslogos (nur Storybook); SV Kiefernau hat kein Logo und zeigt die Initialen
+  import nordhainLogo from '../assets/logos/nordhain.svg';
+  import hawksLogo from '../assets/logos/hawks.svg';
+  import seebergLogo from '../assets/logos/seeberg.svg';
+
   let { example }: { example: string } = $props();
+
+  const NORDHAIN = { name: 'TSV Nordhain 1920', short: 'TSV N.', logo: nordhainLogo };
+  const HAWKS = { name: 'Lindenberg Hawks', short: 'Hawks', logo: hawksLogo };
+  const SEEBERG = { name: 'BG Seeberg', short: 'Seeberg', logo: seebergLogo };
+  const KIEFERNAU = { name: 'SV Kiefernau', short: 'Kiefernau' };
 
   const noop = () => {};
 
@@ -27,6 +37,27 @@
     <MatchCard state="scheduled" league="Bayernliga Süd" matchday="17. Spieltag" date="Sa, 25. Mai" time="19:30" venue="Nordhain-Halle" heim={{ name: 'TSV Nordhain' }} gast={{ name: 'Lindenberg Hawks' }} />
     <MatchCard state="live" league="Bayernliga Süd" matchday="17. Spieltag" quarter="Q4" clock="02:14" venue="Nordhain-Halle" heim={{ name: 'TSV Nordhain', score: 87 }} gast={{ name: 'Lindenberg Hawks', score: 64 }} />
     <MatchCard state="finished" league="Bayernliga Süd" matchday="16. Spieltag" venue="Nordhain-Halle" heim={{ name: 'TSV Nordhain', score: 92 }} gast={{ name: 'BG Nordlicht', score: 79 }} />
+  </div>
+{:else if example === 'namen'}
+  <div class="grid3">
+    <div>
+      <div class="cap">names="full" (Standard)</div>
+      <MatchCard state="scheduled" league="Bayernliga Süd" date="Sa, 25. Mai" time="19:30" heim={NORDHAIN} gast={HAWKS} />
+    </div>
+    <div>
+      <div class="cap">names="short"</div>
+      <MatchCard state="scheduled" league="Bayernliga Süd" date="Sa, 25. Mai" time="19:30" names="short" heim={NORDHAIN} gast={HAWKS} />
+    </div>
+  </div>
+{:else if example === 'logos'}
+  <div class="grid3">
+    <MatchCard state="scheduled" league="Bayernliga Süd" date="Sa, 25. Mai" time="19:30" logos heim={NORDHAIN} gast={HAWKS} />
+    <MatchCard state="live" league="Bayernliga Süd" quarter="Q4" clock="02:14" logos names="short" heim={{ ...SEEBERG, score: 52 }} gast={{ ...KIEFERNAU, score: 48 }} />
+    <MatchCard state="finished" league="Bayernliga Süd" matchday="16. Spieltag" logos heim={{ ...NORDHAIN, score: 92 }} gast={{ ...HAWKS, score: 79 }} />
+  </div>
+{:else if example === 'namen-handy'}
+  <div class="narrow">
+    <MatchCard state="scheduled" league="Bayernliga Süd" date="Sa, 25. Mai" time="19:30" logos heim={NORDHAIN} gast={HAWKS} />
   </div>
 {:else if example === 'spieler'}
   <div class="stack">

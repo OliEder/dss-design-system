@@ -44,6 +44,24 @@ export const DichteDefault = example('dichte-default');
 export const DichteCompact = example('dichte-compact');
 export const DichteVorlaeufig = example('dichte-vorlaeufig');
 
+export const NamenVoll = example('namen-voll');
+export const NamenKurz = example('namen-kurz');
+export const LogosVersus = example('logos-versus');
+export const LogosVersusKurz = example('logos-versus-kurz');
+export const LogosColumns = example('logos-columns');
+export const LogosOpponent = example('logos-opponent');
+export const LogosOpponentAus = example('logos-opponent-aus');
+export const LogosRaster = example('logos-raster');
+export const LogosTouch = example('logos-touch');
+export const LogosDefault = example('logos-default');
+export const LogosCompact = example('logos-compact');
+export const NamenHandy = example('namen-handy');
+
+export const DoKurz = example('do-kurz');
+export const DontKurz = example('dont-kurz');
+export const DoLogo = example('do-logo');
+export const DontLogo = example('dont-logo');
+
 export const DoDichte = example('do-dichte');
 export const DontDichte = example('dont-dichte');
 export const DoAbsage = example('do-absage');

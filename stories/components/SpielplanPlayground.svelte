@@ -3,7 +3,12 @@
   // `kind` wählt die Tabelle (ScheduleTable) oder das Zeitraster (ScheduleGrid).
   import ScheduleTable from '../../svelte/ScheduleTable.svelte';
   import ScheduleGrid from '../../svelte/ScheduleGrid.svelte';
-  import type { ScheduleGame, ScheduleLayout, ScheduleOutcome, ScheduleState, ScheduleTeam } from '../../js/schedule.js';
+  import type { ScheduleGame, ScheduleLayout, ScheduleNames, ScheduleOutcome, ScheduleState, ScheduleTeam } from '../../js/schedule.js';
+  // Erfundene Vereinslogos (nur Storybook); Teams ohne Datei zeigen die Initialen
+  import nordhainLogo from '../assets/logos/nordhain.svg';
+  import hawksLogo from '../assets/logos/hawks.svg';
+  import seebergLogo from '../assets/logos/seeberg.svg';
+  import elbachLogo from '../assets/logos/elbach.svg';
 
   type Dens = 'auto' | 'touch' | 'default' | 'compact';
 
@@ -11,6 +16,8 @@
     kind = 'table',
     layout = 'opponent',
     density = 'auto',
+    names = 'full',
+    logos = 'auto',
     state = 'live',
     provisional = false,
     scoreHeim = 52,
@@ -32,6 +39,8 @@
     kind?: 'table' | 'grid';
     layout?: ScheduleLayout;
     density?: Dens;
+    names?: ScheduleNames;
+    logos?: 'auto' | 'on' | 'off';
     state?: ScheduleState;
     provisional?: boolean;
     scoreHeim?: number;
@@ -53,6 +62,19 @@
 
   const dens = $derived(density === 'auto' ? undefined : density);
   const noteText = $derived(note.trim() === '' ? undefined : note);
+
+  // Kurznamen und Logos (erfunden) für die Namen-Controls
+  const SHORT: Record<string, string> = {
+    'TSV Nordhain': 'Nordhain', 'TV Elbach': 'Elbach', 'Lindenberg Hawks': 'Hawks', 'BG Seeberg': 'Seeberg', 'SV Kiefernau': 'Kiefernau',
+    'MTV Bergfeld': 'Bergfeld', 'TuSpo Hellenthal': 'Hellenthal', 'CVJM Ostfeld': 'Ostfeld', 'TB Grünfeld': 'Grünfeld', 'FC Waldbach': 'Waldbach',
+    'TG 48 Mainau': 'Mainau', 'TV Wiesental': 'Wiesental', 'Erster Gruppe A': 'Erster A',
+  };
+  const LOGO: Record<string, string> = { 'TSV Nordhain': nordhainLogo, 'TV Elbach': elbachLogo, 'Lindenberg Hawks': hawksLogo, 'BG Seeberg': seebergLogo };
+  const withShort = (name: string, extra: Partial<ScheduleTeam> = {}): ScheduleTeam => ({ name, short: SHORT[name], logo: LOGO[name], ...extra });
+
+  // Table: Standard (Layout opponent an, sonst aus), an, aus. Grid: Standard ist aus.
+  const tableLogos = $derived(logos === 'auto' ? undefined : logos === 'on');
+  const gridLogos = $derived(logos === 'on');
 
   const TEAM = 'TSV Nordhain';
   const OPP = $derived(placeholder ? 'Erster Gruppe A' : 'TV Elbach');
@@ -77,12 +99,12 @@
     if (layout === 'opponent') {
       test.at = 'heim';
       test.ownScore = scoreHeim;
-      test.opponent = { name: OPP, score: scoreGast, placeholder };
+      test.opponent = withShort(OPP, { score: scoreGast, placeholder });
       if (outcome !== 'auto') test.outcome = outcome;
-      if (state === 'bye') test.heim = { name: TEAM };
+      if (state === 'bye') test.heim = withShort(TEAM);
     } else {
-      test.heim = { name: TEAM, score: scoreHeim, own };
-      if (state !== 'bye') test.gast = { name: OPP, score: scoreGast, placeholder };
+      test.heim = withShort(TEAM, { score: scoreHeim, own });
+      if (state !== 'bye') test.gast = withShort(OPP, { score: scoreGast, placeholder });
     }
 
     const ctx = (id: string, c: Partial<ScheduleGame>, o: { section: string; nr: string; date: string; time: string; field?: string; venue?: string }): ScheduleGame => ({
@@ -99,10 +121,10 @@
 
     const mk = (id: string, gameState: ScheduleState, at: 'heim' | 'gast', name: string, a: number, b: number, extra: Partial<ScheduleGame>, o: Parameters<typeof ctx>[2]): ScheduleGame => {
       if (layout === 'opponent') {
-        return ctx(id, { state: gameState, at, ownScore: a, opponent: { name, score: b }, ...extra }, o);
+        return ctx(id, { state: gameState, at, ownScore: a, opponent: withShort(name, { score: b }), ...extra }, o);
       }
-      const you: ScheduleTeam = { name: TEAM, score: a };
-      const them: ScheduleTeam = { name, score: b };
+      const you: ScheduleTeam = withShort(TEAM, { score: a });
+      const them: ScheduleTeam = withShort(name, { score: b });
       return ctx(id, { state: gameState, heim: at === 'heim' ? you : them, gast: at === 'heim' ? them : you, ...extra }, o);
     };
 
@@ -141,9 +163,9 @@
             section: 'Gruppe A',
             time,
             column: col.id,
-            heim: { name: TEAM, score: scoreHeim, own },
+            heim: withShort(TEAM, { score: scoreHeim, own }),
           };
-          if (state !== 'bye') g.gast = { name: OPP, score: scoreGast, placeholder };
+          if (state !== 'bye') g.gast = withShort(OPP, { score: scoreGast, placeholder });
           if (provisional) g.provisional = true;
           if (noteText) g.note = noteText;
           list.push(g);
@@ -159,13 +181,13 @@
           section: 'Gruppe A',
           time,
           column: col.id,
-          heim: { name: TEAMS[(h * 2 + s) % TEAMS.length], ...(scored ? { score: 40 + h * 3 + s } : {}) },
-          gast: { name: TEAMS[(h * 2 + s + 1) % TEAMS.length], ...(scored ? { score: 35 + h * 2 } : {}) },
+          heim: withShort(TEAMS[(h * 2 + s) % TEAMS.length], scored ? { score: 40 + h * 3 + s } : {}),
+          gast: withShort(TEAMS[(h * 2 + s + 1) % TEAMS.length], scored ? { score: 35 + h * 2 } : {}),
           ...(nt ? { note: nt } : {}),
         });
       });
     });
-    if (showBye) list.push({ id: 'gbye', state: 'bye', time: '09:30', heim: { name: 'MTV Bergfeld' } });
+    if (showBye) list.push({ id: 'gbye', state: 'bye', time: '09:30', heim: withShort('MTV Bergfeld') });
     return list;
   });
 </script>
@@ -191,6 +213,8 @@
       games={tableGames}
       {layout}
       density={dens as 'touch' | 'default' | 'compact' | undefined}
+      {names}
+      logos={tableLogos}
       title="Spielplan"
       meta="4 Spiele"
       caption="Spielplan Spielwiese"
@@ -204,6 +228,8 @@
       slots={TIMES}
       breaks={showBreak ? [{ time: '10:15', label: 'Mittagspause' }] : []}
       density={(dens ?? 'default') as 'touch' | 'default' | 'compact'}
+      {names}
+      logos={gridLogos}
       title="Zeitraster"
       meta="Samstag, 10.10.2026"
       caption="Zeitraster Spielwiese"

@@ -132,3 +132,56 @@ export const react = `import { MatchCard, PlayerCard, Skeleton } from '@bbv/dss-
 <Skeleton variant="row" count={4} />
 <Skeleton variant="match" />
 <Skeleton variant="line" width="80%" height="22px" />`;
+
+
+// Kurznamen und Logos der MatchCard (Platzhalter-URL für die Logo-Dateien)
+export const namesVanilla = `<!-- Mit Logos: dss-match--logos an der Karte, Logo zwischen Trikotpunkt und Name.
+     names="short": dss-team-name--short am Namen; ohne die Klasse erscheint der Kurzname nur bis 640 px Breite. -->
+<div class="dss-match dss-match--scheduled dss-match--logos">
+  <span class="dss-match-head">
+    <span class="dss-match-league"><span>Bayernliga Süd</span></span>
+    <span class="dss-match-when">Sa, 25. Mai · 19:30</span>
+  </span>
+  <span class="dss-match-body">
+    <span class="dss-match-team">
+      <span class="dss-match-dot" aria-hidden="true"></span>
+      <span class="dss-team-logo" aria-hidden="true"><img src="/logos/nordhain.svg" alt="" loading="lazy" /></span>
+      <span class="dss-match-name dss-team-name dss-team-name--short"><span class="dss-name-full">TSV Nordhain 1920</span><span class="dss-name-short" aria-hidden="true">TSV N.</span></span>
+    </span>
+    <span class="dss-match-team dss-match-team--gast">
+      <span class="dss-match-dot" aria-hidden="true"></span>
+      <span class="dss-team-logo dss-team-logo--initials" aria-hidden="true">LH</span>
+      <span class="dss-match-name">Lindenberg Hawks</span>
+    </span>
+  </span>
+</div>`;
+
+export const namesSvelte = `<script>
+  import MatchCard from '@bbv/dss-design-system/svelte/MatchCard';
+</script>
+
+<!-- names="short": Kurzname; logos: Logo bzw. Initialen. Bis 640 px Breite erscheint der Kurzname auch bei names="full". -->
+<MatchCard
+  state="scheduled"
+  league="Bayernliga Süd"
+  date="Sa, 25. Mai"
+  time="19:30"
+  names="short"
+  logos
+  heim={{ name: 'TSV Nordhain 1920', short: 'TSV N.', logo: '/logos/nordhain.svg' }}
+  gast={{ name: 'Lindenberg Hawks', short: 'Hawks' }}
+/>`;
+
+export const namesReact = `import { MatchCard } from '@bbv/dss-design-system/react';
+
+{/* names="short": Kurzname; logos: Logo bzw. Initialen. Bis 640 px Breite erscheint der Kurzname auch bei names="full". */}
+<MatchCard
+  state="scheduled"
+  league="Bayernliga Süd"
+  date="Sa, 25. Mai"
+  time="19:30"
+  names="short"
+  logos
+  heim={{ name: 'TSV Nordhain 1920', short: 'TSV N.', logo: '/logos/nordhain.svg' }}
+  gast={{ name: 'Lindenberg Hawks', short: 'Hawks' }}
+/>`;

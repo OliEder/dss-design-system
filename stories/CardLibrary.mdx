@@ -4,7 +4,7 @@ import { DosDonts } from './docs/blocks/DosDonts';
 import { FrameworkCode } from './docs/blocks/FrameworkCode';
 import { DocTable } from './docs/blocks/DocTable';
 import './docs/blocks/blocks.css';
-import { vanilla, svelte, react } from './CardLibrary.code';
+import { vanilla, svelte, react, namesVanilla, namesSvelte, namesReact } from './CardLibrary.code';
 
 <Meta of={CardLibraryStories} />
 
@@ -24,6 +24,34 @@ import { vanilla, svelte, react } from './CardLibrary.code';
 <Canvas of={CardLibraryStories.Spielkarten} />
 
 Mit `href` ist die Karte ein Link, mit `onclick` (React: `onClick`) ein Button, sonst ein `div`. Die Pulsanimation von Lampe und Stand stoppt bei `prefers-reduced-motion: reduce`; „Live“ steht immer auch als Wort im Kopf.
+
+## Kurznamen und Logos
+
+Auf schmalen Karten brechen lange Vereinsnamen oder werden mit Auslassungspunkten gekürzt. Darum kann jedes Team einen Kurznamen (`short`, z. B. „TSV N.“) und ein Logo (`logo`, URL) mitbringen; zwei Props wählen die Darstellung, gleich wie in der [Spielplan-Tabelle](?path=/docs/components-spielplan--docs):
+
+- `names`: `full` (Standard) zeigt den vollen Namen, `short` den Kurznamen, wo ein Team einen hat. **Bis 640 px Fensterbreite** erscheint der Kurzname auch bei `full` automatisch (CSS, beide Texte stehen im Markup, es ist kein JavaScript nötig). Die Karte richtet sich dabei nach dem Fenster, nicht nach der eigenen Breite.
+- `logos`: `false` (Standard) ohne, `true` mit Logo vor dem Teamnamen in beiden Zeilen (28 px, links vom Namen und rechts vom Trikotpunkt). Ohne `logo` stehen die Initialen im Kreis (zwei Buchstaben aus dem vollen Namen).
+
+<Canvas of={CardLibraryStories.KartenNamen} />
+
+<Canvas of={CardLibraryStories.KartenLogos} />
+
+Das Logo ist dekorativ (`alt=""`, `aria-hidden`), weil der Name daneben steht. Der Kurzname ist `aria-hidden`; wo er sichtbar ist, bleibt der volle Name unsichtbar im Dokument (`dss-sr-only`-Muster), sodass Screenreader und der Name einer Karte als Link oder Button den vollen Namen genau einmal enthalten. Ohne `short` ändert sich nichts.
+
+### Handy · 390 px Breite
+
+Die Vorschau ist eine eingebettete Seite mit fester Breite von 390 px, ohne dass `names` gesetzt ist: Der Kurzname erscheint automatisch.
+
+<div className="dss-phones">
+  <div className="dss-phone">
+    <h4 className="dss-doc-cap">MatchCard · logos</h4>
+    <div className="dss-phone-scroll" tabIndex={0} role="region" aria-label="Scrollbereich: MatchCard mit Logos">
+      <iframe title="Handy-Vorschau: Spielkarte mit Kurznamen und Logos in 390 Pixel Breite" src="iframe.html?viewMode=story&globals=brand:bbv&id=components-card-library--karten-namen-handy" loading="lazy" />
+    </div>
+  </div>
+</div>
+
+<FrameworkCode label="MatchCard: Kurznamen und Logos" vanilla={namesVanilla} svelte={namesSvelte} react={namesReact} />
 
 ## Spieler in drei Maßstäben
 
@@ -57,7 +85,7 @@ Importiere die Komponenten über die Path-Exporte (Svelte) bzw. aus dem React-Pa
 
 <FrameworkCode vanilla={vanilla} svelte={svelte} react={react} />
 
-Die Props zeigen drei Spielwiesen mit den echten Komponenten. Die Namen gelten für Svelte; in React heißen `onclick` `onClick`, `height_cm` `heightCm` und `role` `playerRole`.
+Die Props zeigen drei Spielwiesen mit den echten Komponenten. Die Spielkarte hat zusätzlich `names` und `logos` (siehe „Kurznamen und Logos“). Die Namen gelten für Svelte; in React heißen `onclick` `onClick`, `height_cm` `heightCm` und `role` `playerRole`.
 
 ### MatchCard
 

@@ -186,3 +186,40 @@ export const codeGame = `const games = [{
   opponent: { name: 'TSV Falken Auental', href: '/teams/freising', score: 108 },
   ownScore: 65,
 }];`;
+
+
+// Namen und Logos: ein Team mit Logo (Initialen, weil keine Logo-URL) und Kurzname
+export const namesVanilla = `<!-- names="short": zusätzlich dss-team-name--short am Namens-Span. Ohne die Klasse erscheint der Kurzname nur bis 640 px Breite. -->
+<span class="dss-sch-team dss-sch-team--logo">
+  <span class="dss-team-logo dss-team-logo--initials" aria-hidden="true">LH</span>
+  <a class="dss-link" href="/teams/hawks">
+    <span class="dss-team-name dss-team-name--short"><span class="dss-name-full">Lindenberg Hawks</span><span class="dss-name-short" aria-hidden="true">Hawks</span></span>
+  </a>
+</span>
+
+<!-- mit Logo-Datei statt Initialen: alt bleibt leer, der Name steht daneben -->
+<span class="dss-team-logo" aria-hidden="true"><img src="/logos/hawks.svg" alt="" loading="lazy" /></span>`;
+
+const namesData = `const games = [{
+  id: '1', state: 'finished', date: 'Sa, 10.10.2026', time: '15:00',
+  heim: { name: 'TSV Nordhain 1920', short: 'TSV N.', logo: '/logos/nordhain.svg', score: 87 },
+  gast: { name: 'Lindenberg Hawks', short: 'Hawks', logo: '/logos/hawks.svg', score: 64 },
+}];`;
+
+export const namesReact = `import { ScheduleTable, ScheduleGrid } from '@bbv/dss-design-system/react';
+
+${namesData}
+
+// Kurznamen und Logos; bis 640 px Breite erscheinen die Kurznamen auch bei names="full"
+<ScheduleTable games={games} layout="versus" names="short" logos caption="Spieltag" />
+<ScheduleGrid games={gridGames} columns={columns} names="short" logos caption="Hallenbelegung" />`;
+
+export const namesSvelte = `<script>
+  import ScheduleTable from '@bbv/dss-design-system/svelte/ScheduleTable';
+  import ScheduleGrid from '@bbv/dss-design-system/svelte/ScheduleGrid';
+  ${namesData.replaceAll('\n', '\n  ')}
+</script>
+
+<!-- Kurznamen und Logos; bis 640 px Breite erscheinen die Kurznamen auch bei names="full" -->
+<ScheduleTable {games} layout="versus" names="short" logos caption="Spieltag" />
+<ScheduleGrid games={gridGames} {columns} names="short" logos caption="Hallenbelegung" />`;
