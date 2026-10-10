@@ -38,6 +38,8 @@ const normalize = (html: string) =>
     .replace(/ ?</g, '<')
     .replace(/class="([^"]*)"/g, (_m, value: string) => `class="${value.trim().split(/\s+/).sort().join(' ')}"`)
     .replace(/<(img|br)([^>]*?)\/?>/g, '<$1$2>')
+    // Attributreihenfolge am Button: type zuerst
+    .replace(/<button([^>]*?) type="button"/g, '<button type="button"$1')
     .trim();
 
 const SVELTE = { svelte: code.svelte, namesSvelte: code.namesSvelte, photoSvelte: code.photoSvelte, teamSvelte: team.svelte };
@@ -117,6 +119,21 @@ describe('Vanilla-Beispiel der Teamkarte entspricht der Komponente', () => {
       const expected = normalize(roots[index]);
       expect(normalize(render(Svelte, { props }).body)).toBe(expected);
       expect(normalize(renderToStaticMarkup(createElement(React as never, props)))).toBe(expected);
+    }
+  });
+});
+
+describe('photoVanilla (PlayerCard mit Foto) entspricht der Svelte-Ausgabe', () => {
+  it('compact, standard und hero', async () => {
+    const { JSDOM } = await import('jsdom');
+    const dom = new JSDOM('');
+    const roots = [...dom.window.document.createRange().createContextualFragment(code.photoVanilla.replace(/<!--[\s\S]*?-->/g, '')).children].map((el) => el.outerHTML);
+    expect(roots).toHaveLength(3);
+    const Svelte = ((await vite.ssrLoadModule(`${rootDir}svelte/PlayerCard.svelte`)) as { default: unknown }).default;
+    const base = { jersey: '4', name: 'J. Tanner', position: 'PG', captain: true, photo: '/players/jt.jpg' };
+    const cases = [{ ...base, size: 'compact', stat: 22, statLabel: 'PTS' }, { ...base, size: 'standard' }, { ...base, size: 'hero' }];
+    for (const [index, props] of cases.entries()) {
+      expect(normalize(render(Svelte, { props }).body), props.size).toBe(normalize(roots[index]));
     }
   });
 });

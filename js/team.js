@@ -4,19 +4,21 @@
  * Reine Funktionen ohne DOM und ohne Intl (feste Formatierung, SSR-stabil). Svelte und React nutzen dieselbe Logik.
  * Typen: js/team.d.ts. Ergebnis-Logik (S/N/U, Screenreader-Text) kommt aus js/schedule.js.
  */
-import { ariaForResult, outcome } from './schedule.js';
+import { ariaForResult, resolveOutcome } from './schedule.js';
 
 const isNum = (value) => typeof value === 'number' && Number.isFinite(value);
+/** Anzahl (Siege, Spieler, …): ganze Zahl ab 0; negative und gebrochene Werte gelten als ungültig. */
+const isCount = (value) => Number.isInteger(value) && value >= 0;
 
 /** Zahl deutsch mit Komma (12.5 -> "12,5"); leer, wenn kein Zahlenwert. */
 export function formatNumber(value) {
   return isNum(value) ? String(value).replace('.', ',') : '';
 }
 
-/** Bilanz: Kurztext "12–3" bzw. "12–1–3" (mit Unentschieden), Beschriftung "S–N" bzw. "S–U–N", Screenreader-Text; undefined ohne Siege und Niederlagen. */
+/** Bilanz: Kurztext "12–3" bzw. "12–1–3" (mit Unentschieden), Beschriftung "S–N" bzw. "S–U–N", Screenreader-Text; undefined ohne gültige Siege und Niederlagen (ganze Zahlen ab 0); ein ungültiges `d` wird ignoriert. */
 export function recordInfo(record) {
-  if (!record || !isNum(record.w) || !isNum(record.l)) return undefined;
-  const draws = isNum(record.d);
+  if (!record || !isCount(record.w) || !isCount(record.l)) return undefined;
+  const draws = isCount(record.d);
   const wins = `${record.w} ${record.w === 1 ? 'Sieg' : 'Siege'}`;
   const losses = `${record.l} ${record.l === 1 ? 'Niederlage' : 'Niederlagen'}`;
   const parts = draws ? [wins, `${record.d} Unentschieden`, losses] : [wins, losses];
@@ -38,11 +40,11 @@ export function rankInfo(rank, rankOf) {
   };
 }
 
-/** "14 Spieler · 3 Trainer"; ohne Trainer nur die Spieler; leer ohne Spielerzahl. */
+/** "14 Spieler · 3 Trainer"; ohne Trainer nur die Spieler; leer ohne gültige Spielerzahl (ganze Zahl ab 0); eine ungültige Trainerzahl entfällt. */
 export function squadText(squad) {
-  if (!squad || !isNum(squad.players)) return '';
+  if (!squad || !isCount(squad.players)) return '';
   const parts = [`${squad.players} Spieler`];
-  if (isNum(squad.staff)) parts.push(`${squad.staff} Trainer`);
+  if (isCount(squad.staff)) parts.push(`${squad.staff} Trainer`);
   return parts.join(' · ');
 }
 
@@ -59,12 +61,11 @@ export function statEntries(stats) {
   return STAT_FIELDS.filter(([key]) => isNum(stats[key])).map(([key, label]) => ({ key, label, value: formatNumber(stats[key]) }));
 }
 
-/** Ergebnis des letzten Spiels: Chip (S/N/U) und Screenreader-Text wie im Spielplan ("Eigene 92, Gegner 79, Sieg"). */
+/** Ergebnis des letzten Spiels: Chip (S/N/U) und Screenreader-Text wie im Spielplan ("Eigene 92, Gegner 79, Sieg"); ein gesetztes `outcome` (Forfait, Wertung) gewinnt gegen die Zahlen. */
 export function lastResult(last) {
   if (!last || !isNum(last.ownScore) || !isNum(last.opponentScore)) return undefined;
-  const result = outcome(last.ownScore, last.opponentScore);
-  const game = { id: 'last', state: 'finished', ownScore: last.ownScore, opponent: { name: last.opponent?.name ?? '', score: last.opponentScore } };
-  return { outcome: result, score: `${last.ownScore} : ${last.opponentScore}`, aria: ariaForResult(game, 'opponent') };
+  const game = { id: 'last', state: 'finished', ownScore: last.ownScore, outcome: last.outcome, opponent: { name: last.opponent?.name ?? '', score: last.opponentScore } };
+  return { outcome: resolveOutcome(game), score: `${last.ownScore} : ${last.opponentScore}`, aria: ariaForResult(game, 'opponent') };
 }
 
 /** Zusatztext vor dem Gegner für Screenreader: Heimspiel gegen, Auswärtsspiel bei, sonst "gegen". */

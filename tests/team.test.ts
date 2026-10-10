@@ -25,7 +25,12 @@ describe('recordInfo', () => {
   it('0:0 ist eine Bilanz', () => {
     expect(recordInfo({ w: 0, l: 0 })!.text).toBe('0–0');
   });
-  it.each([undefined, {}, { w: 1 }, { l: 1 }, { w: Number.NaN, l: 1 }])('%j ergibt undefined', (value) => {
+  it('ungültiges d (negativ, gebrochen) wird ignoriert: S–N', () => {
+    expect(recordInfo({ w: 3, d: -1, l: 2 })!.text).toBe('3–2');
+    expect(recordInfo({ w: 3, d: 0.5, l: 2 })!.label).toBe('S–N');
+    expect(recordInfo({ w: 3, d: 0, l: 2 })!.text).toBe('3–0–2');
+  });
+  it.each([undefined, {}, { w: 1 }, { l: 1 }, { w: Number.NaN, l: 1 }, { w: -1, l: 2 }, { w: 1, l: -2 }, { w: 1.5, l: 2 }, { w: 1, l: 2.5 }])('%j ergibt undefined', (value) => {
     expect(recordInfo(value as never)).toBeUndefined();
   });
 });
@@ -51,6 +56,10 @@ describe('squadText', () => {
     [{ players: 14, staff: 3 }, '14 Spieler · 3 Trainer'],
     [{ players: 9 }, '9 Spieler'],
     [{ players: 0, staff: 0 }, '0 Spieler · 0 Trainer'],
+    [{ players: -3, staff: 2 }, ''],
+    [{ players: 2.5 }, ''],
+    [{ players: 9, staff: -1 }, '9 Spieler'],
+    [{ players: 9, staff: 1.5 }, '9 Spieler'],
     [undefined, ''],
     [{ staff: 2 }, ''],
   ])('%j -> %s', (value, text) => {
@@ -82,6 +91,12 @@ describe('lastResult / opponentPrefix', () => {
     expect(lastResult({ opponent: { name: 'Y' }, ownScore: 92, opponentScore: 79 })).toEqual({ outcome: 'S', score: '92 : 79', aria: 'Eigene 92, Gegner 79, Sieg' });
     expect(lastResult({ opponent: { name: 'Y' }, ownScore: 70, opponentScore: 80 })!.aria).toBe('Eigene 70, Gegner 80, Niederlage');
     expect(lastResult({ opponent: { name: 'Y' }, ownScore: 70, opponentScore: 70 })!.aria).toBe('Eigene 70, Gegner 70, Unentschieden');
+  });
+  it('outcome überschreibt die Punkte (Forfait): Chip und Screenreader-Text folgen der Wertung', () => {
+    const forfait = lastResult({ opponent: { name: 'Y' }, ownScore: 20, opponentScore: 0, outcome: 'N' });
+    expect(forfait).toEqual({ outcome: 'N', score: '20 : 0', aria: 'Eigene 20, Gegner 0, Niederlage' });
+    expect(lastResult({ opponent: { name: 'Y' }, ownScore: 1, opponentScore: 2, outcome: 'S' })!.outcome).toBe('S');
+    expect(lastResult({ opponent: { name: 'Y' }, ownScore: 1, opponentScore: 2, outcome: 'U' })!.aria).toContain('Unentschieden');
   });
   it('ohne gültige Punkte undefined', () => {
     expect(lastResult(undefined)).toBeUndefined();

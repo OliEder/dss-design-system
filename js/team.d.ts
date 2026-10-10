@@ -27,6 +27,8 @@ export interface TeamLast {
   ownScore: number;
   opponentScore: number;
   at?: 'heim' | 'gast';
+  /** Überschreibt die aus den Punkten berechnete Bewertung (Forfait, Wertung gegen die Zahlen), wie `ScheduleGame.outcome`. */
+  outcome?: ScheduleOutcome;
 }
 
 export interface TeamSquad {

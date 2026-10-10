@@ -247,9 +247,9 @@ describe('TeamCard: Quelltext', () => {
     expect(source).not.toContain('"–"');
   });
 
-  it.each(sources)('%s: nutzt ScheduleTeam-Felder über js/team (kein zweites Datenmodell) und outcome/ariaForResult aus js/schedule.js', (path) => {
+  it.each(sources)('%s: nutzt ScheduleTeam-Felder über js/team (kein zweites Datenmodell) und resolveOutcome/ariaForResult aus js/schedule.js', (path) => {
     expect(read(path)).toContain("from '../js/team.js'");
-    expect(read('js/team.js')).toContain("import { ariaForResult, outcome } from './schedule.js'");
+    expect(read('js/team.js')).toContain("import { ariaForResult, resolveOutcome } from './schedule.js'");
     expect(read('js/team.d.ts')).toMatch(/Pick<ScheduleTeam, 'name' \| 'short' \| 'logo'>/);
   });
 
@@ -264,5 +264,68 @@ describe('TeamCard: Quelltext', () => {
   it.each(sources)('%s: Logo dekorativ (leeres alt, aria-hidden, lazy)', (path) => {
     expect(read(path)).toMatch(/alt=(""|\{""\})\s+loading="lazy"/);
     expect(read(path)).toContain('aria-hidden="true"');
+  });
+});
+
+describe('nachgebessert: Spielkarten-Kopf, Link mit onclick, Badge, Statistik-Raster', () => {
+  it('der Kopf der Spielkarte bleibt einzeilig (kein flex-wrap); nur die Live-Karte darf umbrechen', () => {
+    expect(rule('.dss-match-head')).not.toMatch(/flex-wrap/);
+    expect(rule('.dss-match-head')).not.toMatch(/gap/);
+    expect(css).not.toMatch(/\n\.dss-match-head > :last-child/);
+    expect(rule('.dss-match--live .dss-match-head')).toMatch(/flex-wrap:\s*wrap/);
+    expect(rule('.dss-match--live .dss-match-head > :last-child')).toMatch(/margin-left:\s*auto/);
+  });
+
+  it('die tote Regel für .dss-team-squad (border-bottom) ist entfernt', () => {
+    expect(css).not.toMatch(/\.dss-team-squad:last-child/);
+    expect(css).not.toMatch(/\.dss-team-stats \+ \.dss-team-squad/);
+  });
+
+  it('compact-Badge: kleiner (16 px) und weiter außen, damit das Gesicht im 32-px-Avatar frei bleibt', () => {
+    const badge = css.slice(css.indexOf('.dss-pc-av:not(.dss-pc-av--lg) .dss-tn--badge'), css.indexOf('}', css.indexOf('.dss-pc-av:not(.dss-pc-av--lg) .dss-tn--badge')));
+    expect(badge).toMatch(/height:\s*16px/);
+    expect(badge).toMatch(/right:\s*-8px/);
+    expect(badge).toMatch(/bottom:\s*-8px/);
+    const area = (16 - 8) * (16 - 8) / (32 * 32); // sichtbarer Anteil des Badges im Avatar
+    expect(area).toBeLessThan(0.1);
+  });
+
+  it('Statistik unter 560 px 2 × 2 (statt 3 + 1)', () => {
+    const mobile = css.slice(css.indexOf('@media (max-width: 560px) {\n  .dss-team-head'));
+    expect(mobile).toMatch(/\.dss-team-stats \.dss-team-vitals \{[^}]*grid-template-columns:\s*repeat\(2, minmax\(0, 1fr\)\)/);
+  });
+
+  it('Svelte-TeamCard gibt onclick auch an den Link weiter (wie React onClick)', () => {
+    expect(read('svelte/TeamCard.svelte')).toMatch(/<a class="dss-team-link" \{href\} \{onclick\}>/);
+    expect(read('react/TeamCard.tsx')).toMatch(/<a className="dss-team-link" href=\{href\} onClick=\{onClick\}>/);
+    expect(read('svelte/MatchCard.svelte')).toContain("onclick={tag === 'div' ? undefined : onclick}");
+    expect(read('react/MatchCard.tsx')).toMatch(/<a className=\{cls\} href=\{href\} onClick=\{onClick\}>/);
+  });
+
+  it('TeamCard: last.outcome in Typ und Funktion', () => {
+    expect(read('js/team.d.ts')).toMatch(/outcome\?: ScheduleOutcome/);
+    expect(read('js/team.js')).toContain('resolveOutcome(game)');
+  });
+
+  it('Foundation/Live: TopBar-Uhr „4. Viertel · 02:14“ passend zur Spielkarte', () => {
+    expect(read('stories/Foundation/Live.svelte')).toContain('clock="4. Viertel · 02:14"');
+  });
+
+  it('jedes Demo-Foto gehört überall zum selben erfundenen Namen (zentrales Mapping)', () => {
+    const players = read('stories/components/players.ts');
+    for (const [file, name] of [['tanner', 'J. Tanner'], ['okafor', 'M. Okafor'], ['vogler', 'K. Vogler'], ['hollis', 'D. Hollis'], ['mertens', 'G. Mertens'], ['sorell', 'B. Sorell']]) {
+      expect(players).toContain(`${file}: { photo: ${file}, name: '${name}'`);
+    }
+    const examples = read('stories/components/CardLibraryExamples.svelte');
+    for (const match of examples.matchAll(/name="([^"]+)"[^>]*photo=\{PLAYERS\.(\w+)\.photo\}/g)) {
+      expect(players, match[0]).toContain(`${match[2]}: { photo: ${match[2]}, name: '${match[1]}'`);
+    }
+    expect(examples).not.toMatch(/mertens[^\n]*K\. Vogler|K\. Vogler[^\n]*mertens/);
+  });
+
+  it('Lizenz-Hinweis (kein Model Release) in Doku, README und Credits', () => {
+    for (const path of ['stories/CardLibrary.mdx', 'README.md', 'stories/assets/players/CREDITS.md']) {
+      expect(read(path), path).toContain('kein Model Release');
+    }
   });
 });

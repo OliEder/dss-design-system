@@ -9,8 +9,8 @@
    *   standard — Karte mit allen Blöcken
    *   compact  — Listenzeile: Logo 32 px, Name, Liga, Bilanz kurz, Platz
    *
-   * Mit `href` ist die ganze Karte ein Link, mit `onclick` ein Button (Name als Link bzw. Button in der Überschrift,
-   * flächig geklickt per ::after), sonst nicht klickbar. Eine Aktion je Karte: `leagueHref` zählt nur ohne `href`/`onclick`.
+   * Mit `href` ist die ganze Karte ein Link (ein zusätzlicher `onclick` hängt am Link, z. B. für einen SPA-Router), mit
+   * `onclick` allein ein Button (Name als Link bzw. Button in der Überschrift, flächig geklickt per ::after), sonst nicht klickbar. Eine Aktion je Karte: `leagueHref` zählt nur ohne `href`/`onclick`.
    * `names`/`logos` wie bei MatchCard (Kurzname bis 640 px automatisch; Logos der Gegner in den Spielzeilen).
    */
   import { initials, shortName } from '../js/schedule.js';
@@ -82,7 +82,7 @@
 {/snippet}
 
 {#snippet nameBlock()}
-  {#if href}<a class="dss-team-link" {href}>{@render nameText({ name, short }, names)}</a>
+  {#if href}<a class="dss-team-link" {href} {onclick}>{@render nameText({ name, short }, names)}</a>
   {:else if onclick}<button class="dss-team-link" type="button" {onclick}>{@render nameText({ name, short }, names)}</button>
   {:else}{@render nameText({ name, short }, names)}{/if}
 {/snippet}

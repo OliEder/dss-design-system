@@ -22,6 +22,8 @@ const normalize = (html: string) =>
     .replace(/ ?</g, '<')
     .replace(/class="([^"]*)"/g, (_m, value: string) => `class="${value.trim().split(/\s+/).sort().join(' ')}"`)
     .replace(/<(img|br)([^>]*?)\/?>/g, '<$1$2>')
+    // Attributreihenfolge am Button: type zuerst
+    .replace(/<button([^>]*?) type="button"/g, '<button type="button"$1')
     .trim();
 
 beforeAll(async () => {
@@ -59,6 +61,22 @@ describe('PlayerCard: Svelte und React erzeugen dasselbe Markup', () => {
       }
     }
   }
+});
+
+describe('PlayerCard compact als Button (onclick/onClick)', () => {
+  it.each(['compact', 'standard'])('%s', async (size) => {
+    const handler = () => {};
+    const base = { size, jersey: '4', name: 'J. Tanner', position: 'PG', stat: 22, statLabel: 'PTS', photo: '/p.jpg' };
+    await same('svelte/PlayerCard.svelte', 'react/PlayerCard.tsx', 'PlayerCard', { ...base, onclick: handler }, { ...base, onClick: handler });
+  });
+});
+
+describe('MatchCard: href mit onclick (Link) und onclick allein (Button)', () => {
+  it.each([{ href: '/s' }, {}])('%j', async (extra) => {
+    const handler = () => {};
+    const base = { state: 'scheduled', date: 'Sa', heim: { name: 'A' }, gast: { name: 'B' }, ...extra };
+    await same('svelte/MatchCard.svelte', 'react/MatchCard.tsx', 'MatchCard', { ...base, onclick: handler }, { ...base, onClick: handler });
+  });
 });
 
 describe('MatchCard: Spielabschnitt in Svelte und React gleich', () => {
@@ -108,6 +126,14 @@ describe('TeamCard: Svelte und React erzeugen dasselbe Markup', () => {
   it.each(variants)('%j', async (extra) => {
     // `undefined` überschreibt den Standard bewusst: in beiden Fassungen gleich behandelt
     await same('svelte/TeamCard.svelte', 'react/TeamCard.tsx', 'TeamCard', { ...full, ...extra });
+  });
+  it('Forfait: last.outcome', async () => {
+    await same('svelte/TeamCard.svelte', 'react/TeamCard.tsx', 'TeamCard', { ...full, last: { opponent: { name: 'X' }, ownScore: 20, opponentScore: 0, outcome: 'N' } });
+    await same('svelte/TeamCard.svelte', 'react/TeamCard.tsx', 'TeamCard', { ...full, last: { opponent: { name: 'X' }, ownScore: 1, opponentScore: 2, outcome: 'S' } });
+  });
+  it.each([{}, { size: 'compact' }, { href: '/t' }, { size: 'compact', href: '/t' }])('onclick/onClick (%j): Button bzw. Link in beiden Fassungen gleich', async (extra) => {
+    const handler = () => {};
+    await same('svelte/TeamCard.svelte', 'react/TeamCard.tsx', 'TeamCard', { ...full, ...extra, onclick: handler }, { ...full, ...extra, onClick: handler });
   });
   it('nur der Name', async () => {
     await same('svelte/TeamCard.svelte', 'react/TeamCard.tsx', 'TeamCard', { name: 'Nur Name' });

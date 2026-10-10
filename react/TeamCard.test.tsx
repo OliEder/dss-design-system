@@ -96,6 +96,19 @@ describe('TeamCard standard', () => {
     expect(container.querySelector('.dss-team-game-end .dss-sr-only')).toHaveTextContent(word);
   });
 
+  it('last.outcome überschreibt die Punkte (Forfait): Chip N, Text Niederlage', () => {
+    const { container } = render(<TeamCard name="X" last={{ opponent: { name: 'Y' }, ownScore: 20, opponentScore: 0, outcome: 'N' }} />);
+    expect(container.querySelector('.dss-team-game-end .dss-chip')).toHaveTextContent('N');
+    expect(container.querySelector('.dss-team-game-end .dss-chip')).toHaveClass('dss-chip--err');
+    expect(container.querySelector('.dss-team-game-end .dss-sr-only')).toHaveTextContent('Eigene 20, Gegner 0, Niederlage');
+  });
+
+  it('negative Bilanz und Kader erscheinen nicht', () => {
+    const { container } = render(<TeamCard name="X" record={{ w: -1, l: 2 }} squad={{ players: -4 }} />);
+    expect(container.querySelector('.dss-team-vitals')).toBeNull();
+    expect(container.querySelector('.dss-team-squad')).toBeNull();
+  });
+
   it('Kader-Kurzliste: „14 Spieler · 3 Trainer“, ohne Trainer nur Spieler', () => {
     const { container, rerender } = render(<TeamCard {...FULL} />);
     expect(container.querySelector('.dss-team-squad')).toHaveTextContent('14 Spieler · 3 Trainer');
@@ -169,10 +182,13 @@ describe('TeamCard klickbar', () => {
     expect(onClick).toHaveBeenCalledTimes(1);
   });
 
-  it('href gewinnt gegen onClick', () => {
-    render(<TeamCard name="X" href="/x" onClick={() => {}} />);
+  it('mit href und onClick ist die Karte ein Link, und onClick hängt am Link (SPA-Router)', () => {
+    const onClick = vi.fn((event: { preventDefault: () => void }) => event.preventDefault());
+    render(<TeamCard name="X" href="/x" onClick={onClick} />);
     expect(screen.getByRole('link')).toBeInTheDocument();
     expect(screen.queryByRole('button')).toBeNull();
+    fireEvent.click(screen.getByRole('link'));
+    expect(onClick).toHaveBeenCalledTimes(1);
   });
 
   it('der zugängliche Name enthält den vollen Namen, auch bei Kurzname (WCAG 2.5.3)', () => {

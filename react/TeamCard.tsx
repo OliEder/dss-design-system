@@ -37,7 +37,7 @@ export interface TeamCardProps {
   stats?: TeamStats;
   /** `standard`: Karte mit allen Blöcken; `compact`: Listenzeile. */
   size?: TeamCardSize;
-  /** Mit `href` ist die ganze Karte ein Link (Name als Link in der Überschrift), mit `onClick` ein Button, sonst nicht klickbar. */
+  /** Mit `href` ist die ganze Karte ein Link (ein zusätzlicher `onClick` hängt am Link, z. B. für einen SPA-Router), mit `onClick` allein ein Button, sonst nicht klickbar. */
   href?: string;
   onClick?: MouseEventHandler<HTMLElement>;
   /** Überschriftenebene des Namens in `standard` (Standard h3). */
