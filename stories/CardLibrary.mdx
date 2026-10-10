@@ -19,11 +19,11 @@ import { vanilla, svelte, react } from './CardLibrary.code';
 
 ## Drei Zustände eines Spiels
 
-**Scheduled** zeigt Anpfiff, Halle und die Teams ohne Punkte. **Live** öffnet sich ins Hauptlayout, zeigt den laufenden Spielstand, eine pulsierende Indikator-Lampe oben und Viertel plus Spieluhr. **Finished** hebt den Sieger fett hervor, der Verlierer wird gedimmt.
+**Scheduled** zeigt Anpfiff, Halle und die Teams ohne Punkte. **Live** öffnet sich ins Hauptlayout, zeigt den laufenden Spielstand in Grün und mit sanftem Puls, eine pulsierende Indikator-Lampe oben und Viertel plus Spieluhr (die gemeinsame [Live-Sprache](?path=/docs/foundation-live--docs)). **Finished** hebt den Sieger fett hervor, der Verlierer wird gedimmt.
 
 <Canvas of={CardLibraryStories.Spielkarten} />
 
-Mit `href` ist die Karte ein Link, mit `onclick` (React: `onClick`) ein Button, sonst ein `div`. Die Pulsanimation der Live-Lampe stoppt bei `prefers-reduced-motion: reduce`.
+Mit `href` ist die Karte ein Link, mit `onclick` (React: `onClick`) ein Button, sonst ein `div`. Die Pulsanimation von Lampe und Stand stoppt bei `prefers-reduced-motion: reduce`; „Live“ steht immer auch als Wort im Kopf.
 
 ## Spieler in drei Maßstäben
 

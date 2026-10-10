@@ -1,0 +1,69 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as LiveStories from './Live.stories';
+import { DocTable } from '../docs/blocks/DocTable';
+import '../docs/blocks/blocks.css';
+
+<Meta of={LiveStories} />
+
+# Live
+
+Alles, was gerade läuft, spricht dieselbe grüne Sprache: ein grüner Punkt, der sanft pulsiert, das Wort „Live“ (oder „läuft“) und, wo ein Stand zu sehen ist, grüne Ergebniszahlen. Rot bleibt für Fehler, Fouls und abgesagte Spiele. Marke (BBV/DBB) und Hell/Dunkel in der Werkzeugleiste umschalten.
+
+## Alle Live-Stellen nebeneinander
+
+<Canvas of={LiveStories.Alle} />
+
+Die Spielplan-Zeile, die Raster-Zelle, die Spielkarte, der Play-by-Play-Kopf, die TopBar und der Punkt im Tabellenkopf nutzen dieselben Token und dieselbe Animation. Die TopBar ist immer dunkel und nimmt deshalb den Text-Ton für dunkle Flächen.
+
+## Token
+
+Die Token stehen in `css/components.css` neben den `--dss-chip-*`-Token, jeweils im hellen Block und in beiden dunklen Blöcken (Media-Query und `data-theme="dark"`). Die Kontrastwerte sind für BBV und DBB aus dem CSS gerechnet (Test `tests/live.test.ts`).
+
+<DocTable
+  label="Live-Token"
+  head={['Token', 'Verwendung', 'Hell', 'Dunkel']}
+  rows={[
+    [<code>--live-fill</code>, 'Punkt und Flächen (Rahmen und Balken der Spielkarte), aus --ok-fill abgeleitet', 'oklch(0.600 0.150 150), 3,3 bis 3,7:1 auf Seitenflächen', 'oklch(0.72 0.17 150), 6,3 bis 9,0:1'],
+    [<code>--dss-live-fg</code>, 'Text und Ergebniszahlen auf Seitenflächen', '--ok-text, 7,7 bis 8,5:1', 'oklch(0.85 0.12 150), 9,7 bis 13,7:1'],
+    [<code>--dss-live-fg-on-dark</code>, 'Text auf immer dunklen Flächen (TopBar, dunkler Rahmen), wie --ring-color-on-dark', 'oklch(0.85 0.12 150), 11,6:1 auf Anthrazit #191919, 13,9:1 auf Schwarz', 'derselbe Wert'],
+  ]}
+/>
+
+Der Punkt hat mindestens 3:1 gegen jede Seitenfläche (Hell, Dunkel, flache Fläche, Hover, Auswahl) und mindestens 4,7:1 auf den dunklen Leisten. Alle Texte erreichen 7:1.
+
+## Animation
+
+Es gibt genau eine Animation, `dss-live-pulse`: 1,6 Sekunden, `ease-in-out`, die Deckkraft geht von 1 auf 0,35 und zurück, nie darunter. Es ändert sich nur die Deckkraft: keine Bewegung, kein Farbwechsel, kein Flackern. Eine Periode dauert 1,6 Sekunden, das ist weniger als ein Wechsel pro Sekunde (WCAG 2.3.1, drei Blitze pro Sekunde sind die Grenze). Mit `prefers-reduced-motion: reduce` steht jede Live-Stelle still und bleibt voll deckend.
+
+Die Animation hängt an diesen Stellen: `.dss-live-dot`, `.dss-match-pulse`, `.dss-pbp-dot`, `.dss-crumb-dot`, dem Punkt der TopBar und den Ergebniszahlen laufender Spiele (Spielplan, Zeitraster, Spielkarte). Für eigene Stellen gibt es die Hilfsklasse `.dss-live-pulse`.
+
+WCAG 2.2.2 (Pause, Stopp, Ausblenden) verlangt bei automatisch startender, länger als fünf Sekunden laufender Bewegung eine Möglichkeit zum Anhalten. Die Systemeinstellung „Bewegung reduzieren“ hält den Puls an; wer eine Seite mit dauerhaftem Puls ausliefert, bietet zusätzlich einen eigenen Schalter an, falls die Zielgruppe das braucht.
+
+## Nie nur Farbe
+
+Grün allein zeigt „live“ nicht an. Jede Stelle trägt das Wort oder einen Screenreader-Text:
+
+- **Spielplan, Zeitraster:** das Tag „Live“ mit Punkt; Screenreader hören „läuft“ hinter dem Ergebnis.
+- **Spielkarte:** „Live · Q4 02:14“ im Kopf.
+- **Play-by-Play, Tabellenkopf:** „Live“ neben dem Punkt.
+- **TopBar:** „Live“ vor Spiel, Stand und Uhr.
+
+Rot gehört nicht zu Live. Es bleibt für Fehler, Fouls (Play-by-Play) und „abgesagt“.
+
+## Bausteine
+
+`.dss-live` ist ein Wort-Tag in Live-Farbe, `.dss-live-dot` der pulsierende Punkt davor:
+
+```html
+<span class="dss-live"><span class="dss-live-dot" aria-hidden="true"></span> Live</span>
+```
+
+Die Komponenten bringen ihre Live-Stelle selbst mit (`dss-match-live`, `dss-pbp-live`, `dss-topbar-live`, `dss-crumb-dot`), nutzen aber dieselben Token. Auf immer dunklen Flächen außerhalb der TopBar setzt du `color: var(--dss-live-fg-on-dark)`.
+
+## Auf den Komponentenseiten
+
+- [Spielplan](?path=/docs/components-spielplan--docs): Zustand Live in Tabelle und Zeitraster, grüne Ergebniszahlen
+- [Card Library](?path=/docs/components-card-library--docs): Spielkarte `live`
+- [PlayByPlay](?path=/docs/components-playbyplay--docs): Live-Marke im Kopf
+- [Navigation](?path=/docs/components-navigation--docs): TopBar-Kontext Live
+- [Table](?path=/docs/components-table--docs): Marke `live` im Tabellenkopf

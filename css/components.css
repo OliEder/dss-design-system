@@ -41,6 +41,11 @@
   --dss-chip-warn-bg: var(--warn-soft); --dss-chip-warn-fg: var(--warn-text);
   --dss-chip-info-bg: var(--info-soft); --dss-chip-info-fg: var(--info-text);
   --dss-chip-neutral-bg: var(--n-100);  --dss-chip-neutral-fg: var(--n-700);
+  /* Live: eine grüne Sprache. Fläche/Punkt aus --ok-fill (etwas dunkler, damit ≥ 3:1 auch auf --dss-surface-2); Text ≥ 7:1;
+     …-on-dark für immer dunkle Flächen (TopBar dunkel, dss-frame--dark), wie --ring-color-on-dark */
+  --live-fill: oklch(0.600 0.150 150);
+  --dss-live-fg: var(--ok-text);
+  --dss-live-fg-on-dark: oklch(0.85 0.12 150);
 }
 
 /* ── Semantische Aliase · Dark ──────────────────────────────── */
@@ -66,6 +71,7 @@
     --dss-chip-warn-bg: oklch(0.32 0.06 75); --dss-chip-warn-fg: oklch(0.90 0.10 80);
     --dss-chip-info-bg: oklch(0.30 0.06 245); --dss-chip-info-fg: oklch(0.88 0.08 245);
     --dss-chip-neutral-bg: var(--n-800); --dss-chip-neutral-fg: var(--n-200);
+    --live-fill: oklch(0.72 0.17 150);  --dss-live-fg: oklch(0.85 0.12 150);  --dss-live-fg-on-dark: oklch(0.85 0.12 150);
   }
 }
 :root[data-theme="dark"] {
@@ -83,6 +89,7 @@
   --dss-chip-warn-bg: oklch(0.32 0.06 75); --dss-chip-warn-fg: oklch(0.90 0.10 80);
   --dss-chip-info-bg: oklch(0.30 0.06 245); --dss-chip-info-fg: oklch(0.88 0.08 245);
   --dss-chip-neutral-bg: var(--n-800); --dss-chip-neutral-fg: var(--n-200);
+  --live-fill: oklch(0.72 0.17 150);  --dss-live-fg: oklch(0.85 0.12 150);  --dss-live-fg-on-dark: oklch(0.85 0.12 150);
 }
 
 /* ── Basis ──────────────────────────────────────────────────── */
@@ -220,6 +227,25 @@
 .dss-chip--mono { font-family: var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; font-size: var(--fs-caption); padding-block: 3px 1px; }
 .dss-chip--link { text-decoration: none; min-height: 43px; padding: 1px 14px 0; font-size: var(--fs-body-sm); } /* 43 + 1 px = 44 px Zielgröße; 1 px oben mittigt die Schrift optisch */
 .dss-chip--link:hover { box-shadow: inset 0 0 0 1px var(--dss-line-strong); }
+
+/* ── Live: eine Sprache für alles, was gerade läuft ──────────────
+   Grün statt Rot (Rot bleibt Fehler, Foul und Abgesagt). Punkt/Fläche --live-fill, Text --dss-live-fg
+   (auf immer dunklen Flächen --dss-live-fg-on-dark). Nie nur Farbe: das Wort „Live“ bzw. der Screenreader-Text „läuft“ bleibt.
+   Eine Animation für alle: nur die Deckkraft (1 → 0,35 → 1, 1,6 s, unter 1 Hz), keine Bewegung, bei „Bewegung reduzieren“ aus. */
+.dss-live { display: inline-flex; align-items: center; gap: 6px; color: var(--dss-live-fg); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
+.dss-live-dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--live-fill); }
+.dss-sch-row.is-live .dss-sch-score, .dss-sg-game.is-live .dss-sch-score, .dss-match--live .dss-match-score { color: var(--dss-live-fg); }
+@keyframes dss-live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+.dss-live-pulse, .dss-live-dot, .dss-match-pulse, .dss-pbp-dot, .dss-crumb-dot, .dss-topbar-live::before,
+.dss-sch-row.is-live .dss-sch-score, .dss-sg-game.is-live .dss-sch-score, .dss-match--live .dss-match-score {
+  animation: dss-live-pulse 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dss-live-pulse, .dss-live-dot, .dss-match-pulse, .dss-pbp-dot, .dss-crumb-dot, .dss-topbar-live::before,
+  .dss-sch-row.is-live .dss-sch-score, .dss-sg-game.is-live .dss-sch-score, .dss-match--live .dss-match-score {
+    animation: none;
+  }
+}
 
 /* ── Stat-Kachel ────────────────────────────────────────────── */
 .dss-stat { background: var(--dss-surface); border: 1px solid var(--dss-line); border-radius: var(--radius-lg); padding: 14px 16px; }
@@ -439,13 +465,7 @@
 }
 .dss-frame--dark .dss-frame-meta { color: var(--n-400); }
 .dss-crumb { display: inline-flex; align-items: center; gap: 6px; }
-.dss-crumb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok-fill); animation: dss-pulse 2s infinite; }
-@keyframes dss-pulse {
-  0%   { box-shadow: 0 0 0 0 oklch(0.65 0.18 150 / 0.6); }
-  70%  { box-shadow: 0 0 0 8px oklch(0.65 0.18 150 / 0); }
-  100% { box-shadow: 0 0 0 0 oklch(0.65 0.18 150 / 0); }
-}
-@media (prefers-reduced-motion: reduce) { .dss-crumb-dot { animation: none; } }
+.dss-crumb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--live-fill); } /* Puls: siehe Abschnitt Live */
 
 .dss-tbl th { position: sticky; top: 0; z-index: 1; }
 .dss-tbl th.right, .dss-tbl td.right { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-weight: 500; }
@@ -540,17 +560,12 @@
   display: flex; align-items: center; gap: 14px; margin-left: 28px; font-family: var(--font-mono);
   font-size: var(--fs-caption); color: var(--n-300); letter-spacing: 0.04em;
 }
-/* Heller Rotton: --err-fill hat als Text auf der immer dunklen Leiste nur 4,4:1 (DBB 3,7:1), dieser Ton mindestens 7:1 (Schwarz 8,9:1, Anthrazit #191919 7,4:1) */
+/* Live auf der immer dunklen Leiste: Text --dss-live-fg-on-dark (≥ 7:1 auf Schwarz und Anthrazit #191919), Punkt --live-fill; Puls: siehe Abschnitt Live */
 .dss-topbar-live {
-  display: inline-flex; align-items: center; gap: 6px; color: oklch(0.80 0.19 27); font-weight: 700;
+  display: inline-flex; align-items: center; gap: 6px; color: var(--dss-live-fg-on-dark); font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.1em;
 }
-.dss-topbar-live::before {
-  content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--err-fill);
-  animation: dss-tb-pulse 1.6s ease-in-out infinite;
-}
-@keyframes dss-tb-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
-@media (prefers-reduced-motion: reduce) { .dss-topbar-live::before { animation: none; } }
+.dss-topbar-live::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--live-fill); }
 .dss-topbar-score { font-weight: 700; font-size: var(--fs-body-md); color: white; letter-spacing: -0.01em; }
 .dss-topbar-clock { color: var(--signal-300); font-weight: 700; }
 .dss-topbar-center { flex: 1; display: flex; justify-content: center; }
@@ -795,8 +810,8 @@ a.dss-crumbs-item:focus-visible, a.dss-crumbs-chip:focus-visible { outline: var(
 button.dss-match, a.dss-match { cursor: pointer; }
 button.dss-match:hover, a.dss-match:hover { border-color: var(--dss-line-strong); box-shadow: var(--shadow-md); transform: translateY(-1px); }
 button.dss-match:focus-visible, a.dss-match:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: 2px; }
-.dss-match--live { border-color: var(--ok-fill); }
-.dss-match--live::before { content: ''; display: block; height: 3px; background: var(--ok-fill); }
+.dss-match--live { border-color: var(--live-fill); }
+.dss-match--live::before { content: ''; display: block; height: 3px; background: var(--live-fill); }
 .dss-match-head {
   display: flex; justify-content: space-between; align-items: center; padding: 14px 18px 8px;
   font-family: var(--font-mono); font-size: var(--fs-caption); text-transform: uppercase; letter-spacing: 0.08em;
@@ -806,10 +821,9 @@ button.dss-match:focus-visible, a.dss-match:focus-visible { outline: var(--ring-
 .dss-match-muted { color: var(--dss-mute); margin-left: 4px; }
 .dss-match-when { color: var(--dss-fg-soft); }
 .dss-match-final { color: var(--dss-fg); }
-.dss-match-live { display: inline-flex; align-items: center; gap: 6px; color: var(--dss-chip-ok-fg); }
-.dss-match-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--ok-fill); animation: dss-mc-pulse 1.6s ease-in-out infinite; }
-@keyframes dss-mc-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-@media (prefers-reduced-motion: reduce) { .dss-match-pulse { animation: none; } button.dss-match, a.dss-match { transition: none; } }
+.dss-match-live { display: inline-flex; align-items: center; gap: 6px; color: var(--dss-live-fg); }
+.dss-match-pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--live-fill); } /* Puls: siehe Abschnitt Live */
+@media (prefers-reduced-motion: reduce) { button.dss-match, a.dss-match { transition: none; } }
 .dss-match-body { display: flex; flex-direction: column; gap: 8px; padding: 6px 18px 16px; }
 .dss-match-team { display: grid; grid-template-columns: 16px 1fr auto; gap: 14px; align-items: center; }
 .dss-match-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--team-heim, oklch(0.55 0.20 27)); }
@@ -903,13 +917,9 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
   color: var(--dss-mute); letter-spacing: 0.06em; text-transform: uppercase;
 }
 .dss-pbp-frame--dark .dss-pbp-meta { color: var(--n-400); }
-.dss-pbp-live { display: inline-flex; align-items: center; gap: 6px; }
-.dss-pbp-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--ok-fill); animation: dss-pbp-pulse 1.8s infinite; }
-@keyframes dss-pbp-pulse {
-  0%   { box-shadow: 0 0 0 0 oklch(0.65 0.18 150 / 0.6); }
-  70%  { box-shadow: 0 0 0 8px oklch(0.65 0.18 150 / 0); }
-  100% { box-shadow: 0 0 0 0 oklch(0.65 0.18 150 / 0); }
-}
+.dss-pbp-live { display: inline-flex; align-items: center; gap: 6px; color: var(--dss-live-fg); font-weight: 700; }
+.dss-pbp-frame--dark .dss-pbp-live { color: var(--dss-live-fg-on-dark); }
+.dss-pbp-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--live-fill); } /* Puls: siehe Abschnitt Live */
 .dss-pbp-feed { max-height: 600px; overflow-y: auto; }
 .dss-pbp-feed:focus-visible { outline: var(--ring-w) var(--ring-style) var(--ring-color); outline-offset: -3px; }
 .dss-pbp-event {
@@ -920,7 +930,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
   from { opacity: 0; transform: translateY(-4px); background: var(--dss-selected-bg); }
   to   { opacity: 1; transform: translateY(0); background: transparent; }
 }
-@media (prefers-reduced-motion: reduce) { .dss-pbp-event, .dss-pbp-dot { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .dss-pbp-event { animation: none; } }
 .dss-pbp-frame--dark .dss-pbp-event { border-bottom-color: var(--n-800); }
 .dss-pbp-event:last-child { border-bottom: 0; }
 .dss-pbp-event:hover { background: var(--dss-hover-bg); }
