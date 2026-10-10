@@ -851,6 +851,8 @@ button.dss-match:focus-visible, a.dss-match:focus-visible { outline: var(--ring-
 @media (prefers-reduced-motion: reduce) { button.dss-match, a.dss-match { transition: none; } }
 .dss-match-body { display: flex; flex-direction: column; gap: 8px; padding: 6px 18px 16px; }
 .dss-match-team { display: grid; grid-template-columns: 16px 1fr auto; gap: 14px; align-items: center; }
+/* Mit Logos (names/logos-Prop): zusätzliche Spalte zwischen Trikotpunkt und Name */
+.dss-match--logos .dss-match-team { grid-template-columns: 16px 28px 1fr auto; gap: 10px; }
 .dss-match-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--team-heim, oklch(0.55 0.20 27)); }
 .dss-match-team--gast .dss-match-dot { background: var(--team-gast, oklch(0.55 0.18 245)); }
 .dss-match-name {
@@ -1095,6 +1097,38 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
   font-family: var(--font-display); font-weight: 800; font-size: var(--fs-caption); color: var(--dss-fg-soft);
 }
 .dss-sch-logo img { width: 100%; height: 100%; object-fit: contain; }
+
+/* ── Namen und Logos (Spielplan, MatchCard) ──────────────────
+   Namen: Hat ein Team einen Kurznamen, stehen beide Texte im Markup (.dss-name-full, .dss-name-short). Standard: voller Name.
+   Mit .dss-team-name--short (Prop names="short") und bis 640 px Breite (wie die Handy-Karten) ist der Kurzname sichtbar;
+   der volle Name bleibt dann für Hilfstechnik lesbar (dss-sr-only-Muster), der Kurzname ist aria-hidden. */
+.dss-team-name { position: relative; }
+.dss-team-name .dss-name-short { display: none; }
+.dss-team-name--short .dss-name-short { display: inline; }
+.dss-team-name--short .dss-name-full {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+@media (max-width: 640px) {
+  .dss-team-name .dss-name-short { display: inline; }
+  .dss-team-name .dss-name-full {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+}
+/* Logo vor dem Teamnamen: dekorativ (der Name steht daneben). Bild in Kachel (--dss-surface-2, auch für transparente PNGs im
+   Dunkelmodus), ohne Bild ein Kreis mit Initialen (--dss-fg auf --dss-surface-2, ≥ 7:1). 28 px, in compact 20 px. */
+.dss-team-logo {
+  flex: none; display: inline-grid; place-items: center; box-sizing: border-box; width: 28px; height: 28px; padding: 2px; overflow: hidden;
+  border: 1px solid var(--dss-line); border-radius: var(--radius-md); background: var(--dss-surface-2);
+  font-family: var(--font-display); font-weight: 800; font-size: var(--fs-caption); line-height: 1; letter-spacing: 0; color: var(--dss-fg);
+}
+.dss-team-logo--initials { padding: 0; border-radius: 50%; }
+.dss-team-logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.dss-tbl--compact .dss-team-logo { width: 20px; height: 20px; padding: 1px; font-size: 9px; }
+.dss-tbl--compact .dss-team-logo--initials { padding: 0; }
+.dss-sch-team--logo { display: inline-flex; align-items: center; gap: 8px; vertical-align: middle; }
+.dss-tbl--compact .dss-sch-team--logo { gap: 6px; }
 .dss-tbl--schedule td.dss-sch-res { width: 1%; text-align: right; white-space: nowrap; }
 .dss-sch--columns td.dss-sch-res { text-align: center; }
 /* Ergebnis-Box: Zahl (und Sieg-/Niederlage-Chip links davon); "vorläufig" steht klein unter der Zahl.

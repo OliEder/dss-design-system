@@ -11,6 +11,10 @@
    * Zeilenende), jeweils mit dem Spiel als Argument. `title` und `meta` sind
    * reine Strings; `renderLink` und `titleAs` gibt es in Svelte nicht
    * (Überschrift immer h3, Links als einfache <a>).
+   *
+   * `names`: "full" (Standard) oder "short" (Kurzname, falls vorhanden); bis 640 px Breite
+   * erscheint der Kurzname automatisch (CSS). `logos`: Logo/Initialen vor dem Teamnamen;
+   * Standard aus, im Layout `opponent` an (wie bisher), solange nicht ausdrücklich `false`.
    */
   import type { Snippet } from 'svelte';
   import {
@@ -22,15 +26,18 @@
     initials,
     layoutFor,
     resolveOutcome,
+    shortName,
     stateLabel,
     winnerSide,
   } from '../js/schedule.js';
-  import type { ScheduleDensity, ScheduleGame, ScheduleLayout, ScheduleTeam } from '../js/schedule.js';
+  import type { ScheduleDensity, ScheduleGame, ScheduleLayout, ScheduleNames, ScheduleTeam } from '../js/schedule.js';
 
   let {
     games,
     layout = undefined,
     density = undefined,
+    names = 'full',
+    logos = undefined,
     title = '',
     meta = '',
     caption = '',
@@ -41,6 +48,8 @@
     games: ScheduleGame[];
     layout?: ScheduleLayout;
     density?: ScheduleDensity;
+    names?: ScheduleNames;
+    logos?: boolean;
     title?: string;
     meta?: string;
     caption?: string;
@@ -53,19 +62,27 @@
   const dens = $derived<ScheduleDensity>(density ?? densityFor(games, mode));
   const cols = $derived(columnsFor(mode, games, Boolean(notice)));
   const groups = $derived(groupBySection(games));
+  const showOppLogo = $derived(logos !== false);
   const OUTCOME_CHIP = { S: 'dss-chip--ok', N: 'dss-chip--err', U: '' } as const;
 </script>
 
 <!-- team-Snippet: synchron halten mit ScheduleTable/ScheduleGrid -->
-{#snippet team(t: ScheduleTeam | undefined, loser: boolean)}
+{#snippet teamName(t: ScheduleTeam)}
+  {@const short = shortName(t)}
+  {#if short}<span class="dss-team-name" class:dss-team-name--short={names === 'short'}><span class="dss-name-full">{t.name}</span><span class="dss-name-short" aria-hidden="true">{short}</span></span>{:else}{t.name}{/if}
+{/snippet}
+
+{#snippet team(t: ScheduleTeam | undefined, loser: boolean, withLogo: boolean)}
   {@const current = t ?? { name: '?' }}
-  <span class="dss-sch-team" class:is-loser={loser}>
+  {@const logo = withLogo && t !== undefined && !t.placeholder}
+  <span class="dss-sch-team" class:is-loser={loser} class:dss-sch-team--logo={logo}>
+    {#if logo}<span class="dss-team-logo" class:dss-team-logo--initials={!current.logo} aria-hidden="true">{#if current.logo}<img src={current.logo} alt="" loading="lazy" />{:else}{initials(current.name, 2)}{/if}</span>{/if}
     {#if current.href && !current.placeholder}
-      <a class="dss-link" href={current.href}>{current.name}</a>
+      <a class="dss-link" href={current.href}>{@render teamName(current)}</a>
     {:else if current.placeholder}
-      <span class="dss-sch-ph">{current.name}</span>
+      <span class="dss-sch-ph">{@render teamName(current)}</span>
     {:else}
-      {current.name}
+      {@render teamName(current)}
     {/if}
   </span>
 {/snippet}
@@ -118,16 +135,18 @@
           <td role="cell" class="dss-sch-match">
             {#if mode === 'opponent' && game.opponent}
               <span class="dss-sch-opp">
-                <span class="dss-sch-logo" aria-hidden="true">
-                  {#if game.opponent.logo}<img src={game.opponent.logo} alt="" />{:else}{initials(game.opponent.name)}{/if}
-                </span>
-                {@render team(game.opponent, false)}
+                {#if showOppLogo}
+                  <span class="dss-sch-logo" aria-hidden="true">
+                    {#if game.opponent.logo}<img src={game.opponent.logo} alt="" loading="lazy" />{:else}{initials(game.opponent.name)}{/if}
+                  </span>
+                {/if}
+                {@render team(game.opponent, false, false)}
               </span>
             {:else}
-              {@render team(game.heim, winner === 'gast')}
+              {@render team(game.heim, winner === 'gast', logos === true)}
               <span class="dss-sch-sep" aria-hidden="true"> – </span>
               <span class="dss-sr-only"> gegen </span>
-              {@render team(game.gast, winner === 'heim')}
+              {@render team(game.gast, winner === 'heim', logos === true)}
             {/if}
             {#if game.league}
               <span class="dss-sch-sub">
@@ -137,9 +156,9 @@
             {@render noteText(game)}
           </td>
         {:else if col.key === 'heim'}
-          <td role="cell" class="dss-sch-heim">{@render team(game.heim, winner === 'gast')}</td>
+          <td role="cell" class="dss-sch-heim">{@render team(game.heim, winner === 'gast', logos === true)}</td>
         {:else if col.key === 'gast'}
-          <td role="cell" class="dss-sch-gast">{@render team(game.gast, winner === 'heim')}{@render noteText(game)}</td>
+          <td role="cell" class="dss-sch-gast">{@render team(game.gast, winner === 'heim', logos === true)}{@render noteText(game)}</td>
         {:else if col.key === 'field'}
           <td role="cell" class="dss-sch-field-cell">
             {#if game.field}<span class="dss-chip dss-chip--mono dss-sch-field" title={game.field}>{game.field}</span>{/if}

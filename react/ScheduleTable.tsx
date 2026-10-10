@@ -13,7 +13,7 @@ import {
   winnerSide,
 } from '../js/schedule.js';
 import { LiveTag, ResultText, TeamName, type ScheduleRenderLink } from './ScheduleParts';
-import type { ScheduleDensity, ScheduleGame, ScheduleLayout } from './schedule-types';
+import type { ScheduleDensity, ScheduleGame, ScheduleLayout, ScheduleNames } from './schedule-types';
 
 export type { ScheduleLinkProps } from './ScheduleParts';
 
@@ -27,6 +27,13 @@ export interface ScheduleTableProps {
   layout?: ScheduleLayout;
   /** Zeilenhöhe; Standard: `touch` bei `opponent` oder Liga-Unterzeile, sonst `default`. */
   density?: ScheduleDensity;
+  /** `short` zeigt den Kurzname (`short`), falls vorhanden; bis 640 px Breite erscheint er automatisch (CSS). Standard: `full`. */
+  names?: ScheduleNames;
+  /**
+   * Logo bzw. Initialen vor dem Teamnamen (Bild `logo` mit leerem Alternativtext; Platzhalter ohne Logo).
+   * Standard: aus; im Layout `opponent` an (wie bisher), solange nicht ausdrücklich `false`.
+   */
+  logos?: boolean;
   /** Titel im Rahmenkopf. */
   title?: ReactNode;
   /** Überschriftenebene des Titels; Standard: `h3`. */
@@ -52,6 +59,8 @@ export function ScheduleTable({
   games,
   layout,
   density,
+  names = 'full',
+  logos,
   title,
   titleAs: Heading = 'h3',
   meta,
@@ -118,19 +127,21 @@ export function ScheduleTable({
           <td key={key} role="cell" className="dss-sch-match">
             {mode === 'opponent' && game.opponent ? (
               <span className="dss-sch-opp">
-                <span className="dss-sch-logo" aria-hidden="true">
-                  {game.opponent.logo ? <img src={game.opponent.logo} alt="" /> : initials(game.opponent.name)}
-                </span>
-                <TeamName team={game.opponent} renderLink={renderLink} />
+                {logos !== false ? (
+                  <span className="dss-sch-logo" aria-hidden="true">
+                    {game.opponent.logo ? <img src={game.opponent.logo} alt="" loading="lazy" /> : initials(game.opponent.name)}
+                  </span>
+                ) : null}
+                <TeamName team={game.opponent} renderLink={renderLink} names={names} />
               </span>
             ) : (
               <>
-                <TeamName team={game.heim} loser={winner === 'gast'} renderLink={renderLink} />
+                <TeamName team={game.heim} loser={winner === 'gast'} renderLink={renderLink} names={names} logo={logos === true} />
                 <span className="dss-sch-sep" aria-hidden="true">
                   {' – '}
                 </span>
                 <span className="dss-sr-only"> gegen </span>
-                <TeamName team={game.gast} loser={winner === 'heim'} renderLink={renderLink} />
+                <TeamName team={game.gast} loser={winner === 'heim'} renderLink={renderLink} names={names} logo={logos === true} />
               </>
             )}
             {league(game)}
@@ -140,13 +151,13 @@ export function ScheduleTable({
       case 'heim':
         return (
           <td key={key} role="cell" className="dss-sch-heim">
-            <TeamName team={game.heim} loser={winner === 'gast'} renderLink={renderLink} />
+            <TeamName team={game.heim} loser={winner === 'gast'} renderLink={renderLink} names={names} logo={logos === true} />
           </td>
         );
       case 'gast':
         return (
           <td key={key} role="cell" className="dss-sch-gast">
-            <TeamName team={game.gast} loser={winner === 'heim'} renderLink={renderLink} />
+            <TeamName team={game.gast} loser={winner === 'heim'} renderLink={renderLink} names={names} logo={logos === true} />
             {note(game)}
           </td>
         );
