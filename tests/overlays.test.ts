@@ -27,8 +27,9 @@ describe('Svelte-Modal: eindeutige Titel-id', () => {
     expect(modal).toMatch(/aria-labelledby=\{titleId\}/);
   });
 
-  it('Titel ist eine h2 wie in der React-Fassung (h4 sprang in der Gliederung)', () => {
-    expect(modal).toMatch(/<h2 class="dss-m-title"/);
+  it('Titel ist standardmäßig eine h2 wie in der React-Fassung (h4 sprang in der Gliederung); titleAs wählt h2 bis h6', () => {
+    expect(modal).toMatch(/resolveHeading\(titleAs, 2\)/);
+    expect(modal).toMatch(/<svelte:element this=\{titleTag\} class="dss-m-title" id=\{titleId\}/);
   });
 });
 

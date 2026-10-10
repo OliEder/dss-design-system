@@ -1,3 +1,4 @@
+export { HeadingLevel, useHeadingLevel, type HeadingLevelProps, type HeadingLevelValue, type HeadingTag } from './HeadingLevel';
 export { Button, type ButtonProps, type ButtonVariant, type ButtonSize } from './Button';
 export { TextInput, type TextInputProps, type TextInputDensity, type FieldState } from './TextInput';
 export { Select, type SelectProps, type SelectOption } from './Select';

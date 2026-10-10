@@ -3,6 +3,7 @@ import { cn } from './cn';
 import { ariaForResult, buildGrid, hasScore, stateLabel, winnerSide } from '../js/schedule.js';
 import { LiveTag, ResultText, TeamName, type ScheduleRenderLink } from './ScheduleParts';
 import type { ScheduleBreak, ScheduleDensity, ScheduleGame, ScheduleGridColumn, ScheduleNames } from './schedule-types';
+import { useHeadingTag, type HeadingTag } from './HeadingLevel';
 
 export interface ScheduleGridProps {
   /** Jedes Spiel braucht `time` und `column` (passt zu einer `columns[].id`). */
@@ -21,7 +22,8 @@ export interface ScheduleGridProps {
   /** Logo bzw. Initialen vor dem Teamnamen (Platzhalter ohne Logo). Standard: aus. */
   logos?: boolean;
   title?: ReactNode;
-  titleAs?: 'h2' | 'h3' | 'h4';
+  /** Überschriftenebene des Titels, h2 bis h6. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor h3. */
+  titleAs?: HeadingTag;
   meta?: ReactNode;
   caption?: string;
   className?: string;
@@ -41,13 +43,14 @@ export function ScheduleGrid({
   names = 'full',
   logos = false,
   title,
-  titleAs: Heading = 'h3',
+  titleAs,
   meta,
   caption,
   className,
   renderLink,
   renderNotice,
 }: ScheduleGridProps) {
+  const Heading = useHeadingTag(titleAs);
   const rows = buildGrid({ games, columns, slots, breaks });
   const hasHead = Boolean(title || meta);
 

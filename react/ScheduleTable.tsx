@@ -14,6 +14,7 @@ import {
 } from '../js/schedule.js';
 import { LiveTag, ResultText, TeamName, type ScheduleRenderLink } from './ScheduleParts';
 import type { ScheduleDensity, ScheduleGame, ScheduleLayout, ScheduleNames } from './schedule-types';
+import { useHeadingTag, type HeadingTag } from './HeadingLevel';
 
 export type { ScheduleLinkProps } from './ScheduleParts';
 
@@ -36,8 +37,8 @@ export interface ScheduleTableProps {
   logos?: boolean;
   /** Titel im Rahmenkopf. */
   title?: ReactNode;
-  /** Überschriftenebene des Titels; Standard: `h3`. */
-  titleAs?: 'h2' | 'h3' | 'h4';
+  /** Überschriftenebene des Titels, h2 bis h6. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor h3. */
+  titleAs?: HeadingTag;
   /** Angaben rechts im Rahmenkopf, z. B. Saison oder Stand. */
   meta?: ReactNode;
   /** Unsichtbare Tabellenbeschriftung für Screenreader. */
@@ -62,7 +63,7 @@ export function ScheduleTable({
   names = 'full',
   logos,
   title,
-  titleAs: Heading = 'h3',
+  titleAs,
   meta,
   caption,
   className,
@@ -70,6 +71,7 @@ export function ScheduleTable({
   renderTime,
   renderNotice,
 }: ScheduleTableProps) {
+  const Heading = useHeadingTag(titleAs);
   const mode: ScheduleLayout = layout ?? layoutFor(games);
   const dens: ScheduleDensity = density ?? densityFor(games, mode);
   const cols = columnsFor(mode, games, Boolean(renderNotice));

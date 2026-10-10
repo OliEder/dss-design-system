@@ -1,5 +1,6 @@
 import { cn } from './cn';
 import { resolvePeriod } from '../js/periods.js';
+import { useHeadingTag, type HeadingTag } from './HeadingLevel';
 
 export type PbpTeam = 'heim' | 'gast' | 'none';
 export type PbpKind = 'default' | 'score-2p' | 'score-3p' | 'ft' | 'foul' | 'timeout' | 'sub' | 'turnover';
@@ -25,8 +26,8 @@ export interface PbpEvent {
 export interface PlayByPlayProps {
   events: PbpEvent[];
   title?: string;
-  /** Überschriftenebene des Titels (Standard h3). */
-  titleAs?: 'h2' | 'h3' | 'h4';
+  /** Überschriftenebene des Titels, h2 bis h6. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor h3. */
+  titleAs?: HeadingTag;
   meta?: string;
   live?: boolean;
   dark?: boolean;
@@ -41,13 +42,14 @@ const TEAM_TEXT = { heim: 'Heim:', gast: 'Gast:' } as const;
 export function PlayByPlay({
   events,
   title = 'Play-by-Play · neueste oben',
-  titleAs: Heading = 'h3',
+  titleAs,
   meta = '',
   live = true,
   dark = false,
   periods = 4,
   className,
 }: PlayByPlayProps) {
+  const Heading = useHeadingTag(titleAs);
   return (
     <div className={cn('dss-pbp-frame', dark && 'dss-pbp-frame--dark', className)}>
       <div className="dss-pbp-head">

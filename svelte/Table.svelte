@@ -17,12 +17,14 @@
    *   .dss-tn / .dss-pos / .dss-pill-s / .dss-player (Dekoration)
    */
   import type { Snippet } from 'svelte';
+  import type { HeadingTag } from '../js/heading.js';
+  import { useHeadingTag } from './heading-context.js';
 
   type Density = 'touch' | 'default' | 'compact' | 'dense';
 
   let {
     title = '',
-    titleAs = 'h3',
+    titleAs = undefined,
     meta = '',
     live = false,
     density = 'default',
@@ -37,8 +39,8 @@
     class: klass = '',
   }: {
     title?: string;
-    /** Überschriftenebene des Titels (Standard h3). */
-    titleAs?: 'h2' | 'h3' | 'h4';
+      /** Überschriftenebene, h2 bis h6. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor h3. */
+    titleAs?: HeadingTag;
     meta?: string;
     live?: boolean;
     density?: Density;
@@ -53,12 +55,14 @@
     caption?: string;
     class?: string;
   } = $props();
+
+  const heading = useHeadingTag(() => titleAs);
 </script>
 
 <div class={`dss-frame ${dark ? 'dss-frame--dark' : ''} ${klass}`}>
   {#if title || meta || live}
     <div class="dss-frame-head">
-      {#if title}<svelte:element this={titleAs} class="dss-frame-title">{title}</svelte:element>{:else}<span></span>{/if}
+      {#if title}<svelte:element this={heading.tag} class="dss-frame-title">{title}</svelte:element>{:else}<span></span>{/if}
       <div class="dss-frame-meta">
         {#if meta}<span>{meta}</span>{/if}
         {#if live}<span class="dss-crumb"><span class="dss-crumb-dot" aria-hidden="true"></span> Live</span>{/if}

@@ -232,12 +232,12 @@ describe('TeamCard: CSS', () => {
 describe('TeamCard: Quelltext', () => {
   const sources = ['svelte/TeamCard.svelte', 'react/TeamCard.tsx'];
 
-  it.each(sources)('%s: Standardwerte (size standard, names full, logos aus, titleAs h3)', (path) => {
+  it.each(sources)('%s: Standardwerte (size standard, names full, logos aus, Ebene h3 über useHeadingTag)', (path) => {
     const source = read(path);
     expect(source).toMatch(/size = 'standard'/);
     expect(source).toMatch(/names = 'full'/);
     expect(source).toMatch(/logos = false/);
-    expect(source).toMatch(/titleAs(: Heading)? = 'h3'/);
+    expect(source).toMatch(/useHeadingTag\(/); // Standard h3 liegt in js/heading.js (resolveHeading)
   });
 
   it.each(sources)('%s: der Statistik-Block erscheint nur mit Daten (kein leerer Rahmen)', (path) => {

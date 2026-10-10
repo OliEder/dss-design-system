@@ -1,5 +1,6 @@
 import { useState, type MouseEventHandler } from 'react';
 import { cn } from './cn';
+import { useHeadingTag, type HeadingTag } from './HeadingLevel';
 
 export type PlayerCardSize = 'compact' | 'standard' | 'hero';
 export type PlayerTeam = 'heim' | 'gast';
@@ -28,8 +29,8 @@ export interface PlayerCardProps {
   statLabel?: string;
   /** Nur compact: mit onClick wird die Zeile ein Button. */
   onClick?: MouseEventHandler<HTMLButtonElement>;
-  /** Überschriftenebene des Namens in standard/hero (Standard h3). */
-  titleAs?: 'h2' | 'h3' | 'h4';
+  /** Überschriftenebene des Namens in standard/hero, h2 bis h6. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor h3. */
+  titleAs?: HeadingTag;
   /** Foto-URL: ersetzt die Trikotmarke; die Trikotnummer bleibt als Badge (hero: Porträtfläche). Leer oder bei Ladefehler: Trikotmarke. */
   photo?: string;
   /** Alternativtext des Fotos; Standard leer (dekorativ, der Name steht daneben). */
@@ -66,11 +67,12 @@ export function PlayerCard({
   stat = null,
   statLabel = '',
   onClick,
-  titleAs: Heading = 'h3',
+  titleAs,
   photo = '',
   photoAlt = '',
   className,
 }: PlayerCardProps) {
+  const Heading = useHeadingTag(titleAs);
   // Eine URL, die nicht lädt, wird gemerkt: dann erscheint wieder die Trikotmarke (kein kaputtes Bildsymbol)
   const [failedUrl, setFailedUrl] = useState('');
   const showPhoto = Boolean(photo) && photo !== failedUrl;

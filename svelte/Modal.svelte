@@ -7,6 +7,8 @@
    * css/components.css (kein eigener Scoped-Style).
    */
   import type { Snippet } from 'svelte';
+  import { levelOfTag, nextLevel, resolveHeading, type HeadingTag } from '../js/heading.js';
+  import { provideHeadingLevel } from './heading-context.js';
 
   type Severity = 'default' | 'danger' | 'warn' | 'ok' | 'info';
   type Size = 'sm' | 'md' | 'wide' | 'xwide';
@@ -14,6 +16,7 @@
   let {
     open = $bindable(false),
     title = '',
+    titleAs = undefined,
     subtitle = '',
     severity = 'default',
     size = 'md',
@@ -25,6 +28,11 @@
   }: {
     open?: boolean;
     title?: string;
+    /**
+     * Ebene des Titels, h2 bis h6 (Standard h2). Titelkomponenten im Inhalt (Table, EmptyState …) bekommen die nächste
+     * Ebene, bei h2 also h3; ein eigenes `HeadingLevel` im Inhalt oder `titleAs` an der Komponente gewinnt.
+     */
+    titleAs?: HeadingTag;
     subtitle?: string;
     severity?: Severity;
     size?: Size;
@@ -38,6 +46,8 @@
 
   const uid = $props.id();
   const titleId = `dss-modal-title-${uid}`;
+  const titleTag = $derived(resolveHeading(titleAs, 2));
+  provideHeadingLevel(() => nextLevel(levelOfTag(titleTag)));
 
   function handleClose() {
     open = false;
@@ -70,7 +80,7 @@
           </div>
         {/if}
         <div class="dss-m-head-text">
-          <h2 class="dss-m-title" id={titleId}>{title}</h2>
+          <svelte:element this={titleTag} class="dss-m-title" id={titleId}>{title}</svelte:element>
           {#if subtitle}<div class="dss-m-subtitle">{subtitle}</div>{/if}
         </div>
         {#if closable}
