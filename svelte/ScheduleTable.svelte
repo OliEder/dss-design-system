@@ -9,8 +9,8 @@
    *
    * Snippets: `time` (ersetzt die Uhrzeit) und `notice` (zusätzliche Zelle am
    * Zeilenende), jeweils mit dem Spiel als Argument. `title` und `meta` sind
-   * reine Strings; `renderLink` und `titleAs` gibt es in Svelte nicht
-   * (Überschrift immer h3, Links als einfache <a>).
+   * reine Strings; `titleAs` ('h2' | 'h3' | 'h4', Standard h3) wählt die
+   * Überschriftenebene; `renderLink` gibt es in Svelte nicht (Links als einfache <a>).
    *
    * `names`: "full" (Standard) oder "short" (Kurzname, falls vorhanden); bis 640 px Breite
    * erscheint der Kurzname automatisch (CSS). `logos`: Logo/Initialen vor dem Teamnamen;
@@ -39,6 +39,7 @@
     names = 'full',
     logos = undefined,
     title = '',
+    titleAs = 'h3',
     meta = '',
     caption = '',
     class: klass = '',
@@ -51,6 +52,7 @@
     names?: ScheduleNames;
     logos?: boolean;
     title?: string;
+    titleAs?: 'h2' | 'h3' | 'h4';
     meta?: string;
     caption?: string;
     class?: string;
@@ -191,7 +193,7 @@
 <div class="dss-frame {klass}">
   {#if title || meta}
     <div class="dss-frame-head">
-      {#if title}<h3 class="dss-frame-title">{title}</h3>{:else}<span></span>{/if}
+      {#if title}<svelte:element this={titleAs} class="dss-frame-title">{title}</svelte:element>{:else}<span></span>{/if}
       <div class="dss-frame-meta">{#if meta}<span>{meta}</span>{/if}</div>
     </div>
   {/if}
