@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Icon, type IconName } from './Icon';
 import { cn } from './cn';
+import { useHeadingTag, type HeadingTag } from './HeadingLevel';
 
 export type EmptyStateTone = 'neutral' | 'action' | 'error';
 
@@ -14,8 +15,8 @@ export interface EmptyStateProps {
   cta?: string;
   onCta?: () => void;
   actions?: ReactNode;
-  /** Überschriftenebene (Standard h3). */
-  titleAs?: 'h2' | 'h3' | 'h4';
+  /** Überschriftenebene des Titels, h2 bis h6. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor h3. */
+  titleAs?: HeadingTag;
   className?: string;
   /** Zusatz-Inhalt unter den Aktionen. */
   children?: ReactNode;
@@ -71,10 +72,11 @@ export function EmptyState({
   cta,
   onCta,
   actions,
-  titleAs: Heading = 'h3',
+  titleAs,
   className,
   children,
 }: EmptyStateProps) {
+  const Heading = useHeadingTag(titleAs);
   return (
     <div className={cn('dss-empty', `dss-empty--${tone}`, className)}>
       <div className="dss-empty-icon">{icon ? <Icon name={icon} size={28} /> : <ToneIcon tone={tone} />}</div>

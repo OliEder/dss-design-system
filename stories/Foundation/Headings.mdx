@@ -1,0 +1,177 @@
+import { Meta, Canvas, Story } from '@storybook/addon-docs/blocks';
+import * as HeadingsStories from './Headings.stories';
+import { DocTable } from '../docs/blocks/DocTable';
+import { DosDonts } from '../docs/blocks/DosDonts';
+import { FrameworkCode } from '../docs/blocks/FrameworkCode';
+import { seiteVanilla, seiteSvelte, seiteReact, relativSvelte, relativReact, modalSvelte, modalReact, hookReact, funktionenJs, tokensCss } from './Headings.code';
+import '../docs/blocks/blocks.css';
+
+<Meta of={HeadingsStories} />
+
+# Überschriften
+
+Jede Komponente mit Titel (Table, ScheduleTable, ScheduleGrid, PlayerCard, TeamCard, EmptyState, PlayByPlay, Modal) gibt eine Überschrift aus. Zwei Dinge sind getrennt: die **Ebene** (das Element `h2` bis `h6`, sie gliedert die Seite für Screenreader und Sprungmarken) und die **Größe** (das Aussehen, hängt an Klassen und Tokens). Keine Komponente gibt eine `h1` aus: die gehört der Seite der App.
+
+## Ebene ist nicht Größe
+
+Die Größe einer Komponentenüberschrift hängt an einer Klasse (`dss-frame-title`, `dss-pc-nm`, `dss-team-nm`, `dss-empty-title`, `dss-pbp-title`, `dss-m-title`), nie am Elementnamen. `h2`, `h3` und `h4` sehen deshalb gleich aus. Wer eine andere Größe will, ändert das Token (siehe unten), nicht die Ebene. Wer eine andere Ebene will, ändert die Gliederung, nicht die Größe.
+
+Dieselbe Karte als `h2` mit kleiner Schrift und als `h4` mit großer:
+
+<Canvas of={HeadingsStories.Tokens} />
+
+## Rangfolge der Ebene
+
+Eine Titelkomponente wählt ihre Ebene in dieser Reihenfolge:
+
+1. `titleAs` an der Komponente (`'h2'` bis `'h6'`),
+2. sonst die Ebene aus dem nächsten `HeadingLevel` darüber,
+3. sonst `h3`.
+
+<Canvas of={HeadingsStories.Rangfolge} />
+
+<DocTable
+  label="Welche Ebene bekommt die Überschrift?"
+  head={['Aufruf', 'Ergebnis']}
+  rows={[
+    ['Komponente allein', <code>h3</code>],
+    [<code>{'<HeadingLevel level={4}>'}</code>, <code>h4</code>],
+    [<><code>{'<HeadingLevel level={4}>'}</code> mit <code>titleAs="h2"</code></>, <code>h2</code>],
+    [<code>{'<HeadingLevel>'}</code>, 'h3: ohne Vorfahr zählt die Ausgangsebene 2, by=1 ergibt 3'],
+    [<code>{'level={9}'}</code>, 'h6: die Ebene wird auf 2 bis 6 begrenzt (die h1 bleibt der App)'],
+    [<code>titleAs="h1"</code>, 'ungültig (der Typ lässt es nicht zu); zur Laufzeit gilt die Ebene aus HeadingLevel oder h3'],
+  ]}
+/>
+
+## Größe über Tokens
+
+Die Tokens sind absichtlich nicht vorbelegt. Ohne Wert gilt je Komponente der bisherige Wert aus der Tabelle unten; so ändert sich ohne Eingriff nichts. Setzt du ein Token an einem Element (etwa an einem Container), gilt es für alle Titel darin. Komponentenspezifisch vor global: `--dss-frame-title-size` und `--dss-card-title-size` schlagen `--dss-title-size`.
+
+<DocTable
+  label="Tokens für Komponentenüberschriften"
+  head={['Token', 'Wirkt auf', 'Rückfall']}
+  rows={[
+    [<code>--dss-title-size</code>, 'Schriftgröße aller Komponentenüberschriften, auch im Modal', 'Wert je Komponente (Tabelle unten)'],
+    [<code>--dss-frame-title-size</code>, 'Table, ScheduleTable, ScheduleGrid, PlayByPlay', <code>--dss-title-size</code>],
+    [<code>--dss-card-title-size</code>, 'PlayerCard (auch hero), TeamCard (auch compact), EmptyState', <code>--dss-title-size</code>],
+    [<code>--dss-title-weight</code>, 'Schriftgewicht aller Komponentenüberschriften', 'Wert je Komponente'],
+    [<code>--dss-title-leading</code>, 'Zeilenhöhe aller Komponentenüberschriften', 'Wert je Komponente'],
+  ]}
+/>
+
+Die Vorgabewerte, im Browser gemessen (BBV, Standardschrift; DBB und die DBB-Schrift ändern nur die Schriftfamilie). Unter 640 px ändert sich keiner dieser Werte; die Tokens schalten also nichts ab. Die Zeichenabstände der Titel sind in `em` angegeben und wachsen und schrumpfen mit der Größe mit.
+
+<DocTable
+  label="Vorgabewerte der Komponentenüberschriften"
+  head={['Komponente', 'Klasse', 'Größe', 'Gewicht', 'Zeilenhöhe']}
+  rows={[
+    ['Table, ScheduleTable, ScheduleGrid', <code>.dss-frame-title</code>, '15 px (--fs-body)', '600', 'geerbt'],
+    ['PlayByPlay', <code>.dss-pbp-title</code>, '15 px (--fs-body)', '600', 'geerbt'],
+    ['PlayerCard standard', <code>.dss-pc-nm</code>, '18 px (--fs-body-lg)', '600', 'geerbt'],
+    ['PlayerCard hero', <code>.dss-pc-hero .dss-pc-nm</code>, '32 px (--fs-hero)', '700', '1,05'],
+    ['TeamCard standard', <code>.dss-team-nm</code>, '18 px (--fs-body-lg)', '600', '1,2'],
+    ['TeamCard compact', <code>.dss-team--compact .dss-team-nm</code>, '15 px (--fs-body)', '600', '1,2'],
+    ['EmptyState', <code>.dss-empty-title</code>, '18 px (--fs-body-lg)', '700', 'geerbt'],
+    ['Modal', <code>.dss-m-title</code>, '20 px (--fs-h3)', '700', 'geerbt'],
+  ]}
+/>
+
+Ein Bereich mit kleinerer Schrift für alle Titel darin:
+
+<div className="dss-doc-code-wrap">
+  <div className="dss-doc-code" tabIndex={0} role="region" aria-label="Token in einem Bereich überschreiben, CSS">
+    <span className="dss-doc-chip">CSS</span>
+    <pre>{tokensCss}</pre>
+  </div>
+</div>
+
+## HeadingLevel
+
+`HeadingLevel` gibt den Titelkomponenten im Inhalt eine Ebene vor, ohne dass jede Komponente ein `titleAs` braucht. Es wirkt nur auf Komponentenüberschriften, nicht auf eigenen Text der App, und ändert nur die Ebene, nicht die Größe.
+
+<DocTable
+  label="Props von HeadingLevel"
+  head={['Prop', 'Typ', 'Beschreibung']}
+  rows={[
+    [<code>level</code>, <code>2 | 3 | 4 | 5 | 6</code>, 'Absolute Ebene für alle Titelkomponenten darunter. Gewinnt gegen by. Werte außerhalb werden auf 2 bis 6 begrenzt.'],
+    [<code>by</code>, <code>number</code>, 'Relativ zum übergeordneten HeadingLevel (Standard 1). Ohne Vorfahr zählt die Ausgangsebene 2, by=1 ergibt also h3.'],
+    [<code>children</code>, 'Inhalt', 'Svelte: Snippet. React: Kinder.'],
+  ]}
+/>
+
+Das Beispiel unten ist eine Seite mit zwei Abschnitten: die `h1` setzt die App, jeder Abschnitt hat eine `h2`, und `HeadingLevel level={3}` macht die Titel der Komponenten darin zu `h3`. Unter dem Beispiel steht die Gliederung, aus den Überschriften gelesen.
+
+<Canvas of={HeadingsStories.Seite} />
+
+<FrameworkCode label="Seite mit zwei Abschnitten" vanilla={seiteVanilla} svelte={seiteSvelte} react={seiteReact} />
+
+### Verschachteln mit by
+
+`by` zählt vom übergeordneten `HeadingLevel` aus weiter. Ein Bereich muss so seine absolute Ebene nicht kennen, er zählt einfach eine Stufe tiefer; verschachtelte Bereiche bleiben in der Gliederung richtig:
+
+<FrameworkCode label="Relative Ebene" svelte={relativSvelte} react={relativReact} />
+
+### Modal
+
+Das Modal hat ein `titleAs` (Standard `h2`) und gibt seinem Inhalt und seinem Footer die nächste Ebene weiter: Titel `h2`, Titelkomponenten im Inhalt `h3`; bei `titleAs="h4"` bekommt der Inhalt `h5`, die Ebene wird auf `h6` begrenzt. Ein eigenes `HeadingLevel` im Inhalt oder ein `titleAs` an der Komponente gewinnt. Ein `HeadingLevel` um das Modal ändert den Titel des Modals nicht. In React gilt das auch im Radix-Portal (der Kontext bleibt erhalten). Das Portal hängt das Modal aber an `body`: ein Größen-Token, das nur an einem Container gesetzt ist (etwa `--dss-title-size` an einer Seitenleiste), erreicht den Titel eines React-Modals deshalb nicht; die Svelte-Fassung rendert inline und erbt es. Setze das Token für Modals am `:root` oder am `body`. Das Modal ist die einzige Komponente, die selbst Inhalt mit Titelkomponenten aufnimmt und die Ebene weitergibt; die Card tut es nicht, dort setzt du `HeadingLevel` oder `titleAs`.
+
+<FrameworkCode label="Modal mit Tabelle" svelte={modalSvelte} react={modalReact} />
+
+### Vanilla-HTML
+
+Ohne Svelte oder React gibt es keinen Provider: Du schreibst das Element selbst ins Markup (`h2` bis `h6`) und behältst die Klasse (`dss-frame-title`, `dss-pc-nm` …). Der Standard der Komponenten ist `h3`; das erste Beispiel oben zeigt das Vanilla-Markup. Die Größe ändert sich dadurch nie.
+
+### Eigene Überschrift in React
+
+`useHeadingLevel()` liefert die Ebene (2 bis 6) an der Stelle im Baum; ohne `HeadingLevel` darüber `3`. Mit `headingTag()` aus `@bbv/dss-design-system/heading.js` wird daraus das Element:
+
+<div className="dss-doc-code-wrap">
+  <div className="dss-doc-code" tabIndex={0} role="region" aria-label="Eigene Überschrift mit useHeadingLevel, React">
+    <span className="dss-doc-chip">React</span>
+    <pre>{hookReact}</pre>
+  </div>
+</div>
+
+### Reine Funktionen
+
+`@bbv/dss-design-system/heading.js` ist ohne Framework nutzbar. Zahlen außerhalb von 2 bis 6 werden begrenzt, alles ohne Ganzzahl (`NaN`, `3.5`, `null`, `undefined`) ergibt den Standard 3; eine Zeichenkette aus Ziffern (`'4'`) gilt wie die Zahl, andere Zeichenketten (`'h4'`) nicht. Das hilft in Svelte-Vorlagen, wo `level="4"` eine Zeichenkette ist.
+
+<div className="dss-doc-code-wrap">
+  <div className="dss-doc-code" tabIndex={0} role="region" aria-label="Reine Funktionen aus heading.js, JavaScript">
+    <span className="dss-doc-chip">JavaScript</span>
+    <pre>{funktionenJs}</pre>
+  </div>
+</div>
+
+## Dos und Don'ts
+
+<DosDonts
+  pairs={[
+    {
+      title: 'Ebenen nicht überspringen',
+      doText: 'Unter einer h2 folgt die h3. So bleibt die Gliederung lückenlos, Sprungmarken und Screenreader finden jeden Abschnitt.',
+      dontText: 'Von der h2 direkt zur h5: die Ebenen dazwischen fehlen, die Gliederung hat ein Loch (der Prüfer „heading-order“ meldet es).',
+      good: <Story of={HeadingsStories.DoEbenen} inline />,
+      bad: <Story of={HeadingsStories.DontEbenen} inline />,
+    },
+    {
+      title: 'Ebene nach Gliederung wählen, Größe per Token',
+      doText: 'Die Karten sind Unterpunkte von „Kader“ (h3). Sollen sie größer wirken, setzt du --dss-card-title-size.',
+      dontText: 'Eine h2 pro Karte, „damit sie größer wirkt“: Die Größe ändert sich dadurch nicht, aber die Karten stehen auf einer Stufe mit „Kader“.',
+      good: <Story of={HeadingsStories.DoGroesse} inline />,
+      bad: <Story of={HeadingsStories.DontGroesse} inline />,
+    },
+    {
+      title: 'Pro Seite genau eine h1, sie gehört der App',
+      doText: 'Die App setzt die h1 für die Seite und gliedert mit h2 darunter. Komponenten starten bei h2 und geben nie eine h1 aus.',
+      dontText: 'Jeder Abschnitt mit einer eigenen h1: die Seite hat dann mehrere gleichrangige Hauptüberschriften und keine Gliederung.',
+      good: <Story of={HeadingsStories.DoH1} inline />,
+      bad: <Story of={HeadingsStories.DontH1} inline />,
+    },
+  ]}
+/>
+
+## Auf den Komponentenseiten
+
+Jede Komponentenseite nennt das `titleAs` in ihrer Props-Tabelle:
+[Table](?path=/docs/components-table--docs), [Spielplan](?path=/docs/components-spielplan--docs), [Card Library](?path=/docs/components-card-library--docs) (PlayerCard), [TeamCard](?path=/docs/components-teamcard--docs), [EmptyState](?path=/docs/components-emptystate--docs), [PlayByPlay](?path=/docs/components-playbyplay--docs) und [Modal](?path=/docs/components-modal--docs). Die Schriftgrößen der Textstile stehen auf der Seite [Typography](?path=/docs/foundation-typography--docs).

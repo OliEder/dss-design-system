@@ -14,6 +14,8 @@
    * `names`/`logos` wie bei MatchCard (Kurzname bis 640 px automatisch; Logos der Gegner in den Spielzeilen).
    */
   import { initials, shortName } from '../js/schedule.js';
+  import type { HeadingTag } from '../js/heading.js';
+  import { useHeadingTag } from './heading-context.js';
   import { lastResult, opponentPrefix, rankInfo, recordInfo, squadText, statEntries } from '../js/team.js';
   import type { TeamLast, TeamNext, TeamRecord, TeamRef, TeamSquad, TeamStats } from '../js/team.js';
 
@@ -39,7 +41,7 @@
     size = 'standard',
     href = undefined,
     onclick = undefined,
-    titleAs = 'h3',
+    titleAs = undefined,
   }: {
     name: string;
     short?: string;
@@ -60,8 +62,11 @@
     size?: 'standard' | 'compact';
     href?: string;
     onclick?: () => void;
-    titleAs?: 'h2' | 'h3' | 'h4';
+    /** Überschriftenebene, h2 bis h6. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor h3. */
+    titleAs?: HeadingTag;
   } = $props();
+
+  const heading = useHeadingTag(() => titleAs);
 
   const clickable = $derived(Boolean(href) || Boolean(onclick));
   const rec = $derived(recordInfo(record));
@@ -129,7 +134,7 @@
     <div class="dss-team-head">
       {@render logoBadge({ name, logo }, 'dss-team-logo--lg')}
       <div class="dss-team-who">
-        <svelte:element this={titleAs} class="dss-team-nm">{@render nameBlock()}</svelte:element>
+        <svelte:element this={heading.tag} class="dss-team-nm">{@render nameBlock()}</svelte:element>
         {@render leagueLine()}
       </div>
     </div>

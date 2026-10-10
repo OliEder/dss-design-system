@@ -402,7 +402,7 @@
 .dss-m-head-icon--ok { background: var(--dss-chip-ok-bg); color: var(--dss-chip-ok-fg); }
 .dss-m-head-icon--info { background: var(--dss-chip-sky-bg); color: var(--dss-chip-sky-fg); }
 .dss-m-head-text { flex: 1; min-width: 0; }
-.dss-m-title { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-h3); color: var(--dss-fg); }
+.dss-m-title { margin: 0; font-family: var(--font-display); font-weight: var(--dss-title-weight, 700); font-size: var(--dss-title-size, var(--fs-h3)); line-height: var(--dss-title-leading, inherit); color: var(--dss-fg); }
 .dss-m-subtitle {
   margin: 4px 0 0; font-family: var(--font-mono); font-size: var(--fs-caption); color: var(--dss-mute);
   text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600;
@@ -483,7 +483,7 @@
   border-bottom: 1px solid var(--dss-line); background: var(--dss-hover-bg);
 }
 .dss-frame--dark .dss-frame-head { background: var(--n-950); border-color: var(--n-800); }
-.dss-frame-title { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body); color: inherit; letter-spacing: -0.005em; }
+.dss-frame-title { margin: 0; font-family: var(--font-display); font-weight: var(--dss-title-weight, 600); font-size: var(--dss-frame-title-size, var(--dss-title-size, var(--fs-body))); line-height: var(--dss-title-leading, inherit); color: inherit; letter-spacing: -0.005em; }
 .dss-frame-meta {
   display: flex; gap: 14px; align-items: center; font-family: var(--font-mono); font-size: var(--fs-caption);
   color: var(--dss-mute); letter-spacing: 0.06em; text-transform: uppercase;
@@ -620,7 +620,7 @@
 .dss-empty--neutral .dss-empty-icon { background: var(--dss-surface-2); color: var(--dss-mute); }
 .dss-empty--action .dss-empty-icon { background: var(--dss-surface); color: var(--dss-chip-amber-fg); }
 .dss-empty--error .dss-empty-icon { background: var(--dss-surface); color: var(--dss-chip-err-fg); }
-.dss-empty-title { margin: 0 0 6px; font-family: var(--font-display); font-weight: 700; font-size: var(--fs-body-lg); color: var(--dss-fg); letter-spacing: -0.01em; }
+.dss-empty-title { margin: 0 0 6px; font-family: var(--font-display); font-weight: var(--dss-title-weight, 700); font-size: var(--dss-card-title-size, var(--dss-title-size, var(--fs-body-lg))); line-height: var(--dss-title-leading, inherit); color: var(--dss-fg); letter-spacing: -0.01em; }
 .dss-empty-body { margin: 0 0 16px; max-width: 360px; font-size: var(--fs-body-md); line-height: 1.55; color: var(--dss-fg-soft); text-wrap: pretty; }
 .dss-empty-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .dss-empty-extra { margin-top: 12px; font-size: var(--fs-body-sm); color: var(--dss-mute); }
@@ -894,7 +894,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 }
 .dss-pc-head { display: grid; grid-template-columns: 64px 1fr; gap: 16px; align-items: center; padding: 22px; border-bottom: 1px solid var(--dss-line); }
 .dss-pc-card .dss-pc-who { gap: 4px; }
-.dss-pc-nm { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body-lg); letter-spacing: -0.01em; color: var(--dss-fg); }
+.dss-pc-nm { margin: 0; font-family: var(--font-display); font-weight: var(--dss-title-weight, 600); font-size: var(--dss-card-title-size, var(--dss-title-size, var(--fs-body-lg))); line-height: var(--dss-title-leading, inherit); letter-spacing: -0.01em; color: var(--dss-fg); }
 .dss-pc-role {
   display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-family: var(--font-mono); font-size: var(--fs-caption);
   color: var(--dss-mute); letter-spacing: 0.06em; text-transform: uppercase;
@@ -915,7 +915,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 }
 .dss-pc-hero-left, .dss-pc-hero-right { position: relative; z-index: 1; }
 .dss-pc-hero-right { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
-.dss-pc-hero .dss-pc-nm { font-weight: 700; font-size: var(--fs-hero); letter-spacing: -0.025em; line-height: 1.05; color: white; }
+.dss-pc-hero .dss-pc-nm { font-weight: var(--dss-title-weight, 700); font-size: var(--dss-card-title-size, var(--dss-title-size, var(--fs-hero))); letter-spacing: -0.025em; line-height: var(--dss-title-leading, 1.05); color: white; }
 .dss-pc-hero .dss-pc-role { gap: 10px; font-size: var(--fs-caption); color: rgba(255, 255, 255, 0.65); }
 .dss-pc-hero .dss-pc-cap { background: var(--signal-100); color: var(--signal-800); }
 /* PlayerCard behält die etwas größere Positionsmarke (Table nutzt die kompakte Basis) */
@@ -970,7 +970,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
   border-bottom: 1px solid var(--dss-line); background: var(--dss-hover-bg);
 }
 .dss-pbp-frame--dark .dss-pbp-head { background: var(--n-950); border-color: var(--n-800); }
-.dss-pbp-title { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body); color: inherit; letter-spacing: -0.005em; }
+.dss-pbp-title { margin: 0; font-family: var(--font-display); font-weight: var(--dss-title-weight, 600); font-size: var(--dss-frame-title-size, var(--dss-title-size, var(--fs-body))); line-height: var(--dss-title-leading, inherit); color: inherit; letter-spacing: -0.005em; }
 .dss-pbp-meta {
   display: flex; gap: 14px; align-items: center; font-family: var(--font-mono); font-size: var(--fs-caption);
   color: var(--dss-mute); letter-spacing: 0.06em; text-transform: uppercase;
@@ -1337,7 +1337,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 
 .dss-team-head { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 14px; align-items: center; padding: 18px 20px; }
 .dss-team-who { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.dss-team-nm { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: var(--fs-body-lg); letter-spacing: -0.01em; line-height: 1.2; color: var(--dss-fg); overflow-wrap: break-word; }
+.dss-team-nm { margin: 0; font-family: var(--font-display); font-weight: var(--dss-title-weight, 600); font-size: var(--dss-card-title-size, var(--dss-title-size, var(--fs-body-lg))); letter-spacing: -0.01em; line-height: var(--dss-title-leading, 1.2); color: var(--dss-fg); overflow-wrap: break-word; }
 .dss-team-sub {
   display: flex; flex-wrap: wrap; gap: 4px 10px; font-family: var(--font-mono); font-size: var(--fs-caption); letter-spacing: 0.06em;
   text-transform: uppercase; color: var(--dss-mute);
@@ -1365,7 +1365,7 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 
 .dss-team--compact { display: grid; grid-template-columns: 32px minmax(0, 1fr) auto; gap: 14px; align-items: center; padding: 12px 16px; border-radius: 12px; }
 .dss-team--compact .dss-team-who { gap: 2px; }
-.dss-team--compact .dss-team-nm { font-family: var(--font-body); font-weight: 600; font-size: var(--fs-body); letter-spacing: -0.005em; }
+.dss-team--compact .dss-team-nm { font-family: var(--font-body); font-weight: var(--dss-title-weight, 600); font-size: var(--dss-card-title-size, var(--dss-title-size, var(--fs-body))); letter-spacing: -0.005em; line-height: var(--dss-title-leading, 1.2); }
 .dss-team-end { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
 .dss-team-rec { font-family: var(--font-mono); font-weight: 700; font-size: var(--fs-body-md); color: var(--dss-fg); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .dss-team-rank { font-family: var(--font-mono); font-size: var(--fs-caption); letter-spacing: 0.06em; text-transform: uppercase; color: var(--dss-mute); white-space: nowrap; }

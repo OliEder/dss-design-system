@@ -9,7 +9,7 @@
    *
    * Snippets: `time` (ersetzt die Uhrzeit) und `notice` (zusätzliche Zelle am
    * Zeilenende), jeweils mit dem Spiel als Argument. `title` und `meta` sind
-   * reine Strings; `titleAs` ('h2' | 'h3' | 'h4', Standard h3) wählt die
+   * reine Strings; `titleAs` ('h2' bis 'h6', Standard h3 bzw. Ebene aus HeadingLevel) wählt die
    * Überschriftenebene; `renderLink` gibt es in Svelte nicht (Links als einfache <a>).
    *
    * `names`: "full" (Standard) oder "short" (Kurzname, falls vorhanden); bis 640 px Breite
@@ -17,6 +17,8 @@
    * Standard aus, im Layout `opponent` an (wie bisher), solange nicht ausdrücklich `false`.
    */
   import type { Snippet } from 'svelte';
+  import type { HeadingTag } from '../js/heading.js';
+  import { useHeadingTag } from './heading-context.js';
   import {
     ariaForResult,
     columnsFor,
@@ -39,7 +41,7 @@
     names = 'full',
     logos = undefined,
     title = '',
-    titleAs = 'h3',
+    titleAs = undefined,
     meta = '',
     caption = '',
     class: klass = '',
@@ -52,13 +54,16 @@
     names?: ScheduleNames;
     logos?: boolean;
     title?: string;
-    titleAs?: 'h2' | 'h3' | 'h4';
+    /** Überschriftenebene, h2 bis h6. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor h3. */
+    titleAs?: HeadingTag;
     meta?: string;
     caption?: string;
     class?: string;
     time?: Snippet<[ScheduleGame]>;
     notice?: Snippet<[ScheduleGame]>;
   } = $props();
+
+  const heading = useHeadingTag(() => titleAs);
 
   const mode = $derived<ScheduleLayout>(layout ?? layoutFor(games));
   const dens = $derived<ScheduleDensity>(density ?? densityFor(games, mode));
@@ -193,7 +198,7 @@
 <div class="dss-frame {klass}">
   {#if title || meta}
     <div class="dss-frame-head">
-      {#if title}<svelte:element this={titleAs} class="dss-frame-title">{title}</svelte:element>{:else}<span></span>{/if}
+      {#if title}<svelte:element this={heading.tag} class="dss-frame-title">{title}</svelte:element>{:else}<span></span>{/if}
       <div class="dss-frame-meta">{#if meta}<span>{meta}</span>{/if}</div>
     </div>
   {/if}

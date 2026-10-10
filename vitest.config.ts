@@ -1,6 +1,10 @@
 import { defineConfig } from 'vitest/config';
+import { svelte } from '@sveltejs/vite-plugin-svelte';
 
 export default defineConfig({
+  plugins: [svelte({ configFile: new URL('./svelte.config.js', import.meta.url).pathname })],
+  // Svelte-Komponenten im Browser-Modus (mount) unter jsdom testen
+  resolve: { conditions: ['browser'] },
   esbuild: { jsx: 'automatic' },
   test: {
     environment: 'jsdom',

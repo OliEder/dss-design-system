@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { cn } from './cn';
+import { useHeadingTag, type HeadingTag } from './HeadingLevel';
 
 export type TableDensity = 'touch' | 'default' | 'compact' | 'dense';
 
@@ -15,8 +16,8 @@ export interface TableColumn {
 
 export interface TableProps {
   title?: ReactNode;
-  /** Überschriftenebene des Titels (Standard h3). */
-  titleAs?: 'h2' | 'h3' | 'h4';
+  /** Überschriftenebene des Titels, h2 bis h6. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor h3. */
+  titleAs?: HeadingTag;
   meta?: ReactNode;
   live?: boolean;
   density?: TableDensity;
@@ -39,7 +40,7 @@ const ARIA_SORT = { asc: 'ascending', desc: 'descending' } as const;
 /** Datentabelle im DSS-Rahmen (Titelzeile optional). Zellen liefert die Anwendung als `<tr>`-Kinder. */
 export function Table({
   title,
-  titleAs: Heading = 'h3',
+  titleAs,
   meta,
   live = false,
   density = 'default',
@@ -52,6 +53,7 @@ export function Table({
   caption,
   className,
 }: TableProps) {
+  const Heading = useHeadingTag(titleAs);
   const hasHead = Boolean(title || meta || live);
   return (
     <div className={cn('dss-frame', dark && 'dss-frame--dark', className)}>

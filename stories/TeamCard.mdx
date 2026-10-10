@@ -17,7 +17,7 @@ import { vanilla, svelte, react } from './TeamCard.code';
 
 Die Karte zeigt eine Mannschaft auf einen Blick. Alles außer dem Namen (`name`) ist optional; **was fehlt, erscheint nicht**: kein leerer Rahmen, kein Strich als Platzhalter.
 
-- **Kopf:** Logo (48 px; ohne `logo` die Initialen im Kreis), Name als Überschrift (`h3`, mit `titleAs` wählbar), Liga (`league`, mit `leagueHref` als Link) und Saison (`season`, z. B. „2026/27“).
+- **Kopf:** Logo (48 px; ohne `logo` die Initialen im Kreis), Name als Überschrift (`h3`, mit `titleAs` oder einem umgebenden `HeadingLevel` wählbar, `h2` bis `h6`), Liga (`league`, mit `leagueHref` als Link) und Saison (`season`, z. B. „2026/27“).
 - **Bilanz und Platz:** als Kennzahlen: `record` (`{ w, l, d? }`) als „12–3“ (S–N) bzw. „5–1–2“ (S–U–N), `rank` mit `rankOf` als „Platz von 12“, `points`. Screenreader hören „Bilanz: 12 Siege, 3 Niederlagen“ und „Tabellenplatz 3 von 12“.
 - **Nächstes und letztes Spiel:** zwei Zeilen im Stil des Spielplans (`at`: „vs.“ bei `heim`, „@“ bei `gast`, vor dem Gegner). Das letzte Spiel zeigt das Ergebnis mit S/N/U-Chip, berechnet wie im Spielplan; Screenreader hören „Eigene 92, Gegner 79, Sieg“, und vor dem Gegner „Heimspiel gegen“ bzw. „Auswärtsspiel bei“.
 - **Kader:** `squad` als „14 Spieler · 3 Trainer“, ohne Namen und Fotos.

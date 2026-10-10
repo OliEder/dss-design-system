@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { HeadingTag } from '../js/heading.js';
+  import { useHeadingTag } from './heading-context.js';
   /**
    * DSS PlayerCard · Svelte 5
    * --------------------------------------------------------------
@@ -30,7 +32,7 @@
     stat = null,
     statLabel = '',
     onclick = undefined,
-    titleAs = 'h3',
+    titleAs = undefined,
     photo = '',
     photoAlt = '',
   }: {
@@ -47,10 +49,13 @@
     stat?: string | number | null;
     statLabel?: string;
     onclick?: () => void;
-    titleAs?: 'h2' | 'h3' | 'h4';
+    /** Überschriftenebene, h2 bis h6. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor h3. */
+    titleAs?: HeadingTag;
     photo?: string;
     photoAlt?: string;
   } = $props();
+
+  const heading = useHeadingTag(() => titleAs);
 
   const posClass = $derived(position ? `dss-pos ${position.toLowerCase()}` : '');
 
@@ -126,7 +131,7 @@
         <span class={`dss-tn ${team} large ${captain ? 'captain' : ''}`}>{jersey}</span>
       {/if}
       <div class="dss-pc-who">
-        <svelte:element this={titleAs} class="dss-pc-nm">{name}</svelte:element>
+        <svelte:element this={heading.tag} class="dss-pc-nm">{name}</svelte:element>
         {@render roleLine()}
       </div>
     </div>
@@ -144,7 +149,7 @@
       {/if}
     </div>
     <div class="dss-pc-hero-right">
-      <svelte:element this={titleAs} class="dss-pc-nm">{name}</svelte:element>
+      <svelte:element this={heading.tag} class="dss-pc-nm">{name}</svelte:element>
       {@render roleLine()}
       {@render vitalsGrid()}
     </div>

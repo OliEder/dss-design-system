@@ -17,6 +17,8 @@
 
 <script lang="ts">
   import { resolvePeriod } from '../js/periods.js';
+  import type { HeadingTag } from '../js/heading.js';
+  import { useHeadingTag } from './heading-context.js';
   /**
    * DSS PlayByPlay · Svelte 5
    * --------------------------------------------------------------
@@ -31,7 +33,7 @@
    */
   let {
     title = 'Play-by-Play · neueste oben',
-    titleAs = 'h3',
+    titleAs = undefined,
     meta = '',
     live = true,
     dark = false,
@@ -39,7 +41,8 @@
     events,
   }: {
     title?: string;
-    titleAs?: 'h2' | 'h3' | 'h4';
+    /** Überschriftenebene, h2 bis h6. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor h3. */
+    titleAs?: HeadingTag;
     meta?: string;
     live?: boolean;
     dark?: boolean;
@@ -47,12 +50,14 @@
     events: PbpEvent[];
   } = $props();
 
+  const heading = useHeadingTag(() => titleAs);
+
   const teamText = { heim: 'Heim:', gast: 'Gast:' } as const;
 </script>
 
 <div class={`dss-pbp-frame ${dark ? 'dss-pbp-frame--dark' : ''}`}>
   <div class="dss-pbp-head">
-    <svelte:element this={titleAs} class="dss-pbp-title">{title}</svelte:element>
+    <svelte:element this={heading.tag} class="dss-pbp-title">{title}</svelte:element>
     <div class="dss-pbp-meta">
       {#if meta}<span>{meta}</span>{/if}
       {#if live}<span class="dss-pbp-live"><span class="dss-pbp-dot" aria-hidden="true"></span> Live</span>{/if}

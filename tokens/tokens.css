@@ -359,6 +359,16 @@
   --fs-h2-sm:      24px;
 }
 
+/* Größe der Komponentenüberschriften (Table, ScheduleTable, ScheduleGrid, PlayByPlay, PlayerCard, TeamCard, EmptyState, Modal).
+   Sie hängt an Klassen, nie am Elementnamen (h2 bis h6 sehen gleich aus). Die Tokens sind absichtlich NICHT vorbelegt:
+   Ohne Wert gilt je Komponente der bisherige Wert (Rahmen --fs-body, Karten --fs-body-lg, Modal --fs-h3). Wer sie
+   in einem Bereich setzt, ändert alle Titel darin; die Reihenfolge ist komponentenspezifisch vor global:
+     --dss-frame-title-size   Table, ScheduleTable, ScheduleGrid, PlayByPlay   (sonst --dss-title-size)
+     --dss-card-title-size    PlayerCard, TeamCard, EmptyState                 (sonst --dss-title-size)
+     --dss-title-size         alle Komponentenüberschriften inkl. Modal
+     --dss-title-weight       Schriftgewicht aller Komponentenüberschriften
+     --dss-title-leading      Zeilenhöhe aller Komponentenüberschriften */
+
 /* ────────────────────────────────────────────────────────────────
    Typografie · unabhängig von der Marke (data-type auf <html>)
    Standard:  Sora (Display/Heading) · Manrope (Body) · JetBrains Mono

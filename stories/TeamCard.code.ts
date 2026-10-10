@@ -101,7 +101,7 @@ export const svelte = `<script>
 <!-- Liste: size="compact", Kurzname und Logo -->
 <TeamCard size="compact" name="TSV Nordhain 1920" short="Nordhain" logo="/logos/nordhain.svg" league="Bayernliga Süd" record={{ w: 12, l: 3 }} rank={3} href="/teams/nordhain" />
 
-<!-- names="short": Kurzname (bis 640 px automatisch); logos: Logo/Initialen der Gegner; titleAs: 'h2' | 'h3' | 'h4' -->
+<!-- names="short": Kurzname (bis 640 px automatisch); logos: Logo/Initialen der Gegner; titleAs: 'h2' bis 'h6' -->
 <TeamCard {...nordhain} names="short" logos titleAs="h2" />`;
 
 export const react = `import { TeamCard, type TeamCardProps } from '@bbv/dss-design-system/react';
@@ -133,5 +133,5 @@ const nordhain: TeamCardProps = {
 {/* Liste: size="compact", Kurzname und Logo */}
 <TeamCard size="compact" name="TSV Nordhain 1920" short="Nordhain" logo="/logos/nordhain.svg" league="Bayernliga Süd" record={{ w: 12, l: 3 }} rank={3} href="/teams/nordhain" />
 
-{/* names="short": Kurzname (bis 640 px automatisch); logos: Logo/Initialen der Gegner; titleAs: 'h2' | 'h3' | 'h4' */}
+{/* names="short": Kurzname (bis 640 px automatisch); logos: Logo/Initialen der Gegner; titleAs: 'h2' bis 'h6' */}
 <TeamCard {...nordhain} names="short" logos titleAs="h2" />`;

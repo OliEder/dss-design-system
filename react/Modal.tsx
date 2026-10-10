@@ -2,6 +2,8 @@ import * as Dialog from '@radix-ui/react-dialog';
 import type { ReactNode } from 'react';
 import { SeverityIcon, type Severity } from './SeverityIcon';
 import { cn } from './cn';
+import { HeadingLevelContext, type HeadingTag } from './HeadingLevel';
+import { levelOfTag, nextLevel, resolveHeading } from '../js/heading.js';
 
 export type ModalSeverity = 'default' | Severity;
 export type ModalSize = 'sm' | 'md' | 'wide' | 'xwide';
@@ -10,6 +12,11 @@ export interface ModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;
+  /**
+   * Ebene des Titels, h2 bis h6 (Standard h2). Titelkomponenten im Inhalt (Table, EmptyState …) bekommen die nächste
+   * Ebene, bei h2 also h3; ein eigenes `HeadingLevel` im Inhalt oder `titleAs` an der Komponente gewinnt.
+   */
+  titleAs?: HeadingTag;
   subtitle?: string;
   severity?: ModalSeverity;
   size?: ModalSize;
@@ -27,6 +34,7 @@ export function Modal({
   open,
   onOpenChange,
   title,
+  titleAs = 'h2',
   subtitle,
   severity = 'default',
   size = 'md',
@@ -38,6 +46,8 @@ export function Modal({
   children,
 }: ModalProps) {
   const blockOutsideDismiss = !closable || !dismissOnBackdrop;
+  const TitleTag = resolveHeading(titleAs, 2);
+  const contentLevel = nextLevel(levelOfTag(TitleTag));
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
@@ -61,7 +71,9 @@ export function Modal({
                 </div>
               ) : null}
               <div className="dss-m-head-text">
-                <Dialog.Title className="dss-m-title">{title}</Dialog.Title>
+                <Dialog.Title asChild>
+                  <TitleTag className="dss-m-title">{title}</TitleTag>
+                </Dialog.Title>
                 {subtitle ? <div className="dss-m-subtitle">{subtitle}</div> : null}
               </div>
               {closable ? (
@@ -72,8 +84,10 @@ export function Modal({
                 </Dialog.Close>
               ) : null}
             </div>
-            <div className="dss-m-body">{children}</div>
-            {footer ? <div className="dss-m-footer">{footer}</div> : null}
+            <HeadingLevelContext.Provider value={contentLevel}>
+              <div className="dss-m-body">{children}</div>
+              {footer ? <div className="dss-m-footer">{footer}</div> : null}
+            </HeadingLevelContext.Provider>
           </Dialog.Content>
         </div>
       </Dialog.Portal>

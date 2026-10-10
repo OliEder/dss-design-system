@@ -6,13 +6,15 @@
    * (empfohlen: höchstens drei). Nutzt ausschließlich die Klassen aus
    * css/components.css (kein eigener Scoped-Style); gleiche Struktur wie
    * die React-Fassung. Snippet `notice`: zusätzlicher Inhalt in der Spielzelle.
-   * `title` und `meta` sind reine Strings; `titleAs` ('h2' | 'h3' | 'h4', Standard h3) wählt die
+   * `title` und `meta` sind reine Strings; `titleAs` ('h2' bis 'h6', Standard h3 bzw. Ebene aus HeadingLevel) wählt die
    * Überschriftenebene; `renderLink` gibt es in Svelte nicht (Links als einfache <a>).
    *
    * `names`: "full" (Standard) oder "short" (Kurzname, falls vorhanden); bis 640 px Breite
    * erscheint der Kurzname automatisch (CSS). `logos`: Logo/Initialen vor dem Teamnamen (Standard aus).
    */
   import type { Snippet } from 'svelte';
+  import type { HeadingTag } from '../js/heading.js';
+  import { useHeadingTag } from './heading-context.js';
   import { ariaForResult, buildGrid, hasScore, initials, shortName, stateLabel, winnerSide } from '../js/schedule.js';
   import type { ScheduleBreak, ScheduleDensity, ScheduleGame, ScheduleGridColumn, ScheduleNames, ScheduleTeam } from '../js/schedule.js';
 
@@ -26,7 +28,7 @@
     names = 'full',
     logos = false,
     title = '',
-    titleAs = 'h3',
+    titleAs = undefined,
     meta = '',
     caption = '',
     class: klass = '',
@@ -41,12 +43,15 @@
     names?: ScheduleNames;
     logos?: boolean;
     title?: string;
-    titleAs?: 'h2' | 'h3' | 'h4';
+    /** Überschriftenebene, h2 bis h6. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor h3. */
+    titleAs?: HeadingTag;
     meta?: string;
     caption?: string;
     class?: string;
     notice?: Snippet<[ScheduleGame]>;
   } = $props();
+
+  const heading = useHeadingTag(() => titleAs);
 
   const rows = $derived(buildGrid({ games, columns, slots, breaks }));
 </script>
@@ -114,7 +119,7 @@
 <div class="dss-frame {klass}">
   {#if title || meta}
     <div class="dss-frame-head">
-      {#if title}<svelte:element this={titleAs} class="dss-frame-title">{title}</svelte:element>{:else}<span></span>{/if}
+      {#if title}<svelte:element this={heading.tag} class="dss-frame-title">{title}</svelte:element>{:else}<span></span>{/if}
       <div class="dss-frame-meta">{#if meta}<span>{meta}</span>{/if}</div>
     </div>
   {/if}

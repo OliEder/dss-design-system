@@ -3,6 +3,7 @@ import { cn } from './cn';
 import { initials, shortName } from '../js/schedule.js';
 import { lastResult, opponentPrefix, rankInfo, recordInfo, squadText, statEntries } from '../js/team.js';
 import type { TeamLast, TeamNext, TeamRecord, TeamRef, TeamSquad, TeamStats } from '../js/team.js';
+import { useHeadingTag, type HeadingTag } from './HeadingLevel';
 
 export type { TeamLast, TeamNext, TeamRecord, TeamRef, TeamSquad, TeamStats };
 export type TeamCardSize = 'standard' | 'compact';
@@ -40,8 +41,8 @@ export interface TeamCardProps {
   /** Mit `href` ist die ganze Karte ein Link (ein zusätzlicher `onClick` hängt am Link, z. B. für einen SPA-Router), mit `onClick` allein ein Button, sonst nicht klickbar. */
   href?: string;
   onClick?: MouseEventHandler<HTMLElement>;
-  /** Überschriftenebene des Namens in `standard` (Standard h3). */
-  titleAs?: 'h2' | 'h3' | 'h4';
+  /** Überschriftenebene des Namens in `standard`, h2 bis h6. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor h3. */
+  titleAs?: HeadingTag;
   className?: string;
 }
 
@@ -104,9 +105,10 @@ export function TeamCard({
   size = 'standard',
   href,
   onClick,
-  titleAs: Heading = 'h3',
+  titleAs,
   className,
 }: TeamCardProps) {
+  const Heading = useHeadingTag(titleAs);
   const clickable = Boolean(href) || Boolean(onClick);
   const rec = recordInfo(record);
   const pos = rankInfo(rank, rankOf);

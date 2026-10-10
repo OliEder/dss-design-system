@@ -12,6 +12,8 @@
    * Nutzt nur Klassen aus css/components.css.
    */
   import type { Snippet } from 'svelte';
+  import type { HeadingTag } from '../js/heading.js';
+  import { useHeadingTag } from './heading-context.js';
 
   let {
     tone = 'neutral',
@@ -20,7 +22,7 @@
     icon = '',
     cta = '',
     onclick,
-    titleAs = 'h3',
+    titleAs = undefined,
     actions,
     children,
   }: {
@@ -30,10 +32,13 @@
     icon?: string; // Sprite-ID ohne #
     cta?: string;
     onclick?: () => void;
-    titleAs?: 'h2' | 'h3' | 'h4';
+    /** Überschriftenebene, h2 bis h6. Rangfolge: `titleAs` vor der Ebene aus `HeadingLevel` vor h3. */
+    titleAs?: HeadingTag;
     actions?: Snippet;
     children?: Snippet;
   } = $props();
+
+  const heading = useHeadingTag(() => titleAs);
 
   const ctaVariant = $derived(tone === 'error' ? 'danger' : tone === 'action' ? 'amber' : 'primary');
 </script>
@@ -52,7 +57,7 @@
       <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 10h16"/></svg>
     {/if}
   </div>
-  <svelte:element this={titleAs} class="dss-empty-title">{title}</svelte:element>
+  <svelte:element this={heading.tag} class="dss-empty-title">{title}</svelte:element>
   {#if body}<p class="dss-empty-body">{body}</p>{/if}
   {#if cta || actions}
     <div class="dss-empty-actions">

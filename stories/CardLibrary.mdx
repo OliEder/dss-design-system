@@ -68,7 +68,7 @@ Die Vorschau ist eine eingebettete Seite mit fester Breite von 390 px, ohne dass
 
 <Canvas of={CardLibraryStories.Spielerkarten} />
 
-Nur die Zeile `compact` ist klickbar (mit `onclick`, React: `onClick`, wird sie zum Button). Standard und Hero zeigen den Namen als Überschrift, standardmäßig `h3`; mit `titleAs` wählst du die Ebene, die in deine Gliederung passt.
+Nur die Zeile `compact` ist klickbar (mit `onclick`, React: `onClick`, wird sie zum Button). Standard und Hero zeigen den Namen als Überschrift, standardmäßig `h3`; mit `titleAs` (`h2` bis `h6`) oder einem umgebenden `HeadingLevel` wählst du die Ebene, die in deine Gliederung passt (`titleAs` gewinnt vor `HeadingLevel`). Die Größe ändert das nie; sie hängt am Token `--dss-card-title-size` (siehe [Headings](?path=/docs/foundation-headings--docs)).
 
 ### Mit Foto
 

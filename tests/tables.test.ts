@@ -93,7 +93,7 @@ describe('Tabelle: Fokus', () => {
   it('Svelte-Table hat caption und titleAs wie React', () => {
     const svelte = read('../svelte/Table.svelte');
     expect(svelte).toMatch(/caption = ''/);
-    expect(svelte).toMatch(/titleAs = 'h3'/);
+    expect(svelte).toMatch(/useHeadingTag\(\(\) => titleAs\)/);
     expect(svelte).toMatch(/<caption class="dss-sr-only">/);
   });
 });
