@@ -60,3 +60,31 @@ describe('PlayerCard: Svelte und React erzeugen dasselbe Markup', () => {
     }
   }
 });
+
+describe('MatchCard: Spielabschnitt in Svelte und React gleich', () => {
+  const heim = { name: 'TSV Nordhain 1920', short: 'TSV N.', score: 3 };
+  const gast = { name: 'Hawks Club', score: 2 };
+  const cases: Record<string, unknown>[] = [
+    {}, { period: 3 }, { period: 4, periods: 4 }, { period: 5, periods: 8 }, { period: 5 }, { period: 6 }, { period: 9, periods: 8 },
+    { quarter: 'Q4' }, { quarter: 'Q4', period: 2 }, { period: 0 }, { period: 1.5 }, { period: Number.NaN, quarter: 'OT' }, { clock: '' }, { period: 2, clock: '' },
+  ];
+  it.each(cases)('live %j', async (extra) => {
+    await same('svelte/MatchCard.svelte', 'react/MatchCard.tsx', 'MatchCard', { state: 'live', league: 'L', clock: '04:00', heim, gast, ...extra });
+  });
+});
+
+describe('PlayByPlay: Spielabschnitt in Svelte und React gleich', () => {
+  const events = (extra: Record<string, unknown>[]) =>
+    extra.map((part, index) => ({ id: index + 1, time: '02:14', team: index % 2 ? 'gast' : 'heim', title: `Aktion ${index + 1}`, score: { heim: 1, gast: 2 }, ...part }));
+  const sets: Record<string, unknown>[][] = [
+    [{ period: 1 }, { period: 4 }, { period: 5 }, { period: 6 }],
+    [{ quarter: 'Q4' }, { quarter: 'OT' }, { period: 3, quarter: 'Q9' }],
+    [{ period: 0 }, { period: 2.5 }, {}],
+  ];
+  for (const periods of [undefined, 4, 8]) {
+    it.each(sets)(`periods=${periods} %j`, async (...set) => {
+      const props = { events: events(set as unknown as Record<string, unknown>[]), live: true, meta: 'm', ...(periods ? { periods } : {}) };
+      await same('svelte/PlayByPlay.svelte', 'react/PlayByPlay.tsx', 'PlayByPlay', props);
+    });
+  }
+});

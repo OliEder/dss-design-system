@@ -26,7 +26,7 @@ export const SpielkarteSpielwiese = {
   render,
   args: {
     kind: 'match', interactive: 'none', state: 'live', league: 'Bayernliga Süd', matchday: '17. Spieltag', date: 'Sa, 25. Mai', time: '19:30', venue: 'Nordhain-Halle',
-    heim: { name: 'TSV Nordhain', short: 'TSV N.', score: 87 }, gast: { name: 'Lindenberg Hawks', short: 'Hawks', score: 64 }, quarter: 'Q4', clock: '02:14',
+    heim: { name: 'TSV Nordhain', short: 'TSV N.', score: 87 }, gast: { name: 'Lindenberg Hawks', short: 'Hawks', score: 64 }, period: 4, periods: 4, quarter: '', clock: '02:14',
     names: 'full', logos: false,
   },
   argTypes: {
@@ -43,7 +43,9 @@ export const SpielkarteSpielwiese = {
     gast: { control: 'object', description: 'Gastmannschaft: `{ name, short?, logo?, score? }`', table: t('{ name: string; short?: string; logo?: string; score?: number }') },
     names: { control: 'inline-radio', options: ['full', 'short'], description: 'Voller Name oder Kurzname (`short`, falls vorhanden). Bis 640 px Fensterbreite erscheint der Kurzname automatisch.', table: t("'full' | 'short'", "'full'") },
     logos: { control: 'boolean', description: 'Logo (`logo`-URL) bzw. Initialen im Kreis vor dem Teamnamen', table: t('boolean', 'false') },
-    quarter: { control: 'text', description: 'Spielviertel, nur bei `live`', table: t('string', "''") },
+    period: { control: { type: 'number', min: 1, max: 10, step: 1 }, description: 'Spielabschnitt ab 1, nur bei `live`: „3. Viertel“, bei `periods` 8 „5. Achtel“, darüber „Verlängerung“, „2. Verlängerung“', table: t('number') },
+    periods: { control: 'inline-radio', options: [4, 8], description: 'Anzahl der regulären Abschnitte: 4 Viertel (Standard) oder 8 Achtel (Mini-Basketball)', table: t('4 | 8', '4') },
+    quarter: { control: 'text', description: 'Veraltet, nur bei `live`: freier Text; wird nur ohne `period` angezeigt, unverändert. Nutze `period`.', table: t('string', "''") },
     clock: { control: 'text', description: 'Spieluhr, nur bei `live`', table: t('string', "''") },
   },
 };
@@ -98,6 +100,7 @@ const example = (name: string) => ({
 });
 
 export const Spielkarten    = { ...example('spiel'), tags: ['!dev'] };
+export const Spielabschnitte = { ...example('abschnitte'), tags: ['!dev'] };
 export const KartenNamen    = { ...example('namen'), tags: ['!dev'] };
 export const KartenLogos    = { ...example('logos'), tags: ['!dev'] };
 export const KartenNamenHandy = { ...example('namen-handy'), tags: ['!dev'] };

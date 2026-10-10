@@ -25,6 +25,14 @@ import { vanilla, svelte, react, namesVanilla, namesSvelte, namesReact, photoVan
 
 Mit `href` ist die Karte ein Link, mit `onclick` (React: `onClick`) ein Button, sonst ein `div`. Die Pulsanimation von Lampe und Stand stoppt bei `prefers-reduced-motion: reduce`; „Live“ steht immer auch als Wort im Kopf.
 
+## Viertel und Achtel
+
+Eine laufende Karte zeigt im Kopf „Live · 3. Viertel 06:40“. Die Props: `period` (ab 1), `periods` (`4` Standard oder `8`) und `clock` (Spieluhr als Text). Mit `periods={8}` heißt der Abschnitt „5. Achtel“, so spielt der Mini-Basketball. Ist `period` größer als `periods`, steht „Verlängerung“, ab der zweiten „2. Verlängerung“ (`period − periods`). Ungültige Werte (0, negativ, Kommazahl) zeigen keinen Abschnitt, nur die Uhr.
+
+<Canvas of={CardLibraryStories.Spielabschnitte} />
+
+**`quarter` ist veraltet.** Bestehender Code mit `quarter="Q4"` läuft weiter: Ohne `period` wird der Text unverändert angezeigt. Ist `period` gesetzt, gewinnt es. Die Berechnung steht in `@bbv/dss-design-system/periods.js` (`periodLabel`, `periodShort`, `resolvePeriod`), damit Svelte und React gleich entscheiden; auch [PlayByPlay](?path=/docs/components-playbyplay--docs) nutzt sie.
+
 ## Kurznamen und Logos
 
 Auf schmalen Karten brechen lange Vereinsnamen oder werden mit Auslassungspunkten gekürzt. Darum kann jedes Team einen Kurznamen (`short`, z. B. „TSV N.“) und ein Logo (`logo`, URL) mitbringen; zwei Props wählen die Darstellung, gleich wie in der [Spielplan-Tabelle](?path=/docs/components-spielplan--docs):

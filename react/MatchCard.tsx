@@ -1,6 +1,7 @@
 import type { MouseEventHandler } from 'react';
 import { cn } from './cn';
 import { shortName } from '../js/schedule.js';
+import { resolvePeriod } from '../js/periods.js';
 import { TeamLogo } from './ScheduleParts';
 
 export type MatchState = 'scheduled' | 'live' | 'finished';
@@ -29,8 +30,13 @@ export interface MatchCardProps {
   names?: MatchNames;
   /** Logo bzw. Initialen vor dem Teamnamen. Standard: aus. */
   logos?: boolean;
-  /** Nur bei `live`: Spielviertel und Uhr. */
+  /** Nur bei `live`: Spielabschnitt ab 1 (mit `periods`: „3. Viertel“, „5. Achtel“, „Verlängerung“). */
+  period?: number;
+  /** 4 Viertel (Standard) oder 8 Achtel (Mini-Basketball). */
+  periods?: 4 | 8;
+  /** @deprecated Stattdessen `period`; ohne `period` wird der Text unverändert angezeigt. */
   quarter?: string;
+  /** Nur bei `live`: Spieluhr. */
   clock?: string;
   /** Mit `href` wird die Karte ein Link, mit `onClick` ein Button, sonst ein div. */
   href?: string;
@@ -50,6 +56,8 @@ export function MatchCard({
   gast,
   names = 'full',
   logos = false,
+  period,
+  periods = 4,
   quarter = '',
   clock = '',
   href,
@@ -59,6 +67,7 @@ export function MatchCard({
   const heimWin = state === 'finished' && (heim.score ?? 0) > (gast.score ?? 0);
   const gastWin = state === 'finished' && (gast.score ?? 0) > (heim.score ?? 0);
   const showScore = state !== 'scheduled';
+  const liveText = [resolvePeriod({ period, periods, quarter }).label, clock].filter(Boolean).join(' ');
 
   const teamBlock = (team: MatchTeam) => {
     const short = shortName(team);
@@ -88,7 +97,7 @@ export function MatchCard({
         </span>
         {state === 'live' ? (
           <span className="dss-match-live">
-            <span className="dss-match-pulse" aria-hidden="true" /> Live · {quarter} {clock}
+            <span className="dss-match-pulse" aria-hidden="true" /> Live · {liveText}
           </span>
         ) : state === 'finished' ? (
           <span className="dss-match-final">Endstand</span>

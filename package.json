@@ -42,6 +42,10 @@
     "./schedule.js": {
       "types": "./js/schedule.d.ts",
       "import": "./js/schedule.js"
+    },
+    "./periods.js": {
+      "types": "./js/periods.d.ts",
+      "import": "./js/periods.js"
     }
   },
   "files": [

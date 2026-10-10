@@ -67,4 +67,45 @@ describe('PlayByPlay', () => {
     const { container } = render(<PlayByPlay events={EVENTS} />);
     await expectNoA11yViolations(container);
   });
+
+  describe('Spielabschnitt (period, periods, quarter)', () => {
+    const chip = (events: PbpEvent[], periods?: 4 | 8) => {
+      const { container } = render(<PlayByPlay events={events} periods={periods} />);
+      return container.querySelector('.dss-pbp-q');
+    };
+    const ev = (extra: Partial<PbpEvent>): PbpEvent[] => [{ id: 1, time: '02:14', title: 'x', ...extra }];
+
+    it.each([
+      [{ period: 1 }, undefined, 'V1', '1. Viertel'],
+      [{ period: 4 }, 4, 'V4', '4. Viertel'],
+      [{ period: 5 }, 8, 'A5', '5. Achtel'],
+      [{ period: 8 }, 8, 'A8', '8. Achtel'],
+      [{ period: 5 }, 4, 'VL', 'Verlängerung'],
+      [{ period: 6 }, 4, 'VL2', '2. Verlängerung'],
+      [{ period: 9 }, 8, 'VL', 'Verlängerung'],
+    ] as const)('%j (periods %s): Chip %s, Screenreader %s', (extra, periods, short, label) => {
+      const q = chip(ev(extra), periods)!;
+      expect(q.querySelector('[aria-hidden="true"]')).toHaveTextContent(short);
+      expect(q.querySelector('.dss-sr-only')).toHaveTextContent(label);
+    });
+
+    it('Alias quarter wird unverändert angezeigt, ohne Zusatztext', () => {
+      const q = chip(ev({ quarter: 'Q4' }))!;
+      expect(q).toHaveTextContent(/^Q4$/);
+      expect(q.querySelector('.dss-sr-only')).toBeNull();
+    });
+
+    it('period gewinnt gegen quarter', () => {
+      expect(chip(ev({ period: 2, quarter: 'Q4' }))).toHaveTextContent('V22. Viertel');
+    });
+
+    it.each([0, -1, 2.5, Number.NaN])('ungültiges period %s: kein Chip', (period) => {
+      expect(chip(ev({ period }))).toBeNull();
+    });
+
+    it('der Chip ist nicht doppelt: sichtbarer Text aria-hidden, voller Text einmal für Screenreader', () => {
+      render(<PlayByPlay events={ev({ period: 3 })} />);
+      expect(screen.getAllByText('3. Viertel')).toHaveLength(1);
+    });
+  });
 });

@@ -38,6 +38,8 @@
       gast={withLogo(rest.gast)}
       names={rest.names}
       logos={rest.logos}
+      period={rest.period}
+      periods={rest.periods}
       quarter={rest.quarter}
       clock={rest.clock}
       href={interactive === 'link' ? '#spiel' : undefined}

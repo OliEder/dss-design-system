@@ -25,7 +25,7 @@
       state="live"
       league="Bayernliga Süd"
       matchday="17. Spieltag"
-      quarter="Q4"
+      period={4}
       clock="02:14"
       venue="Nordhain-Halle"
       heim={{ name: 'TSV Nordhain 1920', score: 87 }}

@@ -18,7 +18,7 @@ Tabellen mit Statistiken stehen auf der Seite [Table](?path=/docs/components-tab
 
 Jeder Event-Eintrag hat:
 
-- Mono-Zeitstempel (M:SS und Viertel-Label)
+- Mono-Zeitstempel (M:SS) mit dem Spielabschnitt darunter (Chip „V3“, „A5“, „VL“)
 - 4-px-Teamfarbstreifen (Heim, Gast oder neutral)
 - Aktions-Titel, optional mit fett geführtem Schlüsselwort
 - optionalen Detail-Untertitel (Mono, klein)
@@ -32,7 +32,8 @@ Jeder Event-Eintrag hat:
   rows={[
     ['id', 'string | number', 'Eindeutiger Schlüssel des Ereignisses.'],
     ['time', 'string', 'Zeit im Format M:SS, z. B. 02:14. Die Spalte ist 70 px breit.'],
-    ['quarter', 'string', 'Viertel: Q1 bis Q4 oder OT, unter der Zeit.'],
+    ['period', 'number', 'Spielabschnitt ab 1, unter der Zeit: Chip „V1“ bis „V4“ (Viertel), bei `periods={8}` „A1“ bis „A8“ (Achtel); darüber „VL“ (Verlängerung), „VL2“ usw. Screenreader hören den vollen Text („3. Viertel“, „5. Achtel“, „2. Verlängerung“).'],
+    ['quarter', 'string', 'Veraltet, Alias: Wird nur ohne `period` angezeigt, der Text unverändert (z. B. „Q4“, „OT“), ohne Zusatztext für Screenreader. Nutze `period`.'],
     ['team', "'heim' | 'gast' | 'none'", "Farbe des Streifens (Standard 'none', neutral). Der Streifen ist für Screenreader verborgen, stattdessen hören sie „Heim:“ oder „Gast:“ vor der Aktion."],
     ['kind', 'Ereignisart', "Akzent der Aktion, siehe unten (Standard 'default')."],
     ['title', 'string', 'Text der Aktion.'],
@@ -41,6 +42,27 @@ Jeder Event-Eintrag hat:
     ['score', '{ heim: number, gast: number }', 'Spielstand nach dem Ereignis. Screenreader hören „Spielstand 87 zu 64“, die Zahlen sind sonst verborgen.'],
   ]}
 />
+
+## Viertel und Achtel
+
+`period` zählt ab 1; `periods` an der Komponente legt fest, ob 4 Viertel (Standard) oder 8 Achtel gespielt werden (Mini-Basketball). Der Chip unter der Zeit bleibt kurz, weil die Spalte nur 70 px breit ist; der volle Text steht für Screenreader im Dokument (`dss-sr-only`), der Chip selbst ist `aria-hidden`.
+
+<Canvas of={PlayByPlayStories.Abschnitte} />
+
+<DocTable
+  label="Chip und Screenreader-Text"
+  head={['period', 'periods', 'Chip', 'Screenreader']}
+  rows={[
+    ['1 bis 4', '4 (Standard)', 'V1 bis V4', '1. Viertel bis 4. Viertel'],
+    ['1 bis 8', '8', 'A1 bis A8', '1. Achtel bis 8. Achtel'],
+    ['5', '4', 'VL', 'Verlängerung'],
+    ['6', '4', 'VL2', '2. Verlängerung'],
+    ['9', '8', 'VL', 'Verlängerung'],
+    ['0, negativ, Kommazahl, NaN', 'beliebig', 'kein Chip', 'nichts (ohne `quarter`)'],
+  ]}
+/>
+
+Die Regel für die Verlängerung: ist `period` größer als `periods`, beginnt sie, und `period − periods` zählt sie (1 = „Verlängerung“, ab 2 „2. Verlängerung“). Jeder andere Wert von `periods` als 8 gilt als 4. Die Funktionen stehen auch ohne Komponente bereit (`periodLabel`, `periodShort`, `resolvePeriod` aus `@bbv/dss-design-system/periods.js`).
 
 ## Ereignisarten
 

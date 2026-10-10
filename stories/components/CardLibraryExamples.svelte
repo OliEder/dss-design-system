@@ -45,8 +45,27 @@
 {#if example === 'spiel'}
   <div class="grid3">
     <MatchCard state="scheduled" league="Bayernliga Süd" matchday="17. Spieltag" date="Sa, 25. Mai" time="19:30" venue="Nordhain-Halle" heim={{ name: 'TSV Nordhain' }} gast={{ name: 'Lindenberg Hawks' }} />
-    <MatchCard state="live" league="Bayernliga Süd" matchday="17. Spieltag" quarter="Q4" clock="02:14" venue="Nordhain-Halle" heim={{ name: 'TSV Nordhain', score: 87 }} gast={{ name: 'Lindenberg Hawks', score: 64 }} />
+    <MatchCard state="live" league="Bayernliga Süd" matchday="17. Spieltag" period={4} clock="02:14" venue="Nordhain-Halle" heim={{ name: 'TSV Nordhain', score: 87 }} gast={{ name: 'Lindenberg Hawks', score: 64 }} />
     <MatchCard state="finished" league="Bayernliga Süd" matchday="16. Spieltag" venue="Nordhain-Halle" heim={{ name: 'TSV Nordhain', score: 92 }} gast={{ name: 'BG Nordlicht', score: 79 }} />
+  </div>
+{:else if example === 'abschnitte'}
+  <div class="grid3">
+    <div>
+      <div class="cap">period=&#123;3&#125; · Viertel</div>
+      <MatchCard state="live" league="Bayernliga Süd" period={3} clock="06:40" heim={{ name: 'TSV Nordhain', score: 61 }} gast={{ name: 'Lindenberg Hawks', score: 58 }} />
+    </div>
+    <div>
+      <div class="cap">periods=&#123;8&#125; period=&#123;5&#125; · Achtel</div>
+      <MatchCard state="live" league="U10 Mini-Liga" period={5} periods={8} clock="03:10" heim={{ name: 'TSV Nordhain', score: 24 }} gast={{ name: 'Lindenberg Hawks', score: 22 }} />
+    </div>
+    <div>
+      <div class="cap">period=&#123;5&#125; · Verlängerung</div>
+      <MatchCard state="live" league="Bayernliga Süd" period={5} clock="02:05" heim={{ name: 'TSV Nordhain', score: 88 }} gast={{ name: 'Lindenberg Hawks', score: 88 }} />
+    </div>
+    <div>
+      <div class="cap">period=&#123;6&#125; · 2. Verlängerung</div>
+      <MatchCard state="live" league="Bayernliga Süd" period={6} clock="04:12" heim={{ name: 'TSV Nordhain', score: 95 }} gast={{ name: 'Lindenberg Hawks', score: 94 }} />
+    </div>
   </div>
 {:else if example === 'namen'}
   <div class="grid3">
@@ -62,7 +81,7 @@
 {:else if example === 'logos'}
   <div class="grid3">
     <MatchCard state="scheduled" league="Bayernliga Süd" date="Sa, 25. Mai" time="19:30" logos heim={NORDHAIN} gast={HAWKS} />
-    <MatchCard state="live" league="Bayernliga Süd" quarter="Q4" clock="02:14" logos names="short" heim={{ ...SEEBERG, score: 52 }} gast={{ ...KIEFERNAU, score: 48 }} />
+    <MatchCard state="live" league="Bayernliga Süd" period={4} clock="02:14" logos names="short" heim={{ ...SEEBERG, score: 52 }} gast={{ ...KIEFERNAU, score: 48 }} />
     <MatchCard state="finished" league="Bayernliga Süd" matchday="16. Spieltag" logos heim={{ ...NORDHAIN, score: 92 }} gast={{ ...HAWKS, score: 79 }} />
   </div>
 {:else if example === 'namen-handy'}
@@ -225,7 +244,7 @@
   </div>
 {:else if example === 'dont-status'}
   <div class="narrow">
-    <MatchCard state="live" league="Bayernliga Süd" matchday="16. Spieltag" quarter="Q4" clock="00:00" venue="Nordhain-Halle" heim={{ name: 'TSV Nordhain', score: 92 }} gast={{ name: 'BG Nordlicht', score: 79 }} />
+    <MatchCard state="live" league="Bayernliga Süd" matchday="16. Spieltag" period={4} clock="00:00" venue="Nordhain-Halle" heim={{ name: 'TSV Nordhain', score: 92 }} gast={{ name: 'BG Nordlicht', score: 79 }} />
   </div>
 {:else if example === 'do-zeile'}
   <div class="narrow list">

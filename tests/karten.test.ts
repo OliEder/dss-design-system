@@ -122,3 +122,39 @@ describe('Demo-Fotos', () => {
     }
   });
 });
+
+describe('Spielabschnitte: Paket, Quelltext, Demo-Daten', () => {
+  it('package.json exportiert ./periods.js mit Typen wie ./schedule.js', () => {
+    const pkg = JSON.parse(read('package.json')) as { exports: Record<string, unknown>; files: string[] };
+    expect(pkg.exports['./periods.js']).toEqual({ types: './js/periods.d.ts', import: './js/periods.js' });
+    expect(pkg.files).toContain('js/');
+    expect(read('js/periods.d.ts')).toContain('export function resolvePeriod');
+  });
+
+  it.each(['svelte/MatchCard.svelte', 'react/MatchCard.tsx', 'svelte/PlayByPlay.svelte', 'react/PlayByPlay.tsx'])('%s nutzt die gemeinsame Funktion und kennt periods (Standard 4)', (path) => {
+    const source = read(path);
+    expect(source).toContain("from '../js/periods.js'");
+    expect(source).toContain('resolvePeriod(');
+    expect(source).toMatch(/periods = 4/);
+    expect(source).toContain('@deprecated');
+  });
+
+  it('der Alias quarter bleibt in beiden MatchCard-Fassungen', () => {
+    expect(read('svelte/MatchCard.svelte')).toMatch(/quarter = '',/);
+    expect(read('react/MatchCard.tsx')).toMatch(/quarter = '',/);
+  });
+
+  it('Demo-Daten, Beispiele und Code-Beispiele nutzen period statt quarter (außer der Beschreibung des Alias)', () => {
+    const files = [
+      'stories/components/CardLibraryExamples.svelte', 'stories/components/CardLibraryDemo.svelte', 'stories/components/pbpData.ts',
+      'stories/components/PlayByPlayExamples.svelte', 'stories/PlayByPlay.code.ts', 'stories/CardLibrary.code.ts', 'stories/Foundation/Live.svelte',
+    ];
+    for (const path of files) expect(read(path), path).not.toMatch(/quarter(=|:\s*['"])/);
+  });
+
+  it('Doku nennt quarter als veraltet', () => {
+    expect(read('stories/CardLibrary.mdx')).toMatch(/`quarter` ist veraltet/);
+    expect(read('stories/PlayByPlay.mdx')).toMatch(/Veraltet, Alias/);
+    expect(read('stories/CardLibrary.stories.ts')).toMatch(/Veraltet, nur bei `live`/);
+  });
+});

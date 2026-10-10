@@ -43,12 +43,12 @@
 
     <div class="cell">
       <div class="cap">Spielkarte (MatchCard)</div>
-      <MatchCard state="live" league="Bayernliga Süd" matchday="17. Spieltag" quarter="Q4" clock="02:14" venue="Nordhain-Halle" heim={{ name: 'TSV Nordhain', score: 87 }} gast={{ name: 'Lindenberg Hawks', score: 64 }} />
+      <MatchCard state="live" league="Bayernliga Süd" matchday="17. Spieltag" period={4} clock="02:14" venue="Nordhain-Halle" heim={{ name: 'TSV Nordhain', score: 87 }} gast={{ name: 'Lindenberg Hawks', score: 64 }} />
     </div>
 
     <div class="cell">
       <div class="cap">Play-by-Play · Kopf</div>
-      <PlayByPlay title="Play-by-Play" meta="Q4" events={initialEvents.slice(0, 2)} />
+      <PlayByPlay title="Play-by-Play" meta="4. Viertel" events={initialEvents.slice(0, 2)} />
     </div>
 
     <div class="cell wide">

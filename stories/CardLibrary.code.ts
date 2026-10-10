@@ -10,7 +10,7 @@ export const vanilla = `<!-- Einmal im App-Root einbinden -->
     <span class="dss-match-league">
       <span>Bayernliga Süd</span><span class="dss-match-muted">· 17. Spieltag</span>
     </span>
-    <span class="dss-match-live"><span class="dss-match-pulse" aria-hidden="true"></span> Live · Q4 02:14</span>
+    <span class="dss-match-live"><span class="dss-match-pulse" aria-hidden="true"></span> Live · 4. Viertel 02:14</span>
   </span>
   <span class="dss-match-body">
     <span class="dss-match-team">
@@ -59,7 +59,7 @@ export const svelte = `<script>
   state="live"
   league="Bayernliga Süd"
   matchday="17. Spieltag"
-  quarter="Q4"
+  period={4}
   clock="02:14"
   venue="Nordhain-Halle"
   heim={{ name: 'TSV Nordhain', score: 87 }}
@@ -99,7 +99,7 @@ export const react = `import { MatchCard, PlayerCard, Skeleton } from '@bbv/dss-
   state="live"
   league="Bayernliga Süd"
   matchday="17. Spieltag"
-  quarter="Q4"
+  period={4}
   clock="02:14"
   venue="Nordhain-Halle"
   heim={{ name: 'TSV Nordhain', score: 87 }}

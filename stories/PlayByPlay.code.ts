@@ -15,7 +15,7 @@ export const vanilla = `<!-- Einmal im App-Root einbinden -->
   </div>
   <div class="dss-pbp-feed" role="log" aria-label="Play-by-Play · neueste oben" tabindex="0">
     <div class="dss-pbp-event dss-pbp-event--score-3p">
-      <div class="dss-pbp-time">02:14<span class="dss-pbp-q">Q4</span></div>
+      <div class="dss-pbp-time">02:14<span class="dss-pbp-q"><span aria-hidden="true">V4</span><span class="dss-sr-only">4. Viertel</span></span></div>
       <div class="dss-pbp-strip dss-pbp-strip--heim" aria-hidden="true"></div>
       <div class="dss-pbp-body">
         <div class="dss-pbp-action">
@@ -41,8 +41,8 @@ export const svelte = `<script>
   import PlayByPlay from '@bbv/dss-design-system/svelte/PlayByPlay';
 
   let events = $state([
-    { id: 2, time: '02:38', quarter: 'Q4', team: 'gast', title: 'Defensiv-Rebound · Spieler #23', score: { heim: 84, gast: 64 } },
-    { id: 1, time: '02:14', quarter: 'Q4', team: 'heim', kind: 'score-3p', titleBold: 'Drei-Punkte-Wurf', title: 'Spieler #7', detail: 'Assist · Spieler #13', score: { heim: 87, gast: 64 } },
+    { id: 2, time: '02:38', period: 4, team: 'gast', title: 'Defensiv-Rebound · Spieler #23', score: { heim: 84, gast: 64 } },
+    { id: 1, time: '02:14', period: 4, team: 'heim', kind: 'score-3p', titleBold: 'Drei-Punkte-Wurf', title: 'Spieler #7', detail: 'Assist · Spieler #13', score: { heim: 87, gast: 64 } },
   ]);
 
   // Neues Ereignis kommt oben dazu; der Baustein sortiert nicht selbst.
@@ -52,14 +52,14 @@ export const svelte = `<script>
 </script>
 
 <PlayByPlay meta={\`\${events.length} Events\`} {events} />
-<!-- title, titleAs ('h2' | 'h3' | 'h4'), meta, live (Standard true), dark -->`;
+<!-- title, titleAs ('h2' | 'h3' | 'h4'), meta, live (Standard true), dark, periods (4 | 8, Standard 4) -->`;
 
 export const react = `import { useEffect, useState } from 'react';
 import { PlayByPlay, type PbpEvent } from '@bbv/dss-design-system/react';
 
 const start: PbpEvent[] = [
-  { id: 2, time: '02:38', quarter: 'Q4', team: 'gast', title: 'Defensiv-Rebound · Spieler #23', score: { heim: 84, gast: 64 } },
-  { id: 1, time: '02:14', quarter: 'Q4', team: 'heim', kind: 'score-3p', titleBold: 'Drei-Punkte-Wurf', title: 'Spieler #7', detail: 'Assist · Spieler #13', score: { heim: 87, gast: 64 } },
+  { id: 2, time: '02:38', period: 4, team: 'gast', title: 'Defensiv-Rebound · Spieler #23', score: { heim: 84, gast: 64 } },
+  { id: 1, time: '02:14', period: 4, team: 'heim', kind: 'score-3p', titleBold: 'Drei-Punkte-Wurf', title: 'Spieler #7', detail: 'Assist · Spieler #13', score: { heim: 87, gast: 64 } },
 ];
 
 export function Feed({ subscribe }: { subscribe: (cb: (e: PbpEvent) => void) => () => void }) {
