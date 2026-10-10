@@ -215,8 +215,10 @@
 .dss-chip--ok { background: var(--dss-chip-ok-bg); color: var(--dss-chip-ok-fg); box-shadow: none; }
 .dss-chip--err { background: var(--dss-chip-err-bg); color: var(--dss-chip-err-fg); box-shadow: none; }
 .dss-chip--warn { background: var(--dss-chip-warn-bg); color: var(--dss-chip-warn-fg); box-shadow: none; }
-.dss-chip--mono { font-family: var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; font-size: var(--fs-caption); }
-.dss-chip--link { text-decoration: none; min-height: 44px; padding: 0 14px; font-size: var(--fs-body-sm); }
+/* Mono-Großbuchstaben und Ziffern sitzen in der Zeilenbox (JetBrains Mono) etwa 1 px zu hoch: 1 px Innenabstand von unten nach oben
+   verschoben, die Chip-Höhe (24 px Inhalt + 4 px) bleibt gleich. Gemessen: Textrand oben/unten gleich (Abweichung höchstens 0,25 px). */
+.dss-chip--mono { font-family: var(--font-mono); letter-spacing: 0.04em; text-transform: uppercase; font-size: var(--fs-caption); padding-block: 3px 1px; }
+.dss-chip--link { text-decoration: none; min-height: 43px; padding: 1px 14px 0; font-size: var(--fs-body-sm); } /* 43 + 1 px = 44 px Zielgröße; 1 px oben mittigt die Schrift optisch */
 .dss-chip--link:hover { box-shadow: inset 0 0 0 1px var(--dss-line-strong); }
 
 /* ── Stat-Kachel ────────────────────────────────────────────── */
@@ -1079,7 +1081,9 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
 }
 .dss-sch-none { font-family: var(--font-mono); color: var(--dss-mute); }
 .dss-sch-prov { font-family: var(--font-mono); font-size: var(--fs-caption); font-weight: 600; line-height: 1; letter-spacing: 0.04em; color: var(--dss-mute); white-space: nowrap; }
-.dss-sch-field { max-width: 14ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: middle; }
+/* inline-block statt inline-flex (nötig für die Auslassungspunkte); line-height = Inhaltshöhe des Chips (24 px), damit der Text mittig sitzt;
+   die Zeilenbox liegt hier etwas anders als im Flex-Chip, deshalb 2 px statt 3/1 px Innenabstand (gemessen) */
+.dss-sch-field { max-width: 14ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: inline-block; vertical-align: middle; line-height: 24px; padding-block: 2px; }
 .dss-tbl--schedule td.dss-sch-notice { max-width: 24ch; white-space: normal; }
 .dss-tbl--schedule tr.is-own td:first-child { box-shadow: inset 3px 0 0 var(--indicator); }
 /* Eigene Zeile: gedämpfter Text auf dem getönten Grund (Dunkelmodus 5,5:1 mit --dss-mute) auf ≥ 7:1 */

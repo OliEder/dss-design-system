@@ -65,3 +65,23 @@ describe('Zeitraster: Live steht neben Paarung oder Ergebnis', () => {
     expect(react).toMatch(/<\/ResultText>|<ResultText[\s\S]*?\/>\s*\{game\.state === 'live' \? <LiveTag \/> : null\}/);
   });
 });
+
+describe('Chips: Text sitzt vertikal mittig', () => {
+  it('Mono-Chips verschieben 1 px Innenabstand nach oben, Gesamthöhe bleibt 24 + 4 px', () => {
+    expect(rule('.dss-chip--mono')).toMatch(/padding-block:\s*3px 1px/);
+    expect(rule('.dss-chip')).toMatch(/min-height:\s*24px/);
+  });
+
+  it('der Feld-Chip behält inline-block (Auslassungspunkte), setzt aber line-height auf die Inhaltshöhe', () => {
+    const field = rule('.dss-sch-field');
+    expect(field).toMatch(/display:\s*inline-block/);
+    expect(field).toMatch(/line-height:\s*24px/);
+    expect(field).toMatch(/padding-block:\s*2px/);
+  });
+
+  it('der Link-Chip bleibt 44 px hoch (43 px + 1 px Innenabstand oben)', () => {
+    const link = rule('.dss-chip--link');
+    expect(link).toMatch(/min-height:\s*43px/);
+    expect(link).toMatch(/padding:\s*1px 14px 0/);
+  });
+});
