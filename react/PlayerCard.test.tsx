@@ -60,4 +60,67 @@ describe('PlayerCard', () => {
     const { container } = render(<PlayerCard size={size} jersey={4} name="J. Tanner" position="PG" vitals={VITALS} stat={22} statLabel="PTS" />);
     await expectNoA11yViolations(container);
   });
+
+  describe('Foto', () => {
+    it('ohne photo bleibt das Markup unverändert (Trikotmarke, kein Bild, kein Badge)', () => {
+      const { container } = render(<PlayerCard size="compact" jersey={4} name="J. Tanner" />);
+      expect(container.querySelector('img')).toBeNull();
+      expect(container.querySelector('.dss-pc-av')).toBeNull();
+      expect(container.querySelector('.dss-tn')).toHaveClass('small');
+    });
+
+    it.each(['compact', 'standard', 'hero'] as const)('%s: Foto mit leerem alt (dekorativ), lazy, async, quadratische Maße; Trikotnummer als Badge', (size) => {
+      const { container } = render(<PlayerCard size={size} jersey={4} name="J. Tanner" photo="/players/jt.jpg" />);
+      const img = container.querySelector('img')!;
+      expect(img).toHaveAttribute('src', '/players/jt.jpg');
+      expect(img).toHaveAttribute('alt', '');
+      expect(img).toHaveAttribute('loading', 'lazy');
+      expect(img).toHaveAttribute('decoding', 'async');
+      expect(img.getAttribute('width')).toBe(img.getAttribute('height'));
+      expect(container.querySelector('.dss-tn--badge')).toHaveTextContent('4');
+      expect(container.querySelector('.dss-tn.small, .dss-tn.large, .dss-tn.hero')).toBeNull();
+    });
+
+    it('photoAlt wird als alt übernommen', () => {
+      const { container } = render(<PlayerCard size="standard" jersey={4} name="J. Tanner" photo="/p.jpg" photoAlt="Porträt von J. Tanner" />);
+      expect(container.querySelector('img')).toHaveAttribute('alt', 'Porträt von J. Tanner');
+    });
+
+    it('hero mit Foto bekommt den Modifikator dss-pc-hero--photo', () => {
+      const { container } = render(<PlayerCard size="hero" jersey={4} name="J. Tanner" photo="/p.jpg" />);
+      expect(container.firstElementChild).toHaveClass('dss-pc-hero--photo');
+    });
+
+    it.each(['compact', 'standard', 'hero'] as const)('%s: leeres photo zeigt die Trikotmarke', (size) => {
+      const { container } = render(<PlayerCard size={size} jersey={4} name="J. Tanner" photo="" />);
+      expect(container.querySelector('img')).toBeNull();
+      expect(container.querySelector('.dss-tn--badge')).toBeNull();
+    });
+
+    it.each(['compact', 'standard', 'hero'] as const)('%s: Ladefehler fällt auf die Trikotmarke zurück', (size) => {
+      const { container } = render(<PlayerCard size={size} jersey={4} name="J. Tanner" photo="/kaputt.jpg" />);
+      fireEvent.error(container.querySelector('img')!);
+      expect(container.querySelector('img')).toBeNull();
+      expect(container.querySelector('.dss-tn--badge')).toBeNull();
+      expect(container.querySelector('.dss-tn')).toHaveClass(size === 'compact' ? 'small' : size === 'standard' ? 'large' : 'hero');
+    });
+
+    it('eine neue URL nach einem Fehler wird wieder geladen', () => {
+      const { container, rerender } = render(<PlayerCard size="compact" jersey={4} name="X" photo="/kaputt.jpg" />);
+      fireEvent.error(container.querySelector('img')!);
+      rerender(<PlayerCard size="compact" jersey={4} name="X" photo="/gut.jpg" />);
+      expect(container.querySelector('img')).toHaveAttribute('src', '/gut.jpg');
+    });
+
+    it('der Name wird mit Foto genau einmal angesagt, das Bild trägt keinen Namen', () => {
+      render(<PlayerCard size="standard" jersey={4} name="J. Tanner" photo="/p.jpg" />);
+      expect(screen.getAllByText('J. Tanner')).toHaveLength(1);
+      expect(screen.queryByRole('img')).toBeNull();
+    });
+
+    it.each(['compact', 'standard', 'hero'] as const)('%s mit Foto hat keine A11y-Verstöße', async (size) => {
+      const { container } = render(<PlayerCard size={size} jersey={4} name="J. Tanner" position="PG" vitals={VITALS} stat={22} statLabel="PTS" photo="/p.jpg" />);
+      await expectNoA11yViolations(container);
+    });
+  });
 });

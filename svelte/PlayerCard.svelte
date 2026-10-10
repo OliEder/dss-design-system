@@ -8,6 +8,10 @@
    *   compact  — Listenzeile (Roster / Bank); mit `onclick` ein Button, sonst ein div
    *   standard — Karte mit Kopf + 4 Kennzahlen
    *   hero     — dunkle Großkarte mit großer Trikotnummer + 4 Kennzahlen
+   *
+   * `photo` (URL) ersetzt die Trikotmarke durch ein Foto; die Trikotnummer bleibt als Badge (hero: Porträtfläche links).
+   * `photoAlt` ist standardmäßig leer (dekorativ, der Name steht daneben). Ohne `photo`, mit leerem `photo` oder bei
+   * Ladefehler bleibt die Trikotmarke.
    */
   type Size = 'compact' | 'standard' | 'hero';
   type Stat = { label: string; value: string | number; accent?: boolean };
@@ -27,6 +31,8 @@
     statLabel = '',
     onclick = undefined,
     titleAs = 'h3',
+    photo = '',
+    photoAlt = '',
   }: {
     size?: Size;
     jersey: string | number;
@@ -42,9 +48,16 @@
     statLabel?: string;
     onclick?: () => void;
     titleAs?: 'h2' | 'h3' | 'h4';
+    photo?: string;
+    photoAlt?: string;
   } = $props();
 
   const posClass = $derived(position ? `dss-pos ${position.toLowerCase()}` : '');
+
+  // Eine URL, die nicht lädt, wird gemerkt: dann erscheint wieder die Trikotmarke (kein kaputtes Bildsymbol)
+  let failedUrl = $state('');
+  const showPhoto = $derived(Boolean(photo) && photo !== failedUrl);
+  const imgSize = $derived(size === 'compact' ? 32 : size === 'standard' ? 64 : 200);
 </script>
 
 {#snippet roleLine()}
@@ -69,8 +82,16 @@
   {/if}
 {/snippet}
 
+{#snippet photoImg()}
+  <img class="dss-pc-img" src={photo} alt={photoAlt} width={imgSize} height={imgSize} loading="lazy" decoding="async" onerror={() => (failedUrl = photo)} />
+{/snippet}
+
 {#snippet compactBody()}
-  <span class={`dss-tn ${team} small ${captain ? 'captain' : ''}`}>{jersey}</span>
+  {#if showPhoto}
+    <span class="dss-pc-av">{@render photoImg()}<span class={`dss-tn dss-tn--badge ${team} ${captain ? 'captain' : ''}`}>{jersey}</span></span>
+  {:else}
+    <span class={`dss-tn ${team} small ${captain ? 'captain' : ''}`}>{jersey}</span>
+  {/if}
   <span class="dss-pc-who">
     <span class="dss-pc-name">{name}{captain ? ' (C)' : ''}</span>
     {#if role || position}
@@ -99,7 +120,11 @@
 {:else if size === 'standard'}
   <div class="dss-pc-card">
     <div class="dss-pc-head">
-      <span class={`dss-tn ${team} large ${captain ? 'captain' : ''}`}>{jersey}</span>
+      {#if showPhoto}
+        <span class="dss-pc-av dss-pc-av--lg">{@render photoImg()}<span class={`dss-tn dss-tn--badge dss-tn--badge-lg ${team} ${captain ? 'captain' : ''}`}>{jersey}</span></span>
+      {:else}
+        <span class={`dss-tn ${team} large ${captain ? 'captain' : ''}`}>{jersey}</span>
+      {/if}
       <div class="dss-pc-who">
         <svelte:element this={titleAs} class="dss-pc-nm">{name}</svelte:element>
         {@render roleLine()}
@@ -109,9 +134,14 @@
   </div>
 
 {:else}
-  <div class="dss-pc-hero">
+  <div class={`dss-pc-hero ${showPhoto ? 'dss-pc-hero--photo' : ''}`}>
     <div class="dss-pc-hero-left">
-      <span class={`dss-tn hero ${team} ${captain ? 'captain' : ''}`}>{jersey}</span>
+      {#if showPhoto}
+        {@render photoImg()}
+        <span class={`dss-tn dss-tn--badge dss-tn--badge-lg ${team} ${captain ? 'captain' : ''}`}>{jersey}</span>
+      {:else}
+        <span class={`dss-tn hero ${team} ${captain ? 'captain' : ''}`}>{jersey}</span>
+      {/if}
     </div>
     <div class="dss-pc-hero-right">
       <svelte:element this={titleAs} class="dss-pc-nm">{name}</svelte:element>

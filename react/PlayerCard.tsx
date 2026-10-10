@@ -1,4 +1,4 @@
-import type { MouseEventHandler } from 'react';
+import { useState, type MouseEventHandler } from 'react';
 import { cn } from './cn';
 
 export type PlayerCardSize = 'compact' | 'standard' | 'hero';
@@ -30,6 +30,10 @@ export interface PlayerCardProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   /** Überschriftenebene des Namens in standard/hero (Standard h3). */
   titleAs?: 'h2' | 'h3' | 'h4';
+  /** Foto-URL: ersetzt die Trikotmarke; die Trikotnummer bleibt als Badge (hero: Porträtfläche). Leer oder bei Ladefehler: Trikotmarke. */
+  photo?: string;
+  /** Alternativtext des Fotos; Standard leer (dekorativ, der Name steht daneben). */
+  photoAlt?: string;
   className?: string;
 }
 
@@ -63,8 +67,27 @@ export function PlayerCard({
   statLabel = '',
   onClick,
   titleAs: Heading = 'h3',
+  photo = '',
+  photoAlt = '',
   className,
 }: PlayerCardProps) {
+  // Eine URL, die nicht lädt, wird gemerkt: dann erscheint wieder die Trikotmarke (kein kaputtes Bildsymbol)
+  const [failedUrl, setFailedUrl] = useState('');
+  const showPhoto = Boolean(photo) && photo !== failedUrl;
+  const imgSize = size === 'compact' ? 32 : size === 'standard' ? 64 : 200;
+  const img = (
+    <img
+      className="dss-pc-img"
+      src={photo}
+      alt={photoAlt}
+      width={imgSize}
+      height={imgSize}
+      loading="lazy"
+      decoding="async"
+      onError={() => setFailedUrl(photo)}
+    />
+  );
+
   const posClass = position ? `dss-pos ${position.toLowerCase()}` : '';
   const role = (
     <div className="dss-pc-role">
@@ -78,7 +101,14 @@ export function PlayerCard({
   if (size === 'compact') {
     const body = (
       <>
-        <span className={cn('dss-tn', team, 'small', captain && 'captain')}>{jersey}</span>
+        {showPhoto ? (
+          <span className="dss-pc-av">
+            {img}
+            <span className={cn('dss-tn', 'dss-tn--badge', team, captain && 'captain')}>{jersey}</span>
+          </span>
+        ) : (
+          <span className={cn('dss-tn', team, 'small', captain && 'captain')}>{jersey}</span>
+        )}
         <span className="dss-pc-who">
           <span className="dss-pc-name">
             {name}
@@ -117,7 +147,14 @@ export function PlayerCard({
     return (
       <div className={cn('dss-pc-card', className)}>
         <div className="dss-pc-head">
-          <span className={cn('dss-tn', team, 'large', captain && 'captain')}>{jersey}</span>
+          {showPhoto ? (
+            <span className="dss-pc-av dss-pc-av--lg">
+              {img}
+              <span className={cn('dss-tn', 'dss-tn--badge', 'dss-tn--badge-lg', team, captain && 'captain')}>{jersey}</span>
+            </span>
+          ) : (
+            <span className={cn('dss-tn', team, 'large', captain && 'captain')}>{jersey}</span>
+          )}
           <div className="dss-pc-who">
             <Heading className="dss-pc-nm">{name}</Heading>
             {role}
@@ -129,9 +166,16 @@ export function PlayerCard({
   }
 
   return (
-    <div className={cn('dss-pc-hero', className)}>
+    <div className={cn('dss-pc-hero', showPhoto && 'dss-pc-hero--photo', className)}>
       <div className="dss-pc-hero-left">
-        <span className={cn('dss-tn', 'hero', team, captain && 'captain')}>{jersey}</span>
+        {showPhoto ? (
+          <>
+            {img}
+            <span className={cn('dss-tn', 'dss-tn--badge', 'dss-tn--badge-lg', team, captain && 'captain')}>{jersey}</span>
+          </>
+        ) : (
+          <span className={cn('dss-tn', 'hero', team, captain && 'captain')}>{jersey}</span>
+        )}
       </div>
       <div className="dss-pc-hero-right">
         <Heading className="dss-pc-nm">{name}</Heading>

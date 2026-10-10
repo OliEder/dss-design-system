@@ -53,7 +53,7 @@ export const SpielerkarteSpielwiese = {
   args: {
     kind: 'player', interactive: 'none', size: 'standard', jersey: '4', name: 'J. Tanner', position: 'PG', team: 'heim', captain: true, age: '24 J.', height_cm: '188', role: '',
     vitals: [{ label: 'PPG', value: '17.4', accent: true }, { label: 'APG', value: '6.2' }, { label: 'RPG', value: '3.1' }, { label: 'EFF', value: '22.8' }],
-    stat: 22, statLabel: 'PTS',
+    stat: 22, statLabel: 'PTS', photo: '', photoAlt: '',
   },
   argTypes: {
     ...hidden,
@@ -71,6 +71,8 @@ export const SpielerkarteSpielwiese = {
     vitals: { control: 'object', description: 'Vier Kennzahlen `{ label, value, accent? }`, nur `standard` und `hero`; `accent` hebt den Wert in Amber hervor', table: t('{ label: string; value: string | number; accent?: boolean }[]', '[]') },
     stat: { control: 'text', description: 'Hauptstatistik der `compact`-Zeile', table: t('string | number | null', 'null') },
     statLabel: { control: 'text', description: 'Beschriftung der Hauptstatistik', table: t('string', "''") },
+    photo: { control: 'select', options: ['', 'tanner', 'okafor', 'vogler', 'hollis', 'mertens', 'sorell'], description: 'Foto-URL; ersetzt die Trikotmarke, die Trikotnummer bleibt als Badge. In der Spielwiese wählst du eines der Demo-Fotos (`tanner` …), im Code übergibst du die URL. Leer oder bei Ladefehler: Trikotmarke.', table: t('string', "''") },
+    photoAlt: { control: 'text', description: 'Alternativtext des Fotos. Standard leer (dekorativ, der Name steht daneben); nur füllen, wenn das Bild eine Information trägt, die nicht im Text steht.', table: t('string', "''") },
   },
 };
 
@@ -100,6 +102,9 @@ export const KartenNamen    = { ...example('namen'), tags: ['!dev'] };
 export const KartenLogos    = { ...example('logos'), tags: ['!dev'] };
 export const KartenNamenHandy = { ...example('namen-handy'), tags: ['!dev'] };
 export const Spielerkarten  = { ...example('spieler'), tags: ['!dev'] };
+export const SpielerkartenFoto = { ...example('spieler-foto'), tags: ['!dev'] };
+export const SpielerkartenFotoHandy = { ...example('spieler-foto-handy'), tags: ['!dev'] };
+export const SpielerkartenFotoFallback = { ...example('spieler-foto-fallback'), tags: ['!dev'] };
 export const Ladezustaende  = { ...example('skeleton'), tags: ['!dev'] };
 export const Zustaende      = { ...example('zustaende'), tags: ['!dev'] };
 
@@ -110,5 +115,9 @@ export const DoPlatzhalter = { ...example('do-platzhalter'), tags: ['!dev'] };
 export const DontPlatzhalter = { ...example('dont-platzhalter'), tags: ['!dev'] };
 export const DoStatus      = { ...example('do-status'), tags: ['!dev'] };
 export const DontStatus    = { ...example('dont-status'), tags: ['!dev'] };
+export const DoFotoAlt     = { ...example('do-foto-alt'), tags: ['!dev'] };
+export const DontFotoAlt   = { ...example('dont-foto-alt'), tags: ['!dev'] };
+export const DoFotoAusschnitt = { ...example('do-foto-ausschnitt'), tags: ['!dev'] };
+export const DontFotoAusschnitt = { ...example('dont-foto-ausschnitt'), tags: ['!dev'] };
 export const DoZeile       = { ...example('do-zeile'), tags: ['!dev'] };
 export const DontZeile     = { ...example('dont-zeile'), tags: ['!dev'] };
