@@ -56,3 +56,10 @@ export const hex = (h: string): Rgb =>
     const v = parseInt(h.slice(i, i + 2), 16) / 255;
     return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
   }) as Rgb;
+
+const toGamma = (v: number) => (v <= 0.0031308 ? v * 12.92 : 1.055 * v ** (1 / 2.4) - 0.055);
+const toLinear = (v: number) => (v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+
+/** Farbe `fg` mit Deckkraft `alpha` über `bg`, gemischt wie der Browser (in sRGB, nicht linear). */
+export const over = (fg: Rgb, bg: Rgb, alpha: number): Rgb =>
+  fg.map((c, i) => toLinear(alpha * toGamma(c) + (1 - alpha) * toGamma(bg[i]))) as Rgb;

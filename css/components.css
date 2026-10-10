@@ -231,20 +231,45 @@
 /* ── Live: eine Sprache für alles, was gerade läuft ──────────────
    Grün statt Rot (Rot bleibt Fehler, Foul und Abgesagt). Punkt/Fläche --live-fill, Text --dss-live-fg
    (auf immer dunklen Flächen --dss-live-fg-on-dark). Nie nur Farbe: das Wort „Live“ bzw. der Screenreader-Text „läuft“ bleibt.
-   Eine Animation für alle: nur die Deckkraft (1 → 0,35 → 1, 1,6 s, unter 1 Hz), keine Bewegung, bei „Bewegung reduzieren“ aus. */
+   Zwei Animationen (Punkt, Text), beide nur Deckkraft, 1,6 s (unter 1 Hz), keine Bewegung; bei „Bewegung reduzieren“ oder data-motion="reduce" aus. */
 .dss-live { display: inline-flex; align-items: center; gap: 6px; color: var(--dss-live-fg); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; }
 .dss-live-dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--live-fill); }
 .dss-sch-row.is-live .dss-sch-score, .dss-sg-game.is-live .dss-sch-score, .dss-match--live .dss-match-score { color: var(--dss-live-fg); }
+/* Zwei Keyframes mit je eigener Untergrenze: Punkte und Flächen pulsieren bis 0,35, Text nur bis 0,8
+   (Kontrast im Tal mindestens 4,5:1 auf allen Seitenflächen, Hell und Dunkel, BBV und DBB; bei 0,75 wären es hell nur 4,3:1). */
 @keyframes dss-live-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
-.dss-live-pulse, .dss-live-dot, .dss-match-pulse, .dss-pbp-dot, .dss-crumb-dot, .dss-topbar-live::before,
-.dss-sch-row.is-live .dss-sch-score, .dss-sg-game.is-live .dss-sch-score, .dss-match--live .dss-match-score {
+@keyframes dss-live-pulse-text { 0%, 100% { opacity: 1; } 50% { opacity: 0.8; } }
+.dss-live-pulse, .dss-live-dot, .dss-match-pulse, .dss-pbp-dot, .dss-crumb-dot, .dss-topbar-live::before {
   animation: dss-live-pulse 1.6s ease-in-out infinite;
 }
+.dss-sch-row.is-live .dss-sch-score, .dss-sg-game.is-live .dss-sch-score, .dss-match--live .dss-match-score {
+  animation: dss-live-pulse-text 1.6s ease-in-out infinite;
+}
+/* Aus: Systemeinstellung „Bewegung reduzieren“ oder das Attribut data-motion="reduce" auf <html> (Pause-Schalter der App, WCAG 2.2.2).
+   Beide Regeln decken dieselben Selektoren ab (Test in tests/live.test.ts). */
 @media (prefers-reduced-motion: reduce) {
-  .dss-live-pulse, .dss-live-dot, .dss-match-pulse, .dss-pbp-dot, .dss-crumb-dot, .dss-topbar-live::before,
-  .dss-sch-row.is-live .dss-sch-score, .dss-sg-game.is-live .dss-sch-score, .dss-match--live .dss-match-score {
+  .dss-live-pulse,
+  .dss-live-dot,
+  .dss-match-pulse,
+  .dss-pbp-dot,
+  .dss-crumb-dot,
+  .dss-topbar-live::before,
+  .dss-sch-row.is-live .dss-sch-score,
+  .dss-sg-game.is-live .dss-sch-score,
+  .dss-match--live .dss-match-score {
     animation: none;
   }
+}
+:root[data-motion="reduce"] .dss-live-pulse,
+:root[data-motion="reduce"] .dss-live-dot,
+:root[data-motion="reduce"] .dss-match-pulse,
+:root[data-motion="reduce"] .dss-pbp-dot,
+:root[data-motion="reduce"] .dss-crumb-dot,
+:root[data-motion="reduce"] .dss-topbar-live::before,
+:root[data-motion="reduce"] .dss-sch-row.is-live .dss-sch-score,
+:root[data-motion="reduce"] .dss-sg-game.is-live .dss-sch-score,
+:root[data-motion="reduce"] .dss-match--live .dss-match-score {
+  animation: none;
 }
 
 /* ── Stat-Kachel ────────────────────────────────────────────── */

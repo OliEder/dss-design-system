@@ -2,7 +2,7 @@
 // Live-Stil (Paket 2): Tokens, Kontraste, eine Animation, reduced-motion, kein Rot für Live.
 import { readFileSync } from 'node:fs';
 import { describe, it, expect } from 'vitest';
-import { blockOf, color, hex, ratio } from './helpers/color';
+import { blockOf, color, hex, over, ratio } from './helpers/color';
 
 const read = (path: string) => readFileSync(new URL(`../${path}`, import.meta.url), 'utf8');
 const css = read('css/components.css');
@@ -105,54 +105,101 @@ describe('Live-Stellen sprechen Grün, Rot bleibt Fehlern vorbehalten', () => {
   });
 });
 
-describe('Eine Animation für alles Live', () => {
+describe('Zwei Animationen für alles Live: Punkt und Text', () => {
   const keyframes = [...css.matchAll(/@keyframes\s+([\w-]+)/g)].map((m) => m[1]);
-  const pulsing = css.match(/\n((?:[^{}\n]*,\n)*[^{}\n]*)\{\s*animation:\s*dss-live-pulse 1\.6s ease-in-out infinite;\s*\}/);
+  const keyframeBody = (name: string) => css.match(new RegExp(`@keyframes ${name}\\s*\\{([^@]*?\\}\\s*)\\}`))![1];
+  const minOpacity = (name: string) => Math.min(...[...keyframeBody(name).matchAll(/opacity:\s*([\d.]+)/g)].map((m) => Number(m[1])));
+  const groupFor = (animation: string) => {
+    const m = css.match(new RegExp(`\\n((?:[^{}\\n]*,\\s)*[^{}\\n]*)\\{\\s*animation:\\s*${animation} ([\\d.]+)s ease-in-out infinite;\\s*\\}`));
+    expect(m, animation).not.toBeNull();
+    return { selectors: m![1].split(',').map((x) => x.trim()).filter(Boolean), seconds: Number(m![2]) };
+  };
+  const dot = groupFor('dss-live-pulse');
+  const text = groupFor('dss-live-pulse-text');
 
-  it('dss-live-pulse gibt es genau einmal, die alten Einzel-Animationen sind weg', () => {
-    expect(keyframes.filter((name) => name === 'dss-live-pulse')).toHaveLength(1);
+  it('genau zwei Keyframes (Punkt und Text), die alten Einzel-Animationen sind weg', () => {
+    expect(keyframes.filter((n) => n.startsWith('dss-live-pulse')).sort()).toEqual(['dss-live-pulse', 'dss-live-pulse-text']);
     for (const old of ['dss-mc-pulse', 'dss-pbp-pulse', 'dss-tb-pulse', 'dss-pulse']) {
       expect(keyframes).not.toContain(old);
       expect(css).not.toContain(old);
     }
   });
 
-  it('nur die Deckkraft ändert sich: 1 → 0,35 → 1, nie darunter', () => {
-    const body = css.match(/@keyframes dss-live-pulse\s*\{([^@]*?\}\s*)\}/)![1];
-    expect(body).toMatch(/0%,\s*100%\s*\{\s*opacity:\s*1;\s*\}/);
-    expect(body).toMatch(/50%\s*\{\s*opacity:\s*0\.35;\s*\}/);
-    expect(body).not.toMatch(/transform|box-shadow|scale|translate|color|background/);
-    const values = [...body.matchAll(/opacity:\s*([\d.]+)/g)].map((m) => Number(m[1]));
-    expect(Math.min(...values)).toBeGreaterThanOrEqual(0.35);
+  it('nur die Deckkraft ändert sich, mit Untergrenze je Typ: Punkt 0,35, Text 0,8', () => {
+    for (const name of ['dss-live-pulse', 'dss-live-pulse-text']) {
+      const body = keyframeBody(name);
+      expect(body).toMatch(/0%,\s*100%\s*\{\s*opacity:\s*1;\s*\}/);
+      expect(body).not.toMatch(/transform|box-shadow|scale|translate|color|background/);
+    }
+    expect(minOpacity('dss-live-pulse')).toBe(0.35);
+    expect(minOpacity('dss-live-pulse-text')).toBe(0.8);
   });
 
-  it('1,6 s je Durchlauf: unter 1 Hz (WCAG 2.3.1) und kein harter Wechsel (ease-in-out)', () => {
-    expect(pulsing).not.toBeNull();
-    expect(1 / 1.6).toBeLessThan(1);
-  });
-
-  const selectorList = (text: string) => text.split(',').map((x) => x.trim()).filter(Boolean).sort();
-
-  it('jede Live-Animation (Punkte, Ergebniszahlen, Utility) steht in der gemeinsamen Regel', () => {
-    const list = selectorList(pulsing![1]);
-    for (const selector of [
-      '.dss-live-pulse', '.dss-live-dot', '.dss-match-pulse', '.dss-pbp-dot', '.dss-crumb-dot', '.dss-topbar-live::before',
-      '.dss-sch-row.is-live .dss-sch-score', '.dss-sg-game.is-live .dss-sch-score', '.dss-match--live .dss-match-score',
-    ]) {
-      expect(list).toContain(selector);
+  it('Dauer je Durchlauf aus dem CSS: 1,6 s, also unter 1 Hz (WCAG 2.3.1)', () => {
+    for (const group of [dot, text]) {
+      expect(group.seconds).toBe(1.6);
+      expect(1 / group.seconds).toBeLessThan(1);
     }
   });
 
-  it('bei prefers-reduced-motion: reduce setzt dieselbe Liste animation: none', () => {
-    const media = css.match(/@media \(prefers-reduced-motion: reduce\)\s*\{\s*\n((?:[^{}\n]*,\n)*[^{}\n]*)\{\s*animation:\s*none;\s*\}\s*\}/);
-    expect(media).not.toBeNull();
-    expect(selectorList(media![1])).toEqual(selectorList(pulsing![1]));
+  it('Punkt-Selektoren und Text-Selektoren sind getrennt, Text nutzt nie die Punkt-Keyframe', () => {
+    for (const selector of ['.dss-live-pulse', '.dss-live-dot', '.dss-match-pulse', '.dss-pbp-dot', '.dss-crumb-dot', '.dss-topbar-live::before']) {
+      expect(dot.selectors).toContain(selector);
+      expect(text.selectors).not.toContain(selector);
+    }
+    const textSelectors = ['.dss-sch-row.is-live .dss-sch-score', '.dss-sg-game.is-live .dss-sch-score', '.dss-match--live .dss-match-score'];
+    for (const selector of textSelectors) {
+      expect(text.selectors).toContain(selector);
+      expect(dot.selectors).not.toContain(selector);
+    }
   });
 
   it('keine andere Regel gibt Live-Elementen eine eigene Animation', () => {
-    const decls = [...css.matchAll(/animation:\s*([^;}]+)/g)].map((m) => m[1].trim());
-    const live = decls.filter((d) => /pulse/.test(d));
-    expect(live).toEqual(['dss-live-pulse 1.6s ease-in-out infinite']);
+    const decls = [...css.matchAll(/animation:\s*([^;}]+)/g)].map((m) => m[1].trim()).filter((d) => /pulse/.test(d));
+    expect(decls.sort()).toEqual(['dss-live-pulse 1.6s ease-in-out infinite', 'dss-live-pulse-text 1.6s ease-in-out infinite']);
+  });
+
+  const reduced = () => {
+    const media = css.match(/@media \(prefers-reduced-motion: reduce\)\s*\{\s*\n((?:[^{}\n]*,\n)*[^{}\n]*)\{\s*animation:\s*none;\s*\}\s*\}/);
+    expect(media).not.toBeNull();
+    return media![1].split(',').map((x) => x.trim()).filter(Boolean).sort();
+  };
+  const manual = () => {
+    const attr = css.match(/\n((?::root\[data-motion="reduce"\] [^{}\n]*,\n)*:root\[data-motion="reduce"\] [^{}\n]*)\{\s*animation:\s*none;\s*\}/);
+    expect(attr).not.toBeNull();
+    return attr![1].split(',').map((x) => x.trim().replace(':root[data-motion="reduce"] ', '')).filter(Boolean).sort();
+  };
+
+  it('bei prefers-reduced-motion: reduce steht jede Live-Animation still', () => {
+    expect(reduced()).toEqual([...dot.selectors, ...text.selectors].sort());
+  });
+
+  it('der Pause-Schalter data-motion="reduce" deckt dieselben Selektoren ab wie die Medienabfrage', () => {
+    expect(manual()).toEqual(reduced());
+  });
+});
+
+describe('Kontrast im Puls-Tal (Text bei Deckkraft 0,8 ≥ 4,5:1)', () => {
+  const surfaces = ['--dss-surface', '--dss-surface-2', '--dss-hover-bg', '--dss-selected-bg'];
+  const valley = Number(css.match(/@keyframes dss-live-pulse-text\s*\{[^@]*?50%\s*\{\s*opacity:\s*([\d.]+)/)![1]);
+  for (const [name, block] of Object.entries(blocks)) {
+    for (const brand of ['BBV', 'DBB'] as const) {
+      it(`${name}, ${brand}: --dss-live-fg gemischt mit der Fläche bleibt ≥ 4,5:1`, () => {
+        const scope = `--h-signal: var(${brand === 'BBV' ? '--h-amber' : '--h-gold'});\n${block}\n${brand === 'DBB' ? dbb + '\n' : ''}${tokens}`;
+        const fg = color('var(--dss-live-fg)', scope);
+        for (const surface of surfaces) {
+          const bg = color(`var(${surface})`, scope);
+          expect(ratio(over(fg, bg, valley), bg), surface).toBeGreaterThanOrEqual(4.5);
+        }
+      });
+    }
+  }
+
+  it('die Untergrenze 0,75 würde hell scheitern (Regression gegen zu tiefes Tal)', () => {
+    const scope = `--h-signal: var(--h-amber);\n${blocks.Hell}\n${tokens}`;
+    const fg = color('var(--dss-live-fg)', scope);
+    const worst = Math.min(...surfaces.map((s) => { const bg = color(`var(${s})`, scope); return ratio(over(fg, bg, 0.75), bg); }));
+    expect(worst).toBeLessThan(4.5);
   });
 });
 
