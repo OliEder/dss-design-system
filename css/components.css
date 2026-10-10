@@ -1114,7 +1114,11 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
   }
   .dss-tbl--schedule tr.dss-sch-row:last-child { border-bottom: 0; }
   .dss-sch--versus tr.dss-sch-row { grid-template-areas: "when when" "match res"; }
-  .dss-sch--opponent tr.dss-sch-row { grid-template-areas: "when ha" "match res"; }
+  /* Perspektive: erste Zeile Datum und Uhrzeit, zweite Zeile "vs."/"@" vor dem Gegner, Ergebnis rechts.
+     Die DOM-Reihenfolge (Zeit, Heim/Auswärts, Gegner, Ergebnis) bleibt für Screenreader unverändert. */
+  .dss-sch--opponent tr.dss-sch-row { grid-template-columns: auto 1fr auto; grid-template-areas: "when when when" "ha match res"; }
+  .dss-tbl--schedule.dss-sch--opponent .dss-sch-date { display: inline; }
+  .dss-tbl--schedule.dss-sch--opponent .dss-sch-date + .dss-sch-time::before { content: " · "; color: var(--dss-mute); }
   .dss-sch--columns tr.dss-sch-row { grid-template-areas: "nr field" "when venue" "heim res" "gast res" "notice notice"; }
 
   .dss-tbl.dss-tbl--schedule tbody tr.dss-sch-row td {
@@ -1123,7 +1127,9 @@ button.dss-pc-row:focus-visible { outline: var(--ring-w) var(--ring-style) var(-
   .dss-tbl.dss-tbl--schedule tbody tr.dss-sch-row td:first-child { margin-top: 0; }
   .dss-tbl--schedule td.dss-sch-nr { grid-area: nr; }
   .dss-tbl--schedule td.dss-sch-when { grid-area: when; }
-  .dss-tbl--schedule td.dss-sch-ha { grid-area: ha; text-align: right; }
+  .dss-tbl--schedule td.dss-sch-ha { grid-area: ha; text-align: left; align-self: start; }
+  /* Chip (28 px) mittig zum Logo (36 px) der ersten Gegner-Zeile: 4 px Grundabstand der Zellen plus 4 px */
+  .dss-tbl.dss-tbl--schedule tbody tr.dss-sch-row td.dss-sch-ha { margin-top: 8px; }
   .dss-tbl--schedule td.dss-sch-match { grid-area: match; }
   .dss-tbl--schedule td.dss-sch-heim { grid-area: heim; }
   .dss-tbl--schedule td.dss-sch-gast { grid-area: gast; }

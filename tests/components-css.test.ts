@@ -150,7 +150,7 @@ describe('Spielplan · ScheduleTable (Variante A)', () => {
 
   it.each([
     ['versus', '"when when" "match res"'],
-    ['opponent', '"when ha" "match res"'],
+    ['opponent', '"when when when" "ha match res"'],
     ['columns', '"nr field" "when venue" "heim res" "gast res" "notice notice"'],
   ])('Handy: Layout %s hat explizite grid-template-areas', (layout, areas) => {
     expect(ruleOf(mobile, `.dss-sch--${layout} tr.dss-sch-row`)).toContain(`grid-template-areas: ${areas};`);

@@ -85,3 +85,33 @@ describe('Chips: Text sitzt vertikal mittig', () => {
     expect(link).toMatch(/padding:\s*1px 14px 0/);
   });
 });
+
+describe('Handy, Layout opponent: Uhrzeit oben, vs./@ vor dem Gegner', () => {
+  const mobile = css.slice(css.indexOf('Handy: jede Zeile wird zur Karte'), css.indexOf('Spielplan · ScheduleGrid'));
+
+  it('erste Kartenzeile gehört Datum und Uhrzeit über die ganze Breite, zweite Zeile vs./@, Gegner, Ergebnis', () => {
+    expect(mobile).toMatch(/\.dss-sch--opponent tr\.dss-sch-row \{[^}]*grid-template-areas:\s*"when when when" "ha match res"/);
+    expect(mobile).toMatch(/\.dss-sch--opponent tr\.dss-sch-row \{[^}]*grid-template-columns:\s*auto 1fr auto/);
+  });
+
+  it('Datum und Uhrzeit stehen in einer Zeile (mit Trennpunkt), auch in der Dichte touch', () => {
+    expect(mobile).toMatch(/\.dss-tbl--schedule\.dss-sch--opponent \.dss-sch-date \{ display: inline; \}/);
+    expect(mobile).toMatch(/\.dss-sch--opponent \.dss-sch-date \+ \.dss-sch-time::before \{ content: " · "/);
+  });
+
+  it('der vs./@-Chip steht links (nicht mehr rechts oben)', () => {
+    expect(mobile).toMatch(/td\.dss-sch-ha \{ grid-area: ha; text-align: left;/);
+    expect(mobile).not.toMatch(/td\.dss-sch-ha \{[^}]*text-align: right/);
+  });
+
+  it.each(['svelte/ScheduleTable.svelte', 'react/ScheduleTable.tsx'])(
+    '%s: DOM-Reihenfolge Zeit, Heim/Auswärts, Gegner, Ergebnis bleibt (Screenreader)',
+    (path) => {
+      const source = read(path);
+      const order = ["'when'", "'ha'", "'match'"].map((key) => source.indexOf(`col.key === ${key}`) >= 0 ? source.indexOf(`col.key === ${key}`) : source.indexOf(`case ${key}`));
+      expect(order.every((i) => i >= 0)).toBe(true);
+      expect([...order].sort((a, b) => a - b)).toEqual(order);
+      expect(source).toContain('role="cell"');
+    },
+  );
+});
