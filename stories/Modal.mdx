@@ -105,6 +105,7 @@ Zusätzlich gibt es je nach Fassung:
     ['onclose', 'Svelte', 'Wird nach dem Schließen aufgerufen (Escape, Button, mit dismissOnBackdrop auch Hintergrund).'],
     ['onOpenChange', 'React', 'Wird bei jedem Wunsch zu schließen aufgerufen: Escape, Button, mit dismissOnBackdrop auch Hintergrund.'],
     ['HeadingLevel im Inhalt', 'Svelte, React', <>Das Modal gibt seinem Inhalt die Ebene <code>titleAs + 1</code> (Titel <code>h2</code>, Titelkomponenten darin <code>h3</code>), auch im Radix-Portal. Ein eigenes <code>HeadingLevel</code> oder <code>titleAs</code> an einer Komponente im Inhalt gewinnt. Mehr auf der Seite <a href="?path=/docs/foundation-headings--docs">Headings</a>.</>],
+    ['Größen-Token am Container', 'React', <>Das React-Modal rendert über ein Radix-Portal an <code>body</code> und erreicht Größen-Tokens (<code>--dss-title-size</code>), die an einem Container gesetzt sind, nicht; die Svelte-Fassung rendert inline. Setze das Token für Modals am <code>:root</code> oder am <code>body</code>.</>],
     ['dismissOnBackdrop', 'Svelte, React', <>Mit <code>true</code> schließt ein Klick neben das Modal es (Standard <code>false</code>). Wirkt nur mit <code>closable</code>.</>],
     ['closeLabel', 'React', <>Zugänglicher Name des Schließen-Buttons (Standard „Schließen“).</>],
     ['className', 'React', 'Zusätzliche Klasse an der Modal-Fläche.'],

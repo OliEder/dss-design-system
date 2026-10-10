@@ -113,7 +113,7 @@ Das Beispiel unten ist eine Seite mit zwei Abschnitten: die `h1` setzt die App, 
 
 ### Modal
 
-Das Modal hat ein `titleAs` (Standard `h2`) und gibt seinem Inhalt und seinem Footer die nächste Ebene weiter: Titel `h2`, Titelkomponenten im Inhalt `h3`; bei `titleAs="h4"` bekommt der Inhalt `h5`, die Ebene wird auf `h6` begrenzt. Ein eigenes `HeadingLevel` im Inhalt oder ein `titleAs` an der Komponente gewinnt. Ein `HeadingLevel` um das Modal ändert den Titel des Modals nicht. In React gilt das auch im Radix-Portal (der Kontext bleibt erhalten). Das Modal ist die einzige Komponente, die selbst Inhalt mit Titelkomponenten aufnimmt und die Ebene weitergibt; die Card tut es nicht, dort setzt du `HeadingLevel` oder `titleAs`.
+Das Modal hat ein `titleAs` (Standard `h2`) und gibt seinem Inhalt und seinem Footer die nächste Ebene weiter: Titel `h2`, Titelkomponenten im Inhalt `h3`; bei `titleAs="h4"` bekommt der Inhalt `h5`, die Ebene wird auf `h6` begrenzt. Ein eigenes `HeadingLevel` im Inhalt oder ein `titleAs` an der Komponente gewinnt. Ein `HeadingLevel` um das Modal ändert den Titel des Modals nicht. In React gilt das auch im Radix-Portal (der Kontext bleibt erhalten). Das Portal hängt das Modal aber an `body`: ein Größen-Token, das nur an einem Container gesetzt ist (etwa `--dss-title-size` an einer Seitenleiste), erreicht den Titel eines React-Modals deshalb nicht; die Svelte-Fassung rendert inline und erbt es. Setze das Token für Modals am `:root` oder am `body`. Das Modal ist die einzige Komponente, die selbst Inhalt mit Titelkomponenten aufnimmt und die Ebene weitergibt; die Card tut es nicht, dort setzt du `HeadingLevel` oder `titleAs`.
 
 <FrameworkCode label="Modal mit Tabelle" svelte={modalSvelte} react={modalReact} />
 

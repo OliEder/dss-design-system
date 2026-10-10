@@ -4,7 +4,7 @@ export const vanilla = `<!-- Einmal im App-Root einbinden -->
 <!-- optional: <link rel="stylesheet" href="fonts/fonts.css" /> -->
 
 <!-- Tonalität: dss-empty--neutral | --action | --error.
-     Button passend dazu: dss-btn--primary | --amber | --danger. Die Überschrift passt zur Gliederung (h2, h3 oder h4). -->
+     Button passend dazu: dss-btn--primary | --amber | --danger. Die Überschrift passt zur Gliederung (h2 bis h6; Rangfolge: titleAs, dann HeadingLevel, dann h3). -->
 <div class="dss-empty dss-empty--neutral">
   <div class="dss-empty-icon">
     <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">

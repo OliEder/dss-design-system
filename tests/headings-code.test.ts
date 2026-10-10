@@ -195,3 +195,13 @@ describe('Typ HeadingLevelInput (js/heading.d.ts, Svelte und React)', () => {
     expect(readFileSync(`${rootDir}react/HeadingLevel.tsx`, 'utf8')).toMatch(/level\?: HeadingLevelInput;/);
   });
 });
+
+describe('Doku-Beispiele der Seite Headings sind inert', () => {
+  it('die Vorschau (.stage) ist inert, die Gliederung bleibt außerhalb sichtbar', async () => {
+    const { readFileSync } = await import('node:fs');
+    const src = readFileSync(`${rootDir}stories/Foundation/Headings.svelte`, 'utf8');
+    expect(src).toMatch(/<div class="stage" inert>/);
+    expect(src).toMatch(/<ul class="outline" aria-hidden="true">/);
+    expect(src.indexOf('<ul class="outline"')).toBeGreaterThan(src.indexOf('</div>\n\n  <ul'));
+  });
+});

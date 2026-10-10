@@ -36,7 +36,8 @@
 {/snippet}
 
 <div class="wrap" bind:this={root}>
-  <div class="stage">
+  <!-- inert: die Beispiele haben eigene h1/h2/h3 und eine andere Gliederung als die Doku-Seite; Screenreader der Doku sehen sie nicht (die Gliederung unten zeigt sie) -->
+  <div class="stage" inert>
     {#if mode === 'seite'}
       <h1 class="dss-t-h1">Mannschaft</h1>
       <section>

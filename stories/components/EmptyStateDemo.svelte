@@ -6,7 +6,7 @@
     title = 'Noch keine Spiele',
     body = '',
     cta = '',
-    titleAs = 'h3',
+    titleAs = undefined,
   }: { tone?: 'neutral' | 'action' | 'error'; title?: string; body?: string; cta?: string; titleAs?: 'h2' | 'h3' | 'h4' | 'h5' | 'h6' } = $props();
 </script>
 
