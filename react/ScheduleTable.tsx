@@ -234,7 +234,13 @@ export function ScheduleTable({
         <tr key={game.id} role="row" className={classes}>
           <td role="cell" className="dss-sch-bye" colSpan={cols.length}>
             {game.time ? <span className="dss-sch-time">{game.time} · </span> : null}
-            {game.heim ? `${game.heim.name} hat Freilos` : (game.note ?? 'Spielfrei')}
+            {game.heim ? (
+              <>
+                <TeamName team={game.heim} renderLink={renderLink} names={names} logo={logos === true} /> hat Freilos
+              </>
+            ) : (
+              (game.note ?? 'Spielfrei')
+            )}
           </td>
         </tr>
       );

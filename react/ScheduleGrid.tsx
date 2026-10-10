@@ -139,7 +139,13 @@ export function ScheduleGrid({
                       {row.time ? row.time : <span className="dss-sr-only">Zeit offen</span>}
                     </th>
                     <td role="cell" colSpan={columns.length}>
-                      {row.game.heim ? `${row.game.heim.name} hat Freilos` : (row.game.note ?? 'Spielfrei')}
+                      {row.game.heim ? (
+                        <>
+                          <TeamName team={row.game.heim} renderLink={renderLink} names={names} logo={logos} /> hat Freilos
+                        </>
+                      ) : (
+                        (row.game.note ?? 'Spielfrei')
+                      )}
                     </td>
                   </tr>
                 );

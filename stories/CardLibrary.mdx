@@ -36,7 +36,7 @@ Auf schmalen Karten brechen lange Vereinsnamen oder werden mit Auslassungspunkte
 
 <Canvas of={CardLibraryStories.KartenLogos} />
 
-Das Logo ist dekorativ (`alt=""`, `aria-hidden`), weil der Name daneben steht. Der Kurzname ist `aria-hidden`; wo er sichtbar ist, bleibt der volle Name unsichtbar im Dokument (`dss-sr-only`-Muster), sodass Screenreader den vollen Namen genau einmal lesen; auch der Name einer Karte als Link oder Button enthält den vollen Namen. Ohne `short` ändert sich nichts.
+Das Logo ist dekorativ (`alt=""`, `aria-hidden`), weil der Name daneben steht. Der Kurzname ist `aria-hidden`; wo er sichtbar ist, bleibt der volle Name unsichtbar im Dokument (`dss-sr-only`-Muster), sodass Screenreader den vollen Namen genau einmal lesen; auch der Name einer Karte als Link oder Button enthält den vollen Namen. Der sichtbare Kurzname zeigt den vollen Namen als Tooltip (`title`), der versteckte volle Name ist nicht markierbar, Kopieren liefert nur den sichtbaren Namen. **Label im Namen (WCAG 2.5.3):** Ein abgekürzter Kurzname wie „TSV N.“ steckt nicht im zugänglichen Namen „TSV Nordhain 1920“; Sprachsteuerung („Klick TSV N.“) greift dann nicht. Wähle Kurznamen deshalb so, dass sie Teil des vollen Namens sind („Hawks“, „Seeberg“) oder dessen Anfang bilden. Ohne `short` ändert sich nichts.
 
 ### Handy · 390 px Breite
 

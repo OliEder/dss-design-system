@@ -57,7 +57,7 @@
 
 {#snippet teamBlock(t: Team)}
   {#if logos}<span class="dss-team-logo" class:dss-team-logo--initials={!t.logo} aria-hidden="true">{#if t.logo}<img src={t.logo} alt="" loading="lazy" />{:else}{initials(t.name, 2)}{/if}</span>{/if}
-  {#if shortName(t)}<span class="dss-match-name dss-team-name" class:dss-team-name--short={names === 'short'}><span class="dss-name-full">{t.name}</span><span class="dss-name-short" aria-hidden="true">{shortName(t)}</span></span>{:else}<span class="dss-match-name">{t.name}</span>{/if}
+  {#if shortName(t)}<span class="dss-match-name dss-team-name" class:dss-team-name--short={names === 'short'}><span class="dss-name-full">{t.name}</span><span class="dss-name-short" aria-hidden="true" title={t.name}>{shortName(t)}</span></span>{:else}<span class="dss-match-name">{t.name}</span>{/if}
 {/snippet}
 
 <!-- Der Handler hängt nur an <a>/<button> (nie am <div>); Svelte kann das bei svelte:element nicht erkennen. -->

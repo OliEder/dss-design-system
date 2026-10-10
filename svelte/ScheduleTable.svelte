@@ -69,7 +69,7 @@
 <!-- team-Snippet: synchron halten mit ScheduleTable/ScheduleGrid -->
 {#snippet teamName(t: ScheduleTeam)}
   {@const short = shortName(t)}
-  {#if short}<span class="dss-team-name" class:dss-team-name--short={names === 'short'}><span class="dss-name-full">{t.name}</span><span class="dss-name-short" aria-hidden="true">{short}</span></span>{:else}{t.name}{/if}
+  {#if short}<span class="dss-team-name" class:dss-team-name--short={names === 'short'}><span class="dss-name-full">{t.name}</span><span class="dss-name-short" aria-hidden="true" title={t.name}>{short}</span></span>{:else}{t.name}{/if}
 {/snippet}
 
 {#snippet team(t: ScheduleTeam | undefined, loser: boolean, withLogo: boolean)}
@@ -101,7 +101,7 @@
     <tr role="row" class="dss-sch-row is-bye">
       <td role="cell" class="dss-sch-bye" colspan={cols.length}>
         {#if game.time}<span class="dss-sch-time">{game.time} · </span>{/if}
-        {game.heim ? `${game.heim.name} hat Freilos` : (game.note ?? 'Spielfrei')}
+        {#if game.heim}{@render team(game.heim, false, logos === true)} hat Freilos{:else}{game.note ?? 'Spielfrei'}{/if}
       </td>
     </tr>
   {:else}

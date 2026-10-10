@@ -204,11 +204,21 @@ const namesData = `const games = [{
   id: '1', state: 'finished', date: 'Sa, 10.10.2026', time: '15:00',
   heim: { name: 'TSV Nordhain 1920', short: 'TSV N.', logo: '/logos/nordhain.svg', score: 87 },
   gast: { name: 'Lindenberg Hawks', short: 'Hawks', logo: '/logos/hawks.svg', score: 64 },
-}];`;
+}];
+const columns = [{ id: 'h1', label: 'Halle 1' }, { id: 'h2', label: 'Halle 2' }];
+const gridGames = [
+  { id: 'g1', state: 'scheduled', time: '09:00', column: 'h1',
+    heim: { name: 'TSV Nordhain 1920', short: 'TSV N.', logo: '/logos/nordhain.svg' },
+    gast: { name: 'Lindenberg Hawks', short: 'Hawks', logo: '/logos/hawks.svg' } },
+  { id: 'g2', state: 'scheduled', time: '09:00', column: 'h2',
+    heim: { name: 'BG Seeberg', short: 'Seeberg' }, gast: { name: 'SV Kiefernau', short: 'Kiefernau' } },
+];`;
+
+const namesDataReact = namesData.replaceAll("state: 'scheduled'", "state: 'scheduled' as const").replace("state: 'finished'", "state: 'finished' as const");
 
 export const namesReact = `import { ScheduleTable, ScheduleGrid } from '@bbv/dss-design-system/react';
 
-${namesData}
+${namesDataReact}
 
 // Kurznamen und Logos; bis 640 px Breite erscheinen die Kurznamen auch bei names="full"
 <ScheduleTable games={games} layout="versus" names="short" logos caption="Spieltag" />

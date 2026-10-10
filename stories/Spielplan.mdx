@@ -208,7 +208,7 @@ Beide Tabellen zeigen dieselben Daten; oben `names="full"` (Standard), unten `na
 
 <Canvas of={SpielplanStories.LogosVersus} />
 
-`logos` setzt ein Logo vor den Namen, in `versus`, `columns` und im Zeitraster. Das Bild ist dekorativ: `alt=""`, weil der Name daneben steht (siehe Barrierefreiheit unten); es lädt verzögert (`loading="lazy"`) und liegt mit `object-fit: contain` in einer Kachel in `--dss-surface-2`, damit auch transparente Logos im Dunkelmodus eine Fläche haben. Ohne `logo` erscheint ein Kreis mit den Initialen (die ersten zwei Wörter des vollen Namens, z. B. „SK“ für SV Kiefernau). Platzhalter („Erster Gruppe A“) bekommen kein Logo und keinen Initialenkreis.
+`logos` setzt ein Logo vor den Namen, in `versus`, `columns` und im Zeitraster. Das Bild ist dekorativ: `alt=""`, weil der Name daneben steht (siehe Barrierefreiheit unten); es lädt verzögert (`loading="lazy"`) und liegt mit `object-fit: contain` in einer Kachel in `--dss-surface-2`, damit auch transparente Logos im Dunkelmodus eine Fläche haben. Ohne `logo` erscheint ein Kreis mit den Initialen (die ersten zwei Wörter des vollen Namens, z. B. „SK“ für SV Kiefernau). Platzhalter („Erster Gruppe A“) bekommen in `versus`, `columns` und im Zeitraster kein Logo und keinen Initialenkreis; im Layout `opponent` bleibt der Initialenkreis wie bisher. Logos werden bei Verlierern und abgesagten Spielen nicht abgedunkelt, nur der Text. Freilos-Zeilen („… hat Freilos“) zeigen den Namen ebenfalls mit Kurzname und Logo.
 
 <Canvas of={SpielplanStories.LogosVersusKurz} />
 
@@ -255,7 +255,8 @@ Einzeilige Zeilen behalten mit Logos ihre Höhe (gemessen: 60, 48 und 40 px). In
 - **Logo:** Das Logo ist für Hilfstechnik verborgen (`aria-hidden`, Bild mit `alt=""`). Ein Alternativtext mit dem Vereinsnamen würde den Namen doppelt ansagen („Logo TSV Nordhain 1920, TSV Nordhain 1920“).
 - **Handy:** Teams mit Logo stehen bis 640 px untereinander, je Team eine Zeile; der Gedankenstrich entfällt dort (er ist für Hilfstechnik ohnehin verborgen, gelesen wird „gegen“).
 - **Kurzname:** Er ist `aria-hidden`. Wo der Kurzname sichtbar ist (mit `names="short"` und bis 640 px), bleibt der volle Name im Dokument (unsichtbar, `dss-sr-only`-Muster) und Screenreader lesen den vollen Namen genau einmal; als Linktext zählt der volle Name. Dafür ist der volle Name nie `display: none`.
-- **Suchen und Kopieren:** Die versteckten Texte können beim Markieren und Kopieren mitkommen.
+- **Markieren und Kopieren:** Wo der Kurzname sichtbar ist, ist der versteckte volle Name nicht markierbar (`user-select: none`); Markieren und Kopieren liefern nur den sichtbaren Namen. Mit der Maus zeigt der Kurzname den vollen Namen als Tooltip (`title`); für Hilfstechnik bleibt er verborgen, es kommt nichts doppelt.
+- **Sprachsteuerung (WCAG 2.5.3, Label im Namen):** Ein abgekürzter Kurzname wie „TSV N.“ steckt nicht im zugänglichen Namen „TSV Nordhain 1920“; „Klick TSV N.“ greift dann nicht. Wähle Kurznamen deshalb so, dass sie Teil des vollen Namens sind („Hawks“, „Seeberg“) oder dessen Anfang bilden.
 
 ### Handy mit Kurznamen und Logos · 390 px Breite
 

@@ -52,7 +52,7 @@
 <!-- team-Snippet: synchron halten mit ScheduleTable/ScheduleGrid -->
 {#snippet teamName(t: ScheduleTeam)}
   {@const short = shortName(t)}
-  {#if short}<span class="dss-team-name" class:dss-team-name--short={names === 'short'}><span class="dss-name-full">{t.name}</span><span class="dss-name-short" aria-hidden="true">{short}</span></span>{:else}{t.name}{/if}
+  {#if short}<span class="dss-team-name" class:dss-team-name--short={names === 'short'}><span class="dss-name-full">{t.name}</span><span class="dss-name-short" aria-hidden="true" title={t.name}>{short}</span></span>{:else}{t.name}{/if}
 {/snippet}
 
 {#snippet team(t: ScheduleTeam | undefined, loser: boolean, withLogo: boolean)}
@@ -147,7 +147,7 @@
             <!-- svelte-ignore a11y_no_redundant_roles -->
             <tr role="row" class="dss-sg-bye">
               <th scope="row" role="rowheader" class="dss-sg-time">{#if row.time}{row.time}{:else}<span class="dss-sr-only">Zeit offen</span>{/if}</th>
-              <td role="cell" colspan={columns.length}>{row.game.heim ? `${row.game.heim.name} hat Freilos` : (row.game.note ?? 'Spielfrei')}</td>
+              <td role="cell" colspan={columns.length}>{#if row.game.heim}{@render team(row.game.heim, false, logos)} hat Freilos{:else}{row.game.note ?? 'Spielfrei'}{/if}</td>
             </tr>
           {:else}
             <!-- svelte-ignore a11y_no_redundant_roles -->

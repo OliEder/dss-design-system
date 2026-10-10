@@ -20,6 +20,7 @@ const normalize = (html: string) =>
     .replace(/ ?</g, '<')
     .replace(/class="([^"]*)"/g, (_m, value: string) => `class="${value.trim().split(/\s+/).sort().join(' ')}"`)
     .replace(/<(img|br)([^>]*?)\/?>/g, '<$1$2>')
+    .replace(/colSpan=/g, 'colspan=')
     .trim();
 
 const team = (name: string, short?: string, extra: Record<string, unknown> = {}) => ({ name, short, ...extra });
@@ -28,13 +29,16 @@ const versus = [
     heim: team('TSV Nordhain 1920', 'TSV N.', { href: '/t', score: 80, own: true, logo: '/logos/a.svg' }), gast: team('Lindenberg Hawks', 'Hawks', { score: 70 }) },
   { id: 'b', state: 'scheduled', heim: team('BG Seeberg'), gast: team('Erster A', 'E1', { placeholder: true }) },
   { id: 'c', state: 'live', heim: team('X', 'X'), gast: team('Y Team', 'Y', { href: '/y' }) },
+  { id: 'd', state: 'scheduled', heim: team('Erster FC Waldbach', 'Waldbach'), gast: team('Zweiter FC Hollbach') },
+  { id: 'e', state: 'bye', time: '09:30', heim: team('Lindenberg Hawks', 'Hawks', { logo: '/logos/h.svg' }) },
+  { id: 'f', state: 'bye', time: '10:00', note: 'Spielfrei am Sonntag' },
 ];
 const opponent = [
   { id: 'o1', state: 'finished', date: 'Sa', time: '17', at: 'heim', ownScore: 6, opponent: team('Dukes Eschental', 'Dukes', { href: '/d', score: 5, logo: '/logos/d.svg' }) },
   { id: 'o2', state: 'scheduled', at: 'gast', opponent: team('Bergheimer Club', 'BC') },
 ];
 const columns = [{ id: 'f1', label: 'F1' }, { id: 'f2', label: 'F2' }];
-const gridGames = versus.map((game, index) => ({ ...game, time: '09:00', column: columns[index % 2].id }));
+const gridGames = versus.map((game, index) => ({ ...game, time: game.time ?? '09:00', column: columns[index % 2].id }));
 
 beforeAll(async () => {
   vite = await createServer({

@@ -113,9 +113,15 @@ describe('Zeilenhöhen der Dichten bleiben unverändert', () => {
     expect(rule('.dss-tbl td')).toMatch(/height:\s*48px/);
     expect(rule('.dss-tbl--compact td')).toMatch(/height:\s*40px/);
     expect(rule('.dss-tbl--touch td')).toMatch(/height:\s*60px/);
-    // default: 48 - 2 × 8 = 32 ≥ 28; compact: 40 - 2 × 4 = 32 ≥ 20
-    expect(28).toBeLessThanOrEqual(48 - 2 * 8);
-    expect(20).toBeLessThanOrEqual(40 - 2 * 4);
+    const px = (text: string, prop: string) => Number(text.match(new RegExp(`${prop}:\\s*(\\d+)px`))![1]);
+    const padding = (selector: string) =>
+      Number(css.match(new RegExp(`\\n${selector.replaceAll('.', '\\.')} \\{[^}]*padding-block:\\s*(\\d+)px`))![1]);
+    const logo = px(rule('.dss-team-logo'), 'height');
+    const logoCompact = px(rule('.dss-tbl--compact .dss-team-logo'), 'height');
+    // default: Zeilenhöhe minus Innenabstand oben und unten muss das Logo aufnehmen; compact ebenso
+    expect(logo).toBeLessThanOrEqual(px(rule('.dss-tbl td'), 'height') - 2 * padding('.dss-tbl--schedule td'));
+    expect(logoCompact).toBeLessThanOrEqual(px(rule('.dss-tbl--compact td'), 'height') - 2 * padding('.dss-tbl--schedule.dss-tbl--compact td'));
+    expect(logo).toBeLessThanOrEqual(px(rule('.dss-tbl--touch td'), 'height') - 2 * padding('.dss-tbl--schedule td'));
   });
 });
 
@@ -145,5 +151,40 @@ describe('Standardwerte der Props', () => {
     for (const path of ['svelte/ScheduleTable.svelte', 'svelte/MatchCard.svelte', 'react/ScheduleParts.tsx']) {
       expect(read(path)).toMatch(/alt=(""|\{""\})\s+loading="lazy"/);
     }
+  });
+});
+
+describe('Markieren, Tooltip, Freilos, Initialen', () => {
+  it('der versteckte volle Name ist nicht markierbar (nur der sichtbare Name wird kopiert), in beiden Regeln', () => {
+    expect(rule('.dss-team-name--short .dss-name-full')).toMatch(/user-select:\s*none/);
+    const block = mediaBlock('@media (max-width: 640px) {\n  .dss-team-name .dss-name-short', 0);
+    expect(block.slice(block.indexOf('.dss-team-name .dss-name-full'))).toMatch(/user-select:\s*none/);
+    expect(rule('.dss-team-name .dss-name-short')).not.toMatch(/user-select/);
+  });
+
+  it.each([
+    ['svelte/ScheduleTable.svelte', 'title={t.name}'],
+    ['svelte/ScheduleGrid.svelte', 'title={t.name}'],
+    ['svelte/MatchCard.svelte', 'title={t.name}'],
+    ['react/ScheduleParts.tsx', 'title={team.name}'],
+    ['react/MatchCard.tsx', 'title={team.name}'],
+  ])('%s: sichtbarer Kurzname trägt den vollen Namen als Tooltip', (path, expected) => {
+    expect(read(path)).toMatch(new RegExp(`dss-name-short"\\s+aria-hidden="true"\\s+${expected.replace(/[{}.]/g, '\\$&')}`));
+  });
+
+  it.each(['svelte/ScheduleTable.svelte', 'svelte/ScheduleGrid.svelte'])('%s: Freilos nutzt den Team-Baustein', (path) => {
+    expect(read(path)).toMatch(/\{@render team\((game|row\.game)\.heim, false, logos( === true)?\)\} hat Freilos/);
+    expect(read(path)).not.toContain('heim.name} hat Freilos');
+  });
+
+  it.each(['react/ScheduleTable.tsx', 'react/ScheduleGrid.tsx'])('%s: Freilos nutzt TeamName', (path) => {
+    expect(read(path)).toMatch(/<TeamName team=\{(game|row\.game)\.heim\}[^>]*\/> hat Freilos/);
+    expect(read(path)).not.toContain('heim.name} hat Freilos');
+  });
+
+  it('Initialen im Kreis haben höchstens zwei Buchstaben (Svelte und React)', () => {
+    expect(read('svelte/ScheduleTable.svelte')).toContain('initials(current.name, 2)');
+    expect(read('svelte/MatchCard.svelte')).toContain('initials(t.name, 2)');
+    expect(read('react/ScheduleParts.tsx')).toContain('initials(name, 2)');
   });
 });

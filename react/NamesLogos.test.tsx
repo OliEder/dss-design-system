@@ -224,3 +224,50 @@ describe('Namen und Logos · MatchCard', () => {
     await expectNoA11yViolations(container);
   });
 });
+
+describe('Tooltip, Freilos, Initialen mit mehreren Wörtern', () => {
+  const BYE: ScheduleGame[] = [{ id: 'b', state: 'bye', time: '09:30', heim: { name: 'Lindenberg Hawks', short: 'Hawks', logo: '/logos/hawks.svg' } }];
+  const THREE = { name: 'Erster FC Waldbach', short: 'Waldbach' };
+
+  it('der sichtbare Kurzname trägt den vollen Namen als title, ohne dass der Zugänglichkeitsname doppelt wird', () => {
+    const { container } = render(<ScheduleTable games={VERSUS} names="short" />);
+    const short = container.querySelector('.dss-name-short');
+    expect(short).toHaveAttribute('title', 'TSV Nordhain 1920');
+    expect(short).toHaveAttribute('aria-hidden', 'true');
+    expect(screen.getByRole('link', { name: 'TSV Nordhain 1920' })).toBeInTheDocument();
+    const { container: card } = render(<MatchCard heim={{ name: 'TSV Nordhain 1920', short: 'TSV N.' }} gast={{ name: 'Hawks Club' }} names="short" />);
+    expect(card.querySelector('.dss-name-short')).toHaveAttribute('title', 'TSV Nordhain 1920');
+  });
+
+  it('Freilos in der Tabelle: Name mit Kurzform und Logo, „hat Freilos“ bleibt mit vollem Namen lesbar', () => {
+    const { container } = render(<ScheduleTable games={BYE} layout="columns" names="short" logos />);
+    const cell = container.querySelector('td.dss-sch-bye') as HTMLElement;
+    expect(cell.querySelector('.dss-team-name--short .dss-name-short')).toHaveTextContent('Hawks');
+    expect(cell.querySelector('.dss-team-logo img')).toHaveAttribute('alt', '');
+    expect(cell).toHaveTextContent('Lindenberg HawksHawks hat Freilos');
+    expect(cell.querySelector('.dss-name-short')).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  it('Freilos ohne Mannschaft zeigt weiter Notiz oder „Spielfrei“', () => {
+    const { container } = render(<ScheduleTable games={[{ id: 'b', state: 'bye', note: 'Spielfrei am Sonntag' }]} layout="columns" />);
+    expect(container.querySelector('td.dss-sch-bye')).toHaveTextContent('Spielfrei am Sonntag');
+  });
+
+  it('Freilos im Raster nutzt Kurzname und Logo', () => {
+    const { container } = render(<ScheduleGrid games={BYE} columns={GRID_COLUMNS} slots={['09:30']} names="short" logos />);
+    const cell = container.querySelector('.dss-sg-bye td') as HTMLElement;
+    expect(cell.querySelector('.dss-name-short')).toHaveTextContent('Hawks');
+    expect(cell.querySelector('.dss-team-logo')).not.toBeNull();
+    expect(cell).toHaveTextContent('hat Freilos');
+  });
+
+  it('Initialen aus drei Wörtern ohne Logo bleiben bei zwei Buchstaben (Tabelle, Raster, MatchCard)', () => {
+    const games: ScheduleGame[] = [{ id: 't', state: 'scheduled', heim: THREE, gast: { name: 'Zweiter FC Hollbach' } }];
+    const { container } = render(<ScheduleTable games={games} logos />);
+    expect([...container.querySelectorAll('.dss-team-logo')].map((l) => l.textContent)).toEqual(['EF', 'ZF']);
+    const grid = render(<ScheduleGrid games={[{ ...games[0], time: '09:00', column: 'f1' }]} columns={GRID_COLUMNS} logos />);
+    expect([...grid.container.querySelectorAll('.dss-team-logo')].map((l) => l.textContent)).toEqual(['EF', 'ZF']);
+    const card = render(<MatchCard heim={THREE} gast={{ name: 'Zweiter FC Hollbach' }} logos />);
+    expect([...card.container.querySelectorAll('.dss-team-logo')].map((l) => l.textContent)).toEqual(['EF', 'ZF']);
+  });
+});

@@ -28,7 +28,7 @@ function NameText({ team, names }: { team: ScheduleTeam; names: ScheduleNames })
   return (
     <span className={cn('dss-team-name', names === 'short' && 'dss-team-name--short')}>
       <span className="dss-name-full">{team.name}</span>
-      <span className="dss-name-short" aria-hidden="true">
+      <span className="dss-name-short" aria-hidden="true" title={team.name}>
         {short}
       </span>
     </span>
